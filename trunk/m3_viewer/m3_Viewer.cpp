@@ -15,8 +15,8 @@
 #include "m3_Window.h"
 #include "m3_Mesh.h"
 
-HDC	  g_hDC  = NULL;
-HGLRC g_hRC  = NULL;
+//HDC	  g_hDC  = NULL;
+//HGLRC g_hRC  = NULL;
 
 GLuint	base;
 
@@ -37,6 +37,13 @@ CGparameter cg_vLight;
 
 std::vector<m3_Mesh*> meshList;
 
+Uint32 my_callbackfunc(Uint32 interval, void *param);
+void* my_callback_param;
+
+Uint32 my_callbackfunc(Uint32 interval, void *param){
+ return interval;
+}
+
 int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance, 
 				   LPSTR lpCmdLine, int nCmdShow);
 void init(void);
@@ -48,16 +55,59 @@ int WINAPI WinMain(	HINSTANCE hInstance,
 					LPSTR     lpCmdLine,
 					int       nCmdShow )
 {
-	m3_Window::Load();
+
+if ( SDL_Init(SDL_INIT_TIMER|SDL_INIT_VIDEO) < 0 ){ 
+   printf("Unable to init SDL: %s\n", SDL_GetError()); 
+   exit(1); 
+ } 
+
+ atexit(SDL_Quit); 
+
+ SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+ SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 5);
+ SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 6);
+ SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 5); 
+
+ if ( SDL_SetVideoMode(640,480,32,SDL_OPENGL) == NULL ){ 
+   printf("Unable to set 640x480 video: %s\n", SDL_GetError()); 
+   exit(1); 
+ }
 
 
-	MSG        uMsg;
+SDL_TimerID my_timer_id = SDL_AddTimer(1000, my_callbackfunc, my_callback_param);
 
-    memset(&uMsg,0,sizeof(uMsg));
+	//m3_Window::Load();
+
+
+	//MSG        uMsg;
+
+   // memset(&uMsg,0,sizeof(uMsg));
 
 	init();
 
-	while( uMsg.message != WM_QUIT )
+   while(true)
+   {
+   
+		SDL_Event event; 
+   
+		while ( SDL_PollEvent(&event) )
+		{ 
+			if ( event.type == SDL_QUIT )
+			{ 
+				//END
+			} 
+			if ( event.type == SDL_KEYDOWN )
+			{
+				if ( event.key.keysym.sym == SDLK_ESCAPE )
+				{ 
+					//KEY DOWN
+				} 
+			} 
+		} 
+	  render();
+   }
+
+	/*while( uMsg.message != WM_QUIT )
 	{
 		if( PeekMessage( &uMsg, NULL, 0, 0, PM_REMOVE ) )
 		{
@@ -66,18 +116,18 @@ int WINAPI WinMain(	HINSTANCE hInstance,
 		}
         else
 			render();
-	}
+	}*/
 
 	shutDown();
 
-    UnregisterClass( "MY_WINDOWS_CLASS", hInstance );
+   // UnregisterClass( "MY_WINDOWS_CLASS", hInstance );
 
-	return uMsg.wParam;
+	//return uMsg.wParam;
 }
 
 GLvoid BuildFont(GLvoid)								// Build Our Bitmap Font
 {
-	HFONT	font;										// Windows Font ID
+	/*HFONT	font;										// Windows Font ID
 	HFONT	oldfont;									// Used For Good House Keeping
 
 	base = glGenLists(96);								// Storage For 96 Characters
@@ -100,7 +150,7 @@ GLvoid BuildFont(GLvoid)								// Build Our Bitmap Font
 	oldfont = (HFONT)SelectObject(g_hDC, font);           // Selects The Font We Want
 	wglUseFontBitmaps(g_hDC, 32, 96, base);				// Builds 96 Characters Starting At Character 32
 	SelectObject(g_hDC, oldfont);							// Selects The Font We Want
-	DeleteObject(font);									// Delete The Font
+	DeleteObject(font);	*/								// Delete The Font
 }
 
 GLvoid glPrint(const char *fmt, ...)					// Custom GL "Print" Routine
@@ -188,23 +238,23 @@ void InitShader()
 
 void init( void )
 {
-	GLuint PixelFormat;
+	//GLuint PixelFormat;
 
-	PIXELFORMATDESCRIPTOR pfd;
-	memset(&pfd, 0, sizeof(PIXELFORMATDESCRIPTOR));
+	//PIXELFORMATDESCRIPTOR pfd;
+	//memset(&pfd, 0, sizeof(PIXELFORMATDESCRIPTOR));
 
-    pfd.nSize      = sizeof(PIXELFORMATDESCRIPTOR);
-    pfd.nVersion   = 1;
-    pfd.dwFlags    = PFD_DRAW_TO_WINDOW |PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
-    pfd.iPixelType = PFD_TYPE_RGBA;
-    pfd.cColorBits = 16;
-    pfd.cDepthBits = 16;
+   // pfd.nSize      = sizeof(PIXELFORMATDESCRIPTOR);
+    //pfd.nVersion   = 1;
+   // pfd.dwFlags    = PFD_DRAW_TO_WINDOW |PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
+   // pfd.iPixelType = PFD_TYPE_RGBA;
+   // pfd.cColorBits = 16;
+   // pfd.cDepthBits = 16;
 	
-	g_hDC = GetDC( m3_Window::hWindow );
-	PixelFormat = ChoosePixelFormat( g_hDC, &pfd );
-	SetPixelFormat( g_hDC, PixelFormat, &pfd);
-	g_hRC = wglCreateContext( g_hDC );
-	wglMakeCurrent( g_hDC, g_hRC );
+	//g_hDC = GetDC( m3_Window::hWindow );
+	//PixelFormat = ChoosePixelFormat( g_hDC, &pfd );
+	//SetPixelFormat( g_hDC, PixelFormat, &pfd);
+	//g_hRC = wglCreateContext( g_hDC );
+	//wglMakeCurrent( g_hDC, g_hRC );
 
 	glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );
 	glEnable( GL_DEPTH_TEST );
@@ -252,7 +302,7 @@ void init( void )
 
 void shutDown(void)	
 {
-	if( g_hRC != NULL )
+	/*if( g_hRC != NULL )
 	{
 		wglMakeCurrent( NULL, NULL );
 		wglDeleteContext( g_hRC );
@@ -263,7 +313,7 @@ void shutDown(void)
 	{
 		ReleaseDC( m3_Window::hWindow, g_hDC );
 		g_hDC = NULL;
-	}
+	}*/
 }
 
 
@@ -355,5 +405,7 @@ void render( void )
 		glPrint("Press 'Space' to save mesh as .obj file.");
 	}
 
-	SwapBuffers( g_hDC );
+	glFlush();
+    SDL_GL_SwapBuffers();
+	//SwapBuffers( g_hDC );
 }
