@@ -5,7 +5,7 @@
 #include <windows.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
-#include <GL/glaux.h>
+//#include <GL/glaux.h>
 #include <ddraw.h> 
 #include "glext.h"
 //

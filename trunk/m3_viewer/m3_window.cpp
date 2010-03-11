@@ -8,7 +8,7 @@ WNDCLASSEX      m3_Window::wndClass   = WNDCLASSEX();
 
 void m3_Window::Load()
 {
-	 wndClass.cbSize = sizeof(WNDCLASSEX);           
+	 /*wndClass.cbSize = sizeof(WNDCLASSEX);           
 	 wndClass.style = CS_OWNDC | CS_DBLCLKS;      
 	 wndClass.lpfnWndProc = m3_Input::wndProc;                
 	 wndClass.cbClsExtra = 0;                        
@@ -28,6 +28,6 @@ void m3_Window::Load()
      DWORD dw = GetLastError(); 
 	 if(!hWindow) return;
      ShowWindow(hWindow, SW_SHOW);   
-     UpdateWindow(hWindow);   
+     UpdateWindow(hWindow);   */
 }
 

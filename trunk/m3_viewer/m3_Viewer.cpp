@@ -1,5 +1,5 @@
-#define STRICT
-#define WIN32_LEAN_AND_MEAN
+//#define STRICT
+//#define WIN32_LEAN_AND_MEAN
 
 #include <fstream>
 #include <string>
@@ -44,17 +44,15 @@ Uint32 my_callbackfunc(Uint32 interval, void *param){
  return interval;
 }
 
-int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance, 
-				   LPSTR lpCmdLine, int nCmdShow);
+//int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance, 
+//				   LPSTR lpCmdLine, int nCmdShow);
 void init(void);
 void render(void);
 void shutDown(void);
 
-int WINAPI WinMain(	HINSTANCE hInstance,
-					HINSTANCE hPrevInstance,
-					LPSTR     lpCmdLine,
-					int       nCmdShow )
+int __stdcall WinMain(	HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow )
 {
+	AllocConsole();
 
 if ( SDL_Init(SDL_INIT_TIMER|SDL_INIT_VIDEO) < 0 ){ 
    printf("Unable to init SDL: %s\n", SDL_GetError()); 
@@ -76,56 +74,17 @@ if ( SDL_Init(SDL_INIT_TIMER|SDL_INIT_VIDEO) < 0 ){
 
 SDL_TimerID my_timer_id = SDL_AddTimer(1000, my_callbackfunc, my_callback_param);
 
-	//m3_Window::Load();
-
-
-	//MSG        uMsg;
-
-   // memset(&uMsg,0,sizeof(uMsg));
-
-	init();
+   init();
 
    while(true)
    {
-   
-		SDL_Event event; 
-   
-		while ( SDL_PollEvent(&event) )
-		{ 
-			if ( event.type == SDL_QUIT )
-			{ 
-				//END
-			} 
-			if ( event.type == SDL_KEYDOWN )
-			{
-				if ( event.key.keysym.sym == SDLK_ESCAPE )
-				{ 
-					//KEY DOWN
-				} 
-			} 
-		} 
+	  m3_Input::Update();
 	  render();
    }
-
-	/*while( uMsg.message != WM_QUIT )
-	{
-		if( PeekMessage( &uMsg, NULL, 0, 0, PM_REMOVE ) )
-		{
-			TranslateMessage( &uMsg );
-			DispatchMessage( &uMsg );
-		}
-        else
-			render();
-	}*/
-
-	shutDown();
-
-   // UnregisterClass( "MY_WINDOWS_CLASS", hInstance );
-
-	//return uMsg.wParam;
+   shutDown();
 }
 
-GLvoid BuildFont(GLvoid)								// Build Our Bitmap Font
+GLvoid BuildFont(GLvoid)								
 {
 	/*HFONT	font;										// Windows Font ID
 	HFONT	oldfont;									// Used For Good House Keeping
@@ -238,24 +197,6 @@ void InitShader()
 
 void init( void )
 {
-	//GLuint PixelFormat;
-
-	//PIXELFORMATDESCRIPTOR pfd;
-	//memset(&pfd, 0, sizeof(PIXELFORMATDESCRIPTOR));
-
-   // pfd.nSize      = sizeof(PIXELFORMATDESCRIPTOR);
-    //pfd.nVersion   = 1;
-   // pfd.dwFlags    = PFD_DRAW_TO_WINDOW |PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
-   // pfd.iPixelType = PFD_TYPE_RGBA;
-   // pfd.cColorBits = 16;
-   // pfd.cDepthBits = 16;
-	
-	//g_hDC = GetDC( m3_Window::hWindow );
-	//PixelFormat = ChoosePixelFormat( g_hDC, &pfd );
-	//SetPixelFormat( g_hDC, PixelFormat, &pfd);
-	//g_hRC = wglCreateContext( g_hDC );
-	//wglMakeCurrent( g_hDC, g_hRC );
-
 	glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );
 	glEnable( GL_DEPTH_TEST );
 	glShadeModel(GL_SMOOTH);

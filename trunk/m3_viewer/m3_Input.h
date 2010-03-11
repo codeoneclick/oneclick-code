@@ -3,12 +3,13 @@
 #define _M3_INPUT_H_
 
 #include <windows.h>
+#include <SDL.h>
 
 class m3_Input
 {
 	// VARIBLES
-	
 private :
+	static SDL_Event event; 
 	// FUNCTION
 private :
     // VARIBLES
@@ -29,7 +30,7 @@ public :
 	static bool			saveToObj;
 	// FUNCTION
 public :
-	static LRESULT CALLBACK wndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
+	static void Update();
 };
 
 #endif
