@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 #include <math.h>
+#include <FCNTL.H>
+#include <io.h>
 
 #include <Cg/Cg.h>
 #include <Cg/cgGL.h>
@@ -52,12 +54,44 @@ void shutDown(void);
 
 int __stdcall WinMain(	HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow )
 {
+	FreeConsole();
 	AllocConsole();
+	
+
+	//SetConsoleTitle(winTitle);
+
+	int hConHandle;
+	long lStdHandle;
+	FILE *fp;
+
+	// redirect unbuffered STDOUT to the console
+	lStdHandle = (long)GetStdHandle(STD_OUTPUT_HANDLE);
+	hConHandle = _open_osfhandle(lStdHandle, _O_TEXT);
+	fp = _fdopen( hConHandle, "w" );
+	*stdout = *fp;
+	setvbuf( stdout, NULL, _IONBF, 0 );
+
+	// redirect unbuffered STDIN to the console
+	lStdHandle = (long)GetStdHandle(STD_INPUT_HANDLE);
+	hConHandle = _open_osfhandle(lStdHandle, _O_TEXT);
+	fp = _fdopen( hConHandle, "r" );
+	*stdin = *fp;
+	setvbuf( stdin, NULL, _IONBF, 0 );
+
+	// redirect unbuffered STDERR to the console
+	lStdHandle = (long)GetStdHandle(STD_ERROR_HANDLE);
+	hConHandle = _open_osfhandle(lStdHandle, _O_TEXT);
+	fp = _fdopen( hConHandle, "w" );
+	*stderr = *fp;
+	setvbuf( stderr, NULL, _IONBF, 0 );
+
 
 if ( SDL_Init(SDL_INIT_TIMER|SDL_INIT_VIDEO) < 0 ){ 
    printf("Unable to init SDL: %s\n", SDL_GetError()); 
    exit(1); 
  } 
+
+ printf("Unabl"); 
 
  atexit(SDL_Quit); 
 
