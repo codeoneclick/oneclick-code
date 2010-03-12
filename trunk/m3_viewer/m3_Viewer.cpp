@@ -20,6 +20,20 @@
 //HDC	  g_hDC  = NULL;
 //HGLRC g_hRC  = NULL;
 
+// VBO Extension Definitions, From glext.h
+/*#define GL_ARRAY_BUFFER_ARB 0x8892
+#define GL_STATIC_DRAW_ARB 0x88E4
+typedef void (APIENTRY * PFNGLBINDBUFFERARBPROC) (GLenum target, GLuint buffer);
+typedef void (APIENTRY * PFNGLDELETEBUFFERSARBPROC) (GLsizei n, const GLuint *buffers);
+typedef void (APIENTRY * PFNGLGENBUFFERSARBPROC) (GLsizei n, GLuint *buffers);
+typedef void (APIENTRY * PFNGLBUFFERDATAARBPROC) (GLenum target, int size, const GLvoid *data, GLenum usage);
+
+// VBO Extension Function Pointers
+PFNGLGENBUFFERSARBPROC glGenBuffersARB = NULL;					// VBO Name Generation Procedure
+PFNGLBINDBUFFERARBPROC glBindBufferARB = NULL;					// VBO Bind Procedure
+PFNGLBUFFERDATAARBPROC glBufferDataARB = NULL;					// VBO Data Loading Procedure
+PFNGLDELETEBUFFERSARBPROC glDeleteBuffersARB = NULL;			// VBO Deletion Procedure
+*/
 GLuint	base;
 
 CGprofile   cg_VertexProfile;
@@ -100,11 +114,11 @@ if ( SDL_Init(SDL_INIT_TIMER|SDL_INIT_VIDEO) < 0 ){
  SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 6);
  SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 5); 
 
- if ( SDL_SetVideoMode(640,480,32,SDL_OPENGL) == NULL ){ 
+ if ( SDL_SetVideoMode(640,480,32,SDL_OPENGL) == NULL )
+ { 
    printf("Unable to set 640x480 video: %s\n", SDL_GetError()); 
    exit(1); 
  }
-
 
 SDL_TimerID my_timer_id = SDL_AddTimer(1000, my_callbackfunc, my_callback_param);
 
@@ -297,10 +311,10 @@ void render( void )
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	glMatrixMode( GL_MODELVIEW );
 
-	static GLfloat lightAngle = 0.0f;
-	lightAngle += 0.01f;
-	GLfloat LightPosition[] = { cos(lightAngle)*16.0f*(m3_Input::mWheel + 1.0f), 0.0f, sin(lightAngle)*16.0f*(m3_Input::mWheel + 1.0f), 1.0f };
-	glLightfv(GL_LIGHT1, GL_POSITION,LightPosition);	
+	//static GLfloat lightAngle = 0.0f;
+	//lightAngle += 0.01f;
+	//GLfloat LightPosition[] = { cos(lightAngle)*16.0f*(m3_Input::mWheel + 1.0f), 0.0f, sin(lightAngle)*16.0f*(m3_Input::mWheel + 1.0f), 1.0f };
+	//glLightfv(GL_LIGHT1, GL_POSITION,LightPosition);	
 
 	if(m3_Input::meshIndex >=  meshList.size())
 		m3_Input::meshIndex = 0;
@@ -340,7 +354,15 @@ void render( void )
 									 CG_GL_MATRIX_INVERSE_TRANSPOSE );
 
 		float fEyePosition[] = { 0.0f, 0.0f, 0.0f, 0.0f };
-		float fLightVector[] = { 5.0f, 5.0f, 5.0f, 0.0f };
+		static float fLightVector[] = { 5.0f, 1.0f, 5.0f, 1.0f };
+
+		static float fAngle = 0.0f;
+
+		fAngle += 0.05f;
+
+		fLightVector[0] = cos(fAngle)*10.0f;
+		fLightVector[2] =  -5.0f - m3_Input::mWheel + sin(fAngle)*10.0f;
+		fLightVector[1] = 1.0f;
 
 		// Normalize light vector
 		float fLength = sqrtf( fLightVector[0]*fLightVector[0] +

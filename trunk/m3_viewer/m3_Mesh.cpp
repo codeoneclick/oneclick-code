@@ -21,6 +21,11 @@ m3_Mesh::m3_Mesh()
 
 void m3_Mesh::Load(const char* fileName,const char* meshName)
 {
+	glGenBuffersARB = (PFNGLGENBUFFERSARBPROC) wglGetProcAddress("glGenBuffersARB");
+	glBindBufferARB = (PFNGLBINDBUFFERARBPROC) wglGetProcAddress("glBindBufferARB");
+	glBufferDataARB = (PFNGLBUFFERDATAARBPROC) wglGetProcAddress("glBufferDataARB");
+	glDeleteBuffersARB = (PFNGLDELETEBUFFERSARBPROC) wglGetProcAddress("glDeleteBuffersARB");
+
 	this->meshName = meshName;
 
 	std::ifstream inStream;
@@ -86,9 +91,9 @@ void m3_Mesh::Load(const char* fileName,const char* meshName)
 			data_vertex[i].y = vertexBlockExt[i].position[1];
 			data_vertex[i].z = vertexBlockExt[i].position[2];
 
-			data_normal[i].x = (float)vertexBlockExt[i].normal[0]/254.0f;
-			data_normal[i].y = (float)vertexBlockExt[i].normal[1]/254.0f;
-			data_normal[i].z = (float)vertexBlockExt[i].normal[2]/254.0f;
+			data_normal[i].x = (float)2*vertexBlockExt[i].normal[0]/255.0f - 1.0f;
+			data_normal[i].y = (float)2*vertexBlockExt[i].normal[1]/255.0f - 1.0f;
+			data_normal[i].z = (float)2*vertexBlockExt[i].normal[2]/255.0f - 1.0f;
 
 			data_textureCoord[i].u = (float)vertexBlockExt[i].uv[0]/2048.0f;
 			data_textureCoord[i].v = (float)vertexBlockExt[i].uv[1]/2048.0f;
@@ -105,9 +110,9 @@ void m3_Mesh::Load(const char* fileName,const char* meshName)
 			data_vertex[i].y = vertexBlock[i].position[1];
 			data_vertex[i].z = vertexBlock[i].position[2];
 
-			data_normal[i].x = (float)vertexBlock[i].normal[0]/254.0f;
-			data_normal[i].y = (float)vertexBlock[i].normal[1]/254.0f;
-			data_normal[i].z = (float)vertexBlock[i].normal[2]/254.0f;
+			data_normal[i].x = (float)2*vertexBlock[i].normal[0]/255.0f - 1.0f; 
+			data_normal[i].y = (float)2*vertexBlock[i].normal[1]/254.0f - 1.0f;
+			data_normal[i].z = (float)2*vertexBlock[i].normal[2]/255.0f - 1.0f;
 
 			data_textureCoord[i].u = (float)vertexBlock[i].uv[0]/2048.0f;
 			data_textureCoord[i].v = (float)vertexBlock[i].uv[1]/2048.0f;
@@ -130,7 +135,7 @@ void m3_Mesh::Load(const char* fileName,const char* meshName)
 	}
 
 	//if(_extVersion)
-	_CalculateNormals();
+	//_CalculateNormals();
 
 	std::string _textureFilePath   = "Content\\Textures\\";
 
@@ -141,6 +146,27 @@ void m3_Mesh::Load(const char* fileName,const char* meshName)
 	_textureFilePath.insert(_textureFilePath.length(),"_diffuse.dds");
 
 	m3_DDSLoader::Load(_textureFilePath.c_str(),&textureColorId);
+
+
+	// Generate And Bind The Vertex Buffer
+	glGenBuffersARB( 1, &vb_id );							
+	glBindBufferARB( GL_ARRAY_BUFFER_ARB, vb_id );		
+	glBufferDataARB( GL_ARRAY_BUFFER_ARB, nVerteces*3*sizeof(float), data_vertex, GL_STATIC_DRAW_ARB );
+
+	glGenBuffersARB( 1, &tb_id );							
+	glBindBufferARB( GL_ARRAY_BUFFER_ARB, tb_id );		
+	glBufferDataARB( GL_ARRAY_BUFFER_ARB, nVerteces*2*sizeof(float), data_textureCoord, GL_STATIC_DRAW_ARB );
+
+	glGenBuffersARB( 1, &nb_id );							
+	glBindBufferARB( GL_ARRAY_BUFFER_ARB, nb_id );		
+	glBufferDataARB( GL_ARRAY_BUFFER_ARB, nVerteces*3*sizeof(float), data_normal, GL_STATIC_DRAW_ARB );
+
+	// Generate And Bind The Texture Coordinate Buffer
+	//glGenBuffersARB( 1, &m_nVBOTexCoords );							// Get A Valid Name
+	//glBindBufferARB( GL_ARRAY_BUFFER_ARB, m_nVBOTexCoords );		// Bind The Buffer
+	// Load The Data
+	//glBufferDataARB( GL_ARRAY_BUFFER_ARB, m_nVertexCount*2*sizeof(float), m_pTexCoords, GL_STATIC_DRAW_ARB );
+
 
 	//_textureFilePath   = "Content\\Textures\\";
     //_textureFilePath.insert(_textureFilePath.length(),_textureFileName);
@@ -267,9 +293,16 @@ void m3_Mesh::RenderNormals()
 
 void m3_Mesh::Render()
 {
-	glVertexPointer(3,GL_FLOAT,0,&data_vertex[0]);
-	glNormalPointer(GL_FLOAT,0,&data_normal[0]);
-	glTexCoordPointer(2,GL_FLOAT,0,&data_textureCoord[0]);
+	//glVertexPointer(3,GL_FLOAT,0,&data_vertex[0]);
+	//glNormalPointer(GL_FLOAT,0,&data_normal[0]);
+	//glTexCoordPointer(2,GL_FLOAT,0,&data_textureCoord[0]);
+
+	glBindBufferARB( GL_ARRAY_BUFFER_ARB, vb_id );
+	glVertexPointer( 3, GL_FLOAT, 0, (char *) NULL );		// Set The Vertex Pointer To The Vertex Buffer
+	glBindBufferARB( GL_ARRAY_BUFFER_ARB, tb_id );
+	glTexCoordPointer( 2, GL_FLOAT, 0, (char *) NULL );		// Set The TexCoord Pointer To The TexCoord Buffer
+	glBindBufferARB( GL_ARRAY_BUFFER_ARB, nb_id );
+	glNormalPointer( GL_FLOAT, 0, (char *) NULL );
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -283,6 +316,9 @@ void m3_Mesh::Render()
 	//glInterleavedArrays(GL_T2F_N3F_V3F, 0, &d_Verteces[0]);
 	glDrawElements( GL_TRIANGLES, nIndeces, GL_UNSIGNED_SHORT, &d_Indeces[0] );
 
+	//glDisableClientState( GL_VERTEX_ARRAY );					// Disable Vertex Arrays
+	//glDisableClientState( GL_TEXTURE_COORD_ARRAY );				// Disable Texture Coord Arrays
+	//glDisableClientState( GL_NORMAL_ARRAY );
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glDisableClientState(GL_NORMAL_ARRAY);

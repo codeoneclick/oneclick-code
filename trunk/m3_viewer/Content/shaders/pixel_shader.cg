@@ -39,6 +39,6 @@ pixel main( fragment IN,
 
     float4 specularMaterial = float4( 1.0, 1.0, 1.0, 1.0 );
 	
-	OUT.color =  /*diffuse */tex2D( colorTexture, IN.texcoord0 );//  + specular * specularMaterial + ambientColor;
+	OUT.color =  /*diffuse*/tex2D( colorTexture, IN.texcoord0 );//  + specular * specularMaterial + ambientColor;
 	return OUT;
 }
