@@ -31,12 +31,13 @@ class m3_DDSLoader
 private :
 	// FUNCTION
 private :
-	static DDS_IMAGE_DATA *_LoadImageData(const char* fileName);
     // VARIBLES
 public :
 	// FUNCTION
 public :
-	static void Load( const char* fileName,GLuint *textureId);
+	static GLuint Load(DDS_IMAGE_DATA* value);
+	static DDS_IMAGE_DATA* LoadImageData(std::string value);
+	static PFNGLCOMPRESSEDTEXIMAGE2DARBPROC glCompressedTexImage2DARB;
 };
 
 #endif

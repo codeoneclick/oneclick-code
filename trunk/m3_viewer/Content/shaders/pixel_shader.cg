@@ -35,10 +35,10 @@ pixel main( fragment IN,
     float specular = dot( normal, half );
     specular = pow( specular, 32 );
 
-	float4 ambientColor = float4( 0.2, 0.2, 0.2, 0.2 );
+	float4 ambientColor = float4( 0.01f, 0.01f, 0.01f, 1.0f );
 
     float4 specularMaterial = float4( 1.0, 1.0, 1.0, 1.0 );
 	
-	OUT.color =  /*diffuse*/tex2D( colorTexture, IN.texcoord0 );//  + specular * specularMaterial + ambientColor;
+	OUT.color =  /*diffuse*/tex2D( colorTexture, IN.texcoord0 ) + ambientColor;//  + specular * specularMaterial + ambientColor;
 	return OUT;
 }

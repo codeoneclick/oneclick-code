@@ -247,6 +247,34 @@
 				>
 			</File>
 			<File
+				RelativePath=".\m3_MeshService.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\m3_MeshService.h"
+				>
+			</File>
+			<File
+				RelativePath=".\m3_MeshStaticContainer.h"
+				>
+			</File>
+			<File
+				RelativePath=".\m3_Resource.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\m3_Resource.h"
+				>
+			</File>
+			<File
+				RelativePath=".\m3_TextureService.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\m3_TextureService.h"
+				>
+			</File>
+			<File
 				RelativePath=".\m3_TypeDef.h"
 				>
 			</File>

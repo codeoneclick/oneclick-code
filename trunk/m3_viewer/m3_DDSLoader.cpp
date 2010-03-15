@@ -1,7 +1,8 @@
 #include "m3_DDSLoader.h"
 
+PFNGLCOMPRESSEDTEXIMAGE2DARBPROC m3_DDSLoader::glCompressedTexImage2DARB = NULL;
 
-DDS_IMAGE_DATA *m3_DDSLoader::_LoadImageData( const char *fileName )
+DDS_IMAGE_DATA *m3_DDSLoader::LoadImageData(std::string value)
 {
     DDS_IMAGE_DATA *pDDSImageData;
     DDSURFACEDESC2 ddsd;
@@ -10,13 +11,12 @@ DDS_IMAGE_DATA *m3_DDSLoader::_LoadImageData( const char *fileName )
     int factor;
     int bufferSize;
 
-    // Open the file
-    pFile = fopen( fileName, "rb" );
+    pFile = fopen( value.c_str(), "rb" );
 
     if( pFile == NULL )
     {
         char str[255];
-        sprintf( str, "loadDDSTextureFile couldn't find, or failed to load \"%s\"", fileName );
+		sprintf( str, "loadDDSTextureFile couldn't find, or failed to load \"%s\"", value.c_str() );
         MessageBox( NULL, str, "ERROR", MB_OK|MB_ICONEXCLAMATION );
         return NULL;
     }
@@ -27,7 +27,7 @@ DDS_IMAGE_DATA *m3_DDSLoader::_LoadImageData( const char *fileName )
     if( strncmp( filecode, "DDS ", 4 ) != 0 )
     {
         char str[255];
-        sprintf( str, "The file \"%s\" doesn't appear to be a valid .dds file!", fileName );
+        sprintf( str, "The file \"%s\" doesn't appear to be a valid .dds file!", value.c_str() );
         MessageBox( NULL, str, "ERROR", MB_OK|MB_ICONEXCLAMATION );
         fclose( pFile );
         return NULL;
@@ -68,7 +68,7 @@ DDS_IMAGE_DATA *m3_DDSLoader::_LoadImageData( const char *fileName )
         default:
             char str[255];
             sprintf( str, "The file \"%s\" doesn't appear to be compressed "
-                "using DXT1, DXT3, or DXT5!", fileName );
+                "using DXT1, DXT3, or DXT5!", value.c_str() );
             MessageBox( NULL, str, "ERROR", MB_OK|MB_ICONEXCLAMATION );
             return NULL;
     }
@@ -93,7 +93,6 @@ DDS_IMAGE_DATA *m3_DDSLoader::_LoadImageData( const char *fileName )
 
     fread( pDDSImageData->pixels, 1, bufferSize, pFile );
 
-    // Close the file
     fclose( pFile );
 
     pDDSImageData->width      = ddsd.dwWidth;
@@ -109,64 +108,63 @@ DDS_IMAGE_DATA *m3_DDSLoader::_LoadImageData( const char *fileName )
 }
 
 
-void m3_DDSLoader::Load( const char* fileName,GLuint *textureId)
+GLuint m3_DDSLoader::Load(DDS_IMAGE_DATA *value)
 {
-    DDS_IMAGE_DATA *pDDSImageData = _LoadImageData(fileName);
-
-    if( pDDSImageData != NULL )
+    //DDS_IMAGE_DATA *pDDSImageData = _LoadImageData(fileName);
+	GLuint textureId = -1;
+    if(value != NULL)
     {
-        int nHeight     = pDDSImageData->height;
-        int nWidth      = pDDSImageData->width;
-        int nNumMipMaps = pDDSImageData->numMipMaps;
+        //int nHeight     = pDDSImageData->height;
+       // int nWidth      = pDDSImageData->width;
+        //int nNumMipMaps = pDDSImageData->numMipMaps;
 
-        int nBlockSize;
+        int nBlockSize = -1;
 
-        if( pDDSImageData->format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT )
+        if( value->format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT )
             nBlockSize = 8;
         else
             nBlockSize = 16;
 
-        glGenTextures( 1, textureId );
-        glBindTexture( GL_TEXTURE_2D, *textureId );
+        glGenTextures( 1, &textureId );
+        glBindTexture( GL_TEXTURE_2D, textureId );
 
         glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
         glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 
-        int nSize;
+        int nSize = -1;
         int nOffset = 0;
 
-        // Load the mip-map levels
-
-        for( int i = 0; i < nNumMipMaps; ++i )
+		for( int i = 0; i < value->numMipMaps; ++i )
         {
-            if( nWidth  == 0 ) nWidth  = 1;
-            if( nHeight == 0 ) nHeight = 1;
+			if( value->width  == 0 ) value->width  = 1;
+			if( value->height == 0 ) value->height = 1;
 
-            nSize = ((nWidth+3)/4) * ((nHeight+3)/4) * nBlockSize;
+            nSize = ((value->width + 3)/4) * ((value->height + 3)/4) * nBlockSize;
 
-			PFNGLCOMPRESSEDTEXIMAGE2DARBPROC glCompressedTexImage2DARB = (PFNGLCOMPRESSEDTEXIMAGE2DARBPROC)wglGetProcAddress("glCompressedTexImage2DARB");
             glCompressedTexImage2DARB( GL_TEXTURE_2D,
                                        i,
-                                       pDDSImageData->format,
-                                       nWidth,
-                                       nHeight,
+                                       value->format,
+                                       value->width,
+                                       value->height,
                                        0,
                                        nSize,
-                                       pDDSImageData->pixels + nOffset );
+                                       value->pixels + nOffset );
 
             nOffset += nSize;
 
             // Half the image size for the next mip-map level...
-            nWidth  = (nWidth  / 2);
-            nHeight = (nHeight / 2);
+            value->width  = (value->width  / 2);
+            value->height = (value->height / 2);
         }
     }
 
-    if( pDDSImageData != NULL )
+    if( value != NULL )
     {
-        if( pDDSImageData->pixels != NULL )
-            free( pDDSImageData->pixels );
+        if( value->pixels != NULL )
+            free( value->pixels );
 
-        free( pDDSImageData );
+        free( value );
     }
+
+	return textureId;
 }

@@ -141,11 +141,14 @@ void m3_Mesh::Load(const char* fileName,const char* meshName)
 
 	std::string _textureFileName = meshName;
 	_textureFileName.erase(_textureFileName.length() - 3,3);
+	
 
 	_textureFilePath.insert(_textureFilePath.length(),_textureFileName);
 	_textureFilePath.insert(_textureFilePath.length(),"_diffuse.dds");
 
-	m3_DDSLoader::Load(_textureFilePath.c_str(),&textureColorId);
+	textureName = _textureFilePath;
+
+	//m3_DDSLoader::Load(_textureFilePath.c_str(),&textureColorId);
 
 
 	// Generate And Bind The Vertex Buffer
@@ -298,21 +301,21 @@ void m3_Mesh::Render()
 	//glTexCoordPointer(2,GL_FLOAT,0,&data_textureCoord[0]);
 
 	glBindBufferARB( GL_ARRAY_BUFFER_ARB, vb_id );
-	glVertexPointer( 3, GL_FLOAT, 0, (char *) NULL );		// Set The Vertex Pointer To The Vertex Buffer
+	glVertexPointer( 3, GL_FLOAT, 0,  NULL );		// Set The Vertex Pointer To The Vertex Buffer
 	glBindBufferARB( GL_ARRAY_BUFFER_ARB, tb_id );
-	glTexCoordPointer( 2, GL_FLOAT, 0, (char *) NULL );		// Set The TexCoord Pointer To The TexCoord Buffer
+	glTexCoordPointer( 2, GL_FLOAT, 0,NULL );		// Set The TexCoord Pointer To The TexCoord Buffer
 	glBindBufferARB( GL_ARRAY_BUFFER_ARB, nb_id );
-	glNormalPointer( GL_FLOAT, 0, (char *) NULL );
+	glNormalPointer( GL_FLOAT, 0,NULL );
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
 
-	for( int i = 0; i < nIndeces; ++i)
-	{
-		if(d_Indeces[i] > nVerteces) 
-			continue;
-	}
+	//for( int i = 0; i < nIndeces; ++i)
+	//{
+	//	if(d_Indeces[i] > nVerteces) 
+	//		continue;
+	//}
 	//glInterleavedArrays(GL_T2F_N3F_V3F, 0, &d_Verteces[0]);
 	glDrawElements( GL_TRIANGLES, nIndeces, GL_UNSIGNED_SHORT, &d_Indeces[0] );
 

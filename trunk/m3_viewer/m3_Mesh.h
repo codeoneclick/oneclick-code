@@ -70,6 +70,7 @@ private :
     // VARIBLES
 public :
 	std::string meshName;
+	std::string textureName;
 	GLuint textureColorId;
 	GLuint textureNormalId;
 	// FUNCTION

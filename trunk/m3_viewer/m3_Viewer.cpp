@@ -17,6 +17,8 @@
 #include "m3_Window.h"
 #include "m3_Mesh.h"
 
+#include "m3_TextureService.h"
+
 //HDC	  g_hDC  = NULL;
 //HGLRC g_hRC  = NULL;
 
@@ -34,6 +36,9 @@ PFNGLBINDBUFFERARBPROC glBindBufferARB = NULL;					// VBO Bind Procedure
 PFNGLBUFFERDATAARBPROC glBufferDataARB = NULL;					// VBO Data Loading Procedure
 PFNGLDELETEBUFFERSARBPROC glDeleteBuffersARB = NULL;			// VBO Deletion Procedure
 */
+
+m3_TextureService *textureService;
+
 GLuint	base;
 
 CGprofile   cg_VertexProfile;
@@ -114,7 +119,7 @@ if ( SDL_Init(SDL_INIT_TIMER|SDL_INIT_VIDEO) < 0 ){
  SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 6);
  SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 5); 
 
- if ( SDL_SetVideoMode(640,480,32,SDL_OPENGL) == NULL )
+ if ( SDL_SetVideoMode(1280,800,32,SDL_OPENGL | SDL_DOUBLEBUF | SDL_FULLSCREEN) == NULL )
  { 
    printf("Unable to set 640x480 video: %s\n", SDL_GetError()); 
    exit(1); 
@@ -287,6 +292,8 @@ void init( void )
 	BuildFont();
 
 	InitShader();
+	m3_DDSLoader::glCompressedTexImage2DARB = (PFNGLCOMPRESSEDTEXIMAGE2DARBPROC)wglGetProcAddress("glCompressedTexImage2DARB");
+	textureService = new m3_TextureService();
 }
 
 void shutDown(void)	
@@ -325,12 +332,17 @@ void render( void )
 		meshList[m3_Input::meshIndex]->Convert();
 	}
 
+	//for(int i =0 ; i < meshList.size(); ++i)
+	//	textureService->GetTexture(meshList[i]->textureName);
+
 	if(m3_Input::meshIndex >=0 && m3_Input::meshIndex < meshList.size())
 	{
 		//if(m3_Input::enableLight)
 		//	glEnable(GL_LIGHTING);
 		//else
 		//	glDisable(GL_LIGHTING);
+
+		meshList[m3_Input::meshIndex]->textureColorId = textureService->GetTexture(meshList[m3_Input::meshIndex]->textureName);
 
 		cgGLSetTextureParameter( cg_Texture_01, meshList[m3_Input::meshIndex]->textureColorId );
 		cgGLSetTextureParameter( cg_Texture_02, meshList[m3_Input::meshIndex]->textureNormalId );
