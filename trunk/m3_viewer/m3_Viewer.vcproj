@@ -239,6 +239,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\m3_M3Loader.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\m3_M3Loader.h"
+				>
+			</File>
+			<File
 				RelativePath=".\m3_Mesh.cpp"
 				>
 			</File>

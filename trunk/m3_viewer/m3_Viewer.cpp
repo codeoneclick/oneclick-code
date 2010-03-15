@@ -119,7 +119,7 @@ if ( SDL_Init(SDL_INIT_TIMER|SDL_INIT_VIDEO) < 0 ){
  SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 6);
  SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 5); 
 
- if ( SDL_SetVideoMode(1280,800,32,SDL_OPENGL | SDL_DOUBLEBUF | SDL_FULLSCREEN) == NULL )
+ if ( SDL_SetVideoMode(320,240,32,SDL_OPENGL | SDL_DOUBLEBUF | !SDL_FULLSCREEN) == NULL )
  { 
    printf("Unable to set 640x480 video: %s\n", SDL_GetError()); 
    exit(1); 

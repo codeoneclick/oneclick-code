@@ -13,8 +13,6 @@
 #include <fstream>
 
 
-
-
 struct DDS_IMAGE_DATA
 {
     GLsizei  width;

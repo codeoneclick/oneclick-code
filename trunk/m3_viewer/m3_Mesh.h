@@ -8,6 +8,7 @@
 #include "m3_DDSLoader.h"
 #include "m3_FileFormat.h"
 #include "m3_Input.h"
+#include "m3_MeshService.h"
 
 #define GL_ARRAY_BUFFER_ARB 0x8892
 #define GL_STATIC_DRAW_ARB 0x88E4
@@ -23,50 +24,38 @@ struct m3_Vertex
 	float x, y, z;
 };
 
-struct m3_Data_Vertex
-{
-	float x,y,z;
-};
-
-struct m3_Data_Normal
-{
-	float x,y,z;
-};
-
-struct m3_Data_TextureCoord
-{
-	float u,v;
-};
 
 class m3_Mesh
 {
 	// VARIBLES
 private :
-	m3_Vertex *d_Verteces;
-	unsigned short *d_Indeces;
+	//m3_Vertex *d_Verteces;
+	//unsigned short *d_Indeces;
 
-	m3_Data_Vertex *data_vertex;
-	m3_Data_Normal *data_normal;
-	m3_Data_TextureCoord *data_textureCoord;
+	m3_VertexBufferPtr *vertexBufferData;
+	m3_VertexBufferID *_vertexBufferId;
+	//m3_Data_Vertex *data_vertex;
+	//m3_Data_Normal *data_normal;
+	//m3_Data_TextureCoord *data_textureCoord;
 
-	unsigned int nVerteces;
-	unsigned int nIndeces;
+	//unsigned int nVerteces;
+	//unsigned int nIndeces;
 
-	bool _extVersion;
+	//bool _extVersion;
 
 		// Vertex Buffer Object Names
-	unsigned int vb_id;				
-	unsigned int tb_id;		
-	unsigned int nb_id;			
+	//unsigned int vb_id;				
+	//unsigned int tb_id;		
+	//unsigned int nb_id;			
 	// FUNCTION
 private :
 	void _CalculateNormals();
 
 	// VBO Extension Function Pointers
-	PFNGLGENBUFFERSARBPROC glGenBuffersARB;					// VBO Name Generation Procedure
+	//PFNGLGENBUFFERSARBPROC glGenBuffersARB;					// VBO Name Generation Procedure
 	PFNGLBINDBUFFERARBPROC glBindBufferARB;					// VBO Bind Procedure
-	PFNGLBUFFERDATAARBPROC glBufferDataARB;					// VBO Data Loading Procedure
-	PFNGLDELETEBUFFERSARBPROC glDeleteBuffersARB;			// VBO Deletion Procedure
+	//PFNGLBUFFERDATAARBPROC glBufferDataARB;					// VBO Data Loading Procedure
+	//PFNGLDELETEBUFFERSARBPROC glDeleteBuffersARB;			// VBO Deletion Procedure
     // VARIBLES
 public :
 	std::string meshName;
