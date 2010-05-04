@@ -20,7 +20,7 @@ private :
 	float _UpdateUnitRotationOnHeightmap(Vector3d vPosition);
 
 	server_udp *_server_ptr;
-	m3_UDPClient *_client_ptr;
+	client_udp *_client_ptr;
 public :
 	void Load();
 	void Update();

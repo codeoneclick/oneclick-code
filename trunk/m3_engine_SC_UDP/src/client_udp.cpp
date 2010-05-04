@@ -1,29 +1,35 @@
 #include "client_udp.h"
 
-DWORD __stdcall ClientThreadSender(LPVOID value)
+DWORD __stdcall client_listener_thread(void* in_value)
 {
-	((m3_UDPClient*)value)->SenderUpdate();
+	((client_udp*)in_value)->_update_sender();
 	return 0;
 }
 
-DWORD __stdcall ClientThreadListener(LPVOID value)
+DWORD __stdcall client_sender_thread(void* in_value)
 {
-	((m3_UDPClient*)value)->ListenerUpdate();
+	((client_udp*)in_value)->_update_listener();
 	return 0;
 }
 
-m3_UDPClient::m3_UDPClient()
+client_udp::client_udp()
 {
-	_threadSenderHandle = CreateThread(NULL,NULL,ClientThreadSender,this,CREATE_SUSPENDED,NULL);
-	SetThreadPriority(_threadSenderHandle,THREAD_PRIORITY_HIGHEST);
-	_isAtWork = false;
+	InitializeCriticalSection(&_client_critical_section);
+
+	_thread_sender_handle = CreateThread(NULL,NULL,client_sender_thread,this,CREATE_SUSPENDED,NULL);
+	SetThreadPriority(_thread_sender_handle,THREAD_PRIORITY_HIGHEST);
+	_thread_listener_handle = CreateThread(NULL,NULL,client_listener_thread,this,CREATE_SUSPENDED,NULL);
+	SetThreadPriority(_thread_listener_handle,THREAD_PRIORITY_HIGHEST);
+
+	 _message_buffer = new char[MESSAGE_BUFFER_MAX_SIZE];
+
+	_is_working = false;
 }
 
-void m3_UDPClient::Enable()
+void client_udp::init()
 {
-	 WSADATA wsaData;
-	 int iResult = WSAStartup(MAKEWORD(2,2), &wsaData);
-     if (iResult != NO_ERROR)
+	 WSADATA wsa_data;
+     if (WSAStartup(MAKEWORD(2,2), &wsa_data) != NO_ERROR)
 	 {
          printf("Error at WSAStartup()\n");
 		 return;
@@ -37,12 +43,12 @@ void m3_UDPClient::Enable()
 		 return;
 	 }
 
-	 _socketServerAddres.sin_family = _host->h_addrtype;
-     memcpy((char *) &_socketServerAddres.sin_addr.s_addr, _host->h_addr_list[0], _host->h_length);
-     _socketServerAddres.sin_port = htons(SERVER_PORT);
+	 _server_socket_addr.sin_family = _host->h_addrtype;
+     memcpy((char *) &_server_socket_addr.sin_addr.s_addr, _host->h_addr_list[0], _host->h_length);
+     _server_socket_addr.sin_port = htons(SERVER_PORT);
 
-	 _socketId = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
-	 if(_socketId == INVALID_SOCKET)    
+	 _socket_id = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+	 if(_socket_id == INVALID_SOCKET)    
 	 {
 	    printf("Cannot open socket. Error %i \n",WSAGetLastError());
 		WSACleanup();
@@ -50,59 +56,66 @@ void m3_UDPClient::Enable()
 	 }
 	 else
 		printf("Socket open \n");
-
-	 _socketClientAddres.sin_family = AF_INET;
-	 _socketClientAddres.sin_addr.s_addr = htonl(INADDR_ANY);
-	 _socketClientAddres.sin_port = htons(0);
-
-	
-	 if( bind(_socketId, (struct sockaddr *) &_socketClientAddres,sizeof(_socketClientAddres)) == SOCKET_ERROR)
-	 {
-	    printf("Cannot bind port. Error %i \n", WSAGetLastError());
-		WSACleanup();
-		closesocket(_socketId);
-		return;
-	 }
-	 else
-		printf("Bind port \n");
-
-	 _isAtWork = true;
-	 ResumeThread(_threadSenderHandle);
 }
 
-void m3_UDPClient::SendMessage(m3_CS_Message _message)
+void client_udp::enable()
 {
-	_message._messageHeader._messageId = _messagePool.size();
-	_messagePool.push_back( _message);
+	 _is_working = true;
+	 ResumeThread(_thread_sender_handle);
+	 ResumeThread(_thread_listener_handle);
 }
 
-#define MESSAGES_COUNT_PER_TICK 8
+void client_udp::send_message(message_ext *message)
+{
+	EnterCriticalSection(&_client_critical_section);
+	message->header.message_id = _message_pool.size();
+	_message_pool.push_back((*message));
+	LeaveCriticalSection(&_client_critical_section);
+}
 
-void m3_UDPClient::SenderUpdate()
+void client_udp::_update_sender()
 {
 	while(true)
 	{
-		unsigned int messageIndex = 0;
-		std::vector<m3_CS_Message>::iterator _messageIterator = _messagePool.begin();
-		while(_messageIterator != _messagePool.end())
+		unsigned int message_index = 0;
+		EnterCriticalSection(&_client_critical_section);
+		std::vector<message_ext>::iterator _message_iterator = _message_pool.begin();
+		while(_message_iterator != _message_pool.end())
 		{
-			int socketResult = sendto(_socketId, (char*)&(*_messageIterator), (*_messageIterator)._messageHeader._messageSize, 0, (struct sockaddr *) &_socketServerAddres, sizeof(_socketServerAddres));
-			++messageIndex;
-			if(messageIndex > MESSAGES_COUNT_PER_TICK)
+			int socket_result = sendto(_socket_id, (char*)&(*_message_iterator), (*_message_iterator).header.message_size + sizeof(message_header), 0, (struct sockaddr *) &_server_socket_addr, sizeof(_server_socket_addr));
+			Vector3d *temp = (Vector3d*)(*_message_iterator).data;
+			++message_index;
+			if(message_index > MESSAGES_COUNT_PER_TICK)
 				break;
-			if(socketResult < 0)
+			if(socket_result < 0)
 			{	
 				printf("Error %i \n", WSAGetLastError());
 			 continue;
 			}
-			_messagePool.erase(_messageIterator);
-			_messageIterator = _messagePool.begin();
+			_message_pool.erase(_message_iterator);
+			_message_iterator = _message_pool.begin();
 		}
-		Sleep(33);
+		LeaveCriticalSection(&_client_critical_section);
+		Sleep(66);
 	}
 }
 
-void m3_UDPClient::ListenerUpdate()
+void client_udp::_update_listener()
 {
-
+	while(true)
+	{
+		 int server_sett_size = sizeof(_server_socket_addr);
+		 if(recvfrom(_socket_id, _message_buffer, MESSAGE_BUFFER_MAX_SIZE, 0,(struct sockaddr *) &_server_socket_addr, &server_sett_size) > 0)
+		 {	
+			 message_ext *message = (message_ext*)_message_buffer;
+			 switch(message->header.message_type)
+			 {
+			     case CS_CONNECT :
+						 printf("--- info --- client catch message\n");
+				 break;
+			 }
+		 }
+		 else
+			 printf("Error %i \n", WSAGetLastError());
+	}
 }

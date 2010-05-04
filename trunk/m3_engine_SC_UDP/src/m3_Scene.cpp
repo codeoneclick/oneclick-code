@@ -6,7 +6,7 @@ m3_Scene::m3_Scene()
 	_map    = NULL;
 	_vMousePosition3D = Vector3d(0.0f,0.0f,0.0f);
 	_server_ptr = new server_udp();
-	_client_ptr = new m3_UDPClient();
+	_client_ptr = new client_udp();
 }
 
 void m3_Scene::Load()
@@ -31,6 +31,7 @@ void m3_Scene::Load()
 	}
 
 	_server_ptr->init();
+	_client_ptr->init();
 }
 
 void m3_Scene::Update()
@@ -40,21 +41,29 @@ void m3_Scene::Update()
 		_server_ptr->enable();
 	}
 
-	if(m3_Input::ePressStartClient && !_client_ptr->IsAtWork())
+	if(m3_Input::ePressStartClient && !_client_ptr->is_enable())
 	{
-		_client_ptr->Enable();
+		_client_ptr->enable();
 	}
 
 	//if(_serverPtr->IsAtWork())
 	//	_serverPtr->Update();
+	static DWORD last_time = 0;
+	DWORD current_time = GetTickCount();
 
-	if(_client_ptr->IsAtWork())
+	if(_client_ptr->is_enable() && (current_time - last_time) > 1 )
 	{
-		m3_CS_Message _message;
-		_message._messageHeader._messageType = 0;
-		_message._messageHeader._messageSize = 36;
-		_message.vPosition = _player->vPosition;
-		_client_ptr->SendMessage(_message);
+		last_time = current_time;
+		//message_unit_aspect message;
+		message_ext message;
+		message.header.message_type = 1024;
+		message.header.message_size = 12;
+		message.data = NULL;
+		//memcpy(&_player->vPosition,message.data,sizeof(Vector3d));
+		message.data = (char*)&_player->vPosition;
+		Vector3d *temp = (Vector3d*)message.data;
+		//message.vPosition = _player->vPosition;
+		_client_ptr->send_message(&message);
 //	_clientPtr->Update();
 	}
 

@@ -1,57 +1,35 @@
 #pragma once
-#ifndef _M3_UDPCLIENT_H_
-#define _M3_UDPCLIENT_H_
+#ifndef _CLIENT_UDP_H_
+#define _CLIENT_UDP_H_
 
-#pragma comment(lib, "ws2_32.lib")
-#pragma comment(lib, "wininet.lib")
+#include "setting_udp.h"
 
-#include <winsock.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string>
-#include <vector>
-#include "Vector3d.h"
+DWORD __stdcall client_listener_thread(void* in_value);
+DWORD __stdcall client_sender_thread(void* in_value);
 
-DWORD __stdcall ClientThreadSender(LPVOID value);
-DWORD __stdcall ClientThreadListener(LPVOID value);
-
-#define SERVER_PORT 6633
-
-struct m3_MessageHeader
-{
-	unsigned int _messageId;
-	unsigned int _messageType;
-	unsigned int _messageSize;
-};
-
-
-struct m3_CS_Message
-{
-	m3_MessageHeader _messageHeader;
-	Vector3d vPosition;
-	Vector3d vRotation;
-};
-
-class m3_UDPClient
+class client_udp
 {
 private :
-	SOCKET _socketId;
-	struct sockaddr_in _socketClientAddres;
-	struct sockaddr_in _socketServerAddres;
+	unsigned int _socket_id;
+	struct sockaddr_in _server_socket_addr;
+	struct sockaddr_in _client_socket_addr;
 	struct hostent *_host;
-	std::vector<m3_CS_Message> _messagePool;
-	bool _isAtWork;
-	HANDLE _threadSenderHandle;
-	HANDLE _threadListenerHandle;
-	void _Ping();
+	char *_message_buffer;
+	std::vector<message_ext> _message_pool;
+	bool _is_working;
+	HANDLE _thread_listener_handle;
+	HANDLE _thread_sender_handle;
+	CRITICAL_SECTION _client_critical_section;
+	void _ping();
 public :
-	m3_UDPClient();
-	void Enable();
-	void Disable();
-	void ListenerUpdate();
-	void SenderUpdate();
-	void SendMessage(m3_CS_Message _message);
-	__forceinline bool IsAtWork() { return _isAtWork; }
+	client_udp();
+	void init();
+	void enable();
+	void disable();
+	void _update_listener();
+	void _update_sender();
+	void send_message(message_ext *message);
+	__forceinline bool is_enable() { return _is_working; }
 };
 
 #endif
