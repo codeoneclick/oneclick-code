@@ -381,22 +381,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\m3_UDPClient.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\m3_UDPClient.h"
-				>
-			</File>
-			<File
-				RelativePath=".\m3_UDPServer.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\m3_UDPServer.h"
-				>
-			</File>
-			<File
 				RelativePath=".\m3_Util.cpp"
 				>
 			</File>
@@ -493,6 +477,30 @@
 				</File>
 				<File
 					RelativePath="..\bin\content\shaders\multitex_vx.cg"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="network"
+				>
+				<File
+					RelativePath=".\client_udp.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\client_udp.h"
+					>
+				</File>
+				<File
+					RelativePath=".\server_udp.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\server_udp.h"
+					>
+				</File>
+				<File
+					RelativePath=".\setting_udp.h"
 					>
 				</File>
 			</Filter>

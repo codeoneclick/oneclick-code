@@ -7,8 +7,8 @@
 #include <vector>
 #include "m3_BattleMachine.h"
 #include "m3_Heightmap.h"
-#include "m3_UDPServer.h"
-#include "m3_UDPClient.h"
+#include "server_udp.h"
+#include "client_udp.h"
 
 class m3_Scene
 {
@@ -17,9 +17,10 @@ private :
 	std::vector<m3_BattleMachine*> _enemys;
 	m3_Heightmap *_map;
 	Vector3d _vMousePosition3D;
-	m3_UDPServer *_serverPtr;
-	m3_UDPClient *_clientPtr;
 	float _UpdateUnitRotationOnHeightmap(Vector3d vPosition);
+
+	server_udp *_server_ptr;
+	m3_UDPClient *_client_ptr;
 public :
 	void Load();
 	void Update();

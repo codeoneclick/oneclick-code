@@ -5,8 +5,8 @@ m3_Scene::m3_Scene()
 	_player = NULL;
 	_map    = NULL;
 	_vMousePosition3D = Vector3d(0.0f,0.0f,0.0f);
-	_serverPtr = new m3_UDPServer();
-	_clientPtr = new m3_UDPClient();
+	_server_ptr = new server_udp();
+	_client_ptr = new m3_UDPClient();
 }
 
 void m3_Scene::Load()
@@ -30,31 +30,31 @@ void m3_Scene::Load()
 		(* --_enemys.end())->isAi = true;
 	}
 
-	//_serverPtr->Launch();
+	_server_ptr->init();
 }
 
 void m3_Scene::Update()
 {
-	if(m3_Input::ePressStartServer && !_serverPtr->IsAtWork())
+	if(m3_Input::ePressStartServer && !_server_ptr->is_enable())
 	{
-		_serverPtr->Enable();
+		_server_ptr->enable();
 	}
 
-	if(m3_Input::ePressStartClient && !_clientPtr->IsAtWork())
+	if(m3_Input::ePressStartClient && !_client_ptr->IsAtWork())
 	{
-		_clientPtr->Enable();
+		_client_ptr->Enable();
 	}
 
 	//if(_serverPtr->IsAtWork())
 	//	_serverPtr->Update();
 
-	if(_clientPtr->IsAtWork())
+	if(_client_ptr->IsAtWork())
 	{
 		m3_CS_Message _message;
 		_message._messageHeader._messageType = 0;
 		_message._messageHeader._messageSize = 36;
 		_message.vPosition = _player->vPosition;
-		_clientPtr->SendMessage(_message);
+		_client_ptr->SendMessage(_message);
 //	_clientPtr->Update();
 	}
 

@@ -1,4 +1,4 @@
-#include "m3_UDPClient.h"
+#include "client_udp.h"
 
 DWORD __stdcall ClientThreadSender(LPVOID value)
 {
