@@ -1,0 +1,34 @@
+struct vertex
+{
+    float3 vPosition          : POSITION;
+    float2 vTexCoord          : TEXCOORD0;
+    float3 vNormal            : NORMAL;
+	float3 vTangent           : TEXCOORD1;
+	float3 vBinormal          : TEXCOORD2;
+};
+
+struct fragment
+{
+	float4 vPosition        : POSITION;
+	float2 vTexCoord        : TEXCOORD0;
+	float4 vLight           : TEXCOORD1;
+	float3 vCamera          : TEXCOORD2;
+	float  fClipHeight      : TEXCOORD3;
+};
+
+uniform float4x4  mWorldViewProjection;
+uniform float3    vCameraPosition;
+uniform float3    vLightDirection;
+
+fragment main(vertex IN)
+{
+	fragment OUT;
+	OUT.vPosition  = mul(mWorldViewProjection, float4(IN.vPosition,1.0f) );
+	OUT.vTexCoord = IN.vTexCoord;
+	float3x3 TangentSpace = float3x3(IN.vTangent,IN.vBinormal,IN.vNormal);
+    OUT.vLight.xyz = normalize(mul(TangentSpace,vCameraPosition - IN.vPosition));
+    OUT.vLight.w = saturate( 1.0f - dot((vCameraPosition - IN.vPosition) / 128.0f, (vCameraPosition - IN.vPosition) / 128.0f));
+    OUT.vCamera = mul(TangentSpace,vCameraPosition - IN.vPosition);
+    OUT.fClipHeight = IN.vPosition.y;
+	return OUT;
+}
