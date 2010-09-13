@@ -16,18 +16,17 @@ package Digger
 	 */
 	public class DiggerGame extends Sprite
 	{
-		public static var m_BackgroundLayerBitmapData:BitmapData;
 		public static var m_PlaygroundLayerBitmapData:BitmapData;
-		
-		public static var m_BackgroundBitmap:Bitmap;
 		public static var m_PlaygroundBitmap:Bitmap;
 		
-		public static var m_Playground:Array;
 		private var m_Player:Player;
+		private var m_Enemy:Enemy;
 		private var m_Load:Timer;
 		
 		private static var m_AddRenderList:Array;
 		private static var m_RemoveRenderList:Array;
+		
+		private var m_Level:Level;
 		
 		public function DiggerGame() 
 		{
@@ -35,11 +34,7 @@ package Digger
 		}
 		
 		private function Load():void
-		{
-			//m_BackgroundLayerBitmapData = new BitmapData(DiggerSetting.m_ElementWidth * DiggerSetting.m_PlaygroundWidth, DiggerSetting.m_ElementHeight * DiggerSetting.m_PlaygroundHeight);
-			//m_BackgroundBitmap = new Bitmap(m_BackgroundLayerBitmapData);	
-			//addChild(m_BackgroundBitmap);
-			
+		{	
 			m_AddRenderList = new Array();
 			m_RemoveRenderList = new Array();
 			
@@ -47,21 +42,16 @@ package Digger
 			m_PlaygroundBitmap = new Bitmap(m_PlaygroundLayerBitmapData);
 			addChild(m_PlaygroundBitmap);
 			
-			m_Playground = new Array(DiggerSetting.m_PlaygroundHeight);
-			for (var i:int = 0; i < DiggerSetting.m_PlaygroundWidth; ++i)
-			{
-				m_Playground[i] = new Array(DiggerSetting.m_PlaygroundWidth)
-				for (var j:int = 0; j < DiggerSetting.m_PlaygroundHeight; ++j)
-				{
-					m_Playground[i][j] = new Element("element_ground");
-					(m_Playground[i][j] as Element).m_Position = new Point(i * DiggerSetting.m_ElementWidth, j * DiggerSetting.m_ElementHeight);
-					(m_Playground[i][j] as Element).Update();
-				}
-			}
+			m_Level = new Level();
+			m_Level.Load();
 			
 			m_Player = new Player();
 			addChild(m_Player.m_BitmapContainer);	
-			addChild(new FPSCounter(new Point(600, 0)));
+			
+			m_Enemy = new Enemy();
+			addChild(m_Enemy.m_BitmapContainer);
+			
+			//addChild(new FPSCounter(new Point(0, 0),0x000000,true,0xFFFF00));
 			
 			GameStates.m_State = GameStates.GAME_IN;
 		}
@@ -113,6 +103,7 @@ package Digger
 						m_Player.MoveDown();
 				
 					m_Player.Update();
+					m_Enemy.Update();
 					UpdateRenderList();
 				break;
 				case GameStates.GAME_PAUSE :

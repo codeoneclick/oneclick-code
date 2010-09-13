@@ -6,8 +6,8 @@ package
 	 */
 	public class Setting
 	{
-		public static var m_Width:int = 1024;
-		public static var m_Height:int = 768; 	
+		public static var m_Width:int = 896;
+		public static var m_Height:int = 640; 	
 	}
 
 }

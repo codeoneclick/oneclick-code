@@ -16,7 +16,7 @@ package Digger
 	{
 		
 		public  var m_Position:Point;
-		private var m_Edging:Dictionary;
+		public  var m_Edging:Dictionary;
 		private var m_Type:String;
 		private var m_RequestType:String;
 		private var m_IsVisit:Boolean = false;
@@ -58,6 +58,11 @@ package Digger
 			m_SwitchTypeTimer.start();
 		}
 		
+		public function GetType():String
+		{
+			return m_Type;
+		}
+		
 		private function OnSwitchType(event:TimerEvent):void
 		{
 			m_BitmapData.merge(m_RequestBitmapData, new Rectangle(0, 0, DiggerSetting.m_ElementWidth, DiggerSetting.m_ElementHeight), new Point(0, 0), m_DeltaSwitch, m_DeltaSwitch, m_DeltaSwitch, 0);
@@ -78,7 +83,7 @@ package Digger
 					m_BitmapData.merge(Resource.m_ContainerPNG["element_stone"], new Rectangle(0, 0, DiggerSetting.m_EdgeWidth, DiggerSetting.m_ElementHeight ), new Point(0, 0),m_DeltaSwitch, m_DeltaSwitch, m_DeltaSwitch, 0);
 				}
 			DiggerGame.m_PlaygroundLayerBitmapData.copyPixels(m_BitmapData, new Rectangle(0, 0, DiggerSetting.m_ElementWidth, DiggerSetting.m_ElementHeight), new Point(m_Position.x, m_Position.y));
-			m_DeltaSwitch += 20;
+			m_DeltaSwitch += 25;
 			
 		}
 		
@@ -86,8 +91,8 @@ package Digger
 		{
 			m_Type = m_RequestType;
 			m_IsVisit = true;
-			//Player.Add();
 		}
+		
 		
 		public function Update():void
 		{

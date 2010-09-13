@@ -20,7 +20,7 @@
 		private var m_GameCicleTimer:Timer;
 		
 		private var m_DiggerGame:DiggerGame;
-		public  var m_CurrentGame:Object;
+		public  var m_CurrentGame:Object; 
 		private var m_Resource:Resource;
 		private var m_Input:Input;
 		
@@ -41,7 +41,7 @@
 			m_DiggerGame = new DiggerGame();
 			addChild(m_DiggerGame);
 			m_CurrentGame = m_DiggerGame;	
-			stage.frameRate = 60;
+			stage.frameRate = 30;
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, m_Input.OnKeyDown);
 			stage.addEventListener(KeyboardEvent.KEY_UP, m_Input.OnKeyUp);
 		}	
@@ -49,7 +49,6 @@
 		private function GameCicle(event:TimerEvent):void
 		{
 			m_CurrentGame.Update();
-			m_CurrentGame.Render();
 		}
 		
 	}

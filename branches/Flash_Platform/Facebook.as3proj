@@ -5,9 +5,9 @@
     <movie disabled="False" />
     <movie input="" />
     <movie path="bin\Facebook.swf" />
-    <movie fps="30" />
-    <movie width="1024" />
-    <movie height="768" />
+    <movie fps="25" />
+    <movie width="896" />
+    <movie height="640" />
     <movie version="10" />
     <movie background="#000000" />
   </output>
