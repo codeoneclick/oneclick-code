@@ -1,0 +1,50 @@
+struct vertex
+{
+    float3 vPosition          : POSITION;
+    float2 vTexCoord          : TEXCOORD0;
+    float3 vNormal            : NORMAL;
+	float3 vTangent           : TEXCOORD1;
+	float3 vBinormal          : TEXCOORD2;
+};
+
+struct fragment
+{
+	float4 vPosition        : POSITION;
+	float2 vTexCoord        : TEXCOORD0;
+	float3 vCamera          : TEXCOORD1;
+	float  fClipHeight      : TEXCOORD2;
+	float4 vLight_01        : TEXCOORD3;
+	float4 vLight_02        : TEXCOORD4;
+	float4 vLight_03        : TEXCOORD5;
+};
+
+uniform float4x4  mWorldViewProjection;
+uniform float3    vCameraPosition;
+
+uniform float4    vLightPosition_01;
+uniform float4    vLightPosition_02;
+uniform float4    vLightPosition_03;
+
+fragment main(vertex IN)
+{
+	fragment OUT;
+	OUT.vPosition  = mul(mWorldViewProjection, float4(IN.vPosition,1.0f) );
+	OUT.vTexCoord = IN.vTexCoord;
+	float3x3 TangentSpace = float3x3(IN.vTangent,IN.vBinormal,IN.vNormal);
+    
+    float3 vLightDirection_01 = vLightPosition_01.xyz - IN.vPosition;
+    OUT.vLight_01.xyz = normalize(mul(TangentSpace,vLightDirection_01));
+    OUT.vLight_01.w = 1.0f - dot(vLightDirection_01 / vLightPosition_01.w, vLightDirection_01 / vLightPosition_01.w);
+    
+    float3 vLightDirection_02 = vLightPosition_02.xyz - IN.vPosition;
+    OUT.vLight_02.xyz = normalize(mul(TangentSpace,vLightDirection_02));
+    OUT.vLight_02.w = 1.0f - dot(vLightDirection_02 / vLightPosition_02.w, vLightDirection_02 / vLightPosition_02.w);
+    
+    float3 vLightDirection_03 = vLightPosition_03.xyz - IN.vPosition;
+    OUT.vLight_03.xyz = normalize(mul(TangentSpace,vLightDirection_03));
+    OUT.vLight_03.w = 1.0f - dot(vLightDirection_03 / vLightPosition_03.w, vLightDirection_03 / vLightPosition_03.w);
+    
+    OUT.vCamera = mul(TangentSpace,vCameraPosition - IN.vPosition);
+    OUT.fClipHeight = IN.vPosition.y;
+	return OUT;
+}
