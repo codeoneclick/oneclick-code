@@ -18,9 +18,11 @@ Window::Window()
 	_bitsPerPixel = 16;
 
 	_fullscreen = false;
+
+	_m_D3D = NULL;
 }
 
-bool Window::_CreateWindowContext()
+bool Window::_CreateWindowContext(std::string _value)
 {
 	GLuint		pixelFormat;			
 	WNDCLASS	windowClass;					
@@ -42,7 +44,7 @@ bool Window::_CreateWindowContext()
 	windowClass.hCursor			= LoadCursor(NULL, IDC_ARROW);			
 	windowClass.hbrBackground	= NULL;									
 	windowClass.lpszMenuName	= NULL;							
-	windowClass.lpszClassName	= "gEngine";						
+	windowClass.lpszClassName	= _value.c_str();						
 
 	if (!RegisterClass(&windowClass))									
 	{
@@ -83,8 +85,8 @@ bool Window::_CreateWindowContext()
 
 	DWORD dw = GetLastError(); 
 	if (!(hWnd=CreateWindowEx(windowExtStyle,							
-								"gEngine",						
-								"gEngine",								
+								_value.c_str(),						
+								_value.c_str(),								
 								windowStyle |							
 								WS_CLIPSIBLINGS |					
 								WS_CLIPCHILDREN,					
@@ -152,6 +154,56 @@ bool Window::_CreateWindowContext()
 		return false;								
 	}
 
+
+	D3DDISPLAYMODE D3DMode;
+	D3DPRESENT_PARAMETERS D3DParams;
+	
+	if(_m_D3D != NULL)
+	{
+		 _m_D3D->Release();
+		 _m_D3D = NULL;
+	}
+	if(m_D3DDevice != NULL)
+	{
+		m_D3DDevice->Release();
+		m_D3DDevice = NULL;
+	}
+
+   _m_D3D = Direct3DCreate9(D3D_SDK_VERSION);
+
+   if(_m_D3D == NULL)
+   {
+      MessageBox(NULL, "DirectX 9.0 не инициализирован...","Ошибка!", MB_OK);
+      return false;
+   }
+
+   if(FAILED(_m_D3D->GetAdapterDisplayMode(D3DADAPTER_DEFAULT, &D3DMode)))
+   {
+      MessageBox(NULL, "Невозможно получить настройки экрана...", "Ошибка!", MB_OK);
+      return false;
+   }
+
+   ZeroMemory(&D3DParams, sizeof(D3DParams));
+
+   D3DParams.Windowed = TRUE;  
+   D3DParams.BackBufferWidth  = Width;
+   D3DParams.BackBufferHeight = Height;
+
+   D3DParams.BackBufferFormat           = D3DMode.Format;
+   D3DParams.BackBufferCount            = 3;
+   D3DParams.SwapEffect                 = D3DSWAPEFFECT_DISCARD;
+   D3DParams.PresentationInterval       = D3DPRESENT_INTERVAL_IMMEDIATE;
+   D3DParams.EnableAutoDepthStencil     = TRUE;
+   D3DParams.AutoDepthStencilFormat     = D3DFMT_D24X8;
+
+	if(FAILED(_m_D3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hWnd,
+                               D3DCREATE_HARDWARE_VERTEXPROCESSING  | D3DCREATE_MULTITHREADED ,
+                               &D3DParams, &m_D3DDevice)))
+   {
+      MessageBox(NULL, "Невозможно создать устройство DirectX 9.0","Ошибка!", MB_OK);
+      return false;
+   }
+
 	ShowWindow(hWnd,SW_SHOW);						
 	return true;			
 }
@@ -167,12 +219,32 @@ bool Window::_CreateGLContext()
 	glEnable( GL_DEPTH_TEST );
 	glDepthFunc(GL_LEQUAL);	
 	glEnable(GL_CULL_FACE);
-	glViewport(0,0,_currentWidth ,_currentHeight);
+	glViewport(0,0,_currentWidth / 2 ,_currentHeight);
 	glMatrixMode (GL_PROJECTION);										
 	glLoadIdentity ();													
 	glMatrixMode (GL_MODELVIEW);										
 	glLoadIdentity ();				
 	glClearColor( 0.5f, 0.5f, 0.5f, 1.0f );
 	glClearDepth (1.0f);
-	return true;
+
+	m_D3DDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE); 
+	m_D3DDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+    m_D3DDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
+    m_D3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE,TRUE);
+    m_D3DDevice->SetRenderState(D3DRS_SRCBLEND,D3DBLEND_SRCALPHA);
+    m_D3DDevice->SetRenderState(D3DRS_DESTBLEND,D3DBLEND_INVSRCALPHA); 
+    m_D3DDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL);
+    m_D3DDevice->SetRenderState(D3DRS_ALPHAREF, (DWORD)128);
+	m_D3DDevice->SetRenderState(D3DRS_VERTEXBLEND, D3DVBF_TWEENING);
+
+	D3DVIEWPORT9 viewport;
+    viewport.X = _currentWidth / 2;
+    viewport.Y = 0;
+    viewport.Width  = Width/2;
+    viewport.Height = Height;
+    viewport.MinZ = 0.0f;
+    viewport.MaxZ = 1.0f;
+    m_D3DDevice->SetViewport(&viewport);
+
+    return true;
 }

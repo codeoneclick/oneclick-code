@@ -19,7 +19,7 @@ private :
 	unsigned int _bitsPerPixel; 
 	bool         _fullscreen;
 protected :
-	bool _CreateWindowContext();
+	bool _CreateWindowContext(std::string _value);
 	bool _CreateGLContext();
 
 	virtual void Render() = 0;
@@ -28,9 +28,10 @@ protected :
 	HDC			hDC;		
 	HGLRC		hRC;		
 	HWND		hWnd;		
-	HINSTANCE	hInstance;		
+	HINSTANCE	hInstance;	
+	LPDIRECT3D9 _m_D3D;
 public  :
-	Window();
+	Window();	
 	void  SetResolution(unsigned int width, unsigned int height, unsigned int bitPerPixel);
 	void  SetFullscreen(bool value);
 	float GetResizeDelta();
