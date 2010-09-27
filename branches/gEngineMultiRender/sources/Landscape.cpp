@@ -32,12 +32,14 @@ void Landscape::Load(std::string value)
 		}
 	fclose( file );
 
-	//_textures[0] = Resource::GetTextureControllerInstance()->Load("Content\\textures\\road.dds",type::STexture::_DDS);
-	//_textures[1] = Resource::GetTextureControllerInstance()->Load("Content\\textures\\road_nh.dds",type::STexture::_DDS);
+
+
+	_textures[0] = Resource::GetTextureControllerInstance()->Load("Content\\textures\\road.dds",Core::CTexture::DDS_EXT);
+	//_textures[1] = Resource::GetTextureControllerInstance()->Load("Content\\textures\\road_nh.dds",Core::CTexture::DDS_EXT);
 	_meshData = new type::SMesh();
 	_meshData->vertexBuffer = new CVertexBuffer();
 	
-	CVertexBuffer::SVertexVTTBN* vertexData = (CVertexBuffer::SVertexVTTBN*)_meshData->vertexBuffer->Create(_width * _height,sizeof(CVertexBuffer::SVertexVTTBN));
+	CVertexBuffer::SVertexVTTBN* vertexData = (CVertexBuffer::SVertexVTTBN*)_meshData->vertexBuffer->Load(_width * _height,sizeof(CVertexBuffer::SVertexVTTBN));
 	
 	unsigned int _vertexBufferIndex = 0;
 	for(unsigned int i = 0; i < _width;++i)
@@ -72,9 +74,41 @@ void Landscape::Load(std::string value)
             _vertexBufferIndex++;
 		}
 	_CalculateTBN(vertexData,indexData,_width * _height,(_width - 1)*(_height - 1)*6);
-	_meshData->vertexBuffer->Commit();
+	_meshData->vertexBuffer->CommitVRAM();
 	_meshData->indexBuffer->Commit();
-	//_shader->Create("parallax");
+	_shader = Resource::GetShaderControllerInstance()->Load("Content\\shaders\\basic");
+
+	CVertexBuffer::SVertexDeclaration declaration;
+	declaration.m_elements = new CVertexBuffer::SElementDeclaration[5];
+	
+	declaration.m_elements[0].m_index = 0;
+	declaration.m_elements[0].m_size = CVertexBuffer::ELEMENT_FLOAT3;
+	declaration.m_elements[0].m_type = CVertexBuffer::ELEMENT_POSITION;
+	declaration.m_elements[0].m_offset = 0 * sizeof(float);
+
+	declaration.m_elements[1].m_index = 0;
+	declaration.m_elements[1].m_size = CVertexBuffer::ELEMENT_FLOAT2;
+	declaration.m_elements[1].m_type = CVertexBuffer::ELEMENT_TEXCOORD;
+	declaration.m_elements[1].m_offset = 3 * sizeof(float);
+
+	declaration.m_elements[2].m_index = 0;
+	declaration.m_elements[2].m_size = CVertexBuffer::ELEMENT_FLOAT3;
+	declaration.m_elements[2].m_type = CVertexBuffer::ELEMENT_NORMAL;
+	declaration.m_elements[2].m_offset = 5 * sizeof(float);
+
+	declaration.m_elements[3].m_index = 1;
+	declaration.m_elements[3].m_size = CVertexBuffer::ELEMENT_FLOAT3;
+	declaration.m_elements[3].m_type = CVertexBuffer::ELEMENT_TEXCOORD;
+	declaration.m_elements[3].m_offset = 8 * sizeof(float);
+
+	declaration.m_elements[4].m_index = 2;
+	declaration.m_elements[4].m_size = CVertexBuffer::ELEMENT_FLOAT3;
+	declaration.m_elements[4].m_type = CVertexBuffer::ELEMENT_TEXCOORD;
+	declaration.m_elements[4].m_offset = 11 * sizeof(float);
+
+	declaration.m_element_count = 5;
+
+	_meshData->vertexBuffer->SetDeclaration(declaration);
 }
 
 void Landscape::_CalculateTBN(CVertexBuffer::SVertexVTTBN *vertexData,unsigned int *indexData, unsigned int nVerteces,unsigned int nIndeces)
@@ -197,7 +231,9 @@ void Landscape::Render()
 	bool _shaderRender = true;
 	if(_shaderRender)
 	{
-		//_shader->Enable();
+		_shader->Enable();
+		_shader->SetMatrix(_mWorldViewProjection,"mWorldViewProjection",Core::CShader::VS_SHADER);
+		_shader->SetTexture(*_textures[0],"Texture_01",Core::CShader::PS_SHADER);
 		//_shader->SetWVPMatrix(_mWorldViewProjection);
 		//_shader->SetTexture(0,_textures[0]->addr_ptr);
 		//_shader->SetTexture(1,_textures[1]->addr_ptr);
@@ -243,6 +279,6 @@ void Landscape::Render()
 		glDrawElements( GL_TRIANGLES, _meshData->indexBuffer->GetNumIndeces(), GL_UNSIGNED_INT, NULL);
 		_meshData->vertexBuffer->Disable();
 		_meshData->vertexBuffer->Disable();
-		//_shader->Disable();
+		_shader->Disable();
 	}
 }

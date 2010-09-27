@@ -435,11 +435,11 @@
 				Name="shaders"
 				>
 				<File
-					RelativePath="..\..\bin\content\shaders\basic_px.cg"
+					RelativePath="..\..\bin\content\shaders\basic_ps.cg"
 					>
 				</File>
 				<File
-					RelativePath="..\..\bin\content\shaders\basic_vx.cg"
+					RelativePath="..\..\bin\content\shaders\basic_vs.cg"
 					>
 				</File>
 				<File

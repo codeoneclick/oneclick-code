@@ -16,7 +16,7 @@ CDummy::CDummy()
 	vRotation = math::Vector3d(0.0f,0.0f,0.0f);
 	vScale    = math::Vector3d(1.0f,1.0f,1.0f);
 
-	_shader = new Core::CShader();
+	//_shader = new Core::CShader();
     //_shader->Create("basic");
 }
 

@@ -14,7 +14,7 @@ class CDummy
 {
 	protected :
 		Core::CShader *_shader;
-		type::STexture *_textures[8];
+		Core::CTexture *_textures[8];
 		type::SMesh *_meshData;
 
 		math::Matrix4x4 _mTranslation;

@@ -1,7 +1,6 @@
 struct fragment
 {
 	float4 position    : POSITION;
-	float3 normal      : TEXCOORD1;
 	float2 texcoord_01 : TEXCOORD0;
 };
 

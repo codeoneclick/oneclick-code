@@ -147,10 +147,10 @@ C3DS::S3DSFile* C3DS::ReadData(std::string value)
 void C3DS::Commit(S3DSFile *in_value, type::SMesh *out_value)
 {
 	out_value->vertexBuffer = new CVertexBuffer();
-	CVertexBuffer::SVertexVT *vertexData = (CVertexBuffer::SVertexVT*)out_value->vertexBuffer->Create(in_value->nVerteces,sizeof(CVertexBuffer::SVertexVT));
+	CVertexBuffer::SVertexVT *vertexData = (CVertexBuffer::SVertexVT*)out_value->vertexBuffer->Load(in_value->nVerteces,sizeof(CVertexBuffer::SVertexVT));
 	memcpy(vertexData,in_value->vertexData,sizeof(CVertexBuffer::SVertexVT) * in_value->nVerteces);
 	delete[] in_value->vertexData;
-	out_value->vertexBuffer->Commit();
+	out_value->vertexBuffer->CommitVRAM();
 
 	out_value->indexBuffer = new CIndexBuffer();
 	unsigned int *ib_ref = out_value->indexBuffer->Create(in_value->nIndeces);

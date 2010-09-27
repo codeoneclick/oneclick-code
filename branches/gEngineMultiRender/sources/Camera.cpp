@@ -1,6 +1,7 @@
 #include "Camera.h"
 #include "Window.h"
 #include "Input.h"
+
 using namespace Enviroment;
 
 Camera::Camera()

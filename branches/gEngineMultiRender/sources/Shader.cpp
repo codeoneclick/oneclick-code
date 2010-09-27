@@ -17,17 +17,14 @@ CShader::~CShader()
 }
 
 void CShader::ReadData(std::string _value)
-{
-	std::string path = "Content\\shaders\\";
-	path += _value;
-		
+{	
 	if(core::Window::m_D3DRender)
 	{
 		LPD3DXBUFFER error_buffer = NULL;
 		HRESULT error_result = NULL;
 		char* error_text = NULL;
 		
-		error_result = D3DXCreateEffectFromFile(core::Window::m_D3DDevice, path.c_str(), NULL, NULL, 0, NULL, &_m_dx_hlsl_shader, &error_buffer);
+		error_result = D3DXCreateEffectFromFile(core::Window::m_D3DDevice, _value.c_str(), NULL, NULL, 0, NULL, &_m_dx_hlsl_shader, &error_buffer);
 	
 		if(FAILED( error_result ))
 		{
@@ -66,8 +63,8 @@ void CShader::Commit(std::string _value)
 
 		_m_ogl_cg_shader->m_context = cgCreateContext();
 
-		std::string vs_str = "Content\\shaders\\" + _value + "_vs.cg";
-		std::string ps_str = "Content\\shaders\\" + _value + "_ps.cg";
+		std::string vs_str = _value + "_vs.cg";
+		std::string ps_str = _value + "_ps.cg";
 
 		_m_ogl_cg_shader->m_vs_program = cgCreateProgramFromFile(_m_ogl_cg_shader->m_context,
 														  CG_SOURCE,

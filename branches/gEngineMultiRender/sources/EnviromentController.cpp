@@ -26,10 +26,10 @@ void EnviromentController::Create()
 
 void EnviromentController::Update(DWORD time)
 {
-	if(time == 0)
-		_camera->Update();
+	//if(time == 0)
+    _camera->Update();
 	_landscape->Update();
-	_ocean->Update();
+	//_ocean->Update();
 	//_mesh->Update();
 	Resource::GetMeshControllerInstance()->Update();
 	Resource::WorkInMainTread();

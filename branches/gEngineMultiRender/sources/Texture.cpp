@@ -18,16 +18,13 @@ CTexture::~CTexture()
 
 void CTexture::ReadData(std::string _value)
 {
-	std::string path = "Content\\textures\\";
-	path += _value;
-
 	if(core::Window::m_D3DRender)
 	{
 		LPD3DXBUFFER error_buffer = NULL;
 		HRESULT error_result = NULL;
 		char* error_text = NULL;
 		
-		error_result = D3DXCreateTextureFromFile(core::Window::m_D3DDevice, path.c_str(), &m_dx_texture);
+		error_result = D3DXCreateTextureFromFile(core::Window::m_D3DDevice, _value.c_str(), &m_dx_texture);
 	
 		if(FAILED( error_result ))
 		{
@@ -41,7 +38,7 @@ void CTexture::ReadData(std::string _value)
 		{
 		case DDS_EXT :
 			{
-				 _m_data = Loader::CDDS::ReadData(path);		
+				 _m_data = Loader::CDDS::ReadData(_value);		
 			}
 			break;
 		case PNG_EXT :

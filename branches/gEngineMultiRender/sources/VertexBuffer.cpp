@@ -1,102 +1,159 @@
 #include "VertexBuffer.h"
+#include "Window.h"
 
 CVertexBuffer::CVertexBuffer()
 {
-	_addr_ptr  = 0;
-	_nVerteces = 0;
-	_vb_data = NULL;
-	_vertexSize = 0;
+	_m_ogl_addr = 0;
+	_m_dx_addr = NULL;
+	_m_vertex_count = 0;
+	_m_vb_data = NULL;
+	_m_element_size = 0;
+	_m_declaration.m_element_count = 0;
+	_m_declaration.m_elements = NULL;
 }
 
 CVertexBuffer::~CVertexBuffer()
 {
-	if(_vb_data != NULL)
+	if(_m_vb_data != NULL)
 	{
-		delete[] _vb_data;
-		_vb_data = NULL;
+		delete[] _m_vb_data;
+		_m_vb_data = NULL;
 	}
 }
 
-void* CVertexBuffer::Create(unsigned int nVerteces, unsigned int vertexSize)
+void* CVertexBuffer::Load(unsigned int vertex_count, unsigned int element_size)
 {
-	_vertexSize = vertexSize;
-	_nVerteces   = nVerteces;
+	_m_element_size = element_size;
+	_m_vertex_count = vertex_count;
 
-	if(_vb_data != NULL)
+	if(core::Window::m_D3DRender)
 	{
-		delete[] _vb_data;
-		_vb_data = NULL;
+		core::Window::m_D3DDevice->CreateVertexBuffer(vertex_count * element_size,D3DUSAGE_WRITEONLY,NULL,D3DPOOL_DEFAULT,&_m_dx_addr,NULL);
+		_m_dx_addr->Lock(0,vertex_count * element_size, (void**)&_m_vb_data,D3DLOCK_NOSYSLOCK);
 	}
-	_vb_data = new char[_nVerteces * _vertexSize]; 
-	return _vb_data;
+	else
+	{
+		if(_m_vb_data != NULL)
+		{
+			delete[] _m_vb_data;
+			_m_vb_data = NULL;
+		}
+		_m_vb_data = new char[_m_vertex_count * _m_element_size]; 
+	}
+	
+	return _m_vb_data;
 }
 
-void CVertexBuffer::Commit()
+void CVertexBuffer::CommitVRAM()
 {
-	if(_addr_ptr != 0)
+
+	if(core::Window::m_D3DRender)
 	{
-		Extension::VBExtension::glDeleteBuffersARB(1,&_addr_ptr);
-		_addr_ptr = 0;
+		_m_dx_addr->Unlock();
 	}
-
-	Extension::VBExtension::glGenBuffersARB( 1, &_addr_ptr );							
-	Extension::VBExtension::glBindBufferARB( GL_ARRAY_BUFFER_ARB, _addr_ptr );		
-	Extension::VBExtension::glBufferDataARB( GL_ARRAY_BUFFER_ARB, _nVerteces * _vertexSize, _vb_data, GL_STATIC_DRAW_ARB );
-	Extension::VBExtension::glBindBufferARB( GL_ARRAY_BUFFER_ARB, 0 );		
-
-	if(_vb_data != NULL)
+	else
 	{
-		delete[] _vb_data;
-		_vb_data = NULL;
+		Extension::VBExtension::glGenBuffersARB( 1, &_m_ogl_addr );							
+		Extension::VBExtension::glBindBufferARB( GL_ARRAY_BUFFER_ARB, _m_ogl_addr );		
+		Extension::VBExtension::glBufferDataARB( GL_ARRAY_BUFFER_ARB, _m_vertex_count * _m_element_size, _m_vb_data, GL_STATIC_DRAW_ARB );
+		Extension::VBExtension::glBindBufferARB( GL_ARRAY_BUFFER_ARB, 0 );
 	}
 }
 
 void *CVertexBuffer::Lock()
 {
-	void *_lock_vb_data = Extension::VBExtension::glMapBufferARB(GL_ARRAY_BUFFER_ARB, GL_READ_WRITE_ARB);
+	void *_lock_vb_data = NULL;
+	if(core::Window::m_D3DRender)
+	{
+		_m_dx_addr->Lock(0,_m_vertex_count * _m_element_size, (void**)&_lock_vb_data,D3DLOCK_NOSYSLOCK);
+	}
+	else
+	{
+		_lock_vb_data = Extension::VBExtension::glMapBufferARB(GL_ARRAY_BUFFER_ARB, GL_READ_WRITE_ARB);
+	}
 	return _lock_vb_data;
 } 
 
 void CVertexBuffer::Unlock()
 {
-	Extension::VBExtension::glUnmapBufferARB(GL_ARRAY_BUFFER_ARB);
+	if(core::Window::m_D3DRender)
+	{
+		_m_dx_addr->Unlock();
+	}
+	else
+	{
+		Extension::VBExtension::glUnmapBufferARB(GL_ARRAY_BUFFER_ARB);
+	}
+}
+
+void CVertexBuffer::SetDeclaration(SVertexDeclaration &_declaration)
+{
+	_m_declaration = _declaration;
 }
 
 void CVertexBuffer::Enable()
 {
-	if(_vertexSize == 0) 
-		return;
-	unsigned int _offset = 0;
-	Extension::VBExtension::glBindBufferARB(GL_ARRAY_BUFFER_ARB, _addr_ptr);
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glVertexPointer(3, GL_FLOAT, _vertexSize, (void*)_offset );
-	_offset += 3 * sizeof(float);
-	Extension::VBExtension::glClientActiveTextureCoordARB(GL_TEXTURE0);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glTexCoordPointer(2, GL_FLOAT, _vertexSize, (void*)_offset);
-	_offset += 2 * sizeof(float);
+	if(core::Window::m_D3DRender)
+	{
+		D3DVERTEXELEMENT9 *dx_vertex_declaration = new D3DVERTEXELEMENT9[_m_declaration.m_element_count + 1];
+		for( unsigned int i = 0; i < _m_declaration.m_element_count; ++i)
+		{
+			dx_vertex_declaration[i].Stream = 0;
+			dx_vertex_declaration[i].Offset = _m_declaration.m_elements[i].m_offset;
+			dx_vertex_declaration[i].Type = _m_declaration.m_elements[i].m_size - 1;
+			dx_vertex_declaration[i].Method = D3DDECLMETHOD_DEFAULT;
+			dx_vertex_declaration[i].Usage = _m_declaration.m_elements[i].m_type;
+			dx_vertex_declaration[i].UsageIndex = _m_declaration.m_elements[i].m_index;
+		}
 
-	if(_vertexSize == sizeof(CVertexBuffer::SVertexVT)) 
-		return;
-	
-	glEnableClientState(GL_NORMAL_ARRAY);
-	glNormalPointer(GL_FLOAT, _vertexSize, (void*)_offset);
-	_offset += 3 * sizeof(float);
-	Extension::VBExtension::glClientActiveTextureCoordARB(GL_TEXTURE1);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glTexCoordPointer(3, GL_FLOAT, _vertexSize, (void*)_offset);
-	_offset += 3 * sizeof(float);
-	Extension::VBExtension::glClientActiveTextureCoordARB(GL_TEXTURE2);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glTexCoordPointer(3, GL_FLOAT, _vertexSize, (void*)_offset);
-	_offset += 3 * sizeof(float);
+		dx_vertex_declaration[_m_declaration.m_element_count].Stream = 0xFF;
+		dx_vertex_declaration[_m_declaration.m_element_count].Offset = 0;
+		dx_vertex_declaration[_m_declaration.m_element_count].Type = D3DDECLTYPE_UNUSED;
+		dx_vertex_declaration[_m_declaration.m_element_count].Method = 0;
+		dx_vertex_declaration[_m_declaration.m_element_count].Usage = 0;
+		dx_vertex_declaration[_m_declaration.m_element_count].UsageIndex = 0;
+		
+		LPDIRECT3DVERTEXDECLARATION9 prt_vertex_declaration;
+		core::Window::m_D3DDevice->CreateVertexDeclaration(dx_vertex_declaration,&prt_vertex_declaration);
+		core::Window::m_D3DDevice->SetVertexDeclaration(prt_vertex_declaration);
 
-	if(_vertexSize == sizeof(CVertexBuffer::SVertexVTTBN)) 
-		return;
+		core::Window::m_D3DDevice->SetStreamSource( 0,_m_dx_addr, 0, _m_element_size);
+	}
+	else
+	{
+		for( unsigned int i = 0; i < _m_declaration.m_element_count; ++i)
+		{
+			switch(_m_declaration.m_elements[i].m_type)
+			{
+			case ELEMENT_POSITION :
+				{
+					Extension::VBExtension::glBindBufferARB(GL_ARRAY_BUFFER_ARB, _m_ogl_addr);
+					glEnableClientState(GL_VERTEX_ARRAY);
+					glVertexPointer(_m_declaration.m_elements[i].m_size, GL_FLOAT, _m_element_size, (void*)_m_declaration.m_elements[i].m_offset );
+				}
+				break;
+			case ELEMENT_NORMAL :
+				{
+					glEnableClientState(GL_NORMAL_ARRAY);
+					glNormalPointer(GL_FLOAT, _m_element_size, (void*)_m_declaration.m_elements[i].m_offset);
+				}
+				break;
+			case ELEMENT_TEXCOORD :
+				{
+					Extension::VBExtension::glClientActiveTextureCoordARB(GL_TEXTURE0 + _m_declaration.m_elements[i].m_index);
+					glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+					glTexCoordPointer(_m_declaration.m_elements[i].m_size, GL_FLOAT, _m_element_size, (void*)_m_declaration.m_elements[i].m_offset);
+				}
+				break;
+			case ELEMENT_TANGENT :
 
-	Extension::VBExtension::glClientActiveTextureCoordARB(GL_TEXTURE3);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glTexCoordPointer(4, GL_FLOAT, _vertexSize, (void*)_offset);
+				break;
+			case ELEMENT_BINORMAL :
+
+				break;
+			}
+		}
+	}
 }
 
 void CVertexBuffer::Disable()

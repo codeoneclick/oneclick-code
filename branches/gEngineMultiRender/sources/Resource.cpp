@@ -57,7 +57,6 @@ void Resource::WorkInPreloadingTread()
 	while(true)
 	{
 		Sleep(1000);
-		
 		if(_textureControllerInstance != NULL) 
 			_textureControllerInstance->WorkInPreloadingThread();
 		if(_shaderControllerInstance != NULL)

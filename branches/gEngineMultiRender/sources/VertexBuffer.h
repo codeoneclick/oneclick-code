@@ -1,11 +1,30 @@
 #ifndef VERTEX_BUFFER_H
 #define VERTEX_BUFFER_H
+#include <d3dx9.h>
 #include "VBExtension.h"
 #include "Vector3d.h"
 
 class CVertexBuffer
 {
 	public :
+
+	enum DECLARATION_ELEMENT_SIZE { ELEMENT_FLOAT2 = 2, ELEMENT_FLOAT3 = 3, ELEMENT_FLOAT4 = 4 };
+	enum DECLARATION_ELEMENT_TYPE { ELEMENT_POSITION = 0, ELEMENT_NORMAL = 3, ELEMENT_TEXCOORD = 5, ELEMENT_TANGENT = 6, ELEMENT_BINORMAL = 7};
+
+	struct SElementDeclaration
+	{
+		unsigned int m_offset;
+		DECLARATION_ELEMENT_SIZE m_size;
+		DECLARATION_ELEMENT_TYPE m_type;
+		unsigned int m_index;
+	};
+
+	struct SVertexDeclaration
+	{
+		SElementDeclaration *m_elements;
+		unsigned int m_element_count;	
+	};
+
 	struct SVertexVT
 	{
 		math::Vector3d vPosition;
@@ -29,19 +48,25 @@ class CVertexBuffer
 		math::Vector4d vWeight;
 	};
 	protected :
-		unsigned int _addr_ptr;
-		unsigned int _vertexSize;
-		unsigned int _nVerteces;
-		char *_vb_data;
+		unsigned int _m_ogl_addr;
+		IDirect3DVertexBuffer9* _m_dx_addr;
+
+		unsigned int _m_element_size;
+		unsigned int _m_vertex_count;
+
+		char *_m_vb_data;
+
+		SVertexDeclaration _m_declaration;
 	public :
 		CVertexBuffer();
 		~CVertexBuffer();
-		void *Create(unsigned int nVerteces, unsigned int vertexSize);
-		void  Commit();
+		void* Load(unsigned int vertex_count, unsigned int element_size);
+		void CommitVRAM();
+		void SetDeclaration(SVertexDeclaration &_declaration);
 		void* Lock();
-		void  Unlock();
-		void  Enable();
-		void  Disable();
+		void Unlock();
+		void Enable();
+		void Disable();
 };
 
 #endif
