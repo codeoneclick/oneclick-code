@@ -50,19 +50,27 @@ void Game::Update(DWORD time)
 void Game::Render()
 {
 
-	Window::m_D3DDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER ,0x00000000, 1.0f, 0); 
-    Window::m_D3DDevice->BeginScene();
-    Window::m_D3DDevice->EndScene(); 
-    Window::m_D3DDevice->Present(NULL, NULL, NULL, NULL);
+	if(core::Window::m_D3DRender)
+	{
+		Window::m_D3DDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER ,0x00000000, 1.0f, 0); 
+		Window::m_D3DDevice->BeginScene();
+		Video::CRenderController::Render2Texture(Video::CRenderController::ERenderTexture::SCREEN_TEXTURE);
+	    Window::m_D3DDevice->EndScene(); 
+        Window::m_D3DDevice->Present(NULL, NULL, NULL, NULL);
+	}
+	else
+	{
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		Video::CRenderController::Render2Texture(Video::CRenderController::ERenderTexture::SCREEN_TEXTURE);
+	    //Video::CRenderController::Render2Texture(Video::CRenderController::ERenderTexture::REFLECTION_TEXTURE);
+	    //Video::CRenderController::Render2Texture(Video::CRenderController::ERenderTexture::REFRACTION_TEXTURE);
+	    //Video::CRenderController::Render();
+	    glFlush();
+	    SwapBuffers(hDC);
+	}
 
 
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	Video::CRenderController::Render2Texture(Video::CRenderController::ERenderTexture::SCREEN_TEXTURE);
-	//Video::CRenderController::Render2Texture(Video::CRenderController::ERenderTexture::REFLECTION_TEXTURE);
-	//Video::CRenderController::Render2Texture(Video::CRenderController::ERenderTexture::REFRACTION_TEXTURE);
-	//Video::CRenderController::Render();
-	glFlush();
-	SwapBuffers(hDC);
+	
 
 	static DWORD framesPerSecond = 0;       
     static DWORD lastTime = 0;   

@@ -23,6 +23,7 @@ void CShader::ReadData(std::string _value)
 		LPD3DXBUFFER error_buffer = NULL;
 		HRESULT error_result = NULL;
 		char* error_text = NULL;
+		_value += ".fx";
 		
 		error_result = D3DXCreateEffectFromFile(core::Window::m_D3DDevice, _value.c_str(), NULL, NULL, 0, NULL, &_m_dx_hlsl_shader, &error_buffer);
 	

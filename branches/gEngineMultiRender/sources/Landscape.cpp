@@ -53,7 +53,7 @@ void Landscape::Load(std::string value)
 			++_vertexBufferIndex;
 		}
 	_meshData->indexBuffer = new CIndexBuffer();
-	unsigned int *indexData = _meshData->indexBuffer->Create((_width - 1)*(_height - 1)*6);
+	unsigned int *indexData = _meshData->indexBuffer->Load((_width - 1)*(_height - 1)*6);
 	_vertexBufferIndex = 0;
 
 	for(unsigned int i = 0; i < (_width - 1); ++i)
@@ -75,7 +75,7 @@ void Landscape::Load(std::string value)
 		}
 	_CalculateTBN(vertexData,indexData,_width * _height,(_width - 1)*(_height - 1)*6);
 	_meshData->vertexBuffer->CommitVRAM();
-	_meshData->indexBuffer->Commit();
+	_meshData->indexBuffer->CommitVRAM();
 	_shader = Resource::GetShaderControllerInstance()->Load("Content\\shaders\\basic");
 
 	CVertexBuffer::SVertexDeclaration declaration;
@@ -276,7 +276,12 @@ void Landscape::Render()
 		_meshData->indexBuffer->Enable();
 		//Extension::VBExtension::glMapBufferARB(GL_ARRAY_BUFFER_ARB,GL_WRITE_ONLY_ARB);
 		//Extension::VBExtension::glUnmapBufferARB(GL_ARRAY_BUFFER_ARB);
-		glDrawElements( GL_TRIANGLES, _meshData->indexBuffer->GetNumIndeces(), GL_UNSIGNED_INT, NULL);
+
+
+		glDrawElements( GL_TRIANGLES, _meshData->indexBuffer->GetIndexCount(), GL_UNSIGNED_INT, NULL);
+		
+		core::Window::m_D3DDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, 256*256, 0, 256*256*2);
+
 		_meshData->vertexBuffer->Disable();
 		_meshData->vertexBuffer->Disable();
 		_shader->Disable();

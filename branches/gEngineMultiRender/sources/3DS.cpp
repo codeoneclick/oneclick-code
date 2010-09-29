@@ -153,8 +153,8 @@ void C3DS::Commit(S3DSFile *in_value, type::SMesh *out_value)
 	out_value->vertexBuffer->CommitVRAM();
 
 	out_value->indexBuffer = new CIndexBuffer();
-	unsigned int *ib_ref = out_value->indexBuffer->Create(in_value->nIndeces);
+	unsigned int *ib_ref = out_value->indexBuffer->Load(in_value->nIndeces);
 	memcpy(ib_ref,in_value->indexData,sizeof(unsigned int) * in_value->nIndeces);
 	delete[] in_value->indexData;
-	out_value->indexBuffer->Commit();
+	out_value->indexBuffer->CommitVRAM();
 }

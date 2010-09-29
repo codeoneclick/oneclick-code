@@ -34,7 +34,7 @@ bool Window::_CreateWindowContext(std::string _value)
 	windowRectangle.top = 0;			
 	windowRectangle.bottom = _currentHeight;			
 
-	hInstance			= GetModuleHandle(NULL);				
+	hInstance = GetModuleHandle(NULL);				
 	windowClass.style			= CS_HREDRAW | CS_VREDRAW | CS_OWNDC;	
 	windowClass.lpfnWndProc		= (WNDPROC) Input::InputProcess;		
 	windowClass.cbClsExtra		= 0;									
@@ -56,11 +56,11 @@ bool Window::_CreateWindowContext(std::string _value)
 	{
 		DEVMODE dmScreenSettings;							
 		memset(&dmScreenSettings,0,sizeof(dmScreenSettings));
-		dmScreenSettings.dmSize=sizeof(dmScreenSettings);	
+		dmScreenSettings.dmSize = sizeof(dmScreenSettings);	
 		dmScreenSettings.dmPelsWidth	= _currentWidth;	
 		dmScreenSettings.dmPelsHeight	= _currentHeight;
 		dmScreenSettings.dmBitsPerPel	= _bitsPerPixel;	
-		dmScreenSettings.dmFields=DM_BITSPERPEL|DM_PELSWIDTH|DM_PELSHEIGHT;
+		dmScreenSettings.dmFields = DM_BITSPERPEL|DM_PELSWIDTH|DM_PELSHEIGHT;
 
 		if (ChangeDisplaySettings(&dmScreenSettings,CDS_FULLSCREEN) != DISP_CHANGE_SUCCESSFUL)
 		{
@@ -215,17 +215,13 @@ void Window::SetWindowCaption(std::string text)
 
 bool Window::_CreateGLContext()
 {
-	glShadeModel(GL_SMOOTH);
+	glShadeModel( GL_SMOOTH );
 	glEnable( GL_DEPTH_TEST );
-	glDepthFunc(GL_LEQUAL);	
-	glEnable(GL_CULL_FACE);
-	glViewport(0,0,_currentWidth / 2 ,_currentHeight);
-	glMatrixMode (GL_PROJECTION);										
-	glLoadIdentity ();													
-	glMatrixMode (GL_MODELVIEW);										
-	glLoadIdentity ();				
-	glClearColor( 0.5f, 0.5f, 0.5f, 1.0f );
-	glClearDepth (1.0f);
+	glDepthFunc( GL_LEQUAL );	
+	glEnable( GL_CULL_FACE );
+	glViewport( 0,0,_currentWidth ,_currentHeight );
+	glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );
+	glClearDepth( 1.0f );
 
 	m_D3DDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE); 
 	m_D3DDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
@@ -236,11 +232,12 @@ bool Window::_CreateGLContext()
     m_D3DDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL);
     m_D3DDevice->SetRenderState(D3DRS_ALPHAREF, (DWORD)128);
 	m_D3DDevice->SetRenderState(D3DRS_VERTEXBLEND, D3DVBF_TWEENING);
+    m_D3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW);
 
 	D3DVIEWPORT9 viewport;
-    viewport.X = _currentWidth / 2;
+    viewport.X = 0;
     viewport.Y = 0;
-    viewport.Width  = Width/2;
+    viewport.Width  = Width;
     viewport.Height = Height;
     viewport.MinZ = 0.0f;
     viewport.MaxZ = 1.0f;

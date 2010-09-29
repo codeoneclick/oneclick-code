@@ -30,7 +30,7 @@ void CModel::Render()
 		//_shader->SetTexture(0,_textures[0]->addr_ptr);
 		_meshData->vertexBuffer->Enable();
 		_meshData->indexBuffer->Enable();
-		glDrawElements( GL_TRIANGLES, _meshData->indexBuffer->GetNumIndeces(), GL_UNSIGNED_INT, NULL);
+		glDrawElements( GL_TRIANGLES, _meshData->indexBuffer->GetIndexCount(), GL_UNSIGNED_INT, NULL);
 		//_shader->Disable();
 	}
 }
