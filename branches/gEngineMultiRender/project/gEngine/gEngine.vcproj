@@ -183,6 +183,10 @@
 				Name="core"
 				>
 				<File
+					RelativePath="..\..\sources\Device.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\sources\Device.h"
 					>
 				</File>
@@ -192,6 +196,14 @@
 				</File>
 				<File
 					RelativePath="..\..\sources\Input.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\sources\Render.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\sources\Render.h"
 					>
 				</File>
 				<File
