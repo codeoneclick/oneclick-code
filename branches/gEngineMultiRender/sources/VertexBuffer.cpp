@@ -1,5 +1,5 @@
 #include "VertexBuffer.h"
-#include "Window.h"
+#include "Device.h"
 
 CVertexBuffer::CVertexBuffer()
 {
@@ -26,9 +26,9 @@ void* CVertexBuffer::Load(unsigned int vertex_count, unsigned int element_size)
 	_m_element_size = element_size;
 	_m_vertex_count = vertex_count;
 
-	if(core::Window::m_D3DRender)
+	if(Core::CDevice::GetDeviceType() == Core::CDevice::D3D)
 	{
-		core::Window::m_D3DDevice->CreateVertexBuffer(vertex_count * element_size,D3DUSAGE_WRITEONLY,NULL,D3DPOOL_DEFAULT,&_m_dx_addr,NULL);
+		Core::CDevice::GetD3DDevice()->CreateVertexBuffer(vertex_count * element_size,D3DUSAGE_WRITEONLY,NULL,D3DPOOL_DEFAULT,&_m_dx_addr,NULL);
 		_m_dx_addr->Lock(0,vertex_count * element_size, (void**)&_m_vb_data,D3DLOCK_NOSYSLOCK);
 	}
 	else
@@ -47,7 +47,7 @@ void* CVertexBuffer::Load(unsigned int vertex_count, unsigned int element_size)
 void CVertexBuffer::CommitVRAM()
 {
 
-	if(core::Window::m_D3DRender)
+	if(Core::CDevice::GetDeviceType() == Core::CDevice::D3D)
 	{
 		_m_dx_addr->Unlock();
 	}
@@ -63,7 +63,7 @@ void CVertexBuffer::CommitVRAM()
 void *CVertexBuffer::Lock()
 {
 	void *_lock_vb_data = NULL;
-	if(core::Window::m_D3DRender)
+	if(Core::CDevice::GetDeviceType() == Core::CDevice::D3D)
 	{
 		_m_dx_addr->Lock(0,_m_vertex_count * _m_element_size, (void**)&_lock_vb_data,D3DLOCK_NOSYSLOCK);
 	}
@@ -76,7 +76,7 @@ void *CVertexBuffer::Lock()
 
 void CVertexBuffer::Unlock()
 {
-	if(core::Window::m_D3DRender)
+	if(Core::CDevice::GetDeviceType() == Core::CDevice::D3D)
 	{
 		_m_dx_addr->Unlock();
 	}
@@ -93,7 +93,7 @@ void CVertexBuffer::SetDeclaration(SVertexDeclaration &_declaration)
 
 void CVertexBuffer::Enable()
 {
-	if(core::Window::m_D3DRender)
+	if(Core::CDevice::GetDeviceType() == Core::CDevice::D3D)
 	{
 		D3DVERTEXELEMENT9 *dx_vertex_declaration = new D3DVERTEXELEMENT9[_m_declaration.m_element_count + 1];
 		for( unsigned int i = 0; i < _m_declaration.m_element_count; ++i)
@@ -114,10 +114,10 @@ void CVertexBuffer::Enable()
 		dx_vertex_declaration[_m_declaration.m_element_count].UsageIndex = 0;
 		
 		LPDIRECT3DVERTEXDECLARATION9 prt_vertex_declaration;
-		core::Window::m_D3DDevice->CreateVertexDeclaration(dx_vertex_declaration,&prt_vertex_declaration);
-		core::Window::m_D3DDevice->SetVertexDeclaration(prt_vertex_declaration);
+		Core::CDevice::GetD3DDevice()->CreateVertexDeclaration(dx_vertex_declaration,&prt_vertex_declaration);
+		Core::CDevice::GetD3DDevice()->SetVertexDeclaration(prt_vertex_declaration);
 
-		core::Window::m_D3DDevice->SetStreamSource( 0,_m_dx_addr, 0, _m_element_size);
+		Core::CDevice::GetD3DDevice()->SetStreamSource( 0,_m_dx_addr, 0, _m_element_size);
 	}
 	else
 	{
@@ -158,6 +158,7 @@ void CVertexBuffer::Enable()
 
 void CVertexBuffer::Disable()
 {
+	if(Core::CDevice::GetDeviceType() == Core::CDevice::D3D) return;
 	glDisableClientState( GL_VERTEX_ARRAY );
 	glDisableClientState( GL_TEXTURE_COORD_ARRAY );
 	glDisableClientState( GL_NORMAL_ARRAY);

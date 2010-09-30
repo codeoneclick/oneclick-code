@@ -1,5 +1,5 @@
 #include "IndexBuffer.h"
-#include "Window.h"
+#include "Device.h"
 
 CIndexBuffer::CIndexBuffer()
 {
@@ -22,9 +22,9 @@ unsigned int* CIndexBuffer::Load(unsigned int index_count)
 {
 	_m_index_count = index_count;
 
-	if(core::Window::m_D3DRender)
+	if(Core::CDevice::GetDeviceType() == Core::CDevice::D3D)
 	{
-		core::Window::m_D3DDevice->CreateIndexBuffer( _m_index_count*sizeof(unsigned int),D3DUSAGE_WRITEONLY,D3DFMT_INDEX32,D3DPOOL_DEFAULT,&_m_dx_addr,NULL);
+		Core::CDevice::GetD3DDevice()->CreateIndexBuffer( _m_index_count*sizeof(unsigned int),D3DUSAGE_WRITEONLY,D3DFMT_INDEX32,D3DPOOL_DEFAULT,&_m_dx_addr,NULL);
 		_m_dx_addr->Lock(0, _m_index_count*sizeof(unsigned int), (void**)&_m_ib_data, D3DLOCK_NOSYSLOCK);
 	}
 	else
@@ -42,7 +42,7 @@ unsigned int* CIndexBuffer::Load(unsigned int index_count)
 void CIndexBuffer::CommitVRAM()
 {
 
-	if(core::Window::m_D3DRender)
+	if(Core::CDevice::GetDeviceType() == Core::CDevice::D3D)
 	{
 		 _m_dx_addr->Unlock();
 	}
@@ -59,7 +59,7 @@ void CIndexBuffer::CommitVRAM()
 unsigned int *CIndexBuffer::Lock()
 {
 	unsigned int *_lock_ib_data = NULL;
-	if(core::Window::m_D3DRender)
+	if(Core::CDevice::GetDeviceType() == Core::CDevice::D3D)
 	{
 		_m_dx_addr->Lock(0, _m_index_count*sizeof(unsigned int), (void**)&_lock_ib_data, D3DLOCK_NOSYSLOCK);
 	}
@@ -72,7 +72,7 @@ unsigned int *CIndexBuffer::Lock()
 
 void CIndexBuffer::Unlock()
 {
-	if(core::Window::m_D3DRender)
+	if(Core::CDevice::GetDeviceType() == Core::CDevice::D3D)
 	{
 		_m_dx_addr->Unlock();
 	}
@@ -84,9 +84,9 @@ void CIndexBuffer::Unlock()
 
 void CIndexBuffer::Enable()
 {
-	if(core::Window::m_D3DRender)
+	if(Core::CDevice::GetDeviceType() == Core::CDevice::D3D)
 	{
-		core::Window::m_D3DDevice->SetIndices(_m_dx_addr);
+		Core::CDevice::GetD3DDevice()->SetIndices(_m_dx_addr);
 	}
 	else
 	{
@@ -96,5 +96,6 @@ void CIndexBuffer::Enable()
 
 void CIndexBuffer::Disable()
 {
+	if(Core::CDevice::GetDeviceType() == Core::CDevice::D3D) return;
 	Extension::VBExtension::glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, 0 );
 }

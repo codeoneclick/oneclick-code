@@ -16,10 +16,7 @@ Camera::Camera()
 	_fCameraRotationSpeed = 1.0f;
 	_fNearPlane = 0.1f;
 	_fFarPlane  = 4096.0f;
-	mProjection = math::MatrixProjection(45.0f, (float)core::Window::Width / (float)core::Window::Height, _fNearPlane, _fFarPlane);
-	glMatrixMode( GL_PROJECTION );
-	glLoadIdentity();
-	gluPerspective( 45.0, core::Window::Width / core::Window::Height, _fNearPlane, _fFarPlane);
+	mProjection = math::MatrixProjection(45.0f, (float)Core::CWindow::m_Width / (float)Core::CWindow::m_Height, _fNearPlane, _fFarPlane);
 }
 
 void Camera::_MoveForward()
@@ -98,7 +95,4 @@ void Camera::Update()
     vPosition.z = vLookAt.z + sin(-(vRotation.y) + 1.57f)* - 32.0f;
 
 	mView = math::MatrixView(vPosition,vLookAt,vUp);
-	glMatrixMode( GL_MODELVIEW );
-    glLoadIdentity();
-    glMultMatrixf(mView.m);
 }

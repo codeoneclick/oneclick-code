@@ -18,14 +18,14 @@ CShader::~CShader()
 
 void CShader::ReadData(std::string _value)
 {	
-	if(core::Window::m_D3DRender)
+	if(Core::CDevice::GetDeviceType() == Core::CDevice::D3D)
 	{
 		LPD3DXBUFFER error_buffer = NULL;
 		HRESULT error_result = NULL;
 		char* error_text = NULL;
 		_value += ".fx";
 		
-		error_result = D3DXCreateEffectFromFile(core::Window::m_D3DDevice, _value.c_str(), NULL, NULL, 0, NULL, &_m_dx_hlsl_shader, &error_buffer);
+		error_result = D3DXCreateEffectFromFile(Core::CDevice::GetD3DDevice(), _value.c_str(), NULL, NULL, 0, NULL, &_m_dx_hlsl_shader, &error_buffer);
 	
 		if(FAILED( error_result ))
 		{
@@ -42,7 +42,7 @@ void CShader::ReadData(std::string _value)
 
 void CShader::Commit(std::string _value)
 {
-	if(core::Window::m_D3DRender)
+	if(Core::CDevice::GetDeviceType() == Core::CDevice::D3D)
 	{
 
 	}
@@ -90,7 +90,7 @@ void CShader::Commit(std::string _value)
 void CShader::Enable()
 {
 	if(!m_is_commit) return;
-	if(core::Window::m_D3DRender)
+	if(Core::CDevice::GetDeviceType() == Core::CDevice::D3D)
 	{
 		_m_dx_hlsl_shader->Begin(NULL,NULL);
 		_m_dx_hlsl_shader->BeginPass(NULL);
@@ -108,7 +108,7 @@ void CShader::Enable()
 void CShader::Disable()
 {
 	if(!m_is_commit) return;
-	if(core::Window::m_D3DRender)
+	if(Core::CDevice::GetDeviceType() == Core::CDevice::D3D)
 	{
 		_m_dx_hlsl_shader->EndPass();
 		_m_dx_hlsl_shader->End();
@@ -124,7 +124,7 @@ void CShader::Disable()
 void CShader::SetMatrix(math::Matrix4x4 &_matrix, std::string _param, EShader _type)
 {
 	if(!m_is_commit) return;
-	if(core::Window::m_D3DRender)
+	if(Core::CDevice::GetDeviceType() == Core::CDevice::D3D)
 	{
 		D3DXMATRIX dx_matrix;
 		memcpy(dx_matrix.m,_matrix.m,sizeof(float) * 16);
@@ -153,7 +153,7 @@ void CShader::SetMatrix(math::Matrix4x4 &_matrix, std::string _param, EShader _t
 void CShader::SetVector(math::Vector3d  &_vector, std::string _param, EShader _type)
 {
 	if(!m_is_commit) return;
-	if(core::Window::m_D3DRender)
+	if(Core::CDevice::GetDeviceType() == Core::CDevice::D3D)
 	{
 		_m_dx_hlsl_shader->SetFloatArray(_param.c_str(), _vector.v, 3);
 	}
@@ -179,7 +179,7 @@ void CShader::SetVector(math::Vector3d  &_vector, std::string _param, EShader _t
 void CShader::SetVector(math::Vector4d &_vector, std::string _param, EShader _type)
 {
 	if(!m_is_commit) return;
-	if(core::Window::m_D3DRender)
+	if(Core::CDevice::GetDeviceType() == Core::CDevice::D3D)
 	{
 		_m_dx_hlsl_shader->SetFloatArray(_param.c_str(), _vector.v, 4);
 	}
@@ -205,7 +205,7 @@ void CShader::SetVector(math::Vector4d &_vector, std::string _param, EShader _ty
 void CShader::SetFloat(float &_value, std::string _param, EShader _type)
 {
 	if(!m_is_commit) return;
-	if(core::Window::m_D3DRender)
+	if(Core::CDevice::GetDeviceType() == Core::CDevice::D3D)
 	{
 		_m_dx_hlsl_shader->SetFloat(_param.c_str(),_value);
 	}
@@ -232,7 +232,7 @@ void CShader::SetFloat(float &_value, std::string _param, EShader _type)
 void CShader::SetTexture(CTexture &_texture, std::string _param, EShader _type)
 {
 	if(!m_is_commit) return;
-	if(core::Window::m_D3DRender)
+	if(Core::CDevice::GetDeviceType() == Core::CDevice::D3D)
 	{
 		_m_dx_hlsl_shader->SetTexture(_param.c_str(),_texture.m_dx_texture);
 	}

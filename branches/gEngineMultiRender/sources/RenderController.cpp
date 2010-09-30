@@ -11,6 +11,7 @@ CRenderController::SClipSetting   CRenderController::clipSetting;
 
 void CRenderController::Load()
 {
+	if(Core::CDevice::GetDeviceType() != Core::CDevice::OGL) return;
 	if(_screenTexture.texture_addr == 0)
 	{
 		glGenTextures(1, &_screenTexture.texture_addr);					
@@ -99,7 +100,7 @@ void CRenderController::_TextureDisable()
 	Extension::FBExtension::glBindRenderbufferEXT(GL_RENDERBUFFER_EXT,0);
 	glDrawBuffer(GL_BACK);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glViewport(0,0,core::Window::Width ,core::Window::Height);
+	glViewport(0,0,Core::CWindow::m_Width ,Core::CWindow::m_Height);
 }
 
 void CRenderController::Render2Texture(Video::CRenderController::ERenderTexture value)
@@ -179,7 +180,7 @@ void CRenderController::Render()
 {
 	glMatrixMode(GL_PROJECTION);						
 	glLoadIdentity();							
-	glOrtho( 0, core::Window::Width, core::Window::Height, 0, -1, 1 );		
+	glOrtho( 0, Core::CWindow::m_Width, Core::CWindow::m_Height, 0, -1, 1 );		
 	glMatrixMode(GL_MODELVIEW);												
 	glLoadIdentity();
 	glDisable( GL_DEPTH_TEST );
@@ -191,13 +192,13 @@ void CRenderController::Render()
         glVertex2f   ( 0.0f, 0.0f );
 
         glTexCoord2f ( 0.0f, 0.0f );
-        glVertex2f   ( 0.0f, static_cast<float>(core::Window::Height) );
+        glVertex2f   ( 0.0f, static_cast<float>(Core::CWindow::m_Height) );
 
         glTexCoord2f ( 1.0f, 0.0f );
-        glVertex2f   ( static_cast<float>(core::Window::Width), static_cast<float>(core::Window::Height) );
+        glVertex2f   ( static_cast<float>(Core::CWindow::m_Width), static_cast<float>(Core::CWindow::m_Height) );
 
         glTexCoord2f ( 1.0f, 1.0f );
-        glVertex2f   ( static_cast<float>(core::Window::Width), 0.0f);
+        glVertex2f   ( static_cast<float>(Core::CWindow::m_Width), 0.0f);
 
 	glEnd();
 	glEnable( GL_DEPTH_TEST );

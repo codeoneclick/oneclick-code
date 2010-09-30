@@ -12,9 +12,10 @@ Game::Game()
 
 bool Game::Create()
 {
-	_CreateWindowContext("opengl");
+	Core::CDevice::_CreateDevice(640,480,32,Core::CDevice::D3D);
+	//_CreateWindowContext("opengl");
 	//_CreateWindowContext("directx");
-	_CreateGLContext();
+	//_CreateGLContext();
 	Extension::VBExtension::VBExtension();
 	Extension::FBExtension::FBExtension();
 	Video::CRenderController::Load();
@@ -50,13 +51,13 @@ void Game::Update(DWORD time)
 void Game::Render()
 {
 
-	if(core::Window::m_D3DRender)
+	if(Core::CDevice::GetDeviceType() == Core::CDevice::D3D)
 	{
-		Window::m_D3DDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER ,0x00000000, 1.0f, 0); 
-		Window::m_D3DDevice->BeginScene();
+		CDevice::GetD3DDevice()->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER ,0x00000000, 1.0f, 0); 
+		CDevice::GetD3DDevice()->BeginScene();
 		Video::CRenderController::Render2Texture(Video::CRenderController::ERenderTexture::SCREEN_TEXTURE);
-	    Window::m_D3DDevice->EndScene(); 
-        Window::m_D3DDevice->Present(NULL, NULL, NULL, NULL);
+	    CDevice::GetD3DDevice()->EndScene(); 
+        CDevice::GetD3DDevice()->Present(NULL, NULL, NULL, NULL);
 	}
 	else
 	{
@@ -66,7 +67,7 @@ void Game::Render()
 	    //Video::CRenderController::Render2Texture(Video::CRenderController::ERenderTexture::REFRACTION_TEXTURE);
 	    //Video::CRenderController::Render();
 	    glFlush();
-	    SwapBuffers(hDC);
+	    SwapBuffers(m_handleDC);
 	}
 
 
@@ -86,6 +87,6 @@ void Game::Render()
         framesPerSecond = 0;
 		char fps_text[64];
 		sprintf_s(fps_text,"FPS : %i",fps);
-		SetWindowCaption(fps_text);
+		SetText(fps_text);
     }
 }

@@ -278,12 +278,12 @@ void Landscape::Render()
 		//Extension::VBExtension::glUnmapBufferARB(GL_ARRAY_BUFFER_ARB);
 
 
-		glDrawElements( GL_TRIANGLES, _meshData->indexBuffer->GetIndexCount(), GL_UNSIGNED_INT, NULL);
+		//glDrawElements( GL_TRIANGLES, _meshData->indexBuffer->GetIndexCount(), GL_UNSIGNED_INT, NULL);
 		
-		core::Window::m_D3DDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, 256*256, 0, 256*256*2);
+		Core::CDevice::GetD3DDevice()->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, 256*256, 0, 256*256*2);
 
 		_meshData->vertexBuffer->Disable();
-		_meshData->vertexBuffer->Disable();
+		_meshData->indexBuffer->Disable();
 		_shader->Disable();
 	}
 }

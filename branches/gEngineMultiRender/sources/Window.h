@@ -9,7 +9,7 @@ namespace Core
 	class CWindow
 	{	
 	protected :
-		void CreateWindow(unsigned int _width, unsigned int _height, unsigned int _bpp);
+		void _CreateWindow(unsigned int _width, unsigned int _height, unsigned int _bpp);
 		HDC			m_handleDC;			
 		HWND		m_handleWindow;		
 		HINSTANCE	m_handleInstance;	

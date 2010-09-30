@@ -18,13 +18,13 @@ CTexture::~CTexture()
 
 void CTexture::ReadData(std::string _value)
 {
-	if(core::Window::m_D3DRender)
+	if(Core::CDevice::GetDeviceType() == Core::CDevice::D3D)
 	{
 		LPD3DXBUFFER error_buffer = NULL;
 		HRESULT error_result = NULL;
 		char* error_text = NULL;
 		
-		error_result = D3DXCreateTextureFromFile(core::Window::m_D3DDevice, _value.c_str(), &m_dx_texture);
+		error_result = D3DXCreateTextureFromFile(Core::CDevice::GetD3DDevice(), _value.c_str(), &m_dx_texture);
 	
 		if(FAILED( error_result ))
 		{
@@ -53,7 +53,7 @@ void CTexture::ReadData(std::string _value)
 
 void CTexture::Commit(std::string _value)
 {
-	if(core::Window::m_D3DRender)
+	if(Core::CDevice::GetDeviceType() == Core::CDevice::D3D)
 	{
 
 	}
