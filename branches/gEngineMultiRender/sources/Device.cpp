@@ -1,4 +1,6 @@
 #include "Device.h"
+#include "VBExtension.h"
+#include "FBExtension.h"
 
 using namespace Core;
 
@@ -90,21 +92,11 @@ void CDevice::CreateD3DContext()
     m_D3DDevice->SetRenderState(D3DRS_ALPHAREF, (DWORD)128);
 	m_D3DDevice->SetRenderState(D3DRS_VERTEXBLEND, D3DVBF_TWEENING);
     m_D3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW);
-
-	D3DVIEWPORT9 viewport;
-    viewport.X = 0;
-    viewport.Y = 0;
-    viewport.Width  = CWindow::m_Width;
-	viewport.Height = CWindow::m_Height;
-    viewport.MinZ = 0.0f;
-    viewport.MaxZ = 1.0f;
-    m_D3DDevice->SetViewport(&viewport);
-
 }
 
 void CDevice::CreateOGLContext()
 {
-	if (!(m_handleGLRC=wglCreateContext(m_handleDC)))				
+	if (!(m_handleGLRC = wglCreateContext(m_handleDC)))				
 	{
 		MessageBox(NULL,"Can't Create A GL Rendering Context.","ERROR",MB_OK|MB_ICONEXCLAMATION);
 		return;								
@@ -116,16 +108,17 @@ void CDevice::CreateOGLContext()
 		return;								
 	}
 
-	ShowWindow(m_handleWindow,SW_SHOW);			
+	ShowWindow(m_handleWindow,SW_SHOW);
+
+	Extension::VBExtension::VBExtension();
+	Extension::FBExtension::FBExtension();
 
 	glShadeModel( GL_SMOOTH );
 	glEnable( GL_DEPTH_TEST );
 	glDepthFunc( GL_LEQUAL );	
 	glEnable( GL_CULL_FACE );
-	glViewport( 0,0,CWindow::m_Width ,CWindow::m_Height );
 	glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );
 	glClearDepth( 1.0f );
-
 }
 
 

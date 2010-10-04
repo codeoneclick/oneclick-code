@@ -152,6 +152,23 @@ void C3DS::Commit(S3DSFile *in_value, type::SMesh *out_value)
 	delete[] in_value->vertexData;
 	out_value->vertexBuffer->CommitVRAM();
 
+	CVertexBuffer::SVertexDeclaration declaration;
+	declaration.m_elements = new CVertexBuffer::SElementDeclaration[2];
+	
+	declaration.m_elements[0].m_index = 0;
+	declaration.m_elements[0].m_size = CVertexBuffer::ELEMENT_FLOAT3;
+	declaration.m_elements[0].m_type = CVertexBuffer::ELEMENT_POSITION;
+	declaration.m_elements[0].m_offset = 0 * sizeof(float);
+
+	declaration.m_elements[1].m_index = 0;
+	declaration.m_elements[1].m_size = CVertexBuffer::ELEMENT_FLOAT2;
+	declaration.m_elements[1].m_type = CVertexBuffer::ELEMENT_TEXCOORD;
+	declaration.m_elements[1].m_offset = 3 * sizeof(float);
+
+	declaration.m_element_count = 2;
+
+	out_value->vertexBuffer->SetDeclaration(declaration);
+
 	out_value->indexBuffer = new CIndexBuffer();
 	unsigned int *ib_ref = out_value->indexBuffer->Load(in_value->nIndeces);
 	memcpy(ib_ref,in_value->indexData,sizeof(unsigned int) * in_value->nIndeces);

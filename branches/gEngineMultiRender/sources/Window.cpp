@@ -6,6 +6,10 @@ unsigned int CWindow::m_Width  = 640;
 unsigned int CWindow::m_Height = 480; 
 bool CWindow::m_Fullscreen = false;
 
+HDC CWindow::m_handleDC;			
+HWND CWindow::m_handleWindow;		
+HINSTANCE CWindow::m_handleInstance;	
+
 CWindow::CWindow()
 {
 }

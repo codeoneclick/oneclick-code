@@ -174,6 +174,7 @@ const unsigned int CRenderController::GetRenderTexture(Video::CRenderController:
 		}
 		break;
 	}
+	return NULL;
 }
 
 void CRenderController::Render()

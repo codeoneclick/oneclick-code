@@ -10,6 +10,7 @@ CVertexBuffer::CVertexBuffer()
 	_m_element_size = 0;
 	_m_declaration.m_element_count = 0;
 	_m_declaration.m_elements = NULL;
+	_prt_vertex_declaration = NULL;
 }
 
 CVertexBuffer::~CVertexBuffer()
@@ -89,10 +90,7 @@ void CVertexBuffer::Unlock()
 void CVertexBuffer::SetDeclaration(SVertexDeclaration &_declaration)
 {
 	_m_declaration = _declaration;
-}
 
-void CVertexBuffer::Enable()
-{
 	if(Core::CDevice::GetDeviceType() == Core::CDevice::D3D)
 	{
 		D3DVERTEXELEMENT9 *dx_vertex_declaration = new D3DVERTEXELEMENT9[_m_declaration.m_element_count + 1];
@@ -113,10 +111,16 @@ void CVertexBuffer::Enable()
 		dx_vertex_declaration[_m_declaration.m_element_count].Usage = 0;
 		dx_vertex_declaration[_m_declaration.m_element_count].UsageIndex = 0;
 		
-		LPDIRECT3DVERTEXDECLARATION9 prt_vertex_declaration;
-		Core::CDevice::GetD3DDevice()->CreateVertexDeclaration(dx_vertex_declaration,&prt_vertex_declaration);
-		Core::CDevice::GetD3DDevice()->SetVertexDeclaration(prt_vertex_declaration);
+		Core::CDevice::GetD3DDevice()->CreateVertexDeclaration(dx_vertex_declaration,&_prt_vertex_declaration);
+		delete[] dx_vertex_declaration;
+	}
+}
 
+void CVertexBuffer::Enable()
+{
+	if(Core::CDevice::GetDeviceType() == Core::CDevice::D3D)
+	{
+		Core::CDevice::GetD3DDevice()->SetVertexDeclaration(_prt_vertex_declaration);
 		Core::CDevice::GetD3DDevice()->SetStreamSource( 0,_m_dx_addr, 0, _m_element_size);
 	}
 	else

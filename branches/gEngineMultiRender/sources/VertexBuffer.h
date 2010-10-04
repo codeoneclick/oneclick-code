@@ -57,12 +57,14 @@ class CVertexBuffer
 		char *_m_vb_data;
 
 		SVertexDeclaration _m_declaration;
+		LPDIRECT3DVERTEXDECLARATION9 _prt_vertex_declaration;
 	public :
 		CVertexBuffer();
 		~CVertexBuffer();
 		void* Load(unsigned int vertex_count, unsigned int element_size);
 		void CommitVRAM();
 		void SetDeclaration(SVertexDeclaration &_declaration);
+		__forceinline unsigned int GetVertexCount() { return  _m_vertex_count; }
 		void* Lock();
 		void Unlock();
 		void Enable();

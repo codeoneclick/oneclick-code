@@ -1,6 +1,7 @@
 #include "Landscape.h"
 #include "Resource.h"
 #include "Game.h"
+#include "Render.h"
 
 using namespace Enviroment;
 
@@ -228,62 +229,13 @@ void Landscape::Update()
 
 void Landscape::Render()
 {
-	bool _shaderRender = true;
-	if(_shaderRender)
-	{
-		_shader->Enable();
-		_shader->SetMatrix(_mWorldViewProjection,"mWorldViewProjection",Core::CShader::VS_SHADER);
-		_shader->SetTexture(*_textures[0],"Texture_01",Core::CShader::PS_SHADER);
-		//_shader->SetWVPMatrix(_mWorldViewProjection);
-		//_shader->SetTexture(0,_textures[0]->addr_ptr);
-		//_shader->SetTexture(1,_textures[1]->addr_ptr);
-
-		//_shader->SetClip(Video::CRenderController::clipSetting.fClipInc, Video::CRenderController::clipSetting.fClipHeight);
-
-		// ***** DEBUG LIGHT ***** //
-		math::Vector3d vCameraPosition = Game::GetEnviromentControllerInstance()->GetCameraInstance()->vPosition;
-		static math::Vector4d vLightPosition_01;
-		math::Vector3d vColor_01 = math::Vector3d(1.0f,0.0f,0.0f);
-		static float fAngle = 0.0f;
-		fAngle += 0.01f;
-		vLightPosition_01.x = vCameraPosition.x + cos(fAngle) * 128.0f;
-		vLightPosition_01.y = vCameraPosition.y;
-		vLightPosition_01.z = vCameraPosition.z + sin(fAngle) * 128.0f;
-		vLightPosition_01.w = 32.0f;
-		//_shader->SetLight_01(vLightPosition_01,vColor_01);
-
-		static math::Vector4d vLightPosition_02;
-		math::Vector3d vColor_02 = math::Vector3d(1.0f,1.0f,0.0f);
-		vLightPosition_02.x = vCameraPosition.x + cos(fAngle * 2.0f) * 256.0f;
-		vLightPosition_02.y = vCameraPosition.y;
-		vLightPosition_02.z = vCameraPosition.z + sin(fAngle * 2.0f) * 256.0f;
-		vLightPosition_02.w = 32.0f;
-		//_shader->SetLight_02(vLightPosition_02,vColor_02);
-
-		static math::Vector4d vLightPosition_03;
-		math::Vector3d vColor_03 = math::Vector3d(0.0f,0.0f,1.0f);
-		vLightPosition_03.x = vCameraPosition.x + cos(fAngle / 2.0f) * 512.0f;
-		vLightPosition_03.y = vCameraPosition.y;
-		vLightPosition_03.z = vCameraPosition.z + sin(fAngle / 2.0f) * 512.0f;
-		vLightPosition_03.w = 32.0f;
-		//_shader->SetLight_03(vLightPosition_03,vColor_03);
-
-		//_shader->SetCamera(vCameraPosition);
-
-		//Extension::VBExtension::glMapBufferARB(GL_ARRAY_BUFFER_ARB,GL_WRITE_ONLY_ARB);
-		// ***** DEBUG LIGHT ***** //
-		_meshData->vertexBuffer->Enable();
-		_meshData->indexBuffer->Enable();
-		//Extension::VBExtension::glMapBufferARB(GL_ARRAY_BUFFER_ARB,GL_WRITE_ONLY_ARB);
-		//Extension::VBExtension::glUnmapBufferARB(GL_ARRAY_BUFFER_ARB);
-
-
-		//glDrawElements( GL_TRIANGLES, _meshData->indexBuffer->GetIndexCount(), GL_UNSIGNED_INT, NULL);
-		
-		Core::CDevice::GetD3DDevice()->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, 256*256, 0, 256*256*2);
-
-		_meshData->vertexBuffer->Disable();
-		_meshData->indexBuffer->Disable();
-		_shader->Disable();
-	}
+	_shader->Enable();
+	_shader->SetMatrix(_mWorldViewProjection,"mWorldViewProjection",Core::CShader::VS_SHADER);
+	_shader->SetTexture(*_textures[0],"Texture_01",Core::CShader::PS_SHADER);
+	_meshData->vertexBuffer->Enable();
+	_meshData->indexBuffer->Enable();
+	Core::CRender::Draw(256*256,_meshData->indexBuffer->GetIndexCount(),256*256*2);
+	_meshData->vertexBuffer->Disable();
+	_meshData->indexBuffer->Disable();
+	_shader->Disable();
 }

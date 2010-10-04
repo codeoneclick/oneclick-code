@@ -30,7 +30,7 @@ void EnviromentController::Update(DWORD time)
     _camera->Update();
 	_landscape->Update();
 	//_ocean->Update();
-	//_mesh->Update();
+	_mesh->Update();
 	Resource::GetMeshControllerInstance()->Update();
 	Resource::WorkInMainTread();
 }
@@ -39,21 +39,20 @@ void EnviromentController::Render(Video::CRenderController::ERenderTexture value
 {
 	switch(value)
 	{
-		case Video::CRenderController::ERenderTexture::SCREEN_TEXTURE :
+		case Video::CRenderController::SCREEN_TEXTURE :
 		{
-			//_mesh->Render();
-			//_ocean->Render();
 			_landscape->Render();
+			_mesh->Render();
 		}
 		break;
-		case Video::CRenderController::ERenderTexture::REFLECTION_TEXTURE :
+		case Video::CRenderController::REFLECTION_TEXTURE :
 		{
-			_landscape->Render();
+			//_landscape->Render();
 		}
 		break;
-		case Video::CRenderController::ERenderTexture::REFRACTION_TEXTURE :
+		case Video::CRenderController::REFRACTION_TEXTURE :
 		{
-			_landscape->Render();
+			//_landscape->Render();
 		}
 		break;
 	}
