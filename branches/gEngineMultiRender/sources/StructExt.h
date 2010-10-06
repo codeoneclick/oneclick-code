@@ -73,11 +73,11 @@ struct STexture
 
 struct SMesh
 {
-	enum EXTENSION { _3DS = 0, _M2, _M3 };
-	EXTENSION extension;
+	enum EXTENSION {EXT_NONE = 0, EXT_3DS };
+	EXTENSION m_Extension;
 
-	CVertexBuffer *vertexBuffer;
-	CIndexBuffer  *indexBuffer;
+	CVertexBuffer *m_VertexBuffer;
+	CIndexBuffer  *m_IndexBuffer;
 };
 
 struct CGShaderParameters

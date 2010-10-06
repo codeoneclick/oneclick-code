@@ -1,118 +1,92 @@
 #include "MeshController.h"
 
-DWORD __stdcall MeshLoadThread(LPVOID value)
-{
-  ((CMeshController*)value)->_LoadThread();
-	return 0;
-}
+using namespace Controller;
 
 CMeshController::CMeshController()
 {
-	_path = "Content\\models\\";
-	InitializeCriticalSection( &_criticalSection );
-	_thread = CreateThread(NULL,NULL,MeshLoadThread,this,NULL,NULL);
-	SetThreadPriority(_thread,THREAD_PRIORITY_LOWEST);
-	_LoadDefault();
-	_work = true;
+	m_WorkingPath = "Content\\models\\";
+	InitializeCriticalSection( &m_CriticalSection );
+	LoadDefault();
 }
 
 CMeshController::~CMeshController()
 {
-	_work = false;
+
 }
 
-void CMeshController::_LoadDefault()
+void CMeshController::LoadDefault()
 {
-	_default_vb = new CVertexBuffer();
-	_default_ib = new CIndexBuffer();
+	m_Default_vb = new CVertexBuffer();
+	m_Default_ib = new CIndexBuffer();
 }
 
-void CMeshController::_ReadData(std::string value)
+void CMeshController::ReadData(std::string _value)
 {
-	std::map<std::string,void*>::iterator dataIterator = _data.find(value);
-	if(dataIterator == _data.end())
-		switch(_container[value]->extension)
+	std::map<std::string,void*>::iterator dataIterator = m_DataContainer.find(_value);
+	if(dataIterator == m_DataContainer.end())
+		switch(m_ResourceContainer[_value]->m_Extension)
 		{
-			case type::SMesh::_3DS :
+			case type::SMesh::EXT_3DS :
 			{
-				_data[value] = Loader::C3DS::ReadData(value);
-			}
-			break;
-			case type::SMesh::_M2 :
-			{
-
-			}
-			break;
-			case type::SMesh::_M3 :
-			{
-
+				m_DataContainer[_value] = Loader::C3DS::ReadData(_value);
 			}
 			break;
 		}
 		
 }
 
-type::SMesh* CMeshController::Load(std::string value, type::SMesh::EXTENSION extension)
+type::SMesh* CMeshController::Load(std::string _value, type::SMesh::EXTENSION _extension)
 {
-	std::map<std::string,type::SMesh*>::iterator meshIterator = _container.find(value);
-	if(meshIterator != _container.end())
+	std::map<std::string,type::SMesh*>::iterator meshIterator = m_ResourceContainer.find(_value);
+	if(meshIterator != m_ResourceContainer.end())
 			return meshIterator->second;
 	else
 	{
-		_container[value] = new type::SMesh();
-		_container[value]->vertexBuffer = _default_vb;
-		_container[value]->indexBuffer = _default_ib;
-		_container[value]->extension = extension;
-		EnterCriticalSection( &_criticalSection );
-		_requestList.push_back(value);	
-		LeaveCriticalSection( &_criticalSection );	
-		return _container[value];
+		m_ResourceContainer[_value] = new type::SMesh();
+		m_ResourceContainer[_value]->m_VertexBuffer = m_Default_vb;
+		m_ResourceContainer[_value]->m_IndexBuffer = m_Default_ib;
+		m_ResourceContainer[_value]->m_Extension = _extension;
+		EnterCriticalSection( &m_CriticalSection );
+		m_RequestList.push_back(_value);	
+		LeaveCriticalSection( &m_CriticalSection );	
+		return m_ResourceContainer[_value];
 	}
 }
 
-void CMeshController::Update()
+void CMeshController::WorkInMainThread()
 {
-	std::vector<std::string>::iterator _requestIterator = _requestList.begin();
-	if(_requestIterator != _requestList.end())
+	std::vector<std::string>::iterator requestIterator = m_RequestList.begin();
+	if(requestIterator != m_RequestList.end())
 	{
-		std::map<std::string,void*>::iterator dataIterator = _data.find((*_requestIterator));
-		if(dataIterator != _data.end())
+		std::map<std::string,void*>::iterator dataIterator = m_DataContainer.find((*requestIterator));
+		if(dataIterator != m_DataContainer.end())
 		{
-			switch(_container[(*_requestIterator)]->extension)
+			switch(m_ResourceContainer[(*requestIterator)]->m_Extension)
 			{
-				case type::SMesh::_3DS :
+				case type::SMesh::EXT_3DS :
 				{
-					Loader::C3DS::Commit((Loader::C3DS::S3DSFile*)dataIterator->second,_container[(*_requestIterator)]);
-					_data.erase(dataIterator);
-				}
-				break;
-				case type::SMesh::_M2 :
-				{
-
+					Loader::C3DS::Commit((Loader::C3DS::S3DSFile*)dataIterator->second,m_ResourceContainer[(*requestIterator)]);
+					m_DataContainer.erase(dataIterator);
 				}
 				break;
 			}
-			EnterCriticalSection( &_criticalSection );
-			_requestList.erase(_requestIterator);
-			LeaveCriticalSection( &_criticalSection );
+			EnterCriticalSection( &m_CriticalSection );
+			m_RequestList.erase(requestIterator);
+			LeaveCriticalSection( &m_CriticalSection );
 		}
 	}
 }
 
-void CMeshController::_LoadThread()
+void CMeshController::WorkInPreloadingThread()
 {
-	while(_work)
+	if(!m_RequestList.size()) return;
+
+	EnterCriticalSection( &m_CriticalSection );
+	std::vector<std::string>::iterator requestIterator = m_RequestList.begin();
+	while(requestIterator != m_RequestList.end())
 	{
-		Sleep(1000);
-		if(!_requestList.size())
-			continue;
-		EnterCriticalSection( &_criticalSection );
-		std::vector<std::string>::iterator _requestIterator = _requestList.begin();
-		while(_requestIterator != _requestList.end())
-		{
-			_ReadData(*_requestIterator);
-			++_requestIterator;
-		}
-		LeaveCriticalSection( &_criticalSection );		
+		ReadData(*requestIterator);
+		++requestIterator;
 	}
+	LeaveCriticalSection( &m_CriticalSection );		
 }

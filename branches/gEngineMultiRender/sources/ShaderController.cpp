@@ -4,7 +4,7 @@ using namespace Controller;
 
 CShaderController::CShaderController()
 {
-	InitializeCriticalSection( &_m_critical_section );
+	InitializeCriticalSection( &m_CriticalSection );
 }
 
 CShaderController::~CShaderController()
@@ -12,48 +12,48 @@ CShaderController::~CShaderController()
 
 }
 
-Core::CShader* CShaderController::Load(std::string _value)
+Core::CShader* CShaderController::Load(std::string _fileName)
 {
-	std::map<std::string,Core::CShader*>::iterator resource_iterator = _m_resource_container.find(_value);
+	std::map<std::string,Core::CShader*>::iterator resourceIterator = m_ResourceContainer.find(_fileName);
 	
-	if(resource_iterator != _m_resource_container.end())
+	if(resourceIterator != m_ResourceContainer.end())
 	{
-		return resource_iterator->second;
+		return resourceIterator->second;
 	}
 	else
 	{
-		_m_resource_container[_value] = new Core::CShader();
-		EnterCriticalSection( &_m_critical_section );
-		_m_request_container.push_back(_value);	
-		LeaveCriticalSection( &_m_critical_section );	
-		return _m_resource_container[_value];
+		m_ResourceContainer[_fileName] = new Core::CShader();
+		EnterCriticalSection( &m_CriticalSection );
+		m_RequestList.push_back(_fileName);	
+		LeaveCriticalSection( &m_CriticalSection );	
+		return m_ResourceContainer[_fileName];
 	}
 }
 
 void CShaderController::WorkInPreloadingThread()
 {
-	if(!_m_request_container.size()) return;
-	EnterCriticalSection( &_m_critical_section );
-	std::vector<std::string>::iterator request_iterator = _m_request_container.begin();
-	while(request_iterator != _m_request_container.end())
+	if(!m_ResourceContainer.size()) return;
+	EnterCriticalSection( &m_CriticalSection );
+	std::vector<std::string>::iterator requestIterator = m_RequestList.begin();
+	while(requestIterator != m_RequestList.end())
 	{
-		_m_resource_container[*request_iterator]->ReadData(*request_iterator);
-		++request_iterator;
+		m_ResourceContainer[*requestIterator]->ReadData(*requestIterator);
+		++requestIterator;
 	}
-	LeaveCriticalSection( &_m_critical_section );		
+	LeaveCriticalSection( &m_CriticalSection );		
 }
 
 void CShaderController::WorkInMainThread()
 {
-	std::vector<std::string>::iterator request_iterator = _m_request_container.begin();
-	if(request_iterator != _m_request_container.end())
+	std::vector<std::string>::iterator requestIterator = m_RequestList.begin();
+	if(requestIterator != m_RequestList.end())
 	{
-		if(_m_resource_container[*request_iterator]->m_is_read_data)
+		if(m_ResourceContainer[*requestIterator]->m_is_read_data)
 		{
-			_m_resource_container[*request_iterator]->Commit(*request_iterator);
-			EnterCriticalSection( &_m_critical_section );
-			_m_request_container.erase(request_iterator);
-			LeaveCriticalSection( &_m_critical_section );
+			m_ResourceContainer[*requestIterator]->Commit(*requestIterator);
+			EnterCriticalSection( &m_CriticalSection );
+			m_RequestList.erase(requestIterator);
+			LeaveCriticalSection( &m_CriticalSection );
 		}
 	}
 }

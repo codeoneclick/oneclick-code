@@ -8,7 +8,7 @@ COcean::COcean()
 {
 	_width  = 256 * 4;
 	_height = 256 * 4;
-	vPosition.y = -64.0f;
+	m_vPosition.y = -64.0f;
 }
 
 void COcean::Load(std::string value)
@@ -19,7 +19,7 @@ void COcean::Load(std::string value)
 
 void COcean::Update()
 {
-	_UpdateMatrix();
+	RefreshMatrix();
 }
 
 void COcean::Render()

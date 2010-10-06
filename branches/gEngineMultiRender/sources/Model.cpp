@@ -10,25 +10,25 @@ CModel::CModel()
 
 void CModel::Load(std::string value)
 {
-	_textures[0] = Resource::GetTextureControllerInstance()->Load("Content\\textures\\road.dds",Core::CTexture::DDS_EXT);
-	_meshData = Resource::GetMeshControllerInstance()->Load(value,type::SMesh::_3DS);
-	_shader = Resource::GetShaderControllerInstance()->Load("Content\\shaders\\basic_02");
+	m_TextureArray[0] = Resource::GetTextureControllerInstance()->Load("Content\\textures\\road.dds",Core::CTexture::DDS_EXT);
+	m_MeshData = Resource::GetMeshControllerInstance()->Load(value,type::SMesh::EXT_3DS);
+	m_Shader = Resource::GetShaderControllerInstance()->Load("Content\\shaders\\basic_02");
 }
 
 void CModel::Update()
 {
-	_UpdateMatrix();
+	RefreshMatrix();
 }
 
 void CModel::Render()
 {
-	_shader->Enable();
-	_shader->SetMatrix(_mWorldViewProjection,"mWorldViewProjection",Core::CShader::VS_SHADER);
-	_shader->SetTexture(*_textures[0],"Texture_01",Core::CShader::PS_SHADER);
-	_meshData->vertexBuffer->Enable();
-	_meshData->indexBuffer->Enable();
-	Core::CRender::Draw(_meshData->vertexBuffer->GetVertexCount(),_meshData->indexBuffer->GetIndexCount(),_meshData->indexBuffer->GetIndexCount());
-	_meshData->vertexBuffer->Disable();
-	_meshData->indexBuffer->Disable();
-	_shader->Disable();
+	m_Shader->Enable();
+	m_Shader->SetMatrix(m_mWorldViewProjection,"mWorldViewProjection",Core::CShader::VS_SHADER);
+	m_Shader->SetTexture(*m_TextureArray[0],"Texture_01",Core::CShader::PS_SHADER);
+	m_MeshData->m_VertexBuffer->Enable();
+	m_MeshData->m_IndexBuffer->Enable();
+	Core::CRender::Draw(m_MeshData->m_VertexBuffer->GetVertexCount(),m_MeshData->m_IndexBuffer->GetIndexCount(),m_MeshData->m_IndexBuffer->GetPrimitiveCount());
+	m_MeshData->m_VertexBuffer->Disable();
+	m_MeshData->m_IndexBuffer->Disable();
+	m_Shader->Disable();
 }

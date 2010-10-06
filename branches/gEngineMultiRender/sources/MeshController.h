@@ -7,30 +7,30 @@
 #include <vector>
 #include "3DS.h"
 
-class CMeshController
+namespace Controller
 {
-	friend DWORD __stdcall MeshLoadThread(void* value);
+	class CMeshController
+	{
 	private :
-		std::map<std::string,type::SMesh*> _container;
-		std::map<std::string,void*> _data;
-		std::vector<std::string> _requestList;
-		CVertexBuffer *_default_vb;
-		CIndexBuffer *_default_ib;
+		std::map<std::string,type::SMesh*> m_ResourceContainer;
+		std::map<std::string,void*> m_DataContainer;
+		std::vector<std::string> m_RequestList;
+		CVertexBuffer *m_Default_vb;
+		CIndexBuffer *m_Default_ib;
 		
-		HANDLE _thread;
-		CRITICAL_SECTION _criticalSection;
-		bool _work;
-		std::string _path;
+		CRITICAL_SECTION m_CriticalSection;
+		std::string m_WorkingPath;
 
-		void _ReadData(std::string key);
-		void _LoadThread();
-		void _LoadDefault();
+		void ReadData(std::string _value);
+		void LoadDefault();
 	public :
 		CMeshController();
 		~CMeshController();
-		type::SMesh* Load(std::string value, type::SMesh::EXTENSION extension);
-		void SetPath(std::string path) { _path = path; }
-		void Update();
+		type::SMesh* Load(std::string _value, type::SMesh::EXTENSION _extension);
+		void SetPath(std::string _workingPath) { m_WorkingPath = _workingPath; }
+		void WorkInMainThread();
+		void WorkInPreloadingThread();
+	};
 };
 
 #endif

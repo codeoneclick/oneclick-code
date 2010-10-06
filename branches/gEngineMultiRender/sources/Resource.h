@@ -10,12 +10,12 @@ class Resource
 	friend DWORD __stdcall PreloadingThread(void* _value);
 	private :
 		static Controller::CTextureController *_textureControllerInstance;
-		static CMeshController *_meshControllerInstance;
+		static Controller::CMeshController *_meshControllerInstance;
 		static Controller::CShaderController *_shaderControllerInstance;
 
 		static HANDLE m_thread;
 	public :
-		static CMeshController *GetMeshControllerInstance();
+		static Controller::CMeshController *GetMeshControllerInstance();
 		static Controller::CTextureController *GetTextureControllerInstance();
 		static Controller::CShaderController *GetShaderControllerInstance();
 

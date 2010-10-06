@@ -15,8 +15,8 @@ void EnviromentController::Create()
 	_landscape->Load("Content\\maps\\map.raw");
 	_mesh = new CModel();
 	_mesh->Load("Content\\models\\tank.3ds");
-	_mesh->vRotation.x = -1.57f;
-	_mesh->vScale = math::Vector3d(0.1f,0.1f,0.1f);
+	_mesh->m_vRotation.x = -1.57f;
+	_mesh->m_vScale = math::Vector3d(0.1f,0.1f,0.1f);
 
 	_ocean = new COcean();
 	_ocean->Load("none");
@@ -31,7 +31,6 @@ void EnviromentController::Update(DWORD time)
 	_landscape->Update();
 	//_ocean->Update();
 	_mesh->Update();
-	Resource::GetMeshControllerInstance()->Update();
 	Resource::WorkInMainTread();
 }
 

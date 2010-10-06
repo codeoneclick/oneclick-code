@@ -19,13 +19,13 @@ Controller::CTextureController *Resource::GetTextureControllerInstance()
 	return _textureControllerInstance;
 }
 
-CMeshController *Resource::_meshControllerInstance = NULL;
+Controller::CMeshController *Resource::_meshControllerInstance = NULL;
 
-CMeshController *Resource::GetMeshControllerInstance()
+Controller::CMeshController *Resource::GetMeshControllerInstance()
 {	
 	if(_meshControllerInstance == NULL)
 	{
-		_meshControllerInstance = new CMeshController();
+		_meshControllerInstance = new Controller::CMeshController();
 	}
 	return _meshControllerInstance;
 }
@@ -61,6 +61,8 @@ void Resource::WorkInPreloadingTread()
 			_textureControllerInstance->WorkInPreloadingThread();
 		if(_shaderControllerInstance != NULL)
 			_shaderControllerInstance->WorkInPreloadingThread();
+		if(_meshControllerInstance != NULL)
+			_meshControllerInstance->WorkInPreloadingThread();
 	}
 }
 
@@ -70,4 +72,6 @@ void Resource::WorkInMainTread()
 			_textureControllerInstance->WorkInMainThread();
 		if(_shaderControllerInstance != NULL)
 			_shaderControllerInstance->WorkInMainThread();
+		if(_meshControllerInstance != NULL)
+			_meshControllerInstance->WorkInMainThread();
 }

@@ -13,16 +13,16 @@ class CVertexBuffer
 
 	struct SElementDeclaration
 	{
-		unsigned int m_offset;
-		DECLARATION_ELEMENT_SIZE m_size;
-		DECLARATION_ELEMENT_TYPE m_type;
-		unsigned int m_index;
+		unsigned int m_Offset;
+		DECLARATION_ELEMENT_SIZE m_Size;
+		DECLARATION_ELEMENT_TYPE m_Type;
+		unsigned int m_Index;
 	};
 
 	struct SVertexDeclaration
 	{
-		SElementDeclaration *m_elements;
-		unsigned int m_element_count;	
+		SElementDeclaration *m_Elements;
+		unsigned int m_ElementCount;	
 	};
 
 	struct SVertexVT

@@ -146,32 +146,32 @@ C3DS::S3DSFile* C3DS::ReadData(std::string value)
 
 void C3DS::Commit(S3DSFile *in_value, type::SMesh *out_value)
 {
-	out_value->vertexBuffer = new CVertexBuffer();
-	CVertexBuffer::SVertexVT *vertexData = (CVertexBuffer::SVertexVT*)out_value->vertexBuffer->Load(in_value->nVerteces,sizeof(CVertexBuffer::SVertexVT));
-	memcpy(vertexData,in_value->vertexData,sizeof(CVertexBuffer::SVertexVT) * in_value->nVerteces);
+	out_value->m_VertexBuffer = new CVertexBuffer();
+	CVertexBuffer::SVertexVT *v_data = (CVertexBuffer::SVertexVT*)out_value->m_VertexBuffer->Load(in_value->nVerteces,sizeof(CVertexBuffer::SVertexVT));
+	memcpy(v_data,in_value->vertexData,sizeof(CVertexBuffer::SVertexVT) * in_value->nVerteces);
 	delete[] in_value->vertexData;
-	out_value->vertexBuffer->CommitVRAM();
+	out_value->m_VertexBuffer->CommitVRAM();
 
 	CVertexBuffer::SVertexDeclaration declaration;
-	declaration.m_elements = new CVertexBuffer::SElementDeclaration[2];
+	declaration.m_Elements = new CVertexBuffer::SElementDeclaration[2];
 	
-	declaration.m_elements[0].m_index = 0;
-	declaration.m_elements[0].m_size = CVertexBuffer::ELEMENT_FLOAT3;
-	declaration.m_elements[0].m_type = CVertexBuffer::ELEMENT_POSITION;
-	declaration.m_elements[0].m_offset = 0 * sizeof(float);
+	declaration.m_Elements[0].m_Index = 0;
+	declaration.m_Elements[0].m_Size = CVertexBuffer::ELEMENT_FLOAT3;
+	declaration.m_Elements[0].m_Type = CVertexBuffer::ELEMENT_POSITION;
+	declaration.m_Elements[0].m_Offset = 0 * sizeof(float);
 
-	declaration.m_elements[1].m_index = 0;
-	declaration.m_elements[1].m_size = CVertexBuffer::ELEMENT_FLOAT2;
-	declaration.m_elements[1].m_type = CVertexBuffer::ELEMENT_TEXCOORD;
-	declaration.m_elements[1].m_offset = 3 * sizeof(float);
+	declaration.m_Elements[1].m_Index = 0;
+	declaration.m_Elements[1].m_Size = CVertexBuffer::ELEMENT_FLOAT2;
+	declaration.m_Elements[1].m_Type = CVertexBuffer::ELEMENT_TEXCOORD;
+	declaration.m_Elements[1].m_Offset = 3 * sizeof(float);
 
-	declaration.m_element_count = 2;
+	declaration.m_ElementCount = 2;
 
-	out_value->vertexBuffer->SetDeclaration(declaration);
+	out_value->m_VertexBuffer->SetDeclaration(declaration);
 
-	out_value->indexBuffer = new CIndexBuffer();
-	unsigned int *ib_ref = out_value->indexBuffer->Load(in_value->nIndeces);
+	out_value->m_IndexBuffer = new CIndexBuffer();
+	unsigned int *ib_ref = out_value->m_IndexBuffer->Load(in_value->nIndeces);
 	memcpy(ib_ref,in_value->indexData,sizeof(unsigned int) * in_value->nIndeces);
 	delete[] in_value->indexData;
-	out_value->indexBuffer->CommitVRAM();
+	out_value->m_IndexBuffer->CommitVRAM();
 }

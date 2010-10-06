@@ -7,235 +7,162 @@ using namespace Enviroment;
 
 Landscape::Landscape()
 {
-	_width  = 256;
-	_height = 256;
-	_heightmap = NULL;
+	m_Width  = 256;
+	m_Height = 256;
+	m_MapData = NULL;
 }
 
-void Landscape::Load(std::string value)
+void Landscape::Load(std::string _fileName)
 {
-	_heightmap = new float*[_width];
-	for(unsigned int i = 0; i < _width; ++i)
+	m_MapData = new float*[m_Width];
+	for(unsigned int i = 0; i < m_Width; ++i)
 	{
-		_heightmap[i] = new float[_width];
-		for(unsigned int j = 0; j < _height; ++j)
-			_heightmap[i][j] = 0.0f;
+		m_MapData[i] = new float[m_Width];
+		for(unsigned int j = 0; j < m_Height; ++j)
+			m_MapData[i][j] = 0.0f;
 	}
 
 	unsigned char readValue = 0;
 	FILE * file;
-	file = fopen( value.c_str(), "rb" );
-	for( unsigned int i = 0; i < _width; ++i )
-		for( unsigned int j = 0; j < _height; ++j )
+	file = fopen( _fileName.c_str(), "rb" );
+	for( unsigned int i = 0; i < m_Width; ++i )
+		for( unsigned int j = 0; j < m_Height; ++j )
 		{
 			fread(&readValue,sizeof(unsigned char),1,file);
-			_heightmap[i][j] = static_cast<float>(readValue);
+			m_MapData[i][j] = static_cast<float>(readValue);
 		}
 	fclose( file );
 
-
-
-	_textures[0] = Resource::GetTextureControllerInstance()->Load("Content\\textures\\road.dds",Core::CTexture::DDS_EXT);
-	//_textures[1] = Resource::GetTextureControllerInstance()->Load("Content\\textures\\road_nh.dds",Core::CTexture::DDS_EXT);
-	_meshData = new type::SMesh();
-	_meshData->vertexBuffer = new CVertexBuffer();
+	m_TextureArray[0] = Resource::GetTextureControllerInstance()->Load("Content\\textures\\road.dds",Core::CTexture::DDS_EXT);
 	
-	CVertexBuffer::SVertexVTTBN* vertexData = (CVertexBuffer::SVertexVTTBN*)_meshData->vertexBuffer->Load(_width * _height,sizeof(CVertexBuffer::SVertexVTTBN));
+	m_MeshData = new type::SMesh();
+	m_MeshData->m_VertexBuffer = new CVertexBuffer();
 	
-	unsigned int _vertexBufferIndex = 0;
-	for(unsigned int i = 0; i < _width;++i)
-        for(unsigned int j = 0; j < _height;++j)
+	CVertexBuffer::SVertexVTTBN* v_data = (CVertexBuffer::SVertexVTTBN*)m_MeshData->m_VertexBuffer->Load(m_Width * m_Height,sizeof(CVertexBuffer::SVertexVTTBN));
+	
+	unsigned int index = 0;
+	for(unsigned int i = 0; i < m_Width;++i)
+        for(unsigned int j = 0; j < m_Height;++j)
 		{
-			vertexData[_vertexBufferIndex].vPosition.x = i*4.0f;
-			vertexData[_vertexBufferIndex].vPosition.y = _heightmap[i][j]*0.5f - 128.0f;
-			vertexData[_vertexBufferIndex].vPosition.z = j*4.0f;
-			vertexData[_vertexBufferIndex].vTexCoord.x = static_cast<float>(i) / 16.0f;
-			vertexData[_vertexBufferIndex].vTexCoord.y = static_cast<float>(j) / 16.0f;
-			++_vertexBufferIndex;
+			v_data[index].vPosition = math::Vector3d(i*4.0f,m_MapData[i][j]*0.5f - 128.0f,j*4.0f);
+			v_data[index].vTexCoord = math::Vector2d(static_cast<float>(i) / 16.0f,static_cast<float>(j) / 16.0f);;
+			++index;
 		}
-	_meshData->indexBuffer = new CIndexBuffer();
-	unsigned int *indexData = _meshData->indexBuffer->Load((_width - 1)*(_height - 1)*6);
-	_vertexBufferIndex = 0;
-
-	for(unsigned int i = 0; i < (_width - 1); ++i)
-		for(unsigned int j = 0; j < (_height - 1); ++j)
+   
+	m_MeshData->m_IndexBuffer = new CIndexBuffer();
+	unsigned int index_count = (m_Width - 1)*(m_Height - 1) * 6;
+	unsigned int *i_data = m_MeshData->m_IndexBuffer->Load(index_count);
+	index = 0;
+	for(unsigned int i = 0; i < (m_Width - 1); ++i)
+		for(unsigned int j = 0; j < (m_Height - 1); ++j)
 		{
-			indexData[_vertexBufferIndex] = i + j * _width;
-            _vertexBufferIndex++;
-            indexData[_vertexBufferIndex] = i + (j + 1) * _width;
-            _vertexBufferIndex++;
-            indexData[_vertexBufferIndex] = i + 1 + j * _width;
-            _vertexBufferIndex++;
+			i_data[index] = i + j * m_Width;
+            index++;
+            i_data[index] = i + (j + 1) * m_Width;
+            index++;
+            i_data[index] = i + 1 + j * m_Width;
+            index++;
 
-            indexData[_vertexBufferIndex] = i + (j + 1) * _width;
-            _vertexBufferIndex++;
-            indexData[_vertexBufferIndex] = i + 1 + (j + 1) * _width;
-            _vertexBufferIndex++;
-            indexData[_vertexBufferIndex] = i + 1 + j * _width;
-            _vertexBufferIndex++;
+            i_data[index] = i + (j + 1) * m_Width;
+            index++;
+            i_data[index] = i + 1 + (j + 1) * m_Width;
+            index++;
+            i_data[index] = i + 1 + j * m_Width;
+            index++;
 		}
-	_CalculateTBN(vertexData,indexData,_width * _height,(_width - 1)*(_height - 1)*6);
-	_meshData->vertexBuffer->CommitVRAM();
-	_meshData->indexBuffer->CommitVRAM();
-	_shader = Resource::GetShaderControllerInstance()->Load("Content\\shaders\\basic");
+	CalculateTBN(v_data,i_data,m_Width * m_Height,index_count);
+	m_MeshData->m_VertexBuffer->CommitVRAM();
+	m_MeshData->m_IndexBuffer->CommitVRAM();
+	m_Shader = Resource::GetShaderControllerInstance()->Load("Content\\shaders\\basic");
 
 	CVertexBuffer::SVertexDeclaration declaration;
-	declaration.m_elements = new CVertexBuffer::SElementDeclaration[5];
+	declaration.m_Elements = new CVertexBuffer::SElementDeclaration[5];
 	
-	declaration.m_elements[0].m_index = 0;
-	declaration.m_elements[0].m_size = CVertexBuffer::ELEMENT_FLOAT3;
-	declaration.m_elements[0].m_type = CVertexBuffer::ELEMENT_POSITION;
-	declaration.m_elements[0].m_offset = 0 * sizeof(float);
+	declaration.m_Elements[0].m_Index = 0;
+	declaration.m_Elements[0].m_Size = CVertexBuffer::ELEMENT_FLOAT3;
+	declaration.m_Elements[0].m_Type = CVertexBuffer::ELEMENT_POSITION;
+	declaration.m_Elements[0].m_Offset = 0 * sizeof(float);
 
-	declaration.m_elements[1].m_index = 0;
-	declaration.m_elements[1].m_size = CVertexBuffer::ELEMENT_FLOAT2;
-	declaration.m_elements[1].m_type = CVertexBuffer::ELEMENT_TEXCOORD;
-	declaration.m_elements[1].m_offset = 3 * sizeof(float);
+	declaration.m_Elements[1].m_Index = 0;
+	declaration.m_Elements[1].m_Size = CVertexBuffer::ELEMENT_FLOAT2;
+	declaration.m_Elements[1].m_Type = CVertexBuffer::ELEMENT_TEXCOORD;
+	declaration.m_Elements[1].m_Offset = 3 * sizeof(float);
 
-	declaration.m_elements[2].m_index = 0;
-	declaration.m_elements[2].m_size = CVertexBuffer::ELEMENT_FLOAT3;
-	declaration.m_elements[2].m_type = CVertexBuffer::ELEMENT_NORMAL;
-	declaration.m_elements[2].m_offset = 5 * sizeof(float);
+	declaration.m_Elements[2].m_Index = 0;
+	declaration.m_Elements[2].m_Size = CVertexBuffer::ELEMENT_FLOAT3;
+	declaration.m_Elements[2].m_Type = CVertexBuffer::ELEMENT_NORMAL;
+	declaration.m_Elements[2].m_Offset = 5 * sizeof(float);
 
-	declaration.m_elements[3].m_index = 1;
-	declaration.m_elements[3].m_size = CVertexBuffer::ELEMENT_FLOAT3;
-	declaration.m_elements[3].m_type = CVertexBuffer::ELEMENT_TEXCOORD;
-	declaration.m_elements[3].m_offset = 8 * sizeof(float);
+	declaration.m_Elements[3].m_Index = 1;
+	declaration.m_Elements[3].m_Size = CVertexBuffer::ELEMENT_FLOAT3;
+	declaration.m_Elements[3].m_Type = CVertexBuffer::ELEMENT_TEXCOORD;
+	declaration.m_Elements[3].m_Offset = 8 * sizeof(float);
 
-	declaration.m_elements[4].m_index = 2;
-	declaration.m_elements[4].m_size = CVertexBuffer::ELEMENT_FLOAT3;
-	declaration.m_elements[4].m_type = CVertexBuffer::ELEMENT_TEXCOORD;
-	declaration.m_elements[4].m_offset = 11 * sizeof(float);
+	declaration.m_Elements[4].m_Index = 2;
+	declaration.m_Elements[4].m_Size = CVertexBuffer::ELEMENT_FLOAT3;
+	declaration.m_Elements[4].m_Type = CVertexBuffer::ELEMENT_TEXCOORD;
+	declaration.m_Elements[4].m_Offset = 11 * sizeof(float);
 
-	declaration.m_element_count = 5;
+	declaration.m_ElementCount = 5;
 
-	_meshData->vertexBuffer->SetDeclaration(declaration);
+	m_MeshData->m_VertexBuffer->SetDeclaration(declaration);
 }
 
-void Landscape::_CalculateTBN(CVertexBuffer::SVertexVTTBN *vertexData,unsigned int *indexData, unsigned int nVerteces,unsigned int nIndeces)
+void Landscape::CalculateTBN(CVertexBuffer::SVertexVTTBN *_v_data,unsigned int *_i_data, unsigned int _vertex_count,unsigned int _index_count)
 {
-    for(unsigned int i = 0; i < nIndeces; i += 3)
+    for(unsigned int i = 0; i < _index_count; i += 3)
     {
-		math::Vector3d p1 = math::Vector3d(vertexData[indexData[i + 0]].vPosition.x,
-			vertexData[indexData[i + 0]].vPosition.y,
-			vertexData[indexData[i + 0]].vPosition.z);
+		math::Vector3d p1 = math::Vector3d(_v_data[_i_data[i + 0]].vPosition.x,
+										   _v_data[_i_data[i + 0]].vPosition.y,
+										   _v_data[_i_data[i + 0]].vPosition.z);
+				
+		math::Vector3d p2 = math::Vector3d(_v_data[_i_data[i + 1]].vPosition.x,
+										   _v_data[_i_data[i + 1]].vPosition.y,
+			                               _v_data[_i_data[i + 1]].vPosition.z);
 
-		math::Vector3d p2 = math::Vector3d(vertexData[indexData[i + 1]].vPosition.x,
-			vertexData[indexData[i + 1]].vPosition.y,
-			vertexData[indexData[i + 1]].vPosition.z);
-
-		math::Vector3d p3 = math::Vector3d(vertexData[indexData[i + 2]].vPosition.x,
-			vertexData[indexData[i + 2]].vPosition.y,
-			vertexData[indexData[i + 2]].vPosition.z);
+		math::Vector3d p3 = math::Vector3d(_v_data[_i_data[i + 2]].vPosition.x,
+										   _v_data[_i_data[i + 2]].vPosition.y,
+										   _v_data[_i_data[i + 2]].vPosition.z);
 
 		math::Vector3d v1 = p3 - p1;
 		math::Vector3d v2 = p2 - p1;
 		math::Vector3d normal = math::cross(v1,v2);
 		normal.normalize();
 
-		vertexData[indexData[i + 0]].vNormal = normal;
-		vertexData[indexData[i + 1]].vNormal = normal;
-		vertexData[indexData[i + 2]].vNormal = normal;
+		_v_data[_i_data[i + 0]].vNormal = normal;
+		_v_data[_i_data[i + 1]].vNormal = normal;
+		_v_data[_i_data[i + 2]].vNormal = normal;
 
 		math::Vector3d tangent = cross(v1,normal);
 		tangent.normalize();
 
-		vertexData[indexData[i + 0]].vTangent = tangent;
-		vertexData[indexData[i + 1]].vTangent = tangent;
-		vertexData[indexData[i + 2]].vTangent = tangent;
+		_v_data[_i_data[i + 0]].vTangent = tangent;
+		_v_data[_i_data[i + 1]].vTangent = tangent;
+		_v_data[_i_data[i + 2]].vTangent = tangent;
 
 		math::Vector3d binormal = cross(tangent,normal);
 		binormal.normalize();
 
-		vertexData[indexData[i + 0]].vBinormal = binormal;
-		vertexData[indexData[i + 1]].vBinormal = binormal;
-		vertexData[indexData[i + 2]].vBinormal = binormal;
-
-		/*math::vector::Vector3d v1 = math::vector::Vector3d(vertexData[indexData[i + 0]].vPosition.x,
-			vertexData[indexData[i + 0]].vPosition.y,
-			vertexData[indexData[i + 0]].vPosition.z);
-
-		math::vector::Vector3d v2 = math::vector::Vector3d(vertexData[indexData[i + 1]].vPosition.x,
-			vertexData[indexData[i + 1]].vPosition.y,
-			vertexData[indexData[i + 1]].vPosition.z);
-
-		math::vector::Vector3d v3 = math::vector::Vector3d(vertexData[indexData[i + 2]].vPosition.x,
-			vertexData[indexData[i + 2]].vPosition.y,
-			vertexData[indexData[i + 2]].vPosition.z);
-
-		math::vector::Vector3d v2v1 = v2 - v1;
-		math::vector::Vector3d v3v1 = v3 - v1;
-
-		float c2c1_T = vertexData[indexData[i + 1]].vTexCoord.x - vertexData[indexData[i + 0]].vTexCoord.x;
-		float c2c1_B = vertexData[indexData[i + 1]].vTexCoord.y - vertexData[indexData[i + 0]].vTexCoord.y;
-
-		float c3c1_T = vertexData[indexData[i + 2]].vTexCoord.x - vertexData[indexData[i + 0]].vTexCoord.x;
-		float c3c1_B = vertexData[indexData[i + 2]].vTexCoord.y - vertexData[indexData[i + 0]].vTexCoord.y;
-
-		float fDenominator = c2c1_T * c3c1_B - c3c1_T * c2c1_B;
-		if (fDenominator == 0.0f)	
-		{
-			int test = 0;
-		}
-		else
-		{
-			float fScale1 = 1.0f / fDenominator;
-			math::vector::Vector3d tangent = math::vector::Vector3d((c3c1_B * v2v1.x - c2c1_B * v3v1.x) * fScale1,
-																    (c3c1_B * v2v1.y - c2c1_B * v3v1.y) * fScale1,
-																	(c3c1_B * v2v1.z - c2c1_B * v3v1.z) * fScale1);
-
-			math::vector::Vector3d binormal = math::vector::Vector3d((-c3c1_T * v2v1.x + c2c1_T * v3v1.x) * fScale1,
-																	 (-c3c1_T * v2v1.y + c2c1_T * v3v1.y) * fScale1,
-																	 (-c3c1_T * v2v1.z + c2c1_T * v3v1.z) * fScale1);
-
-			math::vector::Vector3d normal = math::vector::CrossProduct(tangent,binormal);
-
-
-			float fScale2 = 1.0f / ((tangent.x * binormal.y * normal.z - tangent.z * binormal.y * normal.x) + 
-									(binormal.x * normal.y * tangent.z - binormal.z * normal.y * tangent.x) + 
-									(normal.x * tangent.y * binormal.z - normal.z * tangent.y * binormal.x));
-
-			math::vector::Vector3d tangentTBN = math::vector::Normalize(math::vector::Vector3d(math::vector::CrossProduct(binormal,normal).x * fScale2,
-				-math::vector::CrossProduct(normal,tangent).x * fScale2,
-				math::vector::CrossProduct(tangent,binormal).x * fScale2));
-			
-			math::vector::Vector3d binormalTBN = math::vector::Normalize(math::vector::Vector3d(-math::vector::CrossProduct(binormal,normal).y * fScale2,
-				math::vector::CrossProduct(normal,tangent).y * fScale2,
-				-math::vector::CrossProduct(tangent,binormal).y * fScale2));
-			
-			math::vector::Vector3d normalTBN = math::vector::Normalize(math::vector::Vector3d(math::vector::CrossProduct(binormal,normal).z * fScale2,
-				-math::vector::CrossProduct(normal,tangent).z * fScale2, 
-				math::vector::CrossProduct(tangent,binormal).z * fScale2));
-		
-			vertexData[indexData[i + 0]].vNormal = normalTBN;
-			vertexData[indexData[i + 1]].vNormal = normalTBN;
-			vertexData[indexData[i + 2]].vNormal = normalTBN;
-
-			vertexData[indexData[i + 0]].vTangent = tangentTBN;
-			vertexData[indexData[i + 1]].vTangent = tangentTBN;
-			vertexData[indexData[i + 2]].vTangent = tangentTBN;
-
-			vertexData[indexData[i + 0]].vBinormal = binormalTBN;
-			vertexData[indexData[i + 1]].vBinormal = binormalTBN;
-			vertexData[indexData[i + 2]].vBinormal = binormalTBN;
-		}*/
+		_v_data[_i_data[i + 0]].vBinormal = binormal;
+		_v_data[_i_data[i + 1]].vBinormal = binormal;
+		_v_data[_i_data[i + 2]].vBinormal = binormal;
 	}
 }
 
 void Landscape::Update()
 {
-	_UpdateMatrix();
+	RefreshMatrix();
 }
 
 void Landscape::Render()
 {
-	_shader->Enable();
-	_shader->SetMatrix(_mWorldViewProjection,"mWorldViewProjection",Core::CShader::VS_SHADER);
-	_shader->SetTexture(*_textures[0],"Texture_01",Core::CShader::PS_SHADER);
-	_meshData->vertexBuffer->Enable();
-	_meshData->indexBuffer->Enable();
-	Core::CRender::Draw(256*256,_meshData->indexBuffer->GetIndexCount(),256*256*2);
-	_meshData->vertexBuffer->Disable();
-	_meshData->indexBuffer->Disable();
-	_shader->Disable();
+	m_Shader->Enable();
+	m_Shader->SetMatrix(m_mWorldViewProjection,"mWorldViewProjection",Core::CShader::VS_SHADER);
+	m_Shader->SetTexture(*m_TextureArray[0],"Texture_01",Core::CShader::PS_SHADER);
+	m_MeshData->m_VertexBuffer->Enable();
+	m_MeshData->m_IndexBuffer->Enable();
+	Core::CRender::Draw(m_MeshData->m_VertexBuffer->GetVertexCount(),m_MeshData->m_IndexBuffer->GetIndexCount(),m_MeshData->m_IndexBuffer->GetPrimitiveCount());
+	m_MeshData->m_VertexBuffer->Disable();
+	m_MeshData->m_IndexBuffer->Disable();
+	m_Shader->Disable();
 }

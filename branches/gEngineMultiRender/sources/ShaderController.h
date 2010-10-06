@@ -13,15 +13,14 @@ namespace Controller
 	class CShaderController
 	{
 	private :
-		CRITICAL_SECTION _m_critical_section;
-
-		std::map<std::string,Core::CShader*> _m_resource_container;
-		std::vector<std::string> _m_request_container;
+		CRITICAL_SECTION m_CriticalSection;
+		std::map<std::string,Core::CShader*> m_ResourceContainer;
+		std::vector<std::string> m_RequestList;
 
 	public :
 		CShaderController();
 		~CShaderController();
-		Core::CShader* Load(std::string _value);
+		Core::CShader* Load(std::string _fileName);
 		void WorkInMainThread();
 		void WorkInPreloadingThread();
 	};

@@ -24,6 +24,7 @@ class CIndexBuffer
 		void Enable();
 		void Disable();
 		const unsigned int GetIndexCount() { return _m_index_count; }
+		const unsigned int GetPrimitiveCount() { return _m_index_count / 3; }
 };
 
 #endif

@@ -10,38 +10,38 @@
 
 namespace Enviroment
 {
-class CDummy
-{
+	class CDummy
+	{
 	protected :
-		Core::CShader *_shader;
-		Core::CTexture *_textures[8];
-		type::SMesh *_meshData;
+		Core::CShader  *m_Shader;
+		Core::CTexture *m_TextureArray[8];
+		type::SMesh *m_MeshData;
 
-		math::Matrix4x4 _mTranslation;
-		math::Matrix4x4 _mRotationX;
-		math::Matrix4x4 _mRotationY;
-		math::Matrix4x4 _mRotationZ;
-		math::Matrix4x4 _mRotation;
-		math::Matrix4x4 _mScale;
-		math::Matrix4x4 _mWorld;
+		math::Matrix4x4 m_mTranslation;
+		math::Matrix4x4 m_mRotationX;
+		math::Matrix4x4 m_mRotationY;
+		math::Matrix4x4 m_mRotationZ;
+		math::Matrix4x4 m_mRotation;
+		math::Matrix4x4 m_mScale;
 
-		math::Matrix4x4 *_mView;
-		math::Matrix4x4 *_mProjection;
+		math::Matrix4x4 m_mWorld;
+		math::Matrix4x4 *m_mView;
+		math::Matrix4x4 *m_mProjection;
 
-		math::Matrix4x4 _mWorldViewProjection;
+		math::Matrix4x4 m_mWorldViewProjection;
 
-		math::Vector3d  *_vCameraPosition;
-		math::Vector3d  *_vLightDirection;
-		void _UpdateMatrix();
+		math::Vector3d  *m_vCameraPosition;
+		math::Vector3d  *m_vLightDirection;
+		void RefreshMatrix();
 	public :
 		CDummy();
-		virtual void Load(std::string value) = NULL;
+		virtual void Load(std::string _fileName) = NULL;
 		virtual void Update() = NULL;
 		virtual void Render() = NULL;
 
-		math::Vector3d vPosition;
-		math::Vector3d vRotation;
-		math::Vector3d vScale;
+		math::Vector3d m_vPosition;
+		math::Vector3d m_vRotation;
+		math::Vector3d m_vScale;
 	};
 };
 

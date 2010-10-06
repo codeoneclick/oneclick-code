@@ -8,8 +8,8 @@ CVertexBuffer::CVertexBuffer()
 	_m_vertex_count = 0;
 	_m_vb_data = NULL;
 	_m_element_size = 0;
-	_m_declaration.m_element_count = 0;
-	_m_declaration.m_elements = NULL;
+	_m_declaration.m_ElementCount = 0;
+	_m_declaration.m_Elements = NULL;
 	_prt_vertex_declaration = NULL;
 }
 
@@ -93,23 +93,23 @@ void CVertexBuffer::SetDeclaration(SVertexDeclaration &_declaration)
 
 	if(Core::CDevice::GetDeviceType() == Core::CDevice::D3D)
 	{
-		D3DVERTEXELEMENT9 *dx_vertex_declaration = new D3DVERTEXELEMENT9[_m_declaration.m_element_count + 1];
-		for( unsigned int i = 0; i < _m_declaration.m_element_count; ++i)
+		D3DVERTEXELEMENT9 *dx_vertex_declaration = new D3DVERTEXELEMENT9[_m_declaration.m_ElementCount + 1];
+		for( unsigned int i = 0; i < _m_declaration.m_ElementCount; ++i)
 		{
 			dx_vertex_declaration[i].Stream = 0;
-			dx_vertex_declaration[i].Offset = _m_declaration.m_elements[i].m_offset;
-			dx_vertex_declaration[i].Type = _m_declaration.m_elements[i].m_size - 1;
+			dx_vertex_declaration[i].Offset = _m_declaration.m_Elements[i].m_Offset;
+			dx_vertex_declaration[i].Type = _m_declaration.m_Elements[i].m_Size - 1;
 			dx_vertex_declaration[i].Method = D3DDECLMETHOD_DEFAULT;
-			dx_vertex_declaration[i].Usage = _m_declaration.m_elements[i].m_type;
-			dx_vertex_declaration[i].UsageIndex = _m_declaration.m_elements[i].m_index;
+			dx_vertex_declaration[i].Usage = _m_declaration.m_Elements[i].m_Type;
+			dx_vertex_declaration[i].UsageIndex = _m_declaration.m_Elements[i].m_Index;
 		}
 
-		dx_vertex_declaration[_m_declaration.m_element_count].Stream = 0xFF;
-		dx_vertex_declaration[_m_declaration.m_element_count].Offset = 0;
-		dx_vertex_declaration[_m_declaration.m_element_count].Type = D3DDECLTYPE_UNUSED;
-		dx_vertex_declaration[_m_declaration.m_element_count].Method = 0;
-		dx_vertex_declaration[_m_declaration.m_element_count].Usage = 0;
-		dx_vertex_declaration[_m_declaration.m_element_count].UsageIndex = 0;
+		dx_vertex_declaration[_m_declaration.m_ElementCount].Stream = 0xFF;
+		dx_vertex_declaration[_m_declaration.m_ElementCount].Offset = 0;
+		dx_vertex_declaration[_m_declaration.m_ElementCount].Type = D3DDECLTYPE_UNUSED;
+		dx_vertex_declaration[_m_declaration.m_ElementCount].Method = 0;
+		dx_vertex_declaration[_m_declaration.m_ElementCount].Usage = 0;
+		dx_vertex_declaration[_m_declaration.m_ElementCount].UsageIndex = 0;
 		
 		Core::CDevice::GetD3DDevice()->CreateVertexDeclaration(dx_vertex_declaration,&_prt_vertex_declaration);
 		delete[] dx_vertex_declaration;
@@ -125,28 +125,28 @@ void CVertexBuffer::Enable()
 	}
 	else
 	{
-		for( unsigned int i = 0; i < _m_declaration.m_element_count; ++i)
+		for( unsigned int i = 0; i < _m_declaration.m_ElementCount; ++i)
 		{
-			switch(_m_declaration.m_elements[i].m_type)
+			switch(_m_declaration.m_Elements[i].m_Type)
 			{
 			case ELEMENT_POSITION :
 				{
 					Extension::VBExtension::glBindBufferARB(GL_ARRAY_BUFFER_ARB, _m_ogl_addr);
 					glEnableClientState(GL_VERTEX_ARRAY);
-					glVertexPointer(_m_declaration.m_elements[i].m_size, GL_FLOAT, _m_element_size, (void*)_m_declaration.m_elements[i].m_offset );
+					glVertexPointer(_m_declaration.m_Elements[i].m_Size, GL_FLOAT, _m_element_size, (void*)_m_declaration.m_Elements[i].m_Offset );
 				}
 				break;
 			case ELEMENT_NORMAL :
 				{
 					glEnableClientState(GL_NORMAL_ARRAY);
-					glNormalPointer(GL_FLOAT, _m_element_size, (void*)_m_declaration.m_elements[i].m_offset);
+					glNormalPointer(GL_FLOAT, _m_element_size, (void*)_m_declaration.m_Elements[i].m_Offset);
 				}
 				break;
 			case ELEMENT_TEXCOORD :
 				{
-					Extension::VBExtension::glClientActiveTextureCoordARB(GL_TEXTURE0 + _m_declaration.m_elements[i].m_index);
+					Extension::VBExtension::glClientActiveTextureCoordARB(GL_TEXTURE0 + _m_declaration.m_Elements[i].m_Index);
 					glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-					glTexCoordPointer(_m_declaration.m_elements[i].m_size, GL_FLOAT, _m_element_size, (void*)_m_declaration.m_elements[i].m_offset);
+					glTexCoordPointer(_m_declaration.m_Elements[i].m_Size, GL_FLOAT, _m_element_size, (void*)_m_declaration.m_Elements[i].m_Offset);
 				}
 				break;
 			case ELEMENT_TANGENT :
