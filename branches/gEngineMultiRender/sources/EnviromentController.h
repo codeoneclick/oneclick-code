@@ -5,6 +5,7 @@
 #include "Model.h"
 #include "RenderController.h"
 #include "Ocean.h"
+#include "SoaringIsland.h"
 
 namespace Enviroment
 {
@@ -12,7 +13,8 @@ class EnviromentController
 {
 private :
 	Camera* _camera;
-	Landscape* _landscape;
+	CSoaringIsland* m_Island;
+	//Landscape* _landscape;
 	CModel *_mesh;
 	COcean *_ocean;
 public :
@@ -20,7 +22,7 @@ public :
 	Landscape* LoadLandscape(char* filename, unsigned int width, unsigned int height);
 	void Create();
 	__forceinline Camera* GetCameraInstance() { return _camera; }
-	__forceinline Landscape* GetLandscapeInstance() { return _landscape; }
+	//__forceinline Landscape* GetLandscapeInstance() { return _landscape; }
 	void Update(DWORD time);
 	void Render(Video::CRenderController::ERenderTexture value);
 };

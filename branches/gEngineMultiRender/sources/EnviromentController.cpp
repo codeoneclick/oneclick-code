@@ -11,8 +11,8 @@ EnviromentController::EnviromentController()
 void EnviromentController::Create()
 {
 	_camera = new Camera();
-	_landscape = new Landscape();
-	_landscape->Load("Content\\maps\\map.raw");
+	m_Island = new CSoaringIsland();
+	m_Island->Load("Content\\maps\\map.raw");
 	_mesh = new CModel();
 	_mesh->Load("Content\\models\\tank.3ds");
 	_mesh->m_vRotation.x = -1.57f;
@@ -28,7 +28,7 @@ void EnviromentController::Update(DWORD time)
 {
 	//if(time == 0)
     _camera->Update();
-	_landscape->Update();
+	m_Island->Update();
 	//_ocean->Update();
 	_mesh->Update();
 	CResource::WorkInMainTread();
@@ -40,7 +40,7 @@ void EnviromentController::Render(Video::CRenderController::ERenderTexture value
 	{
 		case Video::CRenderController::SCREEN_TEXTURE :
 		{
-			_landscape->Render();
+			m_Island->Render();
 			_mesh->Render();
 		}
 		break;
