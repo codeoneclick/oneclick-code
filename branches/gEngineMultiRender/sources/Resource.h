@@ -5,15 +5,15 @@
 #include "MeshController.h"
 #include "ShaderController.h"
 
-class Resource
+class CResource
 {
 	friend DWORD __stdcall PreloadingThread(void* _value);
 	private :
-		static Controller::CTextureController *_textureControllerInstance;
-		static Controller::CMeshController *_meshControllerInstance;
-		static Controller::CShaderController *_shaderControllerInstance;
+		static Controller::CTextureController *m_TextureController;
+		static Controller::CMeshController *m_MeshController;
+		static Controller::CShaderController *m_ShaderController;
 
-		static HANDLE m_thread;
+		static HANDLE m_Thread;
 	public :
 		static Controller::CMeshController *GetMeshControllerInstance();
 		static Controller::CTextureController *GetTextureControllerInstance();

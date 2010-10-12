@@ -2,76 +2,76 @@
 
 DWORD __stdcall PreloadingThread(void* value)
 {
-	Resource::WorkInPreloadingTread();
+	CResource::WorkInPreloadingTread();
     return NULL;
 }
 
-HANDLE Resource::m_thread = NULL;
+HANDLE CResource::m_Thread = NULL;
 
-Controller::CTextureController *Resource::_textureControllerInstance = NULL;
+Controller::CTextureController *CResource::m_TextureController = NULL;
 
-Controller::CTextureController *Resource::GetTextureControllerInstance()
+Controller::CTextureController *CResource::GetTextureControllerInstance()
 {	
-	if(_textureControllerInstance == NULL)
+	if(m_TextureController == NULL)
 	{
-		_textureControllerInstance = new Controller::CTextureController();
+		m_TextureController = new Controller::CTextureController();
 	}
-	return _textureControllerInstance;
+	return m_TextureController;
 }
 
-Controller::CMeshController *Resource::_meshControllerInstance = NULL;
+Controller::CMeshController *CResource::m_MeshController = NULL;
 
-Controller::CMeshController *Resource::GetMeshControllerInstance()
+Controller::CMeshController *CResource::GetMeshControllerInstance()
 {	
-	if(_meshControllerInstance == NULL)
+	if(m_MeshController == NULL)
 	{
-		_meshControllerInstance = new Controller::CMeshController();
+		m_MeshController = new Controller::CMeshController();
 	}
-	return _meshControllerInstance;
+	return m_MeshController;
 }
 
-Controller::CShaderController *Resource::_shaderControllerInstance = NULL;
+Controller::CShaderController *CResource::m_ShaderController = NULL;
 
-Controller::CShaderController *Resource::GetShaderControllerInstance()
+Controller::CShaderController *CResource::GetShaderControllerInstance()
 {
-	if(_shaderControllerInstance == NULL)
+	if(m_ShaderController == NULL)
 	{
-		_shaderControllerInstance = new Controller::CShaderController();
+		m_ShaderController = new Controller::CShaderController();
 	}
-	return _shaderControllerInstance;
+	return m_ShaderController;
 }
 
-void Resource::Enable()
+void CResource::Enable()
 {
-	m_thread = CreateThread(NULL,NULL,PreloadingThread,NULL,NULL,NULL);
-	SetThreadPriority(m_thread,THREAD_PRIORITY_LOWEST);
+	m_Thread = CreateThread(NULL,NULL,PreloadingThread,NULL,NULL,NULL);
+	SetThreadPriority(m_Thread,THREAD_PRIORITY_LOWEST);
 }
 
-void Resource::Disable()
+void CResource::Disable()
 {
 
 }
 
-void Resource::WorkInPreloadingTread()
+void CResource::WorkInPreloadingTread()
 {
 	while(true)
 	{
 		Sleep(1000);
-		if(_textureControllerInstance != NULL) 
-			_textureControllerInstance->WorkInPreloadingThread();
-		if(_shaderControllerInstance != NULL)
-			_shaderControllerInstance->WorkInPreloadingThread();
-		if(_meshControllerInstance != NULL)
-			_meshControllerInstance->WorkInPreloadingThread();
+		if(m_TextureController != NULL) 
+			m_TextureController->WorkInPreloadingThread();
+		if(m_ShaderController != NULL)
+			m_ShaderController->WorkInPreloadingThread();
+		if(m_MeshController != NULL)
+			m_MeshController->WorkInPreloadingThread();
 	}
 }
 
-void Resource::WorkInMainTread()
+void CResource::WorkInMainTread()
 {
-		if(_textureControllerInstance != NULL) 
-			_textureControllerInstance->WorkInMainThread();
-		if(_shaderControllerInstance != NULL)
-			_shaderControllerInstance->WorkInMainThread();
-		if(_meshControllerInstance != NULL)
-			_meshControllerInstance->WorkInMainThread();
+		if(m_TextureController != NULL) 
+			m_TextureController->WorkInMainThread();
+		if(m_ShaderController != NULL)
+			m_ShaderController->WorkInMainThread();
+		if(m_MeshController != NULL)
+			m_MeshController->WorkInMainThread();
 }

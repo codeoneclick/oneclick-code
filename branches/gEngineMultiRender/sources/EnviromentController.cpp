@@ -18,9 +18,9 @@ void EnviromentController::Create()
 	_mesh->m_vRotation.x = -1.57f;
 	_mesh->m_vScale = math::Vector3d(0.1f,0.1f,0.1f);
 
-	_ocean = new COcean();
-	_ocean->Load("none");
-	Resource::Enable();
+	//_ocean = new COcean();
+	//_ocean->Load("none");
+	CResource::Enable();
 	//_ocean->vPosition.y = -128.0f;
 }
 
@@ -31,7 +31,7 @@ void EnviromentController::Update(DWORD time)
 	_landscape->Update();
 	//_ocean->Update();
 	_mesh->Update();
-	Resource::WorkInMainTread();
+	CResource::WorkInMainTread();
 }
 
 void EnviromentController::Render(Video::CRenderController::ERenderTexture value)

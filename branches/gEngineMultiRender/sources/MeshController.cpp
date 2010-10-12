@@ -26,7 +26,7 @@ void CMeshController::ReadData(std::string _value)
 	if(dataIterator == m_DataContainer.end())
 		switch(m_ResourceContainer[_value]->m_Extension)
 		{
-			case type::SMesh::EXT_3DS :
+			case Core::CMesh::EXT_3DS :
 			{
 				m_DataContainer[_value] = Loader::C3DS::ReadData(_value);
 			}
@@ -35,14 +35,14 @@ void CMeshController::ReadData(std::string _value)
 		
 }
 
-type::SMesh* CMeshController::Load(std::string _value, type::SMesh::EXTENSION _extension)
+Core::CMesh* CMeshController::Load(std::string _value, Core::CMesh::MESH_EXTENSION _extension)
 {
-	std::map<std::string,type::SMesh*>::iterator meshIterator = m_ResourceContainer.find(_value);
+	std::map<std::string,Core::CMesh*>::iterator meshIterator = m_ResourceContainer.find(_value);
 	if(meshIterator != m_ResourceContainer.end())
 			return meshIterator->second;
 	else
 	{
-		m_ResourceContainer[_value] = new type::SMesh();
+		m_ResourceContainer[_value] = new Core::CMesh();
 		m_ResourceContainer[_value]->m_VertexBuffer = m_Default_vb;
 		m_ResourceContainer[_value]->m_IndexBuffer = m_Default_ib;
 		m_ResourceContainer[_value]->m_Extension = _extension;
@@ -63,7 +63,7 @@ void CMeshController::WorkInMainThread()
 		{
 			switch(m_ResourceContainer[(*requestIterator)]->m_Extension)
 			{
-				case type::SMesh::EXT_3DS :
+				case Core::CMesh::EXT_3DS :
 				{
 					Loader::C3DS::Commit((Loader::C3DS::S3DSFile*)dataIterator->second,m_ResourceContainer[(*requestIterator)]);
 					m_DataContainer.erase(dataIterator);

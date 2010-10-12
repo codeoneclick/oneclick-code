@@ -19,7 +19,7 @@ void COcean::Load(std::string value)
 
 void COcean::Update()
 {
-	RefreshMatrix();
+	Matrix();
 }
 
 void COcean::Render()

@@ -12,7 +12,7 @@ namespace Controller
 	class CMeshController
 	{
 	private :
-		std::map<std::string,type::SMesh*> m_ResourceContainer;
+		std::map<std::string,Core::CMesh*> m_ResourceContainer;
 		std::map<std::string,void*> m_DataContainer;
 		std::vector<std::string> m_RequestList;
 		CVertexBuffer *m_Default_vb;
@@ -26,7 +26,7 @@ namespace Controller
 	public :
 		CMeshController();
 		~CMeshController();
-		type::SMesh* Load(std::string _value, type::SMesh::EXTENSION _extension);
+		Core::CMesh* Load(std::string _value, Core::CMesh::MESH_EXTENSION _extension);
 		void SetPath(std::string _workingPath) { m_WorkingPath = _workingPath; }
 		void WorkInMainThread();
 		void WorkInPreloadingThread();

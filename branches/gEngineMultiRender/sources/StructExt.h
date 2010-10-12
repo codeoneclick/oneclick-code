@@ -71,14 +71,14 @@ struct STexture
 	EXTENSION extension;
 };
 
-struct SMesh
+/*struct SMesh
 {
 	enum EXTENSION {EXT_NONE = 0, EXT_3DS };
 	EXTENSION m_Extension;
 
 	CVertexBuffer *m_VertexBuffer;
 	CIndexBuffer  *m_IndexBuffer;
-};
+};*/
 
 struct CGShaderParameters
 {

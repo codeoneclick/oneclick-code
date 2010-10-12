@@ -18,7 +18,7 @@ CDummy::CDummy()
 	m_vScale    = math::Vector3d(1.0f,1.0f,1.0f);
 }
 
-void CDummy::RefreshMatrix()
+void CDummy::Matrix()
 {
 	m_mTranslation = math::Translation(m_vPosition);
 	m_mRotationX = math::RotationX(m_vRotation.x);

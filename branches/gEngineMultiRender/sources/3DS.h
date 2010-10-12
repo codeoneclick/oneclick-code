@@ -9,6 +9,7 @@
 #include "glext.h"
 #include "StructExt.h"
 #include "VBExtension.h"
+#include "Mesh.h"
 
 namespace Loader
 {
@@ -52,7 +53,7 @@ public :
 
 public :
 	static S3DSFile* ReadData(std::string value);
-	static void Commit(S3DSFile *in_value, type::SMesh *out_value);
+	static void Commit(S3DSFile *in_value, Core::CMesh *out_value);
 };
 };
 

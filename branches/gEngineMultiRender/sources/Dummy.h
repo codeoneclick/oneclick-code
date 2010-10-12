@@ -1,22 +1,18 @@
 #ifndef _DUMMY_H_
 #define _DUMMY_H_
 
-#include "StructExt.h"
-#include "VBExtension.h"
+#include <string>
+#include <map>
+
 #include "Matrix4x4.h"
-#include "VertexBuffer.h"
-#include "IndexBuffer.h"
-#include "Shader.h"
+#include "Mesh.h"
 
 namespace Enviroment
 {
 	class CDummy
 	{
 	protected :
-		Core::CShader  *m_Shader;
-		Core::CTexture *m_TextureArray[8];
-		type::SMesh *m_MeshData;
-
+		std::map<std::string,Core::CMesh*> m_MeshArray;
 		math::Matrix4x4 m_mTranslation;
 		math::Matrix4x4 m_mRotationX;
 		math::Matrix4x4 m_mRotationY;
@@ -32,7 +28,7 @@ namespace Enviroment
 
 		math::Vector3d  *m_vCameraPosition;
 		math::Vector3d  *m_vLightDirection;
-		void RefreshMatrix();
+		void Matrix();
 	public :
 		CDummy();
 		virtual void Load(std::string _fileName) = NULL;

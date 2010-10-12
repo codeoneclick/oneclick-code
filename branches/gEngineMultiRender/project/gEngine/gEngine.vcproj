@@ -199,6 +199,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\sources\Mesh.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\sources\Mesh.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\sources\Render.cpp"
 					>
 				</File>
@@ -312,6 +320,14 @@
 				</File>
 				<File
 					RelativePath="..\..\sources\Ocean.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\sources\SoaringIsland.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\sources\SoaringIsland.h"
 					>
 				</File>
 			</Filter>

@@ -33,12 +33,13 @@ void Landscape::Load(std::string _fileName)
 		}
 	fclose( file );
 
-	m_TextureArray[0] = Resource::GetTextureControllerInstance()->Load("Content\\textures\\road.dds",Core::CTexture::DDS_EXT);
+	m_MeshArray["main"] = new Core::CMesh();
+	m_MeshArray["main"]->m_TextureArray[0] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\road.dds",Core::CTexture::DDS_EXT);
+	m_MeshArray["main"]->m_Shader = CResource::GetShaderControllerInstance()->Load("Content\\shaders\\basic");
+		
+	m_MeshArray["main"]->m_VertexBuffer = new CVertexBuffer();
 	
-	m_MeshData = new type::SMesh();
-	m_MeshData->m_VertexBuffer = new CVertexBuffer();
-	
-	CVertexBuffer::SVertexVTTBN* v_data = (CVertexBuffer::SVertexVTTBN*)m_MeshData->m_VertexBuffer->Load(m_Width * m_Height,sizeof(CVertexBuffer::SVertexVTTBN));
+	CVertexBuffer::SVertexVTTBN* v_data = (CVertexBuffer::SVertexVTTBN*)m_MeshArray["main"]->m_VertexBuffer->Load(m_Width * m_Height,sizeof(CVertexBuffer::SVertexVTTBN));
 	
 	unsigned int index = 0;
 	for(unsigned int i = 0; i < m_Width;++i)
@@ -49,9 +50,9 @@ void Landscape::Load(std::string _fileName)
 			++index;
 		}
    
-	m_MeshData->m_IndexBuffer = new CIndexBuffer();
+	m_MeshArray["main"]->m_IndexBuffer = new CIndexBuffer();
 	unsigned int index_count = (m_Width - 1)*(m_Height - 1) * 6;
-	unsigned int *i_data = m_MeshData->m_IndexBuffer->Load(index_count);
+	unsigned int *i_data = m_MeshArray["main"]->m_IndexBuffer->Load(index_count);
 	index = 0;
 	for(unsigned int i = 0; i < (m_Width - 1); ++i)
 		for(unsigned int j = 0; j < (m_Height - 1); ++j)
@@ -71,9 +72,9 @@ void Landscape::Load(std::string _fileName)
             index++;
 		}
 	CalculateTBN(v_data,i_data,m_Width * m_Height,index_count);
-	m_MeshData->m_VertexBuffer->CommitVRAM();
-	m_MeshData->m_IndexBuffer->CommitVRAM();
-	m_Shader = Resource::GetShaderControllerInstance()->Load("Content\\shaders\\basic");
+	m_MeshArray["main"]->m_VertexBuffer->CommitVRAM();
+	m_MeshArray["main"]->m_IndexBuffer->CommitVRAM();
+	
 
 	CVertexBuffer::SVertexDeclaration declaration;
 	declaration.m_Elements = new CVertexBuffer::SElementDeclaration[5];
@@ -105,7 +106,7 @@ void Landscape::Load(std::string _fileName)
 
 	declaration.m_ElementCount = 5;
 
-	m_MeshData->m_VertexBuffer->SetDeclaration(declaration);
+	m_MeshArray["main"]->m_VertexBuffer->SetDeclaration(declaration);
 }
 
 void Landscape::CalculateTBN(CVertexBuffer::SVertexVTTBN *_v_data,unsigned int *_i_data, unsigned int _vertex_count,unsigned int _index_count)
@@ -151,18 +152,12 @@ void Landscape::CalculateTBN(CVertexBuffer::SVertexVTTBN *_v_data,unsigned int *
 
 void Landscape::Update()
 {
-	RefreshMatrix();
+	Matrix();
+	m_MeshArray["main"]->m_Shader->SetMatrix(m_mWorldViewProjection,"mWorldViewProjection",Core::CShader::VS_SHADER);
+	m_MeshArray["main"]->m_Shader->SetTexture(*m_MeshArray["main"]->m_TextureArray[0],"Texture_01",Core::CShader::PS_SHADER);
 }
 
 void Landscape::Render()
 {
-	m_Shader->Enable();
-	m_Shader->SetMatrix(m_mWorldViewProjection,"mWorldViewProjection",Core::CShader::VS_SHADER);
-	m_Shader->SetTexture(*m_TextureArray[0],"Texture_01",Core::CShader::PS_SHADER);
-	m_MeshData->m_VertexBuffer->Enable();
-	m_MeshData->m_IndexBuffer->Enable();
-	Core::CRender::Draw(m_MeshData->m_VertexBuffer->GetVertexCount(),m_MeshData->m_IndexBuffer->GetIndexCount(),m_MeshData->m_IndexBuffer->GetPrimitiveCount());
-	m_MeshData->m_VertexBuffer->Disable();
-	m_MeshData->m_IndexBuffer->Disable();
-	m_Shader->Disable();
+	m_MeshArray["main"]->Draw();
 }
