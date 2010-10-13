@@ -463,6 +463,22 @@
 				Name="shaders"
 				>
 				<File
+					RelativePath="..\..\bin\content\shaders\basic.fx"
+					>
+				</File>
+				<File
+					RelativePath="..\..\bin\content\shaders\basic_02.fx"
+					>
+				</File>
+				<File
+					RelativePath="..\..\bin\content\shaders\basic_02_ps.cg"
+					>
+				</File>
+				<File
+					RelativePath="..\..\bin\content\shaders\basic_02_vs.cg"
+					>
+				</File>
+				<File
 					RelativePath="..\..\bin\content\shaders\basic_ps.cg"
 					>
 				</File>

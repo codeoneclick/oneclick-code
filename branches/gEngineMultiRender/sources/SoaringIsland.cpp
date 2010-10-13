@@ -38,7 +38,7 @@ void CSoaringIsland::Load(std::string _fileName)
 {
 	ReadData(_fileName);
 	m_MeshArray["top"] = new Core::CMesh();
-	m_MeshArray["top"]->m_TextureArray[0] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\road.dds",Core::CTexture::DDS_EXT);
+	m_MeshArray["top"]->m_TextureArray[0] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\grass.dds",Core::CTexture::DDS_EXT);
 	m_MeshArray["top"]->m_Shader = CResource::GetShaderControllerInstance()->Load("Content\\shaders\\basic");
 	m_MeshArray["top"]->m_VertexBuffer = new CVertexBuffer();
 	m_MeshArray["top"]->m_IndexBuffer = new CIndexBuffer();
@@ -181,18 +181,18 @@ void CSoaringIsland::CalculateTBN(CVertexBuffer::SVertexVTTBN *_v_data,unsigned 
 
 void CSoaringIsland::Update()
 {
-	Matrix();
 	m_MeshArray["top"]->m_Shader->SetMatrix(m_mWorldViewProjection,"mWorldViewProjection",Core::CShader::VS_SHADER);
-	m_MeshArray["top"]->m_Shader->SetTexture(*m_MeshArray["top"]->m_TextureArray[0],"Texture_01",Core::CShader::PS_SHADER);
-	
 	m_MeshArray["bottom"]->m_Shader->SetMatrix(m_mWorldViewProjection,"mWorldViewProjection",Core::CShader::VS_SHADER);
-	m_MeshArray["bottom"]->m_Shader->SetTexture(*m_MeshArray["bottom"]->m_TextureArray[0],"Texture_01",Core::CShader::PS_SHADER);
+	Matrix();
 }
 
 void CSoaringIsland::Render()
 {
 	Core::CDevice::GetD3DDevice()->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW);
+	m_MeshArray["top"]->m_Shader->SetTexture(*m_MeshArray["top"]->m_TextureArray[0],"Texture_01",Core::CShader::PS_SHADER);
 	m_MeshArray["top"]->Draw();
+	
 	Core::CDevice::GetD3DDevice()->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+	m_MeshArray["bottom"]->m_Shader->SetTexture(*m_MeshArray["bottom"]->m_TextureArray[0],"Texture_01",Core::CShader::PS_SHADER);
 	m_MeshArray["bottom"]->Draw();
 }

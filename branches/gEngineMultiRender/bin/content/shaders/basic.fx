@@ -19,20 +19,23 @@ struct VS_INPUT {
 struct VS_OUTPUT {
    float4 vPosition		  : POSITION;
    float2 vTexCoord	      : TEXCOORD0;
+   float  vTemp           : TEXCOORD1;
 };
 
 
-VS_OUTPUT vs_main(VS_INPUT IN) {
- 
+VS_OUTPUT vs_main(VS_INPUT IN) 
+{
    VS_OUTPUT OUT = (VS_OUTPUT)0;
    OUT.vPosition = mul( float4(IN.vPosition,1.0f) ,mWorldViewProjection);
    OUT.vTexCoord = IN.vTexCoord;
+   OUT.vTemp = IN.vPosition.y;
    return OUT;
 }
 
 float4 ps_main(VS_OUTPUT IN) : COLOR 
 {	
    float4 vColor = tex2D(Texture_01_Sampler, IN.vTexCoord);
+   if(IN.vTemp < -64.0f) discard;
    return vColor;
 }
 
