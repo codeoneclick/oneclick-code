@@ -12,7 +12,7 @@ void EnviromentController::Create()
 {
 	_camera = new Camera();
 	m_Island = new CSoaringIsland();
-	m_Island->Load("Content\\maps\\map.raw");
+	m_Island->Load("Content\\maps\\Kbsd_Heightmap_Example.raw");
 	_mesh = new CModel();
 	_mesh->Load("Content\\models\\tank.3ds");
 	_mesh->m_vRotation.x = -1.57f;

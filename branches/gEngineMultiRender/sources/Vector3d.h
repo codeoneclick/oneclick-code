@@ -18,6 +18,7 @@ class Vector2d
 	Vector2d() : x(float(0)), y(float(0)) {}
 	Vector2d( const Vector2d& v ) : x(v.x), y(v.y) {}
 	Vector2d( float _x, float _y ) : x(_x), y(_y) {}
+	inline float length( void ) const { return (float)sqrt(x * x + y * y); }
 };
 
 class Vector4d

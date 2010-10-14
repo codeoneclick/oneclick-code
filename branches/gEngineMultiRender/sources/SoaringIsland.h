@@ -7,11 +7,27 @@ namespace Enviroment
 {
 	class CSoaringIsland : public CDummy
 	{
+		struct SVertex
+		{
+			math::Vector3d vPosition;
+			math::Vector2d vTexCoord;
+			math::Vector3d vNormal;
+			math::Vector3d vTangent;
+			math::Vector3d vBinormal;
+			math::Vector4d vSplatting;
+		};
+
 	private :
+		float m_TopElementHeightMult;
+		float m_BottomElementHeightMult;
+		float m_TopElementDiscardOffset;
+		float m_BottomElementDiscardOffset;
+		float m_MapScaleFactor;
+		float m_TextureScaleFactor;
 		unsigned int   m_Width;
 		unsigned int   m_Height;
 		float          **m_MapData;
-		void CalculateTBN(CVertexBuffer::SVertexVTTBN *_vertexData,unsigned int *_indexData, unsigned int _nVerteces,unsigned int _nIndeces);
+		void CalculateTBN(SVertex *_vertexData,unsigned int *_indexData, unsigned int _nVerteces,unsigned int _nIndeces);
 		void ReadData(std::string _fileName);
 	public :
 		CSoaringIsland();

@@ -28,7 +28,7 @@ class CVertexBuffer
 	struct SVertexVT
 	{
 		math::Vector3d vPosition;
-		math::Vector2d vTexCoord;
+		math::Vector2d vTexCoord; 
 	};
 	struct SVertexVTTBN
 	{

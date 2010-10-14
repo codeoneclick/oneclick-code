@@ -89,8 +89,8 @@ void Camera::Update()
 
 	vRotation.y = _fRotationAngleXZ * 0.0174532925f;
 	vRotation.x = _fRotationAngleY * 0.0174532925f;
-    vPosition.y = 20.0f;
-	vLookAt.y = 0.0f;
+    vPosition.y = 128.0f;
+	vLookAt.y = 114.0f;
     vPosition.x = vLookAt.x + cos(-(vRotation.y) + 1.57f)* - 32.0f;
     vPosition.z = vLookAt.z + sin(-(vRotation.y) + 1.57f)* - 32.0f;
 
