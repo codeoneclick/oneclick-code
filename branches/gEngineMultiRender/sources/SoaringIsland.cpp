@@ -106,38 +106,42 @@ void CSoaringIsland::Load(std::string _fileName)
 			v_data_top[index].vSplatting = math::Vector4d(0.0f,1.0f,0.0f,0.0f);
 			v_data_bottom[index].vSplatting = math::Vector4d(0.0f,1.0f,0.0f,0.0f);
 
+			int splattingOffset = 2.0f;
+			float splattingMult = splattingOffset * 3.0f;
 			if(m_MapData[i][j] <= 64.0f)
-				for(int x = (i - 5); x <= (i + 5); ++x)
-					for(int z = (j - 5); z <= (j + 5); ++z)
+				for(int x = (i - splattingOffset); x <= (i + splattingOffset); ++x)
+					for(int z = (j - splattingOffset); z <= (j + splattingOffset); ++z)
 					{
 						if(x < 0 || z < 0 || (x >= m_Width) || (z >= m_Height))
 							continue;
-						math::Vector2d splattingFactor = math::Vector2d(x - i, z - j);
-						v_data_bottom[index].vSplatting.x = 1.0f - splattingFactor.length() / 10.0f;
+						math::Vector2d splattingFactor = math::Vector2d(static_cast<float>(x) - static_cast<float>(i), static_cast<float>(z) - static_cast<float>(j));
+						v_data_bottom[index].vSplatting.x = 1.0f - splattingFactor.length() / splattingMult;
 						v_data_bottom[index].vSplatting.y = 1.0f - v_data_bottom[index].vSplatting.x;
 					}
 
 			if(m_MapData[i][j] <= 32.0f)
-				for(int x = (i - 5); x <= (i + 5); ++x)
-					for(int z = (j - 5); z <= (j + 5); ++z)
+				v_data_top[index].vSplatting = math::Vector4d(1.0f,0.0f,0.0f,0.0f);
+				/*for(int x = (i - splattingOffset); x <= (i + splattingOffset); ++x)
+					for(int z = (j - splattingOffset); z <= (j + splattingOffset); ++z)
 					{
 						if(x < 0 || z < 0 || (x >= m_Width) || (z >= m_Height))
 							continue;
-						math::Vector2d splattingFactor = math::Vector2d(x - i, z - j);
-						v_data_top[index].vSplatting.x = 1.0f - splattingFactor.length() / 10.0f;
+						math::Vector2d splattingFactor = math::Vector2d(static_cast<float>(x) - static_cast<float>(i), static_cast<float>(z) - static_cast<float>(j));
+						v_data_top[index].vSplatting.x = 1.0f - splattingFactor.length() / splattingMult;
 						v_data_top[index].vSplatting.y = 1.0f - v_data_top[index].vSplatting.x;
-					}
+					}*/
 
 			if(m_MapData[i][j] >= 64.0f)
-				for(int x = (i - 5); x <= (i + 5); ++x)
-					for(int z = (j - 5); z <= (j + 5); ++z)
+				v_data_top[index].vSplatting = math::Vector4d(0.0f,0.0f,1.0f,0.0f);
+				/*for(int x = (i - splattingOffset); x <= (i + splattingOffset); ++x)
+					for(int z = (j - splattingOffset); z <= (j + splattingOffset); ++z)
 					{
 						if(x < 0 || z < 0 || (x >= m_Width) || (z >= m_Height))
 							continue;
-						math::Vector2d splattingFactor = math::Vector2d(x - i, z - j);
-						v_data_top[index].vSplatting.z = 1.0f - splattingFactor.length() / 10.0f;
+						math::Vector2d splattingFactor = math::Vector2d(static_cast<float>(x) - static_cast<float>(i), static_cast<float>(z) - static_cast<float>(j));
+						v_data_top[index].vSplatting.z = 1.0f - splattingFactor.length() / splattingMult;
 						v_data_top[index].vSplatting.y = 1.0f - v_data_top[index].vSplatting.z;
-					}
+					}*/
 			++index;
 		}
 
@@ -258,9 +262,23 @@ void CSoaringIsland::CalculateTBN(SVertex *_v_data,unsigned int *_i_data, unsign
 
 void CSoaringIsland::Update()
 {
+	Matrix();
+
+	static math::Vector3d vLightDir = math::Vector3d(0.0f, 0.0f, 0.0f);
+	static float LightAngle = 0.0f;
+	LightAngle += 0.001f;
+	vLightDir.x = cos(LightAngle);
+	vLightDir.y = 0.0f;
+	vLightDir.z = sin(LightAngle);
+
 	m_MeshArray["top"]->m_Shader->SetMatrix(m_mWorldViewProjection,"mWorldViewProjection",Core::CShader::VS_SHADER);
 	m_MeshArray["bottom"]->m_Shader->SetMatrix(m_mWorldViewProjection,"mWorldViewProjection",Core::CShader::VS_SHADER);
-	Matrix();
+	
+	m_MeshArray["top"]->m_Shader->SetVector(Game::GetEnviromentControllerInstance()->GetCameraInstance()->vPosition,"vCameraEye",Core::CShader::VS_SHADER);
+	m_MeshArray["bottom"]->m_Shader->SetVector(Game::GetEnviromentControllerInstance()->GetCameraInstance()->vPosition,"vCameraEye",Core::CShader::VS_SHADER);
+
+	m_MeshArray["top"]->m_Shader->SetVector(vLightDir,"vLightDir",Core::CShader::VS_SHADER);
+	m_MeshArray["bottom"]->m_Shader->SetVector(vLightDir,"vLightDir",Core::CShader::VS_SHADER);
 }
 
 void CSoaringIsland::Render()
@@ -271,6 +289,9 @@ void CSoaringIsland::Render()
 	m_MeshArray["top"]->m_Shader->SetTexture(*m_MeshArray["top"]->m_TextureArray[0],"Texture_01",Core::CShader::PS_SHADER);
 	m_MeshArray["top"]->m_Shader->SetTexture(*m_MeshArray["top"]->m_TextureArray[1],"Texture_02",Core::CShader::PS_SHADER);
 	m_MeshArray["top"]->m_Shader->SetTexture(*m_MeshArray["top"]->m_TextureArray[2],"Texture_03",Core::CShader::PS_SHADER);
+	m_MeshArray["top"]->m_Shader->SetTexture(*m_MeshArray["top"]->m_TextureArray[3],"Texture_01_NH",Core::CShader::PS_SHADER);
+	m_MeshArray["top"]->m_Shader->SetTexture(*m_MeshArray["top"]->m_TextureArray[4],"Texture_02_NH",Core::CShader::PS_SHADER);
+	m_MeshArray["top"]->m_Shader->SetTexture(*m_MeshArray["top"]->m_TextureArray[5],"Texture_03_NH",Core::CShader::PS_SHADER);
 	m_MeshArray["top"]->m_Shader->SetFloat(discardHeight,"fDiscardHeight",Core::CShader::PS_SHADER);
 	m_MeshArray["top"]->m_Shader->SetFloat(discardUp,"fDiscardUp",Core::CShader::PS_SHADER);
 	m_MeshArray["top"]->Draw();
@@ -280,7 +301,10 @@ void CSoaringIsland::Render()
 	Core::CDevice::GetD3DDevice()->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 	m_MeshArray["bottom"]->m_Shader->SetTexture(*m_MeshArray["bottom"]->m_TextureArray[0],"Texture_01",Core::CShader::PS_SHADER);
 	m_MeshArray["bottom"]->m_Shader->SetTexture(*m_MeshArray["bottom"]->m_TextureArray[1],"Texture_02",Core::CShader::PS_SHADER);
+	m_MeshArray["bottom"]->m_Shader->SetTexture(*m_MeshArray["bottom"]->m_TextureArray[2],"Texture_01_NH",Core::CShader::PS_SHADER);
+	m_MeshArray["bottom"]->m_Shader->SetTexture(*m_MeshArray["bottom"]->m_TextureArray[3],"Texture_02_NH",Core::CShader::PS_SHADER);
 	m_MeshArray["bottom"]->m_Shader->SetFloat(discardHeight,"fDiscardHeight",Core::CShader::PS_SHADER);
 	m_MeshArray["bottom"]->m_Shader->SetFloat(discardUp,"fDiscardUp",Core::CShader::PS_SHADER);
+	
 	m_MeshArray["bottom"]->Draw();
 }
