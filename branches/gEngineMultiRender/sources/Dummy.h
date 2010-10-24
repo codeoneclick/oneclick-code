@@ -31,9 +31,9 @@ namespace Enviroment
 		void Matrix();
 	public :
 		CDummy();
-		virtual void Load(std::string _fileName) = NULL;
-		virtual void Update() = NULL;
-		virtual void Render() = NULL;
+		virtual void Load(std::string _fileName) { }
+		virtual void Update() { }
+		virtual void Render() { }
 
 		math::Vector3d m_vPosition;
 		math::Vector3d m_vRotation;

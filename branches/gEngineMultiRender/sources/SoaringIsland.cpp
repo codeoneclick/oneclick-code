@@ -106,6 +106,12 @@ void CSoaringIsland::Load(std::string _fileName)
 			v_data_top[index].vSplatting = math::Vector4d(0.0f,1.0f,0.0f,0.0f);
 			v_data_bottom[index].vSplatting = math::Vector4d(0.0f,1.0f,0.0f,0.0f);
 
+			if(v_data_top[index].vPosition.y < 0.0f)
+				v_data_top[index].fDiscard = -1.0f;
+
+			if(v_data_bottom[index].vPosition.y > 0.0f)
+				v_data_bottom[index].fDiscard = -1.0f;
+
 			int splattingOffset = 2.0f;
 			float splattingMult = splattingOffset * 3.0f;
 			if(m_MapData[i][j] <= 64.0f)
@@ -120,8 +126,8 @@ void CSoaringIsland::Load(std::string _fileName)
 					}
 
 			if(m_MapData[i][j] <= 32.0f)
-				v_data_top[index].vSplatting = math::Vector4d(1.0f,0.0f,0.0f,0.0f);
-				/*for(int x = (i - splattingOffset); x <= (i + splattingOffset); ++x)
+				//v_data_top[index].vSplatting = math::Vector4d(1.0f,0.0f,0.0f,0.0f);
+				for(int x = (i - splattingOffset); x <= (i + splattingOffset); ++x)
 					for(int z = (j - splattingOffset); z <= (j + splattingOffset); ++z)
 					{
 						if(x < 0 || z < 0 || (x >= m_Width) || (z >= m_Height))
@@ -129,11 +135,11 @@ void CSoaringIsland::Load(std::string _fileName)
 						math::Vector2d splattingFactor = math::Vector2d(static_cast<float>(x) - static_cast<float>(i), static_cast<float>(z) - static_cast<float>(j));
 						v_data_top[index].vSplatting.x = 1.0f - splattingFactor.length() / splattingMult;
 						v_data_top[index].vSplatting.y = 1.0f - v_data_top[index].vSplatting.x;
-					}*/
+					}
 
-			if(m_MapData[i][j] >= 64.0f)
-				v_data_top[index].vSplatting = math::Vector4d(0.0f,0.0f,1.0f,0.0f);
-				/*for(int x = (i - splattingOffset); x <= (i + splattingOffset); ++x)
+			if(m_MapData[i][j] >= 128.0f)
+				//v_data_top[index].vSplatting = math::Vector4d(0.0f,0.0f,1.0f,0.0f);
+				for(int x = (i - splattingOffset); x <= (i + splattingOffset); ++x)
 					for(int z = (j - splattingOffset); z <= (j + splattingOffset); ++z)
 					{
 						if(x < 0 || z < 0 || (x >= m_Width) || (z >= m_Height))
@@ -141,7 +147,7 @@ void CSoaringIsland::Load(std::string _fileName)
 						math::Vector2d splattingFactor = math::Vector2d(static_cast<float>(x) - static_cast<float>(i), static_cast<float>(z) - static_cast<float>(j));
 						v_data_top[index].vSplatting.z = 1.0f - splattingFactor.length() / splattingMult;
 						v_data_top[index].vSplatting.y = 1.0f - v_data_top[index].vSplatting.z;
-					}*/
+					}
 			++index;
 		}
 
@@ -153,23 +159,23 @@ void CSoaringIsland::Load(std::string _fileName)
 		for(unsigned int j = 0; j < (m_Height - 1); ++j)
 		{
 			i_data_top[index] = i + j * m_Width;
-			i_data_bottom[index] = i + j * m_Width;
+			i_data_bottom[index] = i + 1 + j * m_Width;
             index++;
             i_data_top[index] = i + (j + 1) * m_Width;
 			i_data_bottom[index] = i + (j + 1) * m_Width;
             index++;
             i_data_top[index] = i + 1 + j * m_Width;
-			i_data_bottom[index] = i + 1 + j * m_Width;
+			i_data_bottom[index] = i + j * m_Width;
             index++;
 
             i_data_top[index] = i + (j + 1) * m_Width;
-			i_data_bottom[index] = i + (j + 1) * m_Width;
+			i_data_bottom[index] = i + 1 + j * m_Width;
             index++;
             i_data_top[index] = i + 1 + (j + 1) * m_Width;
 			i_data_bottom[index] = i + 1 + (j + 1) * m_Width;
             index++;
             i_data_top[index] = i + 1 + j * m_Width;
-			i_data_bottom[index] = i + 1 + j * m_Width;
+			i_data_bottom[index] = i + (j + 1) * m_Width;
             index++;
 		}
 	CalculateTBN(v_data_top,i_data_top,m_Width * m_Height,index_count);
@@ -181,7 +187,7 @@ void CSoaringIsland::Load(std::string _fileName)
 	
 
 	CVertexBuffer::SVertexDeclaration declaration;
-	declaration.m_Elements = new CVertexBuffer::SElementDeclaration[5];
+	declaration.m_Elements = new CVertexBuffer::SElementDeclaration[7];
 	
 	declaration.m_Elements[0].m_Index = 0;
 	declaration.m_Elements[0].m_Size = CVertexBuffer::ELEMENT_FLOAT3;
@@ -213,10 +219,17 @@ void CSoaringIsland::Load(std::string _fileName)
 	declaration.m_Elements[5].m_Type = CVertexBuffer::ELEMENT_TEXCOORD;
 	declaration.m_Elements[5].m_Offset = 14 * sizeof(float);
 
-	declaration.m_ElementCount = 6;
+	declaration.m_Elements[6].m_Index = 4;
+	declaration.m_Elements[6].m_Size = CVertexBuffer::ELEMENT_FLOAT;
+	declaration.m_Elements[6].m_Type = CVertexBuffer::ELEMENT_TEXCOORD;
+	declaration.m_Elements[6].m_Offset = 18 * sizeof(float);
+
+	declaration.m_ElementCount = 7;
 
 	m_MeshArray["top"]->m_VertexBuffer->SetDeclaration(declaration);
 	m_MeshArray["bottom"]->m_VertexBuffer->SetDeclaration(declaration);
+
+
 }
 
 void CSoaringIsland::CalculateTBN(SVertex *_v_data,unsigned int *_i_data, unsigned int _vertex_count,unsigned int _index_count)
@@ -283,28 +296,17 @@ void CSoaringIsland::Update()
 
 void CSoaringIsland::Render()
 {
-	float discardHeight = 0.0f;
-	float discardUp = 1.0f;
-	Core::CDevice::GetD3DDevice()->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW);
 	m_MeshArray["top"]->m_Shader->SetTexture(*m_MeshArray["top"]->m_TextureArray[0],"Texture_01",Core::CShader::PS_SHADER);
 	m_MeshArray["top"]->m_Shader->SetTexture(*m_MeshArray["top"]->m_TextureArray[1],"Texture_02",Core::CShader::PS_SHADER);
 	m_MeshArray["top"]->m_Shader->SetTexture(*m_MeshArray["top"]->m_TextureArray[2],"Texture_03",Core::CShader::PS_SHADER);
 	m_MeshArray["top"]->m_Shader->SetTexture(*m_MeshArray["top"]->m_TextureArray[3],"Texture_01_NH",Core::CShader::PS_SHADER);
 	m_MeshArray["top"]->m_Shader->SetTexture(*m_MeshArray["top"]->m_TextureArray[4],"Texture_02_NH",Core::CShader::PS_SHADER);
 	m_MeshArray["top"]->m_Shader->SetTexture(*m_MeshArray["top"]->m_TextureArray[5],"Texture_03_NH",Core::CShader::PS_SHADER);
-	m_MeshArray["top"]->m_Shader->SetFloat(discardHeight,"fDiscardHeight",Core::CShader::PS_SHADER);
-	m_MeshArray["top"]->m_Shader->SetFloat(discardUp,"fDiscardUp",Core::CShader::PS_SHADER);
 	m_MeshArray["top"]->Draw();
-	
-	discardHeight = 0.0f;
-	discardUp = -1.0f;
-	Core::CDevice::GetD3DDevice()->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+
 	m_MeshArray["bottom"]->m_Shader->SetTexture(*m_MeshArray["bottom"]->m_TextureArray[0],"Texture_01",Core::CShader::PS_SHADER);
 	m_MeshArray["bottom"]->m_Shader->SetTexture(*m_MeshArray["bottom"]->m_TextureArray[1],"Texture_02",Core::CShader::PS_SHADER);
 	m_MeshArray["bottom"]->m_Shader->SetTexture(*m_MeshArray["bottom"]->m_TextureArray[2],"Texture_01_NH",Core::CShader::PS_SHADER);
 	m_MeshArray["bottom"]->m_Shader->SetTexture(*m_MeshArray["bottom"]->m_TextureArray[3],"Texture_02_NH",Core::CShader::PS_SHADER);
-	m_MeshArray["bottom"]->m_Shader->SetFloat(discardHeight,"fDiscardHeight",Core::CShader::PS_SHADER);
-	m_MeshArray["bottom"]->m_Shader->SetFloat(discardUp,"fDiscardUp",Core::CShader::PS_SHADER);
-	
 	m_MeshArray["bottom"]->Draw();
 }

@@ -22,6 +22,7 @@ void EnviromentController::Create()
 	//_ocean->Load("none");
 	CResource::Enable();
 	//_ocean->vPosition.y = -128.0f;
+	CDummy *a = new CDummy();
 }
 
 void EnviromentController::Update(DWORD time)

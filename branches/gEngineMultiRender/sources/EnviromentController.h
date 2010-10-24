@@ -13,7 +13,7 @@ class EnviromentController
 {
 private :
 	Camera* _camera;
-	CSoaringIsland* m_Island;
+	CDummy* m_Island;
 	//Landscape* _landscape;
 	CModel *_mesh;
 	COcean *_ocean;

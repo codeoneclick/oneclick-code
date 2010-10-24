@@ -15,6 +15,7 @@ namespace Enviroment
 			math::Vector3d vTangent;
 			math::Vector3d vBinormal;
 			math::Vector4d vSplatting;
+			float fDiscard;
 		};
 
 	private :
