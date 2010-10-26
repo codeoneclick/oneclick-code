@@ -19,7 +19,7 @@ private :
 	COcean *_ocean;
 public :
 	EnviromentController();
-	Landscape* LoadLandscape(char* filename, unsigned int width, unsigned int height);
+	//Landscape* LoadLandscape(char* filename, unsigned int width, unsigned int height);
 	void Create();
 	__forceinline Camera* GetCameraInstance() { return _camera; }
 	//__forceinline Landscape* GetLandscapeInstance() { return _landscape; }

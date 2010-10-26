@@ -4,12 +4,11 @@
 #include "Input.h"
 #include "EnviromentController.h"
 
-class Game : public Core::CDevice, public core::Input
+class Game : public core::Input
 {
 private :
 	MSG	_sysMessage;
 	static Enviroment::EnviromentController *_enviromentController;
-	IDevice *m_device;
 public :
 	Game();
 	bool Create();

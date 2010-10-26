@@ -146,8 +146,8 @@ C3DS::S3DSFile* C3DS::ReadData(std::string value)
 
 void C3DS::Commit(S3DSFile *in_value, Core::CMesh *out_value)
 {
-	out_value->m_VertexBuffer = new CVertexBuffer();
-	CVertexBuffer::SVertexVT *v_data = (CVertexBuffer::SVertexVT*)out_value->m_VertexBuffer->Load(in_value->nVerteces,sizeof(CVertexBuffer::SVertexVT));
+	out_value->m_VertexBuffer = new Core::IVertexBuffer();
+	Core::IVertexBuffer::SVertexVT *v_data = (Core::IVertexBuffer::SVertexVT*)out_value->m_VertexBuffer->Load(in_value->nVerteces,sizeof(Core::IVertexBuffer::SVertexVT));
 	memcpy(v_data,in_value->vertexData,sizeof(CVertexBuffer::SVertexVT) * in_value->nVerteces);
 	delete[] in_value->vertexData;
 	out_value->m_VertexBuffer->CommitVRAM();

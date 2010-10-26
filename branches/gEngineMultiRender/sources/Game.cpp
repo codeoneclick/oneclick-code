@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "Render.h"
 #include "RenderController.h"
+#include "Core/CGlobal.h"
 
 Enviroment::EnviromentController* Game::_enviromentController = NULL;
 
@@ -11,7 +12,7 @@ Game::Game()
 
 bool Game::Create()
 {
-	m_device = new CDeviceD3D();
+	Core::CGlobal::GetDevice();
 	//Core::CDevice::_CreateDevice(640,480,32,Core::CDevice::D3D);
 	Video::CRenderController::Load();
 	_enviromentController = new Enviroment::EnviromentController();
@@ -64,6 +65,6 @@ void Game::Render()
         framesPerSecond = 0;
 		char fps_text[64];
 		sprintf_s(fps_text,"FPS : %i",fps);
-		SetText(fps_text);
+		//SetText(fps_text);
     }
 }

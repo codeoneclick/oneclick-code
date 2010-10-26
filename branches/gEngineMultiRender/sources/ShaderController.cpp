@@ -12,9 +12,9 @@ CShaderController::~CShaderController()
 
 }
 
-Core::CShader* CShaderController::Load(std::string _fileName)
+Core::IShader* CShaderController::Load(std::string _fileName)
 {
-	std::map<std::string,Core::CShader*>::iterator resourceIterator = m_ResourceContainer.find(_fileName);
+	std::map<std::string,Core::IShader*>::iterator resourceIterator = m_ResourceContainer.find(_fileName);
 	
 	if(resourceIterator != m_ResourceContainer.end())
 	{
@@ -22,7 +22,7 @@ Core::CShader* CShaderController::Load(std::string _fileName)
 	}
 	else
 	{
-		m_ResourceContainer[_fileName] = new Core::CShader();
+		m_ResourceContainer[_fileName] = new Core::IShader();
 		EnterCriticalSection( &m_CriticalSection );
 		m_RequestList.push_back(_fileName);	
 		LeaveCriticalSection( &m_CriticalSection );	

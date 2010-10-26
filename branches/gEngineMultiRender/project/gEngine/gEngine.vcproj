@@ -183,6 +183,14 @@
 				Name="core"
 				>
 				<File
+					RelativePath="..\..\sources\Core\CGlobal.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\sources\Core\CGlobal.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\sources\Device.cpp"
 					>
 				</File>

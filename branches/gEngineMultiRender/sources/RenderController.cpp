@@ -11,7 +11,7 @@ CRenderController::SClipSetting   CRenderController::clipSetting;
 
 void CRenderController::Load()
 {
-	if(Core::CDevice::GetDeviceType() != Core::CDevice::OGL) return;
+	/*if(Core::CDevice::GetDeviceType() != Core::CDevice::OGL) return;
 	if(_screenTexture.texture_addr == 0)
 	{
 		glGenTextures(1, &_screenTexture.texture_addr);					
@@ -82,25 +82,25 @@ void CRenderController::Load()
 	clipSetting.fClipHeight = 0.0f;
 
 	Extension::FBExtension::glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,0);
-	Extension::FBExtension::glBindRenderbufferEXT(GL_RENDERBUFFER_EXT,0);
+	Extension::FBExtension::glBindRenderbufferEXT(GL_RENDERBUFFER_EXT,0);*/
 }
 
 void CRenderController::_TextureEnable(Video::CRenderController::SRenderTexture *texture)
 {
-	Extension::FBExtension::glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,texture->frame_buffer_addr);
+	/*Extension::FBExtension::glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,texture->frame_buffer_addr);
 	Extension::FBExtension::glBindRenderbufferEXT(GL_RENDERBUFFER_EXT,texture->render_buffer_addr);
 	glDrawBuffer(GL_COLOR_ATTACHMENT0_EXT);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glViewport(0,0,texture->width,texture->height);
+	glViewport(0,0,texture->width,texture->height);*/
 }
 
 void CRenderController::_TextureDisable()
 {
-	Extension::FBExtension::glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,0);
+	/*Extension::FBExtension::glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,0);
 	Extension::FBExtension::glBindRenderbufferEXT(GL_RENDERBUFFER_EXT,0);
 	glDrawBuffer(GL_BACK);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glViewport(0,0,Core::CWindow::m_Width ,Core::CWindow::m_Height);
+	glViewport(0,0,Core::CWindow::m_Width ,Core::CWindow::m_Height);*/
 }
 
 void CRenderController::Render2Texture(Video::CRenderController::ERenderTexture value)
@@ -118,7 +118,7 @@ void CRenderController::Render2Texture(Video::CRenderController::ERenderTexture 
 			//_TextureDisable();
 		}
 		break;
-		case CRenderController::REFLECTION_TEXTURE :
+		/*case CRenderController::REFLECTION_TEXTURE :
 		{
 			clipSetting.fClipInc = -1.0f;
 			clipSetting.fClipHeight = -64.0f;
@@ -150,7 +150,7 @@ void CRenderController::Render2Texture(Video::CRenderController::ERenderTexture 
 			Game::GetEnviromentControllerInstance()->Render(value);
 			_TextureDisable();
 		}
-		break;
+		break;*/
 	}
 }
 
@@ -163,7 +163,7 @@ const unsigned int CRenderController::GetRenderTexture(Video::CRenderController:
 			return _screenTexture.texture_addr;
 		}
 		break;
-		case CRenderController::REFLECTION_TEXTURE :
+		/*case CRenderController::REFLECTION_TEXTURE :
 		{
 			return _reflectionTexture.texture_addr;
 		}
@@ -172,14 +172,14 @@ const unsigned int CRenderController::GetRenderTexture(Video::CRenderController:
 		{
 			return _refractionTexture.texture_addr;
 		}
-		break;
+		break;*/
 	}
 	return NULL;
 }
 
 void CRenderController::Render()
 {
-	glMatrixMode(GL_PROJECTION);						
+	/*glMatrixMode(GL_PROJECTION);						
 	glLoadIdentity();							
 	glOrtho( 0, Core::CWindow::m_Width, Core::CWindow::m_Height, 0, -1, 1 );		
 	glMatrixMode(GL_MODELVIEW);												
@@ -202,5 +202,5 @@ void CRenderController::Render()
         glVertex2f   ( static_cast<float>(Core::CWindow::m_Width), 0.0f);
 
 	glEnd();
-	glEnable( GL_DEPTH_TEST );
+	glEnable( GL_DEPTH_TEST );*/
 }

@@ -1,6 +1,8 @@
 #ifndef IVERTEXBUFFER_H
 #define IVERTEXBUFFER_H
 
+#include <windows.h>
+
 namespace Core
 {
 	class IVertexBuffer 
@@ -32,7 +34,6 @@ namespace Core
 	public :
 		IVertexBuffer()
 		{
-			m_data = NULL;
 			m_element_size = 0;
 			m_vertex_count = 0;
 		}

@@ -1,4 +1,4 @@
-#ifndef _HEIGHTMAP_H_
+/*#ifndef _HEIGHTMAP_H_
 #define _HEIGHTMAP_H_
 #include "Dummy.h"
 #include "VertexBuffer.h"
@@ -21,4 +21,4 @@ namespace Enviroment
 	};
 };
 
-#endif
+#endif*/

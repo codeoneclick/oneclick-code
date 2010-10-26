@@ -1,4 +1,5 @@
 #include "TextureController.h"
+#include "Core/IDevice.h"
 
 using namespace Controller;
 
@@ -22,7 +23,7 @@ Core::ITexture* CTextureController::Load(std::string _value, Core::ITexture::TEX
 	}
 	else
 	{
-		_m_resource_container[_value] = new Core::IDevice::GetDeviceRef()->
+		_m_resource_container[_value] = NULL; // TODO
 		_m_resource_container[_value]->m_extension = _ext;
 		EnterCriticalSection( &_m_critical_section );
 		_m_request_container.push_back(_value);	
@@ -38,7 +39,7 @@ void CTextureController::WorkInPreloadingThread()
 	std::vector<std::string>::iterator request_iterator = _m_request_container.begin();
 	while(request_iterator != _m_request_container.end())
 	{
-		_m_resource_container[*request_iterator]->ReadData(*request_iterator);
+		_m_resource_container[*request_iterator]->ReadFromFile(*request_iterator);
 		++request_iterator;
 	}
 	LeaveCriticalSection( &_m_critical_section );		
@@ -51,7 +52,7 @@ void CTextureController::WorkInMainThread()
 	{
 		if(_m_resource_container[*request_iterator]->m_is_read_data)
 		{
-			_m_resource_container[*request_iterator]->Commit(*request_iterator);
+			_m_resource_container[*request_iterator]->CommitToVRAM();
 			EnterCriticalSection( &_m_critical_section );
 			_m_request_container.erase(request_iterator);
 			LeaveCriticalSection( &_m_critical_section );

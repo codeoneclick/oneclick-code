@@ -16,8 +16,8 @@ CMeshController::~CMeshController()
 
 void CMeshController::LoadDefault()
 {
-	m_Default_vb = new CVertexBuffer();
-	m_Default_ib = new CIndexBuffer();
+	m_Default_vb = new Core::IVertexBuffer();
+	m_Default_ib = new Core::IIndexBuffer();
 }
 
 void CMeshController::ReadData(std::string _value)

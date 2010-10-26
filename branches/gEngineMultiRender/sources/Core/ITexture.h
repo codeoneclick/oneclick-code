@@ -12,7 +12,7 @@ namespace Core
 	public :
 		ITexture()
 		{
-			m_is_file_read = false;
+			m_is_read_data = false;
 			m_is_commit = false;
 		}
 		~ITexture();
@@ -20,7 +20,7 @@ namespace Core
 		virtual void ReadFromFile(std::string _file_name) { }
 		virtual void CommitToVRAM() { }
 
-		bool m_is_file_read;
+		bool m_is_read_data;
 		bool m_is_commit;
 		TEXTURE_EXTENSION m_extension;
 	};

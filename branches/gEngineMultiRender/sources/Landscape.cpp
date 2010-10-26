@@ -1,4 +1,4 @@
-#include "Landscape.h"
+/*#include "Landscape.h"
 #include "Resource.h"
 #include "Game.h"
 #include "Render.h"
@@ -160,4 +160,4 @@ void Landscape::Update()
 void Landscape::Render()
 {
 	m_MeshArray["main"]->Draw();
-}
+}*/

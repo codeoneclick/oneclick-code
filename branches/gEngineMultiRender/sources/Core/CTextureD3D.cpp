@@ -19,9 +19,10 @@ void CTextureD3D::ReadFromFile(std::string _file_name)
 		error_text = ( char* )error_buffer->GetBufferPointer();
 		MessageBox(NULL, error_text ,"TextureController::TEXTURE", MB_OK | MB_ICONEXCLAMATION);
 	}
+	m_is_read_data = true;
 }
 
 void CTextureD3D::CommitToVRAM()
 {
-
+	m_is_commit = true;
 }

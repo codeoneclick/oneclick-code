@@ -15,8 +15,8 @@ namespace Controller
 		std::map<std::string,Core::CMesh*> m_ResourceContainer;
 		std::map<std::string,void*> m_DataContainer;
 		std::vector<std::string> m_RequestList;
-		CVertexBuffer *m_Default_vb;
-		CIndexBuffer *m_Default_ib;
+		Core::IVertexBuffer *m_Default_vb;
+		Core::IIndexBuffer *m_Default_ib;
 		
 		CRITICAL_SECTION m_CriticalSection;
 		std::string m_WorkingPath;
