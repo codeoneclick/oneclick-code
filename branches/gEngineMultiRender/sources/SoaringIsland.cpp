@@ -46,9 +46,9 @@ void CSoaringIsland::Load(std::string _fileName)
 {
 	ReadData(_fileName);
 	m_MeshArray["top"] = new Core::CMesh();
-	m_MeshArray["top"]->m_TextureArray[0] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\sand.dds",Core::CTexture::DDS_EXT);
-	m_MeshArray["top"]->m_TextureArray[1] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\grass.dds",Core::CTexture::DDS_EXT);
-	m_MeshArray["top"]->m_TextureArray[2] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\rock.dds",Core::CTexture::DDS_EXT);
+	m_MeshArray["top"]->m_TextureArray[0] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\sand.dds",Core::ITexture::DDS_EXT);
+	m_MeshArray["top"]->m_TextureArray[1] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\grass.dds",Core::ITexture::DDS_EXT);
+	m_MeshArray["top"]->m_TextureArray[2] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\rock.dds",Core::ITexture::DDS_EXT);
 	m_MeshArray["top"]->m_TextureArray[3] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\sand_nh.dds",Core::CTexture::DDS_EXT);
 	m_MeshArray["top"]->m_TextureArray[4] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\grass_nh.dds",Core::CTexture::DDS_EXT);
 	m_MeshArray["top"]->m_TextureArray[5] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\rock_nh.dds",Core::CTexture::DDS_EXT);

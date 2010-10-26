@@ -1,10 +1,10 @@
 #ifndef _MESH_H_
 #define _MESH_H_
 
-#include "VertexBuffer.h"
-#include "IndexBuffer.h"
-#include "Texture.h"
-#include "Shader.h"
+#include "Core/IVertexBuffer.h"
+#include "Core/IIndexBuffer.h"
+#include "Core/ITexture.h"
+#include "Core/IShader.h"
 
 namespace Core
 {
@@ -14,10 +14,10 @@ namespace Core
 		enum MESH_EXTENSION { EXT_3DS = 0 };
 		MESH_EXTENSION m_Extension;
 		
-		CVertexBuffer *m_VertexBuffer;
-		CIndexBuffer  *m_IndexBuffer;
-		CShader  *m_Shader;
-		CTexture *m_TextureArray[8];
+		IVertexBuffer *m_VertexBuffer;
+		IIndexBuffer  *m_IndexBuffer;
+		IShader  *m_Shader;
+		ITexture *m_TextureArray[8];
 
 		CMesh();
 		~CMesh();

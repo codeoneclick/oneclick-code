@@ -1,4 +1,4 @@
-#include "Texture.h"
+/*#include "Texture.h"
 #include "Resource.h"
 #include "Device.h"
 #include "Window.h"
@@ -62,4 +62,4 @@ void CTexture::Commit(std::string _value)
 		m_ogl_texture = Loader::CDDS::Commit((Loader::CDDS::SDDSFile*)_m_data);
 	}
 	m_is_commit = true;
-}
+}*/

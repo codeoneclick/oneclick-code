@@ -3,6 +3,11 @@
 
 #include "IDevice.h"
 
+#include "CTextureD3D.h"
+#include "CShaderD3D.h"
+#include "CVertexBufferD3D.h"
+#include "CIndexBufferD3D.h"
+
 namespace Core
 {
 	class CDeviceD3D : public IDevice 

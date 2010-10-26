@@ -1,4 +1,4 @@
-#include "Shader.h"
+/*#include "Shader.h"
 #include "Resource.h"
 #include "Device.h"
 #include "Window.h"
@@ -256,4 +256,4 @@ void CShader::SetTexture(CTexture &_texture, std::string _param, EShader _type)
 			break;
 		}
 	}
-}
+}*/

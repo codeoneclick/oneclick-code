@@ -70,20 +70,20 @@ CDeviceD3D::CDeviceD3D()
 
 void CDeviceD3D::CreateTexture(Core::ITexture *_out_value)
 {
-
+	_out_value = new CTextureD3D();
 }
 
 void CDeviceD3D::CreateShader(Core::IShader *_out_value)
 {
-
+	_out_value = new CShaderD3D();
 }
 
 void CDeviceD3D::CreateVertexBuffer(Core::IVertexBuffer *_out_value)
 {
-
+	_out_value = new CVertexBufferD3D();
 }
 
 void CDeviceD3D::CreateIndexBuffer(Core::IIndexBuffer *_out_value)
 {
-
+	_out_value = new CIndexBufferD3D();
 }

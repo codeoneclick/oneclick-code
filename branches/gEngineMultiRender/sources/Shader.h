@@ -1,4 +1,4 @@
-#ifndef _SHADER_H_
+/*#ifndef _SHADER_H_
 #define _SHADER_H_
 
 #include <Cg/Cg.h>
@@ -34,8 +34,8 @@ namespace Core
 		CShader();
 		~CShader();
 
-		void ReadData(std::string _value);
-		void Commit(std::string _value);
+		void ReadData(std::string _file_name);
+		void Commit(std::string _name);
 
 		void Enable();
 		void Disable();
@@ -52,3 +52,4 @@ namespace Core
 }
 
 #endif
+*/

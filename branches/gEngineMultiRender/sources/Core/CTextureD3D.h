@@ -8,11 +8,11 @@ namespace Core
 {
 	class CTextureD3D : public ITexture 
 	{
-	private :
-		IDirect3DTexture9* m_addr;
 	public :
 		CTextureD3D();
 		~CTextureD3D();
+
+		IDirect3DTexture9* m_addr;
 
 		virtual void ReadFromFile(std::string _file_name);
 		virtual void CommitToVRAM();

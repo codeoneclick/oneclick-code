@@ -1,7 +1,7 @@
 #ifndef _RENDER_H_
 #define _RENDER_H_
 
-#include "Device.h"
+#include "Core/IDevice.h"
 
 namespace Core
 {

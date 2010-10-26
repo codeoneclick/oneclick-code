@@ -12,9 +12,9 @@ CTextureController::~CTextureController()
 
 }
 
-Core::CTexture* CTextureController::Load(std::string _value, Core::CTexture::TEXTURE_EXTENSION  _ext)
+Core::ITexture* CTextureController::Load(std::string _value, Core::ITexture::TEXTURE_EXTENSION  _ext)
 {
-	std::map<std::string,Core::CTexture*>::iterator resource_iterator = _m_resource_container.find(_value);
+	std::map<std::string,Core::ITexture*>::iterator resource_iterator = _m_resource_container.find(_value);
 	
 	if(resource_iterator != _m_resource_container.end())
 	{
@@ -22,7 +22,7 @@ Core::CTexture* CTextureController::Load(std::string _value, Core::CTexture::TEX
 	}
 	else
 	{
-		_m_resource_container[_value] = new Core::CTexture();
+		_m_resource_container[_value] = new Core::IDevice::GetDeviceRef()->
 		_m_resource_container[_value]->m_extension = _ext;
 		EnterCriticalSection( &_m_critical_section );
 		_m_request_container.push_back(_value);	

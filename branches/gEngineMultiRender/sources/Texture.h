@@ -1,4 +1,4 @@
-#ifndef _TEXTURE_H_
+/*#ifndef _TEXTURE_H_
 #define _TEXTURE_H_
 
 #include <d3dx9.h>
@@ -29,4 +29,4 @@ namespace Core
 	};
 }
 
-#endif
+#endif*/

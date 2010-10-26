@@ -1,4 +1,4 @@
-#include "Device.h"
+/*#include "Device.h"
 #include "VBExtension.h"
 #include "FBExtension.h"
 
@@ -119,7 +119,7 @@ void CDevice::CreateOGLContext()
 	glEnable( GL_CULL_FACE );
 	glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );
 	glClearDepth( 1.0f );
-}
+}*/
 
 
 	

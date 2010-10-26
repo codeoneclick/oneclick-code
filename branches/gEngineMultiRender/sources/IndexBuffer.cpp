@@ -1,4 +1,4 @@
-#include "IndexBuffer.h"
+/*#include "IndexBuffer.h"
 #include "Device.h"
 
 CIndexBuffer::CIndexBuffer()
@@ -98,4 +98,4 @@ void CIndexBuffer::Disable()
 {
 	if(Core::CDevice::GetDeviceType() == Core::CDevice::D3D) return;
 	Extension::VBExtension::glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, 0 );
-}
+}*/

@@ -1,4 +1,4 @@
-#ifndef VERTEX_BUFFER_H
+/*#ifndef VERTEX_BUFFER_H
 #define VERTEX_BUFFER_H
 #include <d3dx9.h>
 #include "VBExtension.h"
@@ -71,4 +71,4 @@ class CVertexBuffer
 		void Disable();
 };
 
-#endif
+#endif*/

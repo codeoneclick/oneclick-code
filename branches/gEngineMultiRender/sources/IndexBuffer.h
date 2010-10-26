@@ -1,4 +1,4 @@
-#ifndef _INDEX_BUFFER_H_
+/*#ifndef _INDEX_BUFFER_H_
 #define _INDEX_BUFFER_H_
 #include <d3dx9.h>
 #include "VBExtension.h"
@@ -27,4 +27,4 @@ class CIndexBuffer
 		const unsigned int GetPrimitiveCount() { return _m_index_count / 3; }
 };
 
-#endif
+#endif*/

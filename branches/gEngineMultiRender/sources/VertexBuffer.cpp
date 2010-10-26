@@ -1,4 +1,4 @@
-#include "VertexBuffer.h"
+/*#include "VertexBuffer.h"
 #include "Device.h"
 
 CVertexBuffer::CVertexBuffer()
@@ -170,4 +170,4 @@ void CVertexBuffer::Disable()
 	glDisableClientState( GL_TEXTURE_COORD_ARRAY );
 	Extension::VBExtension::glClientActiveTextureCoordARB(GL_TEXTURE0);
 	Extension::VBExtension::glBindBufferARB( GL_ARRAY_BUFFER_ARB, 0 );	
-}
+}*/

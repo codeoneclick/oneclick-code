@@ -1,4 +1,4 @@
-#ifndef _DEVICE_H_
+/*#ifndef _DEVICE_H_
 #define _DEVICE_H_
 
 #include <windows.h>		
@@ -31,4 +31,4 @@ namespace Core
 	};
 };
 
-#endif
+#endif*/
