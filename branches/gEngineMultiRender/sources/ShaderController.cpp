@@ -1,4 +1,5 @@
 #include "ShaderController.h"
+#include "Core/CGlobal.h"
 
 using namespace Controller;
 
@@ -22,7 +23,7 @@ Core::IShader* CShaderController::Load(std::string _fileName)
 	}
 	else
 	{
-		m_ResourceContainer[_fileName] = new Core::IShader();
+		m_ResourceContainer[_fileName] = Core::CGlobal::GetDevice()->CreateShader();
 		EnterCriticalSection( &m_CriticalSection );
 		m_RequestList.push_back(_fileName);	
 		LeaveCriticalSection( &m_CriticalSection );	

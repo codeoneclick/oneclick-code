@@ -22,6 +22,9 @@ namespace Core
 		static unsigned int m_Width;
 		static unsigned int m_Height;
 		static bool m_Fullscreen;
+
+		virtual void Update(DWORD time) = 0;
+		virtual void Render() = 0;
 	};
 };
 

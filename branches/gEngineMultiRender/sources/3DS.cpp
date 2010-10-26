@@ -146,32 +146,32 @@ C3DS::S3DSFile* C3DS::ReadData(std::string value)
 
 void C3DS::Commit(S3DSFile *in_value, Core::CMesh *out_value)
 {
-	out_value->m_VertexBuffer = new Core::IVertexBuffer();
-	Core::IVertexBuffer::SVertexVT *v_data = (Core::IVertexBuffer::SVertexVT*)out_value->m_VertexBuffer->Load(in_value->nVerteces,sizeof(Core::IVertexBuffer::SVertexVT));
-	memcpy(v_data,in_value->vertexData,sizeof(CVertexBuffer::SVertexVT) * in_value->nVerteces);
+	out_value->m_VertexBuffer = Core::CGlobal::GetDevice()->CreateVertexBuffer();
+	S3DSVertex *v_data = (S3DSVertex*)out_value->m_VertexBuffer->Load(in_value->nVerteces,sizeof(S3DSVertex));
+	memcpy(v_data,in_value->vertexData,sizeof(S3DSVertex) * in_value->nVerteces);
 	delete[] in_value->vertexData;
-	out_value->m_VertexBuffer->CommitVRAM();
+	out_value->m_VertexBuffer->CommitToVRAM();
 
-	CVertexBuffer::SVertexDeclaration declaration;
-	declaration.m_Elements = new CVertexBuffer::SElementDeclaration[2];
+	Core::IVertexBuffer::SVertexDeclaration declaration;
+	declaration.m_Elements = new Core::IVertexBuffer::SElementDeclaration[2];
 	
 	declaration.m_Elements[0].m_Index = 0;
-	declaration.m_Elements[0].m_Size = CVertexBuffer::ELEMENT_FLOAT3;
-	declaration.m_Elements[0].m_Type = CVertexBuffer::ELEMENT_POSITION;
+	declaration.m_Elements[0].m_Size = Core::IVertexBuffer::ELEMENT_FLOAT3;
+	declaration.m_Elements[0].m_Type = Core::IVertexBuffer::ELEMENT_POSITION;
 	declaration.m_Elements[0].m_Offset = 0 * sizeof(float);
 
 	declaration.m_Elements[1].m_Index = 0;
-	declaration.m_Elements[1].m_Size = CVertexBuffer::ELEMENT_FLOAT2;
-	declaration.m_Elements[1].m_Type = CVertexBuffer::ELEMENT_TEXCOORD;
+	declaration.m_Elements[1].m_Size = Core::IVertexBuffer::ELEMENT_FLOAT2;
+	declaration.m_Elements[1].m_Type = Core::IVertexBuffer::ELEMENT_TEXCOORD;
 	declaration.m_Elements[1].m_Offset = 3 * sizeof(float);
 
 	declaration.m_ElementCount = 2;
 
 	out_value->m_VertexBuffer->SetDeclaration(declaration);
 
-	out_value->m_IndexBuffer = new CIndexBuffer();
+	out_value->m_IndexBuffer = Core::CGlobal::GetDevice()->CreateIndexBuffer();
 	unsigned int *ib_ref = out_value->m_IndexBuffer->Load(in_value->nIndeces);
 	memcpy(ib_ref,in_value->indexData,sizeof(unsigned int) * in_value->nIndeces);
 	delete[] in_value->indexData;
-	out_value->m_IndexBuffer->CommitVRAM();
+	out_value->m_IndexBuffer->CommitToVRAM();
 }

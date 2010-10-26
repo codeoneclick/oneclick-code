@@ -5,6 +5,7 @@
 #include "Core/IIndexBuffer.h"
 #include "Core/ITexture.h"
 #include "Core/IShader.h"
+#include "Core/CGlobal.h"
 
 namespace Core
 {

@@ -18,10 +18,10 @@ namespace Core
 		CDeviceD3D();
 		~CDeviceD3D();
 
-		virtual void CreateTexture( ITexture *_out_value);
-		virtual void CreateShader( IShader *_out_value);
-		virtual void CreateVertexBuffer( IVertexBuffer *_out_value);
-		virtual void CreateIndexBuffer( IIndexBuffer *_out_value);
+		virtual ITexture* CreateTexture();
+		virtual IShader* CreateShader();
+		virtual IVertexBuffer* CreateVertexBuffer();
+		virtual IIndexBuffer* CreateIndexBuffer();
 	};
 };
 

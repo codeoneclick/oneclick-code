@@ -4,7 +4,7 @@
 #include "Input.h"
 #include "EnviromentController.h"
 
-class Game : public core::Input
+class Game : public core::Input, public Core::CWindow
 {
 private :
 	MSG	_sysMessage;

@@ -1,5 +1,5 @@
 #include "TextureController.h"
-#include "Core/IDevice.h"
+#include "Core/CGlobal.h"
 
 using namespace Controller;
 
@@ -23,7 +23,7 @@ Core::ITexture* CTextureController::Load(std::string _value, Core::ITexture::TEX
 	}
 	else
 	{
-		_m_resource_container[_value] = NULL; // TODO
+		_m_resource_container[_value] = Core::CGlobal::GetDevice()->CreateTexture();
 		_m_resource_container[_value]->m_extension = _ext;
 		EnterCriticalSection( &_m_critical_section );
 		_m_request_container.push_back(_value);	

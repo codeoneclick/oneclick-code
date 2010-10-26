@@ -20,10 +20,10 @@ namespace Core
 
 		__forceinline static LPDIRECT3DDEVICE9 GetDeviceRef() { return m_device; } 
 
-		virtual void CreateTexture( ITexture *_out_value) { }
-		virtual void CreateShader( IShader *_out_value) { }
-		virtual void CreateVertexBuffer( IVertexBuffer *_out_value) { }
-		virtual void CreateIndexBuffer( IIndexBuffer *_out_value) { }
+		virtual ITexture* CreateTexture() { return NULL; }
+		virtual IShader* CreateShader() { return NULL; }
+		virtual IVertexBuffer* CreateVertexBuffer() { return NULL; }
+		virtual IIndexBuffer* CreateIndexBuffer() { return NULL; }
 	};
 };
 

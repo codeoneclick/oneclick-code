@@ -5,20 +5,9 @@ using namespace Core;
 
 CDeviceD3D::CDeviceD3D()
 {
-	D3DDISPLAYMODE D3DMode;
-	D3DPRESENT_PARAMETERS D3DParams;
+   D3DDISPLAYMODE D3DMode;
+   D3DPRESENT_PARAMETERS D3DParams;
 	
-	if(m_handle != NULL)
-	{
-		 m_handle->Release();
-		 m_handle = NULL;
-	}
-	if(m_device != NULL)
-	{
-		m_device->Release();
-		m_device = NULL;
-	}
-
    m_handle = Direct3DCreate9(D3D_SDK_VERSION);
 
    if(m_handle == NULL)
@@ -68,22 +57,26 @@ CDeviceD3D::CDeviceD3D()
     m_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW);
 }
 
-void CDeviceD3D::CreateTexture(Core::ITexture *_out_value)
+Core::ITexture* CDeviceD3D::CreateTexture()
 {
-	_out_value = new CTextureD3D();
+	CTextureD3D *out_texture = new CTextureD3D();
+	return out_texture;
 }
 
-void CDeviceD3D::CreateShader(Core::IShader *_out_value)
+Core::IShader* CDeviceD3D::CreateShader()
 {
-	_out_value = new CShaderD3D();
+	CShaderD3D *out_shader = new CShaderD3D();
+	return out_shader;
 }
 
-void CDeviceD3D::CreateVertexBuffer(Core::IVertexBuffer *_out_value)
+Core::IVertexBuffer* CDeviceD3D::CreateVertexBuffer()
 {
-	_out_value = new CVertexBufferD3D();
+	CVertexBufferD3D *out_vertex_buffer = new CVertexBufferD3D();
+	return out_vertex_buffer;
 }
 
-void CDeviceD3D::CreateIndexBuffer(Core::IIndexBuffer *_out_value)
+Core::IIndexBuffer* CDeviceD3D::CreateIndexBuffer()
 {
-	_out_value = new CIndexBufferD3D();
+	CIndexBufferD3D *out_index_buffer = new CIndexBufferD3D();
+	return out_index_buffer;
 }

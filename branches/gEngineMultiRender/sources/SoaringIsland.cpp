@@ -2,6 +2,7 @@
 #include "Resource.h"
 #include "Game.h"
 #include "Render.h"
+#include "Core/CGlobal.h"
 
 using namespace Enviroment;
 
@@ -53,8 +54,8 @@ void CSoaringIsland::Load(std::string _fileName)
 	m_MeshArray["top"]->m_TextureArray[4] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\grass_nh.dds",Core::ITexture::DDS_EXT);
 	m_MeshArray["top"]->m_TextureArray[5] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\rock_nh.dds",Core::ITexture::DDS_EXT);
 	m_MeshArray["top"]->m_Shader = CResource::GetShaderControllerInstance()->Load("Content\\shaders\\basic");
-	m_MeshArray["top"]->m_VertexBuffer = new Core::IVertexBuffer();
-	m_MeshArray["top"]->m_IndexBuffer = new Core::IIndexBuffer();
+	m_MeshArray["top"]->m_VertexBuffer = Core::CGlobal::GetDevice()->CreateVertexBuffer();//new Core::IVertexBuffer();
+	m_MeshArray["top"]->m_IndexBuffer = Core::CGlobal::GetDevice()->CreateIndexBuffer();//new Core::IIndexBuffer();
 
 	m_MeshArray["bottom"] = new Core::CMesh();
 	m_MeshArray["bottom"]->m_TextureArray[0] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\sand.dds",Core::ITexture::DDS_EXT);
@@ -62,8 +63,8 @@ void CSoaringIsland::Load(std::string _fileName)
 	m_MeshArray["bottom"]->m_TextureArray[2] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\sand_nh.dds",Core::ITexture::DDS_EXT);
 	m_MeshArray["bottom"]->m_TextureArray[3] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\rock_nh.dds",Core::ITexture::DDS_EXT);
 	m_MeshArray["bottom"]->m_Shader = CResource::GetShaderControllerInstance()->Load("Content\\shaders\\basic");
-	m_MeshArray["bottom"]->m_VertexBuffer = new Core::IVertexBuffer();
-	m_MeshArray["bottom"]->m_IndexBuffer = new Core::IIndexBuffer();
+	m_MeshArray["bottom"]->m_VertexBuffer = Core::CGlobal::GetDevice()->CreateVertexBuffer();//new Core::IVertexBuffer();
+	m_MeshArray["bottom"]->m_IndexBuffer = Core::CGlobal::GetDevice()->CreateIndexBuffer();//new Core::IIndexBuffer();
 	
 	SVertex* v_data_top = (SVertex*)m_MeshArray["top"]->m_VertexBuffer->Load(m_Width * m_Height,sizeof(SVertex));
 	SVertex* v_data_bottom = (SVertex*)m_MeshArray["bottom"]->m_VertexBuffer->Load(m_Width * m_Height,sizeof(SVertex));
