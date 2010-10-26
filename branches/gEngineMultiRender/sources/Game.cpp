@@ -65,6 +65,6 @@ void Game::Render()
         framesPerSecond = 0;
 		char fps_text[64];
 		sprintf_s(fps_text,"FPS : %i",fps);
-		//SetText(fps_text);
+		SetText(fps_text);
     }
 }

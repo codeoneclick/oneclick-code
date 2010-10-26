@@ -15,7 +15,8 @@ namespace Core
 	public :
 		IShader()
 		{
-
+			m_is_read_data = false;
+			m_is_commit = false;
 		}
 		~IShader()
 		{
