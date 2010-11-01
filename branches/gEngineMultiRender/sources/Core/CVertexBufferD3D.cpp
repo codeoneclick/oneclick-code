@@ -18,7 +18,7 @@ void* CVertexBufferD3D::Load(unsigned int _vertex_count, unsigned int _element_s
 	m_element_size = _element_size;
 	m_vertex_count = _vertex_count;
 
-	Core::IDevice::GetDeviceRef()->CreateVertexBuffer(m_vertex_count * m_element_size,D3DUSAGE_WRITEONLY,NULL,D3DPOOL_DEFAULT,&m_addr,NULL);
+	Core::IDevice::Ref()->CreateVertexBuffer(m_vertex_count * m_element_size,D3DUSAGE_WRITEONLY,NULL,D3DPOOL_DEFAULT,&m_addr,NULL);
 	m_addr->Lock(0,m_vertex_count * m_element_size, (void**)&m_data,D3DLOCK_NOSYSLOCK);
 	
 	return m_data;
@@ -61,14 +61,15 @@ void CVertexBufferD3D::SetDeclaration(Core::IVertexBuffer::SVertexDeclaration &_
 	dx_vertex_declaration[m_declaration.m_ElementCount].Usage = 0;
 	dx_vertex_declaration[m_declaration.m_ElementCount].UsageIndex = 0;
 		
-	Core::IDevice::GetDeviceRef()->CreateVertexDeclaration(dx_vertex_declaration,&m_declaration_ref);
+	Core::IDevice::Ref()->CreateVertexDeclaration(dx_vertex_declaration,&m_declaration_ref);
 	delete[] dx_vertex_declaration;
 }
 
 void CVertexBufferD3D::Enable()
 {
-	Core::IDevice::GetDeviceRef()->SetVertexDeclaration(m_declaration_ref);
-	Core::IDevice::GetDeviceRef()->SetStreamSource( 0,m_addr, 0, m_element_size);
+	if(m_addr == NULL) return;
+	Core::IDevice::Ref()->SetVertexDeclaration(m_declaration_ref);
+	Core::IDevice::Ref()->SetStreamSource( 0,m_addr, 0, m_element_size);
 }
 
 void CVertexBufferD3D::Disable()

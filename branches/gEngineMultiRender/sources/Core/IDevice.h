@@ -18,12 +18,12 @@ namespace Core
 		IDevice();
 		~IDevice();
 
-		__forceinline static LPDIRECT3DDEVICE9 GetDeviceRef() { return m_device; } 
+		__forceinline static LPDIRECT3DDEVICE9 Ref() { return m_device; } 
 
-		virtual ITexture* CreateTexture() { return NULL; }
-		virtual IShader* CreateShader() { return NULL; }
-		virtual IVertexBuffer* CreateVertexBuffer() { return NULL; }
-		virtual IIndexBuffer* CreateIndexBuffer() { return NULL; }
+		virtual ITexture* CreateTexture() = 0;
+		virtual IShader* CreateShader() = 0;
+		virtual IVertexBuffer* CreateVertexBuffer() = 0;
+		virtual IIndexBuffer* CreateIndexBuffer() = 0;
 	};
 };
 

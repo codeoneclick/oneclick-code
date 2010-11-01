@@ -6,8 +6,6 @@
 #include <Cg/Cg.h>
 #include <Cg/cgGL.h>
 #include "Vector3d.h"
-#include "VertexBuffer.h"
-#include "IndexBuffer.h"
 
 //enum eTyleType { T_C_01 = 0, T_C_02, T_LD, T_RD, T_LU, T_RU, T_L, T_R, T_D, T_U, T_LD_EXT, T_RD_EXT, T_RU_EXT, T_LU_EXT };
 enum eTyleType { T_C_02 = 0, T_LD, T_RD, T_LU, T_RU, T_L, T_D, T_DIAG_01, T_DIAG_02, T_U, T_R, T_RD_EXT, T_LD_EXT, T_RU_EXT, T_LU_EXT, T_C_01 };

@@ -44,13 +44,13 @@ namespace Core
 
 		__forceinline unsigned int GetVertexCount() { return  m_vertex_count; }
 		
-		virtual void* Load(unsigned int _vertex_count, unsigned int _element_size) { return NULL; }
-		virtual void CommitToVRAM() { }
-		virtual void SetDeclaration(SVertexDeclaration &_declaration) { }
-		virtual void* Lock() { return NULL; }
-		virtual void Unlock() { }
-		virtual void Enable() { }
-		virtual void Disable() { }
+		virtual void* Load(unsigned int _vertex_count, unsigned int _element_size) = 0;
+		virtual void CommitToVRAM() = 0;
+		virtual void SetDeclaration(SVertexDeclaration &_declaration) = 0;
+		virtual void* Lock() = 0;
+		virtual void Unlock() = 0;
+		virtual void Enable() = 0;
+		virtual void Disable() = 0;
 	};
 };
 

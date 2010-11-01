@@ -191,14 +191,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\sources\Device.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\sources\Device.h"
-					>
-				</File>
-				<File
 					RelativePath="..\..\sources\Input.cpp"
 					>
 				</File>
@@ -215,35 +207,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\sources\Render.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\sources\Render.h"
-					>
-				</File>
-				<File
 					RelativePath="..\..\sources\Resource.cpp"
 					>
 				</File>
 				<File
 					RelativePath="..\..\sources\Resource.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\sources\Shader.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\sources\Shader.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\sources\Texture.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\sources\Texture.h"
 					>
 				</File>
 				<File
@@ -343,6 +311,22 @@
 					</File>
 					<File
 						RelativePath="..\..\sources\Core\ITexture.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Render"
+					>
+					<File
+						RelativePath="..\..\sources\Core\CRenderD3D.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\sources\Core\CRenderD3D.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\sources\Core\IRender.h"
 						>
 					</File>
 				</Filter>
@@ -511,14 +495,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\sources\IndexBuffer.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\sources\IndexBuffer.h"
-					>
-				</File>
-				<File
 					RelativePath="..\..\sources\ShaderExtension.cpp"
 					>
 				</File>
@@ -532,14 +508,6 @@
 				</File>
 				<File
 					RelativePath="..\..\sources\VBExtension.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\sources\VertexBuffer.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\sources\VertexBuffer.h"
 					>
 				</File>
 			</Filter>

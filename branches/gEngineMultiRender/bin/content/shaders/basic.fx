@@ -94,12 +94,12 @@ float4 ps_main(VS_OUTPUT IN) : COLOR
    
     float fHeightPower = 0.0f;
     float2 vDisplaceTexCoord = IN.vTexCoord;
-    for(int i = 0; i < 8; i++)
+    for(int i = 0; i < 4; i++)
     {
 		 fHeightPower = tex2D(Texture_01_NH_Sampler, IN.vTexCoord).a * IN.vSplatting.x + 
 					    tex2D(Texture_02_NH_Sampler, IN.vTexCoord).a * IN.vSplatting.y + 
 					    tex2D(Texture_03_NH_Sampler, IN.vTexCoord).a * IN.vSplatting.z;
-		 fHeightPower *= 0.08f / 8.0f;
+		 fHeightPower *= 0.04f / 4.0f;
 		 vDisplaceTexCoord = vDisplaceTexCoord + (-IN.vCameraEye.xy * fHeightPower);
     }
     

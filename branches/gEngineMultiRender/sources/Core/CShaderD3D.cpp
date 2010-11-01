@@ -20,7 +20,7 @@ void CShaderD3D::ReadData(std::string _file_name)
 	HRESULT error_result = NULL;
 	char* error_text = NULL;
 	_file_name += ".fx";
-	error_result = D3DXCreateEffectFromFile(Core::IDevice::GetDeviceRef(), _file_name.c_str(), NULL, NULL, 0, NULL, &m_addr, &error_buffer);
+	error_result = D3DXCreateEffectFromFile(Core::IDevice::Ref(), _file_name.c_str(), NULL, NULL, 0, NULL, &m_addr, &error_buffer);
 	if(FAILED( error_result ))
 	{
 		error_text = ( char* )error_buffer->GetBufferPointer();

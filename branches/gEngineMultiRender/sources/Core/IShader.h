@@ -26,17 +26,17 @@ namespace Core
 		bool m_is_read_data;
 		bool m_is_commit;
 		
-		virtual void ReadData(std::string _file_name) { }
-		virtual void Commit(std::string _name) { }
+		virtual void ReadData(std::string _file_name) = 0;
+		virtual void Commit(std::string _name) = 0;
 
-		virtual void Enable() { }
-		virtual void Disable() { }
+		virtual void Enable() = 0;
+		virtual void Disable() = 0;
 
-		virtual void SetMatrix(math::Matrix4x4 &_matrix, std::string _param, EShader _type) { }
-		virtual void SetVector(math::Vector3d  &_vector, std::string _param, EShader _type) { }
-		virtual void SetVector(math::Vector4d  &_vector, std::string _param, EShader _type) { }
-		virtual void SetFloat(float  &_value, std::string _param, EShader _type) { } 
-		virtual void SetTexture(ITexture *_texture, std::string _param, EShader _type) { }
+		virtual void SetMatrix(math::Matrix4x4 &_matrix, std::string _param, EShader _type) = 0;
+		virtual void SetVector(math::Vector3d  &_vector, std::string _param, EShader _type) = 0;
+		virtual void SetVector(math::Vector4d  &_vector, std::string _param, EShader _type) = 0;
+		virtual void SetFloat(float  &_value, std::string _param, EShader _type) = 0;
+		virtual void SetTexture(ITexture *_texture, std::string _param, EShader _type) = 0;
 	};
 };
 

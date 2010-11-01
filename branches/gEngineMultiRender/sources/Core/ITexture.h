@@ -17,8 +17,8 @@ namespace Core
 		}
 		~ITexture();
 
-		virtual void ReadFromFile(std::string _file_name) { }
-		virtual void CommitToVRAM() { }
+		virtual void ReadFromFile(std::string _file_name) = 0;
+		virtual void CommitToVRAM() = 0;
 
 		bool m_is_read_data;
 		bool m_is_commit;

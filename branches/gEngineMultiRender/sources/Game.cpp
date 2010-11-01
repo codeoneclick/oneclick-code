@@ -47,9 +47,9 @@ void Game::Update(DWORD time)
 void Game::Render()
 {
 
-	Core::CRender::BeginRender();
+	Core::CGlobal::GetRender()->BeginRender();
 	Video::CRenderController::Render2Texture(Video::CRenderController::SCREEN_TEXTURE);
-	Core::CRender::EndRender();
+	Core::CGlobal::GetRender()->EndRender();
 
 	static DWORD framesPerSecond = 0;       
     static DWORD lastTime = 0;   
