@@ -48,13 +48,13 @@ CDeviceD3D::CDeviceD3D()
 	m_device->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE); 
 	m_device->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
     m_device->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
-    m_device->SetRenderState(D3DRS_ALPHABLENDENABLE,TRUE);
-    m_device->SetRenderState(D3DRS_SRCBLEND,D3DBLEND_SRCALPHA);
-    m_device->SetRenderState(D3DRS_DESTBLEND,D3DBLEND_INVSRCALPHA); 
-    m_device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL);
-    m_device->SetRenderState(D3DRS_ALPHAREF, (DWORD)128);
-	m_device->SetRenderState(D3DRS_VERTEXBLEND, D3DVBF_TWEENING);
-    m_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW);
+    //m_device->SetRenderState(D3DRS_ALPHABLENDENABLE,TRUE);
+    //m_device->SetRenderState(D3DRS_SRCBLEND,D3DBLEND_SRCALPHA);
+    //m_device->SetRenderState(D3DRS_DESTBLEND,D3DBLEND_INVSRCALPHA); 
+    //m_device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL);
+    //m_device->SetRenderState(D3DRS_ALPHAREF, (DWORD)128);
+	//m_device->SetRenderState(D3DRS_VERTEXBLEND, D3DVBF_TWEENING);
+    m_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
 Core::ITexture* CDeviceD3D::CreateTexture()

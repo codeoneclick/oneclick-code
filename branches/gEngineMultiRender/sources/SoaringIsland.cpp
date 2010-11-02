@@ -185,12 +185,29 @@ void CSoaringIsland::Load(std::string _fileName)
 			i_data_bottom[index] = i + (j + 1) * m_Width;
             index++;
 		}
-	CalculateTBN(v_data_top,i_data_top,m_Width * m_Height,index_count);
-	CalculateTBN(v_data_bottom,i_data_bottom,m_Width * m_Height,index_count);
-	m_MeshArray["top"]->m_VertexBuffer->CommitToVRAM();
-	m_MeshArray["top"]->m_IndexBuffer->CommitToVRAM();
-	m_MeshArray["bottom"]->m_VertexBuffer->CommitToVRAM();
-	m_MeshArray["bottom"]->m_IndexBuffer->CommitToVRAM();
+
+		Math::Util::SVertexTBN * dataTBN = Math::Util::CalculateTBN(v_data_top,i_data_top,m_Width * m_Height,index_count,sizeof(SVertex));
+		for(int i = 0; i < m_Width * m_Height; ++i)
+		{
+			v_data_top[i].vNormal = dataTBN[i].vNormal;
+			v_data_top[i].vTangent = dataTBN[i].vTangent;
+			v_data_top[i].vBinormal = dataTBN[i].vBinormal;
+		}
+		delete[] dataTBN;
+
+		dataTBN = Math::Util::CalculateTBN(v_data_bottom,i_data_top,m_Width * m_Height,index_count,sizeof(SVertex));
+		for(int i = 0; i < m_Width * m_Height; ++i)
+		{
+			v_data_bottom[i].vNormal = dataTBN[i].vNormal;
+			v_data_bottom[i].vTangent = dataTBN[i].vTangent;
+			v_data_bottom[i].vBinormal = dataTBN[i].vBinormal;
+		}
+		delete[] dataTBN;
+
+		m_MeshArray["top"]->m_VertexBuffer->CommitToVRAM();
+		m_MeshArray["top"]->m_IndexBuffer->CommitToVRAM();
+		m_MeshArray["bottom"]->m_VertexBuffer->CommitToVRAM();
+		m_MeshArray["bottom"]->m_IndexBuffer->CommitToVRAM();
 	
 
 	Core::IVertexBuffer::SVertexDeclaration declaration;
@@ -237,97 +254,13 @@ void CSoaringIsland::Load(std::string _fileName)
 	m_MeshArray["bottom"]->m_VertexBuffer->SetDeclaration(declaration);
 }
 
-void CSoaringIsland::CalculateTBN(SVertex *_v_data,unsigned int *_i_data, unsigned int _vertex_count,unsigned int _index_count)
-{
-    for(unsigned int i = 0; i < _index_count; i += 3)
-    {
-		math::Vector3d p1 = _v_data[_i_data[i + 0]].vPosition;		
-		math::Vector3d p2 = _v_data[_i_data[i + 1]].vPosition;
-		math::Vector3d p3 = _v_data[_i_data[i + 2]].vPosition;
-
-
-		math::Vector2d vUV1 = _v_data[_i_data[i + 0]].vTexCoord;
-		math::Vector2d vUV2 = _v_data[_i_data[i + 1]].vTexCoord;
-		math::Vector2d vUV3 = _v_data[_i_data[i + 2]].vTexCoord;
-
-
-		math::Vector3d v1 = p2 - p1;
-		math::Vector3d v2 = p3 - p1;
-
-		float fDeltaU1 = vUV2.x - vUV1.x;
-		float fDeltaU2 = vUV3.x - vUV1.x;
-		float fDeltaV1 = vUV2.y - vUV1.y;
-		float fDeltaV2 = vUV3.y - vUV1.y;
-
-		float div	=(fDeltaU1*fDeltaV2-fDeltaU2*fDeltaV1);
-
-		math::Vector3d normal = math::cross(v1,v2);
-		normal.normalize();
-		_v_data[_i_data[i + 0]].vNormal = normal;
-		_v_data[_i_data[i + 1]].vNormal = normal;
-		_v_data[_i_data[i + 2]].vNormal = normal;
-
-		if(div != 0.0f)
-		{
-			float fAreaMul2 = fabsf(fDeltaU1*fDeltaV2-fDeltaU2*fDeltaV1);
-
-			float a = fDeltaV2/div;
-			float b	= -fDeltaV1/div;
-			float c = -fDeltaU2/div;
-			float d	= fDeltaU1/div;
-			
-			math::Vector3d tangent = (v1*a + v2*b) * fAreaMul2;
-			tangent.normalize();
-
-			_v_data[_i_data[i + 0]].vTangent = tangent;
-			_v_data[_i_data[i + 1]].vTangent = tangent;
-			_v_data[_i_data[i + 2]].vTangent = tangent;
-
-
-			math::Vector3d binormal = (v1*c+v2*d) * fAreaMul2;
-			binormal.normalize();
-
-			_v_data[_i_data[i + 0]].vBinormal = binormal;
-			_v_data[_i_data[i + 1]].vBinormal = binormal;
-			_v_data[_i_data[i + 2]].vBinormal = binormal;
-		}
-		else
-        {
-            //vU=CVec3(1,0,0);vV=CVec3(0,1,0);
-		}
-
-
-		/*
-		math::Vector3d normal = math::cross(v1,v2);
-		normal.normalize();
-
-		_v_data[_i_data[i + 0]].vNormal = normal;
-		_v_data[_i_data[i + 1]].vNormal = normal;
-		_v_data[_i_data[i + 2]].vNormal = normal;
-
-		math::Vector3d tangent = cross(v1,normal);
-		tangent.normalize();
-
-		_v_data[_i_data[i + 0]].vTangent = tangent;
-		_v_data[_i_data[i + 1]].vTangent = tangent;
-		_v_data[_i_data[i + 2]].vTangent = tangent;
-
-		math::Vector3d binormal = cross(tangent,normal);
-		binormal.normalize();
-
-		_v_data[_i_data[i + 0]].vBinormal = binormal;
-		_v_data[_i_data[i + 1]].vBinormal = binormal;
-		_v_data[_i_data[i + 2]].vBinormal = binormal;*/
-	}
-}
-
 void CSoaringIsland::Update()
 {
 	Matrix();
 
 	static math::Vector3d vLightDir = math::Vector3d(0.0f, 0.0f, 0.0f);
 	static float LightAngle = 0.0f;
-	LightAngle += 0.001f;
+	LightAngle += 0.01f;
 	vLightDir.x = cos(LightAngle);
 	vLightDir.y = 0.0f;
 	vLightDir.z = sin(LightAngle);
@@ -363,5 +296,5 @@ void CSoaringIsland::Render()
 	m_MeshArray["bottom"]->m_Shader->SetTexture(m_MeshArray["bottom"]->m_TextureArray[1],"Texture_02",Core::IShader::PS_SHADER);
 	m_MeshArray["bottom"]->m_Shader->SetTexture(m_MeshArray["bottom"]->m_TextureArray[2],"Texture_01_NH",Core::IShader::PS_SHADER);
 	m_MeshArray["bottom"]->m_Shader->SetTexture(m_MeshArray["bottom"]->m_TextureArray[3],"Texture_02_NH",Core::IShader::PS_SHADER);
-	m_MeshArray["bottom"]->Draw();
+	//m_MeshArray["bottom"]->Draw();
 }

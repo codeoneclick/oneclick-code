@@ -6,6 +6,15 @@ float fDiscardUp = 0.0f;
 float3 vCameraEye;
 float3 vLightDir;
 
+float fParallaxHeight = 0.04f;
+float fParallaxStep = 4.0f;
+
+const float fAmbientFactor = 0.75f;
+
+const float4 vSpecularColor = float4(1.0f,1.0f,1.0f,1.0f);
+
+const float fSpecularPower = 16.0f;
+
 texture Texture_01;
 sampler Texture_01_Sampler = sampler_state {
 	Texture = <Texture_01>;
@@ -81,14 +90,19 @@ VS_OUTPUT vs_main(VS_INPUT IN)
    OUT.vDiscardPosition = IN.vPosition;
    OUT.vSplatting = IN.vSplatting;
    
-   float3x3 TangentSpace = float3x3(IN.vTangent,IN.vBinormal,IN.vNormal);
-   OUT.vLightDir = mul(TangentSpace,vLightDir);
-   OUT.vCameraEye = mul(TangentSpace,vCameraEye - IN.vPosition);
+   float3x3 mTangentSpace = float3x3(-IN.vTangent,-IN.vBinormal,-IN.vNormal);
+   OUT.vLightDir = mul(mTangentSpace,vLightDir);
+   OUT.vCameraEye = mul(mTangentSpace,vCameraEye - IN.vPosition);
    return OUT;
 }
 
 float4 ps_main(VS_OUTPUT IN) : COLOR 
 {	
+   if(IN.vDiscardPosition.y > fDiscardHeight && fDiscardUp < 0.0f)
+		discard;
+   if(IN.vDiscardPosition.y < fDiscardHeight && fDiscardUp > 0.0f)
+		discard;
+
     IN.vCameraEye = normalize(IN.vCameraEye);
     IN.vLightDir = normalize(IN.vLightDir);
    
@@ -99,7 +113,7 @@ float4 ps_main(VS_OUTPUT IN) : COLOR
 		 fHeightPower = tex2D(Texture_01_NH_Sampler, IN.vTexCoord).a * IN.vSplatting.x + 
 					    tex2D(Texture_02_NH_Sampler, IN.vTexCoord).a * IN.vSplatting.y + 
 					    tex2D(Texture_03_NH_Sampler, IN.vTexCoord).a * IN.vSplatting.z;
-		 fHeightPower *= 0.04f / 4.0f;
+		 fHeightPower *= fParallaxHeight / fParallaxStep;
 		 vDisplaceTexCoord = vDisplaceTexCoord + (-IN.vCameraEye.xy * fHeightPower);
     }
     
@@ -109,23 +123,18 @@ float4 ps_main(VS_OUTPUT IN) : COLOR
 	
 	vNormalColor = vNormalColor * 2 - 1;
 	
-	float4 vDiffuceColor =  tex2D( Texture_01_Sampler, vDisplaceTexCoord )*IN.vSplatting.x + 
+	float4 vDiffuseColor =  tex2D( Texture_01_Sampler, vDisplaceTexCoord )*IN.vSplatting.x + 
 							tex2D( Texture_02_Sampler, vDisplaceTexCoord )*IN.vSplatting.y + 
 							tex2D( Texture_03_Sampler, vDisplaceTexCoord )*IN.vSplatting.z;
-							
-	float4 vAmbientColor = vDiffuceColor;
 	
-	vDiffuceColor *= dot(vNormalColor, IN.vLightDir);
-	float3 vLightReflection = normalize( reflect(IN.vLightDir, vNormalColor) );	
-	float vSpecularColor = pow(max(0.0, dot(vLightReflection, IN.vCameraEye) ), 128.0f);
-   
-   if(IN.vDiscardPosition.y > fDiscardHeight && fDiscardUp < 0.0f)
-		discard;
-   if(IN.vDiscardPosition.y < fDiscardHeight && fDiscardUp > 0.0f)
-		discard;
-   float4 vColor = vDiffuceColor + vAmbientColor;
-   vColor.a = 1.0f;
-   return vColor;
+	float4 vAmbientColor = vDiffuseColor;						
+	
+	float vDiffuseFactor = dot(vNormalColor, IN.vLightDir);
+	float3 vLightReflect = reflect(IN.vLightDir, vNormalColor);
+	float vSpecularFactor = pow(max(0.0f, dot(vLightReflect, IN.vCameraEye) ), fSpecularPower);
+  
+    float4 vColor = vDiffuseColor * vDiffuseFactor + vAmbientColor * fAmbientFactor + vSpecularFactor * vSpecularColor;
+    return vColor;
 }
 
 technique mesh {

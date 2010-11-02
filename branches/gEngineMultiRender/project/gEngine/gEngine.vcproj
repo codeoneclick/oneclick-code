@@ -423,6 +423,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\sources\Math\Util.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\sources\Vector3d.h"
 					>
 				</File>

@@ -149,11 +149,9 @@ void C3DS::Commit(S3DSFile *in_value, Core::CMesh *out_value)
 	out_value->m_VertexBuffer = Core::CGlobal::GetDevice()->CreateVertexBuffer();
 	S3DSVertex *v_data = (S3DSVertex*)out_value->m_VertexBuffer->Load(in_value->nVerteces,sizeof(S3DSVertex));
 	memcpy(v_data,in_value->vertexData,sizeof(S3DSVertex) * in_value->nVerteces);
-	delete[] in_value->vertexData;
-	out_value->m_VertexBuffer->CommitToVRAM();
 
 	Core::IVertexBuffer::SVertexDeclaration declaration;
-	declaration.m_Elements = new Core::IVertexBuffer::SElementDeclaration[2];
+	declaration.m_Elements = new Core::IVertexBuffer::SElementDeclaration[5];
 	
 	declaration.m_Elements[0].m_Index = 0;
 	declaration.m_Elements[0].m_Size = Core::IVertexBuffer::ELEMENT_FLOAT3;
@@ -165,13 +163,41 @@ void C3DS::Commit(S3DSFile *in_value, Core::CMesh *out_value)
 	declaration.m_Elements[1].m_Type = Core::IVertexBuffer::ELEMENT_TEXCOORD;
 	declaration.m_Elements[1].m_Offset = 3 * sizeof(float);
 
-	declaration.m_ElementCount = 2;
+	declaration.m_Elements[2].m_Index = 0;
+	declaration.m_Elements[2].m_Size = Core::IVertexBuffer::ELEMENT_FLOAT3;
+	declaration.m_Elements[2].m_Type = Core::IVertexBuffer::ELEMENT_NORMAL;
+	declaration.m_Elements[2].m_Offset = 5 * sizeof(float);
+
+	declaration.m_Elements[3].m_Index = 1;
+	declaration.m_Elements[3].m_Size = Core::IVertexBuffer::ELEMENT_FLOAT3;
+	declaration.m_Elements[3].m_Type = Core::IVertexBuffer::ELEMENT_TEXCOORD;
+	declaration.m_Elements[3].m_Offset = 8 * sizeof(float);
+
+	declaration.m_Elements[4].m_Index = 2;
+	declaration.m_Elements[4].m_Size = Core::IVertexBuffer::ELEMENT_FLOAT3;
+	declaration.m_Elements[4].m_Type = Core::IVertexBuffer::ELEMENT_TEXCOORD;
+	declaration.m_Elements[4].m_Offset = 11 * sizeof(float);
+
+	declaration.m_ElementCount = 5;
 
 	out_value->m_VertexBuffer->SetDeclaration(declaration);
 
 	out_value->m_IndexBuffer = Core::CGlobal::GetDevice()->CreateIndexBuffer();
 	unsigned int *ib_ref = out_value->m_IndexBuffer->Load(in_value->nIndeces);
 	memcpy(ib_ref,in_value->indexData,sizeof(unsigned int) * in_value->nIndeces);
-	delete[] in_value->indexData;
+
+	Math::Util::SVertexTBN * dataTBN = Math::Util::CalculateTBN(v_data,ib_ref,out_value->m_VertexBuffer->GetVertexCount(),out_value->m_IndexBuffer->GetIndexCount(),sizeof(S3DSVertex));
+	for(int i = 0; i < out_value->m_VertexBuffer->GetVertexCount(); ++i)
+	{
+		v_data[i].vNormal = dataTBN[i].vNormal;
+		v_data[i].vTangent = dataTBN[i].vTangent;
+		v_data[i].vBinormal = dataTBN[i].vBinormal;
+	}
+	delete[] dataTBN;
+
+	out_value->m_VertexBuffer->CommitToVRAM();
 	out_value->m_IndexBuffer->CommitToVRAM();
+
+	delete[] in_value->vertexData;
+	delete[] in_value->indexData;
 }

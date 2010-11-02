@@ -6,6 +6,7 @@
 
 #include "Matrix4x4.h"
 #include "Mesh.h"
+#include "Math/Util.h"
 
 namespace Enviroment
 {

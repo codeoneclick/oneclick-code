@@ -28,7 +28,6 @@ namespace Enviroment
 		unsigned int   m_Width;
 		unsigned int   m_Height;
 		float          **m_MapData;
-		void CalculateTBN(SVertex *_vertexData,unsigned int *_indexData, unsigned int _nVerteces,unsigned int _nIndeces);
 		void ReadData(std::string _fileName);
 	public :
 		CSoaringIsland();
