@@ -7,7 +7,7 @@ float3 vCameraEye;
 float3 vLightDir;
 
 float fParallaxHeight = 0.04f;
-float fParallaxStep = 4.0f;
+float fParallaxStep = 1.0f;
 
 const float fAmbientFactor = 0.75f;
 
@@ -129,7 +129,7 @@ float4 ps_main(VS_OUTPUT IN) : COLOR
 	
 	float4 vAmbientColor = vDiffuseColor;						
 	
-	float vDiffuseFactor = dot(vNormalColor, IN.vLightDir);
+	float vDiffuseFactor = saturate(dot(vNormalColor, IN.vLightDir));
 	float3 vLightReflect = reflect(IN.vLightDir, vNormalColor);
 	float vSpecularFactor = pow(max(0.0f, dot(vLightReflect, IN.vCameraEye) ), fSpecularPower);
   
