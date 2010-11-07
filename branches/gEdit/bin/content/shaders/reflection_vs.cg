@@ -1,0 +1,44 @@
+struct vertex
+{
+    float3 vPosition          : POSITION;
+    float2 vTexCoord          : TEXCOORD0;
+};
+
+struct fragment
+{
+	float4   vPosition       : POSITION;
+	float4   vTexCoordProj   : TEXCOORD0;
+	float2   vTexCoord       : TEXCOORD1;
+	float3x3 mTangentSpace   : TEXCOORD2;
+	float3   vCamera         : TEXCOORD5;
+	float3   vLight	         : TEXCOORD6;
+};
+
+uniform float4x4  mWorldViewProjection;
+uniform float4x4  mWorld;
+
+uniform float3    vCameraPosition;
+uniform float3    vLightDirection;
+
+fragment main(vertex IN)
+{
+	fragment OUT;
+    
+    float3 vBinormal = float3( 1.0f,  0.0f, 0.0f );
+    float3 vTangent  = float3( 0.0f,  0.0f, 1.0f );
+    float3 vNormal   = float3( 0.0f,  1.0f, 0.0f );
+    
+	float3x3 mTangentSpace = float3x3(vTangent, vBinormal, vNormal );
+	
+	OUT.mTangentSpace[0].xyz = mul( mTangentSpace, mWorld[0].xyz );
+	OUT.mTangentSpace[1].xyz = mul( mTangentSpace, mWorld[1].xyz );
+	OUT.mTangentSpace[2].xyz = mul( mTangentSpace, mWorld[2].xyz );
+	
+    OUT.vCamera  = mul(OUT.mTangentSpace, vCameraPosition - IN.vPosition);
+    OUT.vLight   = mul(OUT.mTangentSpace, vLightDirection);
+
+	OUT.vPosition = mul(mWorldViewProjection, float4(IN.vPosition,1.0f) );
+	OUT.vTexCoord = IN.vTexCoord;
+	OUT.vTexCoordProj = OUT.vPosition;
+	return OUT;
+}
