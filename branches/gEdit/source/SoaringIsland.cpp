@@ -69,7 +69,7 @@ void CSoaringIsland::Load(std::string _fileName)
 	SVertex* v_data_top = (SVertex*)m_MeshArray["top"]->m_VertexBuffer->Load(m_Width * m_Height,sizeof(SVertex));
 	SVertex* v_data_bottom = (SVertex*)m_MeshArray["bottom"]->m_VertexBuffer->Load(m_Width * m_Height,sizeof(SVertex));
 
-	for(unsigned int i = 0; i < m_Width;++i)
+	/*for(unsigned int i = 0; i < m_Width;++i)
         for(unsigned int j = 0; j < m_Height;++j)
 		{
             if(i <= 0 || j <= 0 || i >= (m_Width - 1) || j >= (m_Height - 1)) continue;
@@ -87,7 +87,7 @@ void CSoaringIsland::Load(std::string _fileName)
             currentHeight = middleHeight / 9.0f;
             currentHeight = floor(currentHeight + 0.5f);
             m_MapData[i][j] = currentHeight;
-         }
+         }*/
 
 	unsigned int index = 0;
 	for(unsigned int i = 0; i < m_Width;++i)
@@ -112,7 +112,7 @@ void CSoaringIsland::Load(std::string _fileName)
 			if(v_data_bottom[index].vPosition.y > 0.0f)
 				v_data_bottom[index].fDiscard = -1.0f;
 
-			int splattingOffset = 2.0f;
+			/*int splattingOffset = 2.0f;
 			float splattingMult = splattingOffset * 3.0f;
 			if(m_MapData[i][j] <= 32.0f)
 				for(int x = (i - splattingOffset); x <= (i + splattingOffset); ++x)
@@ -123,11 +123,11 @@ void CSoaringIsland::Load(std::string _fileName)
 						math::Vector2d splattingFactor = math::Vector2d(static_cast<float>(x) - static_cast<float>(i), static_cast<float>(z) - static_cast<float>(j));
 						v_data_bottom[index].vSplatting.x = 1.0f - splattingFactor.length() / splattingMult;
 						v_data_bottom[index].vSplatting.y = 1.0f - v_data_bottom[index].vSplatting.x;
-					}
+					}*/
 			++index;
 		}
 
-	index = 0;
+	/*index = 0;
 	for(unsigned int i = 0; i < m_Width;++i)
         for(unsigned int j = 0; j < m_Height;++j)
 		{
@@ -156,7 +156,7 @@ void CSoaringIsland::Load(std::string _fileName)
 						v_data_top[index].vSplatting.y = 1.0f - v_data_top[index].vSplatting.z;
 					}
 			++index;
-		}
+		}*/
 
 	unsigned int index_count = (m_Width - 1)*(m_Height - 1) * 6;
 	unsigned int *i_data_top = m_MeshArray["top"]->m_IndexBuffer->Load(index_count);

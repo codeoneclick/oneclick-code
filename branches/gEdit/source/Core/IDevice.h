@@ -24,6 +24,7 @@ namespace Core
 		virtual IShader* CreateShader() = 0;
 		virtual IVertexBuffer* CreateVertexBuffer() = 0;
 		virtual IIndexBuffer* CreateIndexBuffer() = 0;
+		virtual void SetViewport(int _x, int _y, unsigned int _width, unsigned int _height) = 0; 
 	};
 };
 

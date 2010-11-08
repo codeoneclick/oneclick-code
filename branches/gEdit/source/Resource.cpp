@@ -72,6 +72,6 @@ void CResource::WorkInMainTread()
 			m_TextureController->WorkInMainThread();
 		if(m_ShaderController != NULL)
 			m_ShaderController->WorkInMainThread();
-		if(m_MeshController != NULL)
-			m_MeshController->WorkInMainThread();
+		//if(m_MeshController != NULL)
+		//	m_MeshController->WorkInMainThread();
 }

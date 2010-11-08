@@ -1,5 +1,6 @@
 #include "EnviromentController.h"
 #include "Resource.h"
+#include "RenderController.h"
 
 using namespace Enviroment;
 
@@ -15,8 +16,8 @@ void EnviromentController::Create()
 	m_Island->Load("Content\\maps\\Kbsd_Heightmap_Example.raw");
 	_mesh = new CModel();
 	_mesh->Load("Content\\models\\tank.3ds");
-	//_mesh->m_vRotation.x = -1.57f;
-	//_mesh->m_vScale = math::Vector3d(0.1f,0.1f,0.1f);
+	_mesh->m_vRotation.x = -1.57f;
+	_mesh->m_vScale = math::Vector3d(0.1f,0.1f,0.1f);
 
 	//_ocean = new COcean();
 	//_ocean->Load("none");
@@ -35,25 +36,8 @@ void EnviromentController::Update(DWORD time)
 	CResource::WorkInMainTread();
 }
 
-void EnviromentController::Render(Video::CRenderController::ERenderTexture value)
+void EnviromentController::Render()
 {
-	switch(value)
-	{
-		case Video::CRenderController::SCREEN_TEXTURE :
-		{
-			m_Island->Render();
-			//_mesh->Render();
-		}
-		break;
-		case Video::CRenderController::REFLECTION_TEXTURE :
-		{
-			//_landscape->Render();
-		}
-		break;
-		case Video::CRenderController::REFRACTION_TEXTURE :
-		{
-			//_landscape->Render();
-		}
-		break;
-	}
+	m_Island->Render();
+	//_mesh->Render();
 }

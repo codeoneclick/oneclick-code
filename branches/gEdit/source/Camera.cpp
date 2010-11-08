@@ -14,7 +14,7 @@ Camera::Camera()
 	_fCameraRotationSpeed = 1.0f;
 	_fNearPlane = 0.1f;
 	_fFarPlane  = 4096.0f;
-	mProjection = math::MatrixProjection(45.0f, (float)640 / (float)480, _fNearPlane, _fFarPlane);
+	mProjection = math::MatrixProjection(45.0f, (float)800 / (float)600, _fNearPlane, _fFarPlane);
 }
 
 void Camera::_MoveForward()

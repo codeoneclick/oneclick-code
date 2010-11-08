@@ -20,7 +20,7 @@ public :
 	void Create();
 	__forceinline Camera* GetCameraInstance() { return _camera; }
 	void Update(DWORD time);
-	void Render(Video::CRenderController::ERenderTexture value);
+	void Render();
 };
 };
 

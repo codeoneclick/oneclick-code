@@ -41,8 +41,7 @@ namespace GEgit {
 				delete components;
 			}
 		}
-	public: System::Windows::Forms::Panel^  panel1;
-	protected: 
+	public: System::Windows::Forms::Panel^  MainViewport;
 
 	private:
 		/// <summary>
@@ -57,25 +56,29 @@ namespace GEgit {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->panel1 = (gcnew System::Windows::Forms::Panel());
+			this->MainViewport = (gcnew System::Windows::Forms::Panel());
 			this->SuspendLayout();
 			// 
-			// panel1
+			// MainViewport
 			// 
-			this->panel1->Location = System::Drawing::Point(199, 108);
-			this->panel1->Name = L"panel1";
-			this->panel1->Size = System::Drawing::Size(538, 262);
-			this->panel1->TabIndex = 0;
+			this->MainViewport->AutoSize = true;
+			this->MainViewport->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->MainViewport->Location = System::Drawing::Point(12, 12);
+			this->MainViewport->Name = L"MainViewport";
+			this->MainViewport->Size = System::Drawing::Size(800, 600);
+			this->MainViewport->TabIndex = 0;
 			// 
-			// Form1
+			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(897, 500);
-			this->Controls->Add(this->panel1);
-			this->Name = L"GEdit";
+			this->ClientSize = System::Drawing::Size(1315, 793);
+			this->Controls->Add(this->MainViewport);
+			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
+			this->Name = L"MainForm";
 			this->Text = L"GEdit";
 			this->ResumeLayout(false);
+			this->PerformLayout();
 
 		}
 #pragma endregion

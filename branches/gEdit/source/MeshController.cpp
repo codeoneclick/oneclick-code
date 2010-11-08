@@ -32,7 +32,6 @@ void CMeshController::ReadData(std::string _value)
 			}
 			break;
 		}
-		
 }
 
 Core::CMesh* CMeshController::Load(std::string _value, Core::CMesh::MESH_EXTENSION _extension)
@@ -88,5 +87,6 @@ void CMeshController::WorkInPreloadingThread()
 		ReadData(*requestIterator);
 		++requestIterator;
 	}
-	LeaveCriticalSection( &m_CriticalSection );		
+	LeaveCriticalSection( &m_CriticalSection );
+	WorkInMainThread();
 }

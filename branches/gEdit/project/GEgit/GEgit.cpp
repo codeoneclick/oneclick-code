@@ -11,7 +11,7 @@ int main(array<System::String ^> ^args)
 	Application::SetCompatibleTextRenderingDefault(false); 
 
 	MainForm ^_mainForm = gcnew MainForm();
-	Core::CGlobal::m_HWND = (HWND)_mainForm->panel1->Handle.ToPointer();
+	Core::CGlobal::SetHWND((HWND)_mainForm->MainViewport->Handle.ToPointer());
 
 	Game* gameInstance = new Game();
 	gameInstance->Create();
