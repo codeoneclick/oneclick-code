@@ -15,7 +15,7 @@ void EnviromentController::Create()
 	m_Island = new CSoaringIsland();
 	m_Island->Load("Content\\maps\\Kbsd_Heightmap_Example.raw");
 	_mesh = new CModel();
-	_mesh->Load("Content\\models\\tank.3ds");
+	//_mesh->Load("Content\\models\\tank.3ds");
 	_mesh->m_vRotation.x = -1.57f;
 	_mesh->m_vScale = math::Vector3d(0.1f,0.1f,0.1f);
 

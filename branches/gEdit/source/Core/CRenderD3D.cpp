@@ -22,7 +22,16 @@ void CRenderD3D::BeginRender()
 void CRenderD3D::EndRender()
 {
 	IDevice::Ref()->EndScene(); 
-    IDevice::Ref()->Present(NULL, NULL, NULL, NULL);
+}
+
+void CRenderD3D::Spitout()
+{
+	IDevice::Ref()->Present(NULL, NULL, NULL, NULL);
+}
+
+void CRenderD3D::SpitoutTo(HWND _handle)
+{
+	IDevice::Ref()->Present(NULL, NULL, _handle, NULL);
 }
 
 void CRenderD3D::Draw(unsigned int _vertex_count, unsigned int _index_count, unsigned int _primitive_count)

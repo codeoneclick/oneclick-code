@@ -39,9 +39,9 @@ void Game::Update(DWORD time)
 void Game::Render()
 {
 
-	Core::CGlobal::GetRender()->BeginRender();
+	//Core::CGlobal::GetRender()->BeginRender();
 	Video::CRenderController::Render();
-	Core::CGlobal::GetRender()->EndRender();
+	//Core::CGlobal::GetRender()->EndRender();
 
 	static DWORD framesPerSecond = 0;       
     static DWORD lastTime = 0;   

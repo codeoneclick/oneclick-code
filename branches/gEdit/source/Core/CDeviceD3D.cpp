@@ -39,7 +39,6 @@ CDeviceD3D::CDeviceD3D()
    {
       return;
    }	
-
 	m_device->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE); 
 	m_device->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
     m_device->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);

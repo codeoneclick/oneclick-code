@@ -80,8 +80,14 @@ void CRenderController::Render2Texture()
 
 void CRenderController::Render()
 {
+	Core::CGlobal::GetRender()->BeginRender();
 	RenderViewport(E_VIEWPORT::VIEWPORT_TOP);
-	RenderViewport(E_VIEWPORT::VIEWPORT_LEFT);
-	RenderViewport(E_VIEWPORT::VIEWPORT_FRONT);
+	Core::CGlobal::GetRender()->EndRender();
+	Core::CGlobal::GetRender()->SpitoutTo(Core::CGlobal::GetHWNDFromList(0));
+	//RenderViewport(E_VIEWPORT::VIEWPORT_LEFT);
+	//RenderViewport(E_VIEWPORT::VIEWPORT_FRONT);
+	Core::CGlobal::GetRender()->BeginRender();
 	RenderViewport(E_VIEWPORT::VIEWPORT_PERSPECTIVE);
+	Core::CGlobal::GetRender()->EndRender();
+	Core::CGlobal::GetRender()->SpitoutTo(Core::CGlobal::GetHWNDFromList(1));
 }

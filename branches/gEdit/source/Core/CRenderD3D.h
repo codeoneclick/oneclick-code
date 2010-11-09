@@ -13,6 +13,8 @@ namespace Core
 		virtual void BeginRender();
 		virtual void EndRender();
 		virtual void Draw(unsigned int _vertex_count, unsigned int _index_count, unsigned int _primitive_count);
+		virtual void Spitout();
+		virtual void SpitoutTo(HWND _handle);
 	};
 };
 

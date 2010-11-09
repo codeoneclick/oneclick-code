@@ -4,7 +4,8 @@
 
 using namespace Core;
 
-HWND CGlobal::m_HWND = NULL;
+HWND CGlobal::m_MainHWND = NULL;
+std::vector<HWND> CGlobal::m_ListHWND;
 unsigned int CGlobal::m_Width = 800;
 unsigned int CGlobal::m_Height = 600;
 
