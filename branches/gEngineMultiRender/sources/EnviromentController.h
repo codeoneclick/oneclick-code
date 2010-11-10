@@ -1,28 +1,32 @@
-#ifndef _ENVIROMENTCONTROLLER_H_
-#define _ENVIROMENTCONTROLLER_H_
+#ifndef ENVIROMENTCONTROLLER_H
+#define ENVIROMENTCONTROLLER_H
 #include "Camera.h"
 #include "Landscape.h"
 #include "Model.h"
 #include "RenderController.h"
 #include "Ocean.h"
-#include "SoaringIsland.h"
+#include <stdlib.h>
+#include <string>
+#include <map>
 
 namespace Enviroment
 {
 class EnviromentController
 {
 private :
-	Camera* _camera;
-	CDummy* m_Island;
-	//Landscape* _landscape;
-	CModel *_mesh;
-	COcean *_ocean;
+    std::map<std::string,Camera*> m_CameraContainer;
+    std::map<std::string,CDummy*> m_LandscapeContainer;
+    std::map<std::string,CDummy*> m_ModelContainer;
+	Camera* m_Camera;
+	CDummy* m_CharacterControl;
+	CDummy* m_Landscape;
+	float GetLandscapeHeight(float _positionX,float _positionZ);
+	math::Vector3d GetLandscapeRotation(math::Vector3d vPosition);
+	float GetRotationFromNormal(math::Vector3d vPosition_01,math::Vector3d vPosition_02);
 public :
 	EnviromentController();
-	//Landscape* LoadLandscape(char* filename, unsigned int width, unsigned int height);
-	void Create();
-	__forceinline Camera* GetCameraInstance() { return _camera; }
-	//__forceinline Landscape* GetLandscapeInstance() { return _landscape; }
+	void Load();
+	__forceinline Camera* GetCameraInstance() { return m_Camera; }
 	void Update(DWORD time);
 	void Render(Video::CRenderController::ERenderTexture value);
 };

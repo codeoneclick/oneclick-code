@@ -14,9 +14,9 @@ bool Game::Create()
 {
 	_CreateWindow(640,480,32);
 	Core::CGlobal::GetDevice();
-	Video::CRenderController::Load();
+	Video::CRenderController::Init();
 	_enviromentController = new Enviroment::EnviromentController();
-	_enviromentController->Create();
+	_enviromentController->Load();
 	gameRun = true;
 	return true;
 }
@@ -48,7 +48,7 @@ void Game::Render()
 {
 
 	Core::CGlobal::GetRender()->BeginRender();
-	Video::CRenderController::Render2Texture(Video::CRenderController::SCREEN_TEXTURE);
+	Video::CRenderController::Render(Video::CRenderController::SCREEN_TEXTURE);
 	Core::CGlobal::GetRender()->EndRender();
 
 	static DWORD framesPerSecond = 0;       

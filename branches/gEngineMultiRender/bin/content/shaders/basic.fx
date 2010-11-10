@@ -90,7 +90,7 @@ VS_OUTPUT vs_main(VS_INPUT IN)
    OUT.vDiscardPosition = IN.vPosition;
    OUT.vSplatting = IN.vSplatting;
    
-   float3x3 mTangentSpace = float3x3(-IN.vTangent,-IN.vBinormal,-IN.vNormal);
+   float3x3 mTangentSpace = float3x3(IN.vTangent,IN.vBinormal,IN.vNormal);
    OUT.vLightDir = mul(mTangentSpace,vLightDir);
    OUT.vCameraEye = mul(mTangentSpace,vCameraEye - IN.vPosition);
    return OUT;
@@ -108,14 +108,11 @@ float4 ps_main(VS_OUTPUT IN) : COLOR
    
     float fHeightPower = 0.0f;
     float2 vDisplaceTexCoord = IN.vTexCoord;
-    for(int i = 0; i < 4; i++)
-    {
-		 fHeightPower = tex2D(Texture_01_NH_Sampler, IN.vTexCoord).a * IN.vSplatting.x + 
+    fHeightPower = tex2D(Texture_01_NH_Sampler, IN.vTexCoord).a * IN.vSplatting.x + 
 					    tex2D(Texture_02_NH_Sampler, IN.vTexCoord).a * IN.vSplatting.y + 
 					    tex2D(Texture_03_NH_Sampler, IN.vTexCoord).a * IN.vSplatting.z;
-		 fHeightPower *= fParallaxHeight / fParallaxStep;
-		 vDisplaceTexCoord = vDisplaceTexCoord + (-IN.vCameraEye.xy * fHeightPower);
-    }
+    fHeightPower *= 0.04f;
+	vDisplaceTexCoord = vDisplaceTexCoord + (IN.vCameraEye.xy * fHeightPower);
     
     float3 vNormalColor = tex2D(Texture_01_NH_Sampler, vDisplaceTexCoord).rgb * IN.vSplatting.x + 
 						  tex2D(Texture_02_NH_Sampler, vDisplaceTexCoord).rgb * IN.vSplatting.y + 

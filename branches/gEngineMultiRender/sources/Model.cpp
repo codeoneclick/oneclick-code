@@ -8,7 +8,7 @@ using namespace Enviroment;
 
 CModel::CModel()
 {
-	m_vPosition = math::Vector3d(100.0f,0.0f,100.0f);
+	
 }
 
 void CModel::Load(std::string value)
@@ -22,7 +22,7 @@ void CModel::Load(std::string value)
 void CModel::Update()
 {
 	Matrix();
-	m_vScale = math::Vector3d(2.0f,2.0,2.0f);
+
 	static math::Vector3d vLightDir = math::Vector3d(0.0f, 0.0f, 0.0f);
 	static float LightAngle = 0.0f;
 	LightAngle += 0.01f;

@@ -14,25 +14,9 @@ namespace Video
 #define REFRACTION_TEXTURE_WIDTH 512
 #define REFRACTION_TEXTURE_HEIGHT 512
 
-class CRenderController
-{
-public :
-	struct SRenderTexture
+	class CRenderController
 	{
-		unsigned int texture_addr;
-		unsigned int frame_buffer_addr;
-		unsigned int render_buffer_addr;
-		unsigned int width;
-		unsigned int height;
-		SRenderTexture(unsigned int _texture_addr,unsigned int _frame_buffer_addr,unsigned int _render_buffer_addr,unsigned int _width,unsigned int _height)
-		{
-			texture_addr = _texture_addr;
-			frame_buffer_addr = _frame_buffer_addr;
-			render_buffer_addr = _render_buffer_addr;
-			width = _width;
-			height = _height;
-		}
-	};
+	public :
 
 	enum ERenderTexture
 	{
@@ -41,27 +25,15 @@ public :
 		REFRACTION_TEXTURE,
 	};
 
-	struct SClipSetting
-	{
-		float fClipInc;
-		float fClipHeight;
+	private :
+		static void TextureEnable();
+		static void TextureDisable();
+	public  :
+		static void Init();
+		static void Render2Texture(ERenderTexture value);
+		static void Render(ERenderTexture value);
+		static void RenderPost();
 	};
-
-
-private :
-	static SRenderTexture _screenTexture;
-	static SRenderTexture _reflectionTexture; 
-	static SRenderTexture _refractionTexture;
-
-	static void _TextureEnable(SRenderTexture *texture);
-	static void _TextureDisable();
-public  :
-	static void Load();
-	static void Render2Texture(ERenderTexture value);
-	static const unsigned int GetRenderTexture(ERenderTexture value);
-	static void Render();
-	static SClipSetting clipSetting;
-};
 };
 
 #endif

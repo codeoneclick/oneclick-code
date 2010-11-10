@@ -25,7 +25,7 @@ void CDummy::Matrix()
 	m_mRotationY = math::RotationY(m_vRotation.y);
 	m_mRotationZ = math::RotationZ(m_vRotation.z);
 	m_mScale = math::Scale(m_vScale);
-	m_mRotation = m_mRotationY * m_mRotationZ * m_mRotationX;
+	m_mRotation = m_mRotationX * m_mRotationY * m_mRotationZ;
 	m_mWorld = m_mScale * m_mRotation * m_mTranslation;
 	m_mWorldViewProjection = m_mWorld * (*m_mView) * (*m_mProjection);
 }

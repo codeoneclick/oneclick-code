@@ -6,7 +6,6 @@
 
 int main()
 {
-
 	Game* gameInstance = new Game();
 	gameInstance->Create();
 
