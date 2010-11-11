@@ -559,6 +559,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\bin\content\shaders\ocean.fx"
+					>
+				</File>
+				<File
 					RelativePath="..\..\bin\content\shaders\parallax_ps.cg"
 					>
 				</File>

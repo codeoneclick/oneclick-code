@@ -19,6 +19,7 @@ namespace Enviroment
 
 	private :
 		float m_MapScaleFactor;
+		float m_MapHeightFactor;
 		float m_TextureScaleFactor;
 		unsigned int   m_Width;
 		unsigned int   m_Height;
@@ -33,6 +34,7 @@ namespace Enviroment
 		__forceinline unsigned int GetWidth() { return m_Width; }
 		__forceinline unsigned int GetHeight() { return m_Height; }
 		__forceinline float GetScaleFactor() { return m_MapScaleFactor; }
+		__forceinline float GetHeightFactor() { return m_MapHeightFactor; }
 	};
 };
 

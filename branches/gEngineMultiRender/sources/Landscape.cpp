@@ -14,6 +14,7 @@ CLandscape::CLandscape()
 
 	m_MapScaleFactor = 1.0f;
 	m_TextureScaleFactor = 16.0f;
+	m_MapHeightFactor = 0.1f;
 }
 
 void CLandscape::ReadData(std::string _fileName)
@@ -78,7 +79,7 @@ void CLandscape::Load(std::string _fileName)
 	for(unsigned int i = 0; i < m_Width;++i)
         for(unsigned int j = 0; j < m_Height;++j)
 		{
-			v_data_01[index].vPosition = math::Vector3d(i*m_MapScaleFactor,m_MapData[i][j] * 0.1f,j*m_MapScaleFactor);
+			v_data_01[index].vPosition = math::Vector3d(i*m_MapScaleFactor,m_MapData[i][j] * m_MapHeightFactor,j*m_MapScaleFactor);
 			v_data_01[index].vTexCoord = math::Vector2d(static_cast<float>(i) / m_TextureScaleFactor,static_cast<float>(j) / m_TextureScaleFactor);
 			v_data_01[index].vSplatting = math::Vector4d(0.0f,0.0f,1.0f,0.0f);
 			++index;
@@ -123,7 +124,7 @@ void CLandscape::Load(std::string _fileName)
 	m_MeshArray["landscape_01"]->m_IndexBuffer->CommitToVRAM();
 
 	Core::IVertexBuffer::SVertexDeclaration declaration;
-	declaration.m_Elements = new Core::IVertexBuffer::SElementDeclaration[7];
+	declaration.m_Elements = new Core::IVertexBuffer::SElementDeclaration[6];
 	
 	declaration.m_Elements[0].m_Index = 0;
 	declaration.m_Elements[0].m_Size = Core::IVertexBuffer::ELEMENT_FLOAT3;

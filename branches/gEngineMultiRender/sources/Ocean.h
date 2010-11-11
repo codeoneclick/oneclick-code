@@ -10,9 +10,14 @@ namespace Enviroment
 {
 class COcean : public CDummy
 {
+	struct SVertex
+	{
+		math::Vector3d vPosition;
+		math::Vector2d vTexCoord;
+	};
 	private :
-		unsigned int   _width;
-		unsigned int   _height;
+		unsigned int   m_Width;
+		unsigned int   m_Height;
 	public :
 		COcean();
 		virtual void Load(std::string value);

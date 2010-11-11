@@ -1,6 +1,10 @@
 #ifndef _RENDERCONTROLLER_H_
 #define _RENDERCONTROLLER_H_
 #include "Window.h"
+#include "Core/ITexture.h"
+#include <stdlib.h>
+#include <string>
+#include <map>
 
 namespace Video
 {
@@ -26,6 +30,7 @@ namespace Video
 	};
 
 	private :
+		static std::map<ERenderTexture,Core::ITexture*> m_RenderTargetTextureContainer;
 		static void TextureEnable();
 		static void TextureDisable();
 	public  :
@@ -33,6 +38,7 @@ namespace Video
 		static void Render2Texture(ERenderTexture value);
 		static void Render(ERenderTexture value);
 		static void RenderPost();
+		__forceinline static Core::ITexture *GetRenderTargetTexture(ERenderTexture _value) { return m_RenderTargetTextureContainer[_value]; }
 	};
 };
 

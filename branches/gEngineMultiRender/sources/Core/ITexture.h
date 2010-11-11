@@ -19,6 +19,10 @@ namespace Core
 
 		virtual void ReadFromFile(std::string _file_name) = 0;
 		virtual void CommitToVRAM() = 0;
+		virtual void SetAsRenderTarget(unsigned int _Width, unsigned int _Height) = 0;
+
+		unsigned int m_Width;
+		unsigned int m_Height;
 
 		bool m_is_read_data;
 		bool m_is_commit;
