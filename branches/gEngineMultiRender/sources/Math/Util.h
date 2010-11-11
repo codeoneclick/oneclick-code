@@ -47,7 +47,7 @@ namespace Math
 				 float div	=(fDeltaU1*fDeltaV2-fDeltaU2*fDeltaV1);
 
 				 math::Vector3d normal = math::cross(v1,v2);
-				 normal.normalize();
+				 //normal.normalize();
 
 				 if(div != 0.0f)
 				 {
@@ -59,39 +59,39 @@ namespace Math
 					float d	=  fDeltaU1/div;
 				
 					math::Vector3d tangent = (v1*a + v2*b) * fAreaMul2;
-					tangent.normalize();
+					//tangent.normalize();
 
 					math::Vector3d binormal = (v1*c+v2*d) * fAreaMul2;
-					binormal.normalize();
+					//binormal.normalize();
 
-					dataTBN[_i_data[i + 0]].vNormal = normal;
-					dataTBN[_i_data[i + 0]].vBinormal = binormal;
-					dataTBN[_i_data[i + 0]].vTangent = tangent;
+					dataTBN[_i_data[i + 0]].vNormal += normal;
+					dataTBN[_i_data[i + 0]].vBinormal += binormal;
+					dataTBN[_i_data[i + 0]].vTangent += tangent;
 
-					dataTBN[_i_data[i + 1]].vNormal = normal;
-					dataTBN[_i_data[i + 1]].vBinormal = binormal;
-					dataTBN[_i_data[i + 1]].vTangent = tangent;
+					dataTBN[_i_data[i + 1]].vNormal += normal;
+					dataTBN[_i_data[i + 1]].vBinormal += binormal;
+					dataTBN[_i_data[i + 1]].vTangent += tangent;
 
-					dataTBN[_i_data[i + 2]].vNormal = normal;
-					dataTBN[_i_data[i + 2]].vBinormal = binormal;
-					dataTBN[_i_data[i + 2]].vTangent = tangent;
+					dataTBN[_i_data[i + 2]].vNormal += normal;
+					dataTBN[_i_data[i + 2]].vBinormal += binormal;
+					dataTBN[_i_data[i + 2]].vTangent += tangent;
 				 }
 				 else
 				 {
 					math::Vector3d tangent = math::Vector3d(1.0f,0.0f,0.0f);
 					math::Vector3d binormal = math::Vector3d(0.0f,1.0f,0.0f);
 
-					dataTBN[_i_data[i + 0]].vNormal = normal;
-					dataTBN[_i_data[i + 0]].vBinormal = binormal;
-					dataTBN[_i_data[i + 0]].vTangent = tangent;
+					dataTBN[_i_data[i + 0]].vNormal += normal;
+					dataTBN[_i_data[i + 0]].vBinormal += binormal;
+					dataTBN[_i_data[i + 0]].vTangent += tangent;
 
-					dataTBN[_i_data[i + 1]].vNormal = normal;
-					dataTBN[_i_data[i + 1]].vBinormal = binormal;
-					dataTBN[_i_data[i + 1]].vTangent = tangent;
+					dataTBN[_i_data[i + 1]].vNormal += normal;
+					dataTBN[_i_data[i + 1]].vBinormal += binormal;
+					dataTBN[_i_data[i + 1]].vTangent += tangent;
 
-					dataTBN[_i_data[i + 2]].vNormal = normal;
-					dataTBN[_i_data[i + 2]].vBinormal = binormal;
-					dataTBN[_i_data[i + 2]].vTangent = tangent;
+					dataTBN[_i_data[i + 2]].vNormal += normal;
+					dataTBN[_i_data[i + 2]].vBinormal += binormal;
+					dataTBN[_i_data[i + 2]].vTangent += tangent;
 				 }
 
 				 delete p1;

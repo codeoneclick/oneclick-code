@@ -199,6 +199,7 @@ void CSoaringIsland::Load(std::string _fileName)
 		for(int i = 0; i < m_Width * m_Height; ++i)
 		{
 			v_data_bottom[i].vNormal = dataTBN[i].vNormal;
+			v_data_bottom[i].vNormal.normalize();
 			v_data_bottom[i].vTangent = dataTBN[i].vTangent;
 			v_data_bottom[i].vBinormal = dataTBN[i].vBinormal;
 		}

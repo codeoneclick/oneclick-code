@@ -1,19 +1,16 @@
 float4x4 mWorldViewProjection;
 
-float fDiscardHeight = 0.0f;
-float fDiscardUp = 0.0f;
-
 float3 vCameraEye;
 float3 vLightDir;
 
 float fParallaxHeight = 0.04f;
 float fParallaxStep = 1.0f;
 
-const float fAmbientFactor = 0.75f;
+float fAmbientFactor = 0.75f;
 
-const float4 vSpecularColor = float4(1.0f,1.0f,1.0f,1.0f);
+float4 vSpecularColor = float4(1.0f,1.0f,1.0f,1.0f);
 
-const float fSpecularPower = 16.0f;
+float fSpecularPower = 16.0f;
 
 texture Texture_01;
 sampler Texture_01_Sampler = sampler_state {
@@ -98,11 +95,6 @@ VS_OUTPUT vs_main(VS_INPUT IN)
 
 float4 ps_main(VS_OUTPUT IN) : COLOR 
 {	
-   if(IN.vDiscardPosition.y > fDiscardHeight && fDiscardUp < 0.0f)
-		discard;
-   if(IN.vDiscardPosition.y < fDiscardHeight && fDiscardUp > 0.0f)
-		discard;
-
     IN.vCameraEye = normalize(IN.vCameraEye);
     IN.vLightDir = normalize(IN.vLightDir);
    

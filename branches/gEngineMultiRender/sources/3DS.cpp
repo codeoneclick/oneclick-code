@@ -190,8 +190,11 @@ void C3DS::Commit(S3DSFile *in_value, Core::CMesh *out_value)
 	for(int i = 0; i < out_value->m_VertexBuffer->GetVertexCount(); ++i)
 	{
 		v_data[i].vNormal = dataTBN[i].vNormal;
+		v_data[i].vNormal.normalize();
 		v_data[i].vTangent = dataTBN[i].vTangent;
+		v_data[i].vTangent.normalize();
 		v_data[i].vBinormal = dataTBN[i].vBinormal;
+		v_data[i].vBinormal.normalize();
 	}
 	delete[] dataTBN;
 

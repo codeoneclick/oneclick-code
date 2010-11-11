@@ -6,11 +6,11 @@ float3 vLightDir;
 float fParallaxHeight = 0.04f;
 float fParallaxStep = 4.0f;
 
-const float fAmbientFactor = 0.75f;
+float fAmbientFactor = 0.75f;
 
-const float4 vSpecularColor = float4(1.0f,1.0f,1.0f,1.0f);
+float4 vSpecularColor = float4(1.0f,1.0f,1.0f,1.0f);
 
-const float fSpecularPower = 16.0f;
+float fSpecularPower = 16.0f;
 
 texture Texture_01;
 sampler Texture_01_Sampler = sampler_state {
@@ -66,7 +66,7 @@ float4 ps_main(VS_OUTPUT IN) : COLOR
     for(int i = 0; i < 0; i++)
     {
 		 fHeightPower = tex2D(Texture_01_NH_Sampler, IN.vTexCoord).a;
-		 fHeightPower *= fParallaxHeight / fParallaxStep;
+		 fHeightPower *= 0.04f;
 		 vDisplaceTexCoord = vDisplaceTexCoord + (-IN.vCameraEye.xy * fHeightPower);
     }
     

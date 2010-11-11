@@ -104,9 +104,9 @@ void EnviromentController::Update(DWORD time)
 	m_Camera->vLookAt.y = GetLandscapeHeight(m_Camera->vLookAt.x,m_Camera->vLookAt.z);
 	m_CharacterControl->m_vPosition = m_Camera->vLookAt;
 
-	//m_CharacterControl->m_vRotation.x = GetLandscapeRotation(m_CharacterControl->m_vPosition).x;
+	m_CharacterControl->m_vRotation.x = -GetLandscapeRotation(m_CharacterControl->m_vPosition).x;
 	m_CharacterControl->m_vRotation.z = GetLandscapeRotation(m_CharacterControl->m_vPosition).z;
-	m_CharacterControl->m_vRotation.y = m_Camera->vRotation.y - 1.57f;
+	m_CharacterControl->m_vRotation.y = m_Camera->vRotation.y;
 	
 	CResource::WorkInMainTread();
 }

@@ -80,7 +80,7 @@ void CLandscape::Load(std::string _fileName)
 		{
 			v_data_01[index].vPosition = math::Vector3d(i*m_MapScaleFactor,m_MapData[i][j] * 0.1f,j*m_MapScaleFactor);
 			v_data_01[index].vTexCoord = math::Vector2d(static_cast<float>(i) / m_TextureScaleFactor,static_cast<float>(j) / m_TextureScaleFactor);
-			v_data_01[index].vSplatting = math::Vector4d(0.0f,1.0f,0.0f,0.0f);
+			v_data_01[index].vSplatting = math::Vector4d(0.0f,0.0f,1.0f,0.0f);
 			++index;
 		}
 
@@ -110,8 +110,11 @@ void CLandscape::Load(std::string _fileName)
 		for(int i = 0; i < m_Width * m_Height; ++i)
 		{
 			v_data_01[i].vNormal = dataTBN[i].vNormal;
+			v_data_01[i].vNormal.normalize();
 			v_data_01[i].vTangent = dataTBN[i].vTangent;
+			v_data_01[i].vTangent.normalize(); 
 			v_data_01[i].vBinormal = dataTBN[i].vBinormal;
+			v_data_01[i].vBinormal.normalize();
 		}
 		delete[] dataTBN;
 
