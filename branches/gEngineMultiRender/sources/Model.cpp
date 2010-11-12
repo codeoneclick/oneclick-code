@@ -37,6 +37,7 @@ void CModel::Update()
 
 void CModel::Render()
 {
+	Core::CGlobal::GetRender()->SetCullFace(Core::IRender::CULL_CCW);
 	m_MeshArray["main"]->m_Shader->SetTexture(m_MeshArray["main"]->m_TextureArray[0],"Texture_01",Core::IShader::PS_SHADER);
 	m_MeshArray["main"]->m_Shader->SetTexture(m_MeshArray["main"]->m_TextureArray[1],"Texture_01_NH",Core::IShader::PS_SHADER);
 	m_MeshArray["main"]->Draw();

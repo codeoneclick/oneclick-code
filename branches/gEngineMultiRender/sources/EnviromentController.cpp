@@ -89,34 +89,22 @@ math::Vector3d EnviromentController::GetLandscapeRotation(math::Vector3d _vPosit
 
 void EnviromentController::Update(DWORD time)
 {
-	if(time == 0)
+	if(time != 1)
 		m_Camera->Update();
 
 	math::Vector3d vCameraPosition = m_Camera->vPosition;
 	math::Vector3d vCameraLookAt = m_Camera->vLookAt;
 	if(time  == 1)
 	{
-		vCameraPosition.y = -m_Camera->vPosition.y  + m_Ocean->m_vPosition.y * 2.0f;
-		vCameraLookAt.y = -m_Camera->vLookAt.y + m_Ocean->m_vPosition.y * 2.0f;
+		vCameraPosition.y = -m_Camera->vPosition.y  + m_Ocean->m_vPosition.y * 2.0f + 0.33f;
+		vCameraLookAt.y = -m_Camera->vLookAt.y + m_Ocean->m_vPosition.y * 2.0f + 0.33f;
 		m_Camera->mView = math::MatrixView(vCameraPosition, vCameraLookAt, math::Vector3d(0.0f,-1.0f,0.0f));
+		Core::CGlobal::GetRender()->EnableClipPlane(0,math::Vector3d(0.0f,m_Ocean->m_vPosition.y,0.0f),math::Vector3d(0.0f,m_Ocean->m_vPosition.y,1.0f),math::Vector3d(1.0f,m_Ocean->m_vPosition.y,0.0f));
+	}
 
-		D3DXPLANE clipPlane;
-		D3DXPlaneFromPoints(&clipPlane,&D3DXVECTOR3(0.0f,m_Ocean->m_vPosition.y,0.0f),&D3DXVECTOR3(0.0f,m_Ocean->m_vPosition.y,1.0f),&D3DXVECTOR3(1.0f,m_Ocean->m_vPosition.y,0.0f));
-		Core::CGlobal::GetDevice()->Ref()->SetRenderState(D3DRS_CLIPPLANEENABLE, D3DCLIPPLANE0);
-		D3DXVECTOR4 clipVector = D3DXVECTOR4(clipPlane.a,clipPlane.b,clipPlane.c,clipPlane.d);
-		math::Matrix4x4 mClipPlane = m_Camera->mView * m_Camera->mProjection;
-		D3DXMATRIX clipMatrix;
-		memcpy(clipMatrix.m,mClipPlane.m,16 * sizeof(float));
-		D3DXMatrixTranspose(&clipMatrix,&clipMatrix);
-		D3DXMatrixInverse(&clipMatrix,NULL,&clipMatrix);
-		D3DXVec4Transform(&clipVector,&clipVector,&clipMatrix);
-
-		clipPlane.a = clipVector.x;
-		clipPlane.b = clipVector.y;
-		clipPlane.c = clipVector.z;
-		clipPlane.d = clipVector.w;
-
-		Core::CGlobal::GetDevice()->Ref()->SetClipPlane(0, clipPlane);
+	if(time  == 2)
+	{
+		Core::CGlobal::GetRender()->EnableClipPlane(0,math::Vector3d(0.0f,m_Ocean->m_vPosition.y,0.0f),math::Vector3d(1.0f,m_Ocean->m_vPosition.y,0.0f),math::Vector3d(0.0f,m_Ocean->m_vPosition.y,1.0f));
 	}
 
 	std::map<std::string,CDummy*>::iterator cOcean = m_OceanContainer.begin();
@@ -142,9 +130,6 @@ void EnviromentController::Update(DWORD time)
 
 	if(time  == 1)
 	{
-		//m_Camera->vPosition.y = -vCameraPosition.y;
-		//m_Camera->vLookAt.y = -vCameraLookAt.y;
-		//
 		m_Camera->mView = math::MatrixView(m_Camera->vPosition,m_Camera->vLookAt,math::Vector3d(0.0f,1.0f,0.0f));
 	}
 
@@ -201,12 +186,25 @@ void EnviromentController::Render(Video::CRenderController::ERenderTexture value
 				cModel->second->Render();
 				cModel++;
 			}
-			Core::CGlobal::GetDevice()->Ref()->SetRenderState(D3DRS_CLIPPLANEENABLE, FALSE);
+			Core::CGlobal::GetRender()->DisableClipPlane(0);
 		}
 		break;
 		case Video::CRenderController::REFRACTION_TEXTURE :
 		{
+			std::map<std::string,CDummy*>::iterator cLandscape = m_LandscapeContainer.begin();
+			while(cLandscape != m_LandscapeContainer.end())
+			{
+				cLandscape->second->Render();
+				cLandscape++;
+			}
 
+			std::map<std::string,CDummy*>::iterator cModel = m_ModelContainer.begin();
+			while(cModel != m_ModelContainer.end())
+			{
+				cModel->second->Render();
+				cModel++;
+			}
+			Core::CGlobal::GetRender()->DisableClipPlane(0);
 		}
 		break;
 	}

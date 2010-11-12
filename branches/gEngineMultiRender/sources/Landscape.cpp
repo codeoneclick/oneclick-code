@@ -178,6 +178,7 @@ void CLandscape::Update()
 
 void CLandscape::Render()
 {
+	Core::CGlobal::GetRender()->SetCullFace(Core::IRender::CULL_CW);
 	m_MeshArray["landscape_01"]->m_Shader->SetTexture(m_MeshArray["landscape_01"]->m_TextureArray[0],"Texture_01",Core::IShader::PS_SHADER);
 	m_MeshArray["landscape_01"]->m_Shader->SetTexture(m_MeshArray["landscape_01"]->m_TextureArray[1],"Texture_02",Core::IShader::PS_SHADER);
 	m_MeshArray["landscape_01"]->m_Shader->SetTexture(m_MeshArray["landscape_01"]->m_TextureArray[2],"Texture_03",Core::IShader::PS_SHADER);

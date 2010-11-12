@@ -65,11 +65,16 @@ void COcean::Update()
 {
 	Matrix();
 	m_MeshArray["ocean_01"]->m_Shader->SetMatrix(m_mWorldViewProjection,"mWorldViewProjection",Core::IShader::VS_SHADER);
+	static float fTimer = 0.0f;
+	fTimer += 0.001f;
+	m_MeshArray["ocean_01"]->m_Shader->SetFloat(fTimer,"fTimer",Core::IShader::PS_SHADER);
 }
 
 void COcean::Render()
 {
+	Core::CGlobal::GetRender()->SetCullFace(Core::IRender::CULL_CW);
 	m_MeshArray["ocean_01"]->m_Shader->SetTexture(m_MeshArray["ocean_01"]->m_TextureArray[0],"Texture_01",Core::IShader::PS_SHADER);
 	m_MeshArray["ocean_01"]->m_Shader->SetTexture(Video::CRenderController::GetRenderTargetTexture(Video::CRenderController::REFLECTION_TEXTURE),"Texture_02",Core::IShader::PS_SHADER);
+	m_MeshArray["ocean_01"]->m_Shader->SetTexture(Video::CRenderController::GetRenderTargetTexture(Video::CRenderController::REFRACTION_TEXTURE),"Texture_03",Core::IShader::PS_SHADER);
 	m_MeshArray["ocean_01"]->Draw();
 }

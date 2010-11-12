@@ -21,6 +21,9 @@ namespace Core
 		virtual void Draw(unsigned int _vertex_count, unsigned int _index_count, unsigned int _primitive_count);
 		virtual void BeginRenderTarget(ITexture *_texture);
 		virtual void EndRenderTarget();
+		virtual void EnableClipPlane(unsigned int _index, math::Vector3d _point_01, math::Vector3d _point_02, math::Vector3d _point_03);
+		virtual void DisableClipPlane(unsigned int _index);
+		virtual void SetCullFace(ECULLFACE _value);
 	};
 };
 

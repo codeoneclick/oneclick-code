@@ -47,6 +47,7 @@ void Game::Update(DWORD time)
 void Game::Render()
 {
 	Video::CRenderController::Render2Texture(Video::CRenderController::REFLECTION_TEXTURE);
+	Video::CRenderController::Render2Texture(Video::CRenderController::REFRACTION_TEXTURE);
 	Video::CRenderController::Render(Video::CRenderController::SCREEN_TEXTURE);
 
 	static DWORD framesPerSecond = 0;       
