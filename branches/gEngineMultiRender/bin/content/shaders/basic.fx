@@ -12,6 +12,8 @@ float4 vSpecularColor = float4(1.0f,1.0f,1.0f,1.0f);
 
 float fSpecularPower = 16.0f;
 
+float fOceanLevel = 12.0f;
+
 texture Texture_01;
 sampler Texture_01_Sampler = sampler_state {
 	Texture = <Texture_01>;
@@ -76,6 +78,7 @@ struct VS_OUTPUT {
    float4 vSplatting       : TEXCOORD2;
    float3 vCameraEye       : TEXCOORD3;
    float3 vLightDir        : TEXCOORD4;
+   float  fReflectFactor   : TEXCOORD5;
 };
 
 
@@ -90,6 +93,7 @@ VS_OUTPUT vs_main(VS_INPUT IN)
    float3x3 mTangentSpace = float3x3(IN.vTangent,IN.vBinormal,IN.vNormal);
    OUT.vLightDir = mul(mTangentSpace,vLightDir);
    OUT.vCameraEye = mul(mTangentSpace,vCameraEye - IN.vPosition);
+   OUT.fReflectFactor = IN.vPosition.y;
    return OUT;
 }
 
@@ -123,6 +127,7 @@ float4 ps_main(VS_OUTPUT IN) : COLOR
 	float vSpecularFactor = pow(max(0.0f, dot(vLightReflect, IN.vCameraEye) ), fSpecularPower);
   
     float4 vColor = vDiffuseColor * vDiffuseFactor + vAmbientColor * fAmbientFactor + vSpecularFactor * vSpecularColor;
+    vColor.a = IN.fReflectFactor / fOceanLevel;
     return vColor;
 }
 
