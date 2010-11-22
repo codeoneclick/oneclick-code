@@ -26,6 +26,15 @@ sampler Texture_03_Sampler = sampler_state {
 	MipFilter = LINEAR;
 };
 
+texture Texture_04;
+sampler Texture_04_Sampler = sampler_state {
+	Texture = <Texture_04>;
+	MinFilter = LINEAR;
+	MagFilter = LINEAR;
+	MipFilter = LINEAR;
+};
+
+
 struct VS_INPUT {
 	float3 vPosition      : POSITION;
 	float2 vTexCoord      : TEXCOORD0;
@@ -50,11 +59,11 @@ VS_OUTPUT vs_main(VS_INPUT IN)
 float4 ps_main(VS_OUTPUT IN) : COLOR 
 {	
 	IN.vTexCoord *= 4.0f;
-	float2 vTexCoord_01 = float2(IN.vTexCoord.x + sin(fTimer)*0.1f,
-								 IN.vTexCoord.y + cos(fTimer)*0.3f);
+	float2 vTexCoord_01 = float2(IN.vTexCoord.x * 4.0f + sin(fTimer)*0.07f,
+								 IN.vTexCoord.y * 4.0f - cos(fTimer)*0.09f);
 	
-	float2 vTexCoord_02 = float2(IN.vTexCoord.x - sin(fTimer)*0.3f,
-								 IN.vTexCoord.y - cos(fTimer)*0.1f);
+	float2 vTexCoord_02 = float2(IN.vTexCoord.x * 4.0f - sin(fTimer)*0.07f,
+								 IN.vTexCoord.y * 4.0f + cos(fTimer)*0.09f);
 
     float3 vNormalColor = normalize((tex2D( Texture_01_Sampler, vTexCoord_01) * 2.0f - 1.0f) + 
 						  (tex2D( Texture_01_Sampler, vTexCoord_02 ) * 2.0f - 1.0f));
@@ -67,7 +76,7 @@ float4 ps_main(VS_OUTPUT IN) : COLOR
 	float4 vRefractionColor = tex2D(Texture_03_Sampler,vTexCoordRefractionProj);
 	
 	vTexCoordRefractionProj = IN.vTexCoordProj.xy;
-	vTexCoordRefractionProj += vNormalColor.xz * (1.0f - vRefractionColor.a) * 4.0f;
+	vTexCoordRefractionProj += vNormalColor * (1.0f - vRefractionColor.a) * 4.0f;
 	vTexCoordRefractionProj.x = 0.5f + 0.5f * vTexCoordRefractionProj.x/IN.vTexCoordProj.w;
 	vTexCoordRefractionProj.y = 0.5f - 0.5f * vTexCoordRefractionProj.y/IN.vTexCoordProj.w;
 	vTexCoordRefractionProj = clamp(vTexCoordRefractionProj, 0.001f, 0.999f); 
@@ -77,14 +86,17 @@ float4 ps_main(VS_OUTPUT IN) : COLOR
 	vTexCoordReflectionProj += vNormalColor * 4.0f;
 	vTexCoordReflectionProj.x = 0.5f + 0.5f * vTexCoordReflectionProj.x/IN.vTexCoordProj.w;
 	vTexCoordReflectionProj.y = 0.5f + 0.5f * vTexCoordReflectionProj.y/IN.vTexCoordProj.w;
-	vTexCoordReflectionProj = clamp(vTexCoordReflectionProj, 0.001, 0.999);
+	vTexCoordReflectionProj = clamp(vTexCoordReflectionProj, 0.001f, 0.999f);
 	float4 vReflectionColor = tex2D(Texture_02_Sampler,vTexCoordReflectionProj);	
 	
 	float4 vDeepColor = float4(0.35f, 0.60f, 0.77f, 1.0f);
 	float fReflectionFactor = vReflectionColor.r + vReflectionColor.g + vReflectionColor.b;
 	float4 vColorWithRefraction = lerp(vRefractionColor,vDeepColor, (1.0f - vRefractionColor.a));
-	float4 vColorWithReflection = lerp(vColorWithRefraction,vReflectionColor * vDeepColor * 0.1f, (1.0f - vRefractionColor.a));
+	float4 vColorWithReflection = lerp(vReflectionColor,vDeepColor, (1.0f - vRefractionColor.a));
+	//float4 tempColor = tex2D( Texture_04_Sampler, vTexCoord_01 * 4.0f);
     float4 vColor = lerp(vColorWithRefraction, vColorWithReflection, fReflectionFactor);
+    //if( vRefractionColor.a > 0.85f )
+	//	vColor = lerp(vColor, tempColor, vRefractionColor.a - 0.85f);
     return vColor;
 }
 

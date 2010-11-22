@@ -51,6 +51,7 @@ namespace Core
 		virtual void Unlock() = 0;
 		virtual void Enable() = 0;
 		virtual void Disable() = 0;
+		virtual void AdoptVertexBuffer(IVertexBuffer *_value) = 0;
 	};
 };
 

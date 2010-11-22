@@ -104,7 +104,8 @@ void EnviromentController::Update(DWORD time)
 
 	if(time  == 2)
 	{
-		//Core::CGlobal::GetRender()->EnableClipPlane(0,math::Vector3d(0.0f,m_Ocean->m_vPosition.y + 5.0f,0.0f),math::Vector3d(1.0f,m_Ocean->m_vPosition.y + 5.0f,0.0f),math::Vector3d(0.0f,m_Ocean->m_vPosition.y + 5.0f,1.0f));
+		float fOffset = 0.5f;
+		Core::CGlobal::GetRender()->EnableClipPlane(0,math::Vector3d(0.0f,m_Ocean->m_vPosition.y + fOffset,0.0f),math::Vector3d(1.0f,m_Ocean->m_vPosition.y + fOffset,0.0f),math::Vector3d(0.0f,m_Ocean->m_vPosition.y + fOffset,1.0f));
 	}
 
 	std::map<std::string,CDummy*>::iterator cOcean = m_OceanContainer.begin();
@@ -134,7 +135,7 @@ void EnviromentController::Update(DWORD time)
 	}
 
 	m_Camera->vLookAt.y = GetLandscapeHeight(m_Camera->vLookAt.x,m_Camera->vLookAt.z);
-	m_Camera->vPosition.y = GetLandscapeHeight(m_Camera->vPosition.x,m_Camera->vPosition.z) + 8.0f;
+	m_Camera->vPosition.y = 32.0f;//GetLandscapeHeight(m_Camera->vPosition.x,m_Camera->vPosition.z) + 8.0f;
 	m_CharacterControl->m_vPosition = m_Camera->vLookAt;
 
 	m_CharacterControl->m_vRotation.x = -GetLandscapeRotation(m_CharacterControl->m_vPosition).x;

@@ -17,14 +17,24 @@ namespace Enviroment
 			math::Vector4d vSplatting;
 		};
 
+		struct SChunk
+		{
+			math::Vector2d index;
+			bool bVisible;
+		};
+
 	private :
 		float m_MapScaleFactor;
 		float m_MapHeightFactor;
 		float m_TextureScaleFactor;
+		unsigned int m_ChunkSize;
 		unsigned int   m_Width;
 		unsigned int   m_Height;
 		float          **m_MapData;
+		std::map<std::string,SChunk> m_ChunkArray;
 		void ReadData(std::string _fileName);
+		std::string m_Name;
+		std::string m_FirstChunkName;
 	public :
 		CLandscape();
 		virtual void Load(std::string _fileName);

@@ -23,6 +23,11 @@ namespace Core
 		virtual void Unlock();
 		virtual void Enable();
 		virtual void Disable();
+		virtual void AdoptVertexBuffer(IVertexBuffer *_value) { 
+																m_addr = ((CVertexBufferD3D*)_value)->m_addr; 
+																m_element_size = ((CVertexBufferD3D*)_value)->m_element_size;
+																m_vertex_count = ((CVertexBufferD3D*)_value)->m_vertex_count;
+															 }
 	};
 };
 

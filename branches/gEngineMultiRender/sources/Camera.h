@@ -9,19 +9,27 @@ namespace Enviroment
 class Camera
 {
 	private :
-		float _fRotationAngleY;
-		float _fRotationAngleXZ;
-		float _fCameraMoveSpeed;
-		float _fCameraRotationSpeed;
-		float _fNearPlane;
-		float _fFarPlane;
+		float m_fRotationAngleY;
+		float m_fRotationAngleXZ;
+		float m_fCameraMoveSpeed;
+		float m_fCameraRotationSpeed;
+		float m_fNearPlane;
+		float m_fFarPlane;
+		float m_fFov;
+		float m_fDistance;
+		float m_aFrustumPlanes[6][4];
 
-		void _MoveForward();
-		void _MoveBackward();
-		void _MoveRight();
-		void _MoveLeft();
-		void _RotateLeft();
-		void _RotateRight();
+		void MoveForward();
+		void MoveBackward();
+		void MoveRight();
+		void MoveLeft();
+		void RotateLeft();
+		void RotateRight();
+		void RefreshFrustumPlanes();
+
+		void MouseController();
+		void KeyboardController();
+		
 	public :
 		math::Vector3d vPosition;
 		math::Vector3d vRotation;
@@ -31,6 +39,7 @@ class Camera
 		math::Matrix4x4 mProjection;
 		Camera();
 		void Update();
+		bool IsBoundingSphereInFrustum( float _x, float _z, float _fRadius );
 };
 };
 
