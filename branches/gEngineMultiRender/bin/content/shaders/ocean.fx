@@ -1,6 +1,6 @@
 float4x4 mWorldViewProjection;
-
 float fTimer;
+float fDarkEffect = 0.77f;
 
 texture Texture_01;
 sampler Texture_01_Sampler = sampler_state {
@@ -72,7 +72,7 @@ float4 ps_main(VS_OUTPUT IN) : COLOR
 	float2 vTexCoordRefractionProj = IN.vTexCoordProj.xy;
 	vTexCoordRefractionProj.x = 0.5f + 0.5f * vTexCoordRefractionProj.x/IN.vTexCoordProj.w;
 	vTexCoordRefractionProj.y = 0.5f - 0.5f * vTexCoordRefractionProj.y/IN.vTexCoordProj.w;
-	vTexCoordRefractionProj = clamp(vTexCoordRefractionProj, 0.001f, 0.999f); 
+	//vTexCoordRefractionProj = clamp(vTexCoordRefractionProj, 0.001f, 0.999f); 
 	float4 vRefractionColor = tex2D(Texture_03_Sampler,vTexCoordRefractionProj);
 	
 	vTexCoordRefractionProj = IN.vTexCoordProj.xy;
@@ -93,10 +93,7 @@ float4 ps_main(VS_OUTPUT IN) : COLOR
 	float fReflectionFactor = vReflectionColor.r + vReflectionColor.g + vReflectionColor.b;
 	float4 vColorWithRefraction = lerp(vRefractionColor,vDeepColor, (1.0f - vRefractionColor.a));
 	float4 vColorWithReflection = lerp(vReflectionColor,vDeepColor, (1.0f - vRefractionColor.a));
-	//float4 tempColor = tex2D( Texture_04_Sampler, vTexCoord_01 * 4.0f);
-    float4 vColor = lerp(vColorWithRefraction, vColorWithReflection, fReflectionFactor);
-    //if( vRefractionColor.a > 0.85f )
-	//	vColor = lerp(vColor, tempColor, vRefractionColor.a - 0.85f);
+    float4 vColor = lerp(vColorWithRefraction, vColorWithReflection, fReflectionFactor) * vRefractionColor.a * fDarkEffect;
     return vColor;
 }
 

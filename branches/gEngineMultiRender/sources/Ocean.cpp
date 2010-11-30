@@ -16,7 +16,7 @@ void COcean::Load(std::string value)
 {
 	m_MeshArray["ocean_01"] = new Core::CMesh();
 	m_MeshArray["ocean_01"]->m_TextureArray[0] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\water.dds",Core::ITexture::DDS_EXT);
-	m_MeshArray["ocean_01"]->m_TextureArray[1] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\wave.dds",Core::ITexture::DDS_EXT);
+	m_MeshArray["ocean_01"]->m_TextureArray[1] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\sand.dds",Core::ITexture::DDS_EXT);
 	m_MeshArray["ocean_01"]->m_Shader = CResource::GetShaderControllerInstance()->Load("Content\\shaders\\ocean");
 	m_MeshArray["ocean_01"]->m_VertexBuffer = Core::CGlobal::GetDevice()->CreateVertexBuffer();
 	m_MeshArray["ocean_01"]->m_IndexBuffer = Core::CGlobal::GetDevice()->CreateIndexBuffer();
@@ -67,7 +67,7 @@ void COcean::Update()
 	Matrix();
 	m_MeshArray["ocean_01"]->m_Shader->SetMatrix(m_mWorldViewProjection,"mWorldViewProjection",Core::IShader::VS_SHADER);
 	static float fTimer = 0.0f;
-	fTimer += 0.001f;
+	fTimer += 0.01f;
 	m_MeshArray["ocean_01"]->m_Shader->SetFloat(fTimer,"fTimer",Core::IShader::PS_SHADER);
 }
 
