@@ -64,11 +64,20 @@ void COcean::Load(std::string value)
 
 void COcean::Update()
 {
+	static math::Vector3d vLightDir = math::Vector3d(0.0f, 0.0f, 0.0f);
+	static float LightAngle = 0.0f;
+	LightAngle += 0.001f;
+	vLightDir.x = cos(LightAngle);
+	vLightDir.y = 0.0f;
+	vLightDir.z = sin(LightAngle);
+
 	Matrix();
 	m_MeshArray["ocean_01"]->m_Shader->SetMatrix(m_mWorldViewProjection,"mWorldViewProjection",Core::IShader::VS_SHADER);
 	static float fTimer = 0.0f;
 	fTimer += 0.01f;
 	m_MeshArray["ocean_01"]->m_Shader->SetFloat(fTimer,"fTimer",Core::IShader::PS_SHADER);
+	m_MeshArray["ocean_01"]->m_Shader->SetVector(Game::GetEnviromentControllerInstance()->GetCameraInstance()->vPosition,"vCameraEye",Core::IShader::VS_SHADER);
+	m_MeshArray["ocean_01"]->m_Shader->SetVector(vLightDir,"vLightDir",Core::IShader::VS_SHADER);
 }
 
 void COcean::Render()

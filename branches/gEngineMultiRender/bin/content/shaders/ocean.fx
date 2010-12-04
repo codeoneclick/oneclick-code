@@ -1,6 +1,11 @@
 float4x4 mWorldViewProjection;
 float fTimer;
 float fDarkEffect = 0.77f;
+float fSpecularFactor = 128.0f;
+float fNormalmapTile = 16.0f;
+
+float3 vCameraEye;
+float3 vLightDir;
 
 texture Texture_01;
 sampler Texture_01_Sampler = sampler_state {
@@ -44,6 +49,8 @@ struct VS_OUTPUT {
    float4 vPosition		   : POSITION;
    float2 vTexCoord	       : TEXCOORD0;
    float4 vTexCoordProj    : TEXCOORD1;
+   float3 vCameraEye       : TEXCOORD2;
+   float3 vLightDir        : TEXCOORD3;
 };
 
 
@@ -53,39 +60,42 @@ VS_OUTPUT vs_main(VS_INPUT IN)
    OUT.vPosition = mul( float4(IN.vPosition,1.0f) ,mWorldViewProjection);
    OUT.vTexCoord = IN.vTexCoord;
    OUT.vTexCoordProj = OUT.vPosition;
+   
+   float3 vBinormal = float3( 1.0f,  0.0f, 0.0f );
+   float3 vTangent  = float3( 0.0f,  0.0f, 1.0f );
+   float3 vNormal   = float3( 0.0f,  1.0f, 0.0f );
+   
+   float3x3 mTangentSpace = float3x3(vTangent,vBinormal,vNormal);
+   OUT.vLightDir = mul(mTangentSpace,vLightDir);
+   OUT.vCameraEye = mul(mTangentSpace,vCameraEye - IN.vPosition);
+   
    return OUT;
 }
 
 float4 ps_main(VS_OUTPUT IN) : COLOR 
 {	
-	IN.vTexCoord *= 4.0f;
-	float2 vTexCoord_01 = float2(IN.vTexCoord.x * 4.0f + sin(fTimer)*0.07f,
-								 IN.vTexCoord.y * 4.0f - cos(fTimer)*0.09f);
+	IN.vLightDir = normalize(IN.vLightDir);
+	IN.vCameraEye = normalize(IN.vCameraEye);
+
+	IN.vTexCoord *= fNormalmapTile;
+	float2 vTexCoord_01 = float2(IN.vTexCoord.x + sin(fTimer)*0.07f,
+								 IN.vTexCoord.y - cos(fTimer)*0.09f);
 	
-	float2 vTexCoord_02 = float2(IN.vTexCoord.x * 4.0f - sin(fTimer)*0.07f,
-								 IN.vTexCoord.y * 4.0f + cos(fTimer)*0.09f);
+	float2 vTexCoord_02 = float2(IN.vTexCoord.x - sin(fTimer)*0.07f,
+								 IN.vTexCoord.y + cos(fTimer)*0.09f);
 
     float3 vNormalColor = normalize((tex2D( Texture_01_Sampler, vTexCoord_01) * 2.0f - 1.0f) + 
 						  (tex2D( Texture_01_Sampler, vTexCoord_02 ) * 2.0f - 1.0f));
     
     
-	float2 vTexCoordRefractionProj = IN.vTexCoordProj.xy;
-	vTexCoordRefractionProj.x = 0.5f + 0.5f * vTexCoordRefractionProj.x/IN.vTexCoordProj.w;
-	vTexCoordRefractionProj.y = 0.5f - 0.5f * vTexCoordRefractionProj.y/IN.vTexCoordProj.w;
-	//vTexCoordRefractionProj = clamp(vTexCoordRefractionProj, 0.001f, 0.999f); 
-	float4 vRefractionColor = tex2D(Texture_03_Sampler,vTexCoordRefractionProj);
+    float2 vTexCoordRefractionProj = 0.5f + 0.5f * IN.vTexCoordProj.xy / IN.vTexCoordProj.w * float2(1.0f,-1.0f);
+    float4 vRefractionColor = tex2D(Texture_03_Sampler,vTexCoordRefractionProj);
 	
-	vTexCoordRefractionProj = IN.vTexCoordProj.xy;
-	vTexCoordRefractionProj += vNormalColor * (1.0f - vRefractionColor.a) * 4.0f;
-	vTexCoordRefractionProj.x = 0.5f + 0.5f * vTexCoordRefractionProj.x/IN.vTexCoordProj.w;
-	vTexCoordRefractionProj.y = 0.5f - 0.5f * vTexCoordRefractionProj.y/IN.vTexCoordProj.w;
+	vTexCoordRefractionProj = 0.5f + 0.5f * (IN.vTexCoordProj.xy + vNormalColor * (1.0f - vRefractionColor.a) * 4.0f) / IN.vTexCoordProj.w * float2(1.0f,-1.0f);
 	vTexCoordRefractionProj = clamp(vTexCoordRefractionProj, 0.001f, 0.999f); 
 	vRefractionColor = tex2D(Texture_03_Sampler,vTexCoordRefractionProj);
 	
-	float2 vTexCoordReflectionProj = IN.vTexCoordProj.xy;
-	vTexCoordReflectionProj += vNormalColor * 4.0f;
-	vTexCoordReflectionProj.x = 0.5f + 0.5f * vTexCoordReflectionProj.x/IN.vTexCoordProj.w;
-	vTexCoordReflectionProj.y = 0.5f + 0.5f * vTexCoordReflectionProj.y/IN.vTexCoordProj.w;
+	float2 vTexCoordReflectionProj = 0.5f + 0.5f * (IN.vTexCoordProj.xy + vNormalColor * 4.0f) / IN.vTexCoordProj.w * float2(1.0f,1.0f);
 	vTexCoordReflectionProj = clamp(vTexCoordReflectionProj, 0.001f, 0.999f);
 	float4 vReflectionColor = tex2D(Texture_02_Sampler,vTexCoordReflectionProj);	
 	
@@ -93,7 +103,11 @@ float4 ps_main(VS_OUTPUT IN) : COLOR
 	float fReflectionFactor = vReflectionColor.r + vReflectionColor.g + vReflectionColor.b;
 	float4 vColorWithRefraction = lerp(vRefractionColor,vDeepColor, (1.0f - vRefractionColor.a));
 	float4 vColorWithReflection = lerp(vReflectionColor,vDeepColor, (1.0f - vRefractionColor.a));
-    float4 vColor = lerp(vColorWithRefraction, vColorWithReflection, fReflectionFactor) * vRefractionColor.a * fDarkEffect;
+	
+	float3 vLightReflect = reflect(IN.vLightDir, vNormalColor);
+	float vSpecularFactor = pow(max(0.0f, dot(vLightReflect, IN.vCameraEye) ), fSpecularFactor);
+	
+    float4 vColor = lerp(vColorWithRefraction, vColorWithReflection, fReflectionFactor) * vRefractionColor.a * fDarkEffect + float4(vSpecularFactor,vSpecularFactor,vSpecularFactor,1.0f);
     return vColor;
 }
 
