@@ -1,4 +1,5 @@
 float4x4 mWorldViewProjection;
+float4x4 mWorld;
 
 float3 vCameraEye;
 float3 vLightDir;
@@ -10,7 +11,11 @@ float fAmbientFactor = 0.75f;
 
 float4 vSpecularColor = float4(1.0f,1.0f,1.0f,1.0f);
 
+float4 vRimColor = float4(1.0f,1.0f,0.0f,1.0f);
+
 float fSpecularPower = 16.0f;
+
+float fRimBias = 0.3f;
 
 texture Texture_01;
 sampler Texture_01_Sampler = sampler_state {
@@ -50,9 +55,13 @@ VS_OUTPUT vs_main(VS_INPUT IN)
    OUT.vPosition = mul( float4(IN.vPosition,1.0f) ,mWorldViewProjection);
    OUT.vTexCoord = IN.vTexCoord;
    
-   float3x3 mTangentSpace = float3x3(-IN.vTangent,-IN.vBinormal,-IN.vNormal);
+   float3x3 mTangentSpace;
+   mTangentSpace[0] = -IN.vTangent;
+   mTangentSpace[1] = -IN.vBinormal;
+   mTangentSpace[2] = -IN.vNormal;
+   
    OUT.vLightDir = mul(mTangentSpace,vLightDir);
-   OUT.vCameraEye = mul(mTangentSpace,vCameraEye - IN.vPosition);
+   OUT.vCameraEye = mul(mTangentSpace,IN.vPosition - vCameraEye);
    return OUT;
 }
 
@@ -73,16 +82,19 @@ float4 ps_main(VS_OUTPUT IN) : COLOR
     float3 vNormalColor = tex2D(Texture_01_NH_Sampler, vDisplaceTexCoord).rgb;
 	
 	vNormalColor = vNormalColor * 2 - 1;
+	vNormalColor = normalize(vNormalColor);
 	
 	float4 vDiffuseColor =  tex2D( Texture_01_Sampler, vDisplaceTexCoord);
 	
-	float4 vAmbientColor = vDiffuseColor;						
+	float4 vAmbientColor = vDiffuseColor;
 	
 	float vDiffuseFactor = saturate(dot(vNormalColor, IN.vLightDir));
 	float3 vLightReflect = reflect(IN.vLightDir, vNormalColor);
 	float vSpecularFactor = pow(max(0.0f, dot(vLightReflect, IN.vCameraEye) ), fSpecularPower);
+	
+	float fRimPower = smoothstep(0.5f , 1.0f ,1.0f - fRimBias - dot(vNormalColor,-IN.vCameraEye));
   
-    float4 vColor = vDiffuseColor * vDiffuseFactor + vAmbientColor * fAmbientFactor + vSpecularFactor * vSpecularColor;
+    float4 vColor = vDiffuseColor * vDiffuseFactor + vAmbientColor * fAmbientFactor + vSpecularFactor * vSpecularColor;// + vRimColor * fRimPower;
     return vColor;
 }
 

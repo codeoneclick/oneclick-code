@@ -20,7 +20,7 @@ class COcean : public CDummy
 		unsigned int   m_Height;
 	public :
 		COcean();
-		virtual void Load(std::string value);
+		virtual void Load(std::vector<SResource> _resource);
 		virtual void Update();
 		virtual void Render();
 };

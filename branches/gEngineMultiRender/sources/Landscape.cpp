@@ -42,9 +42,9 @@ void CLandscape::ReadData(std::string _fileName)
 	fclose( file );
 }
 
-void CLandscape::Load(std::string _fileName)
+void CLandscape::Load(std::vector<SResource> _resource)
 {
-	ReadData(_fileName);
+	ReadData("Content\\maps\\map.raw");
 	int chunkIndex = 0; 
 	for(unsigned int i = 0; i < m_Width / m_ChunkSize; ++i)
 		for(unsigned int j = 0; j < m_Height / m_ChunkSize; ++j)
@@ -52,16 +52,16 @@ void CLandscape::Load(std::string _fileName)
 			char str[32];
 			itoa(chunkIndex, str, 10);
 			std::string strIndex(str);
-			m_MeshArray[m_Name + strIndex] = new Core::CMesh();
-			m_MeshArray[m_Name + strIndex]->m_TextureArray[0] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\sand.dds",Core::ITexture::DDS_EXT);
-			m_MeshArray[m_Name + strIndex]->m_TextureArray[1] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\grass.dds",Core::ITexture::DDS_EXT);
-			m_MeshArray[m_Name + strIndex]->m_TextureArray[2] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\road.dds",Core::ITexture::DDS_EXT);
-			m_MeshArray[m_Name + strIndex]->m_TextureArray[3] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\sand_nh.dds",Core::ITexture::DDS_EXT);
-			m_MeshArray[m_Name + strIndex]->m_TextureArray[4] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\grass_nh.dds",Core::ITexture::DDS_EXT);
-			m_MeshArray[m_Name + strIndex]->m_TextureArray[5] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\road_nh.dds",Core::ITexture::DDS_EXT);
-			m_MeshArray[m_Name + strIndex]->m_Shader = CResource::GetShaderControllerInstance()->Load("Content\\shaders\\basic");
-			m_MeshArray[m_Name + strIndex]->m_VertexBuffer = Core::CGlobal::GetDevice()->CreateVertexBuffer();
-			m_MeshArray[m_Name + strIndex]->m_IndexBuffer = Core::CGlobal::GetDevice()->CreateIndexBuffer();
+			m_MeshList[m_Name + strIndex] = new Core::CMesh();
+			m_MeshList[m_Name + strIndex]->m_TextureArray[0] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\sand.dds",Core::ITexture::DDS_EXT);
+			m_MeshList[m_Name + strIndex]->m_TextureArray[1] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\grass.dds",Core::ITexture::DDS_EXT);
+			m_MeshList[m_Name + strIndex]->m_TextureArray[2] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\road.dds",Core::ITexture::DDS_EXT);
+			m_MeshList[m_Name + strIndex]->m_TextureArray[3] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\sand_nh.dds",Core::ITexture::DDS_EXT);
+			m_MeshList[m_Name + strIndex]->m_TextureArray[4] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\grass_nh.dds",Core::ITexture::DDS_EXT);
+			m_MeshList[m_Name + strIndex]->m_TextureArray[5] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\road_nh.dds",Core::ITexture::DDS_EXT);
+			m_MeshList[m_Name + strIndex]->m_Shader = CResource::GetShaderControllerInstance()->Load("Content\\shaders\\basic");
+			m_MeshList[m_Name + strIndex]->m_VertexBuffer = Core::CGlobal::GetDevice()->CreateVertexBuffer();
+			m_MeshList[m_Name + strIndex]->m_IndexBuffer = Core::CGlobal::GetDevice()->CreateIndexBuffer();
 			
 			SChunk chunk;
 			chunk.bVisible = true;
@@ -72,7 +72,7 @@ void CLandscape::Load(std::string _fileName)
 			chunkIndex++;
 		}
 	
-	SVertex* v_data = (SVertex*)m_MeshArray[m_FirstChunkName]->m_VertexBuffer->Load(m_Width * m_Height,sizeof(SVertex));
+	SVertex* v_data = (SVertex*)m_MeshList[m_FirstChunkName]->m_VertexBuffer->Load(m_Width * m_Height,sizeof(SVertex));
 
 	for(unsigned int i = 0; i < m_Width;++i)
         for(unsigned int j = 0; j < m_Height;++j)
@@ -143,8 +143,7 @@ void CLandscape::Load(std::string _fileName)
 
 	delete[] i_data;
 
-	m_MeshArray[m_FirstChunkName]->m_VertexBuffer->CommitToVRAM();
-
+	m_MeshList[m_FirstChunkName]->m_VertexBuffer->CommitToVRAM();
 
 	Core::IVertexBuffer::SVertexDeclaration declaration;
 	declaration.m_Elements = new Core::IVertexBuffer::SElementDeclaration[6];
@@ -188,7 +187,7 @@ void CLandscape::Load(std::string _fileName)
 			char str[32];
 			itoa(chunkIndex, str, 10);
 			std::string strIndex(str);
-			i_data = m_MeshArray[m_Name + strIndex]->m_IndexBuffer->Load(m_ChunkSize * m_ChunkSize * 6);
+			i_data = m_MeshList[m_Name + strIndex]->m_IndexBuffer->Load(m_ChunkSize * m_ChunkSize * 6);
 			index = 0;
 			for(unsigned int i = _i * m_ChunkSize; i <= ( _i * m_ChunkSize + m_ChunkSize - 1); ++i)
 				for(unsigned int j = _j * m_ChunkSize; j <= ( _j * m_ChunkSize + m_ChunkSize - 1); ++j)
@@ -226,9 +225,9 @@ void CLandscape::Load(std::string _fileName)
 					i_data[index] = i + 1 + j * m_Width;
 					index++;
 				}
-			m_MeshArray[m_Name + strIndex]->m_IndexBuffer->CommitToVRAM();
-			m_MeshArray[m_Name + strIndex]->m_VertexBuffer->AdoptVertexBuffer(m_MeshArray[m_FirstChunkName]->m_VertexBuffer);
-			m_MeshArray[m_Name + strIndex]->m_VertexBuffer->SetDeclaration(declaration);
+			m_MeshList[m_Name + strIndex]->m_IndexBuffer->CommitToVRAM();
+			m_MeshList[m_Name + strIndex]->m_VertexBuffer->AdoptVertexBuffer(m_MeshList[m_FirstChunkName]->m_VertexBuffer);
+			m_MeshList[m_Name + strIndex]->m_VertexBuffer->SetDeclaration(declaration);
 			chunkIndex++;
 		}
 }
@@ -244,8 +243,8 @@ void CLandscape::Update()
 	vLightDir.y = 0.0f;
 	vLightDir.z = sin(LightAngle);
 
-	std::map<std::string,Core::CMesh*>::iterator beginMeshIterator = m_MeshArray.begin();
-	std::map<std::string,Core::CMesh*>::iterator endMeshIterator = m_MeshArray.end();
+	std::map<std::string,Core::CMesh*>::iterator beginMeshIterator = m_MeshList.begin();
+	std::map<std::string,Core::CMesh*>::iterator endMeshIterator = m_MeshList.end();
 
 	std::map<std::string,SChunk>::iterator beginChunkIterator = m_ChunkArray.begin();
 	std::map<std::string,SChunk>::iterator endChunkIterator = m_ChunkArray.end();
@@ -273,8 +272,8 @@ void CLandscape::Render()
 {
 	Core::CGlobal::GetRender()->SetCullFace(Core::IRender::CULL_CW);
 
-	std::map<std::string,Core::CMesh*>::iterator beginMeshIterator = m_MeshArray.begin();
-	std::map<std::string,Core::CMesh*>::iterator endMeshIterator = m_MeshArray.end();
+	std::map<std::string,Core::CMesh*>::iterator beginMeshIterator = m_MeshList.begin();
+	std::map<std::string,Core::CMesh*>::iterator endMeshIterator = m_MeshList.end();
 
 	std::map<std::string,SChunk>::iterator beginChunkIterator = m_ChunkArray.begin();
 	std::map<std::string,SChunk>::iterator endChunkIterator = m_ChunkArray.end();

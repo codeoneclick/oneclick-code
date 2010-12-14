@@ -2,8 +2,8 @@
 #include "Input.h"
 using namespace Core;
 
-unsigned int CWindow::m_Width  = 640;
-unsigned int CWindow::m_Height = 480; 
+unsigned int CWindow::m_Width  = 320;
+unsigned int CWindow::m_Height = 240; 
 bool CWindow::m_Fullscreen = false;
 
 HDC CWindow::m_handleDC;			

@@ -14,6 +14,10 @@ float fSpecularPower = 16.0f;
 
 float fOceanLevel = 12.0f;
 
+float fRimBias = 0.25f;
+
+float4 vRimColor = float4(0.5f,0.5f,0.0f,1.0f);
+
 texture Texture_01;
 sampler Texture_01_Sampler = sampler_state {
 	Texture = <Texture_01>;
@@ -115,6 +119,7 @@ float4 ps_main(VS_OUTPUT IN) : COLOR
 						  tex2D(Texture_03_NH_Sampler, vDisplaceTexCoord).rgb * IN.vSplatting.z;
 	
 	vNormalColor = vNormalColor * 2 - 1;
+	vNormalColor = normalize(vNormalColor);
 	
 	float4 vDiffuseColor =  tex2D( Texture_01_Sampler, vDisplaceTexCoord )*IN.vSplatting.x + 
 							tex2D( Texture_02_Sampler, vDisplaceTexCoord )*IN.vSplatting.y + 
@@ -122,11 +127,14 @@ float4 ps_main(VS_OUTPUT IN) : COLOR
 	
 	float4 vAmbientColor = vDiffuseColor;						
 	
-	float vDiffuseFactor = saturate(dot(vNormalColor, IN.vLightDir));
+	float vDiffuseFactor = saturate(dot(vNormalColor, IN.vLightDir) * 0.5f + 0.5f);
+    
 	float3 vLightReflect = reflect(IN.vLightDir, vNormalColor);
 	float vSpecularFactor = pow(max(0.0f, dot(vLightReflect, IN.vCameraEye) ), fSpecularPower);
-  
-    float4 vColor = vDiffuseColor * vDiffuseFactor + vAmbientColor * fAmbientFactor + vSpecularFactor * vSpecularColor;
+	
+	float fRimPower = smoothstep(0.5f , 1.0f ,1.0f - fRimBias - dot(vNormalColor,-IN.vCameraEye));
+	
+    float4 vColor = vDiffuseColor * vDiffuseFactor + vSpecularFactor * vSpecularColor + fRimPower * vRimColor;
     vColor.a = IN.fReflectFactor / fOceanLevel;
     return vColor;
 }

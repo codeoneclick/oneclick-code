@@ -1,5 +1,6 @@
 #include "EnviromentController.h"
 #include "Resource.h"
+#include "Xml/CXml.h"
 
 using namespace Enviroment;
 
@@ -16,15 +17,25 @@ void EnviromentController::Load()
 	m_Camera = m_CameraContainer["MainCamera"];
 
 	m_LandscapeContainer["landscape_01"] = new CLandscape();
-	m_LandscapeContainer["landscape_01"]->Load("Content\\maps\\map.raw");
+	std::vector<SResource> resource;
+	m_LandscapeContainer["landscape_01"]->Load(resource);
 	m_Landscape = m_LandscapeContainer["landscape_01"];
 
 	m_OceanContainer["ocean_01"] = new COcean();
-	m_OceanContainer["ocean_01"]->Load("none");
+	m_OceanContainer["ocean_01"]->Load(resource);
 	m_Ocean = m_OceanContainer["ocean_01"];
 
+	SResource nodeResource;
+	nodeResource.m_MeshFile = "Content\\models\\tank.3ds";
+	nodeResource.m_Name = "model_01";
+	nodeResource.m_Extension = Core::CMesh::EXT_3DS;
+	nodeResource.m_ShaderFile = "Content\\shaders\\basic_02";
+	nodeResource.m_TextureFileList[0] = "Content\\textures\\tank_diffuse.dds";
+	nodeResource.m_TextureFileList[1] = "Content\\textures\\tank_diffuse_nh.dds";
+	resource.push_back(nodeResource);
+
 	m_ModelContainer["model_01"] = new CModel();
-    m_ModelContainer["model_01"]->Load("Content\\models\\tank.3ds");
+    m_ModelContainer["model_01"]->Load(resource);
 	m_ModelContainer["model_01"]->m_vRotation.x = -1.57f;
 	m_ModelContainer["model_01"]->m_vScale = math::Vector3d(0.04f,0.04f,0.04f);
 

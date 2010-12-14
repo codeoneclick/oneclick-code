@@ -46,28 +46,28 @@ void CSoaringIsland::ReadData(std::string _fileName)
 void CSoaringIsland::Load(std::string _fileName)
 {
 	ReadData(_fileName);
-	m_MeshArray["top"] = new Core::CMesh();
-	m_MeshArray["top"]->m_TextureArray[0] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\5684.dds",Core::ITexture::DDS_EXT);
-	m_MeshArray["top"]->m_TextureArray[1] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\7733.dds",Core::ITexture::DDS_EXT);
-	m_MeshArray["top"]->m_TextureArray[2] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\road.dds",Core::ITexture::DDS_EXT);
-	m_MeshArray["top"]->m_TextureArray[3] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\sand_nh.dds",Core::ITexture::DDS_EXT);
-	m_MeshArray["top"]->m_TextureArray[4] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\grass_nh.dds",Core::ITexture::DDS_EXT);
-	m_MeshArray["top"]->m_TextureArray[5] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\road_nh.dds",Core::ITexture::DDS_EXT);
-	m_MeshArray["top"]->m_Shader = CResource::GetShaderControllerInstance()->Load("Content\\shaders\\basic");
-	m_MeshArray["top"]->m_VertexBuffer = Core::CGlobal::GetDevice()->CreateVertexBuffer();
-	m_MeshArray["top"]->m_IndexBuffer = Core::CGlobal::GetDevice()->CreateIndexBuffer();
+	m_MeshList["top"] = new Core::CMesh();
+	m_MeshList["top"]->m_TextureArray[0] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\5684.dds",Core::ITexture::DDS_EXT);
+	m_MeshList["top"]->m_TextureArray[1] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\7733.dds",Core::ITexture::DDS_EXT);
+	m_MeshList["top"]->m_TextureArray[2] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\road.dds",Core::ITexture::DDS_EXT);
+	m_MeshList["top"]->m_TextureArray[3] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\sand_nh.dds",Core::ITexture::DDS_EXT);
+	m_MeshList["top"]->m_TextureArray[4] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\grass_nh.dds",Core::ITexture::DDS_EXT);
+	m_MeshList["top"]->m_TextureArray[5] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\road_nh.dds",Core::ITexture::DDS_EXT);
+	m_MeshList["top"]->m_Shader = CResource::GetShaderControllerInstance()->Load("Content\\shaders\\basic");
+	m_MeshList["top"]->m_VertexBuffer = Core::CGlobal::GetDevice()->CreateVertexBuffer();
+	m_MeshList["top"]->m_IndexBuffer = Core::CGlobal::GetDevice()->CreateIndexBuffer();
 
-	m_MeshArray["bottom"] = new Core::CMesh();
-	m_MeshArray["bottom"]->m_TextureArray[0] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\5684.dds",Core::ITexture::DDS_EXT);
-	m_MeshArray["bottom"]->m_TextureArray[1] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\6422.dds",Core::ITexture::DDS_EXT);
-	m_MeshArray["bottom"]->m_TextureArray[2] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\sand_nh.dds",Core::ITexture::DDS_EXT);
-	m_MeshArray["bottom"]->m_TextureArray[3] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\rock_nh.dds",Core::ITexture::DDS_EXT);
-	m_MeshArray["bottom"]->m_Shader = CResource::GetShaderControllerInstance()->Load("Content\\shaders\\basic");
-	m_MeshArray["bottom"]->m_VertexBuffer = Core::CGlobal::GetDevice()->CreateVertexBuffer();
-	m_MeshArray["bottom"]->m_IndexBuffer = Core::CGlobal::GetDevice()->CreateIndexBuffer();
+	m_MeshList["bottom"] = new Core::CMesh();
+	m_MeshList["bottom"]->m_TextureArray[0] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\5684.dds",Core::ITexture::DDS_EXT);
+	m_MeshList["bottom"]->m_TextureArray[1] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\6422.dds",Core::ITexture::DDS_EXT);
+	m_MeshList["bottom"]->m_TextureArray[2] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\sand_nh.dds",Core::ITexture::DDS_EXT);
+	m_MeshList["bottom"]->m_TextureArray[3] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\rock_nh.dds",Core::ITexture::DDS_EXT);
+	m_MeshList["bottom"]->m_Shader = CResource::GetShaderControllerInstance()->Load("Content\\shaders\\basic");
+	m_MeshList["bottom"]->m_VertexBuffer = Core::CGlobal::GetDevice()->CreateVertexBuffer();
+	m_MeshList["bottom"]->m_IndexBuffer = Core::CGlobal::GetDevice()->CreateIndexBuffer();
 	
-	SVertex* v_data_top = (SVertex*)m_MeshArray["top"]->m_VertexBuffer->Load(m_Width * m_Height,sizeof(SVertex));
-	SVertex* v_data_bottom = (SVertex*)m_MeshArray["bottom"]->m_VertexBuffer->Load(m_Width * m_Height,sizeof(SVertex));
+	SVertex* v_data_top = (SVertex*)m_MeshList["top"]->m_VertexBuffer->Load(m_Width * m_Height,sizeof(SVertex));
+	SVertex* v_data_bottom = (SVertex*)m_MeshList["bottom"]->m_VertexBuffer->Load(m_Width * m_Height,sizeof(SVertex));
 
 	for(unsigned int i = 0; i < m_Width;++i)
         for(unsigned int j = 0; j < m_Height;++j)
@@ -159,8 +159,8 @@ void CSoaringIsland::Load(std::string _fileName)
 		}
 
 	unsigned int index_count = (m_Width - 1)*(m_Height - 1) * 6;
-	unsigned int *i_data_top = m_MeshArray["top"]->m_IndexBuffer->Load(index_count);
-	unsigned int *i_data_bottom = m_MeshArray["bottom"]->m_IndexBuffer->Load(index_count);
+	unsigned int *i_data_top = m_MeshList["top"]->m_IndexBuffer->Load(index_count);
+	unsigned int *i_data_bottom = m_MeshList["bottom"]->m_IndexBuffer->Load(index_count);
 	index = 0;
 	for(unsigned int i = 0; i < (m_Width - 1); ++i)
 		for(unsigned int j = 0; j < (m_Height - 1); ++j)
@@ -205,10 +205,10 @@ void CSoaringIsland::Load(std::string _fileName)
 		}
 		delete[] dataTBN;
 
-		m_MeshArray["top"]->m_VertexBuffer->CommitToVRAM();
-		m_MeshArray["top"]->m_IndexBuffer->CommitToVRAM();
-		m_MeshArray["bottom"]->m_VertexBuffer->CommitToVRAM();
-		m_MeshArray["bottom"]->m_IndexBuffer->CommitToVRAM();
+		m_MeshList["top"]->m_VertexBuffer->CommitToVRAM();
+		m_MeshList["top"]->m_IndexBuffer->CommitToVRAM();
+		m_MeshList["bottom"]->m_VertexBuffer->CommitToVRAM();
+		m_MeshList["bottom"]->m_IndexBuffer->CommitToVRAM();
 	
 
 	Core::IVertexBuffer::SVertexDeclaration declaration;
@@ -251,8 +251,8 @@ void CSoaringIsland::Load(std::string _fileName)
 
 	declaration.m_ElementCount = 7;
 
-	m_MeshArray["top"]->m_VertexBuffer->SetDeclaration(declaration);
-	m_MeshArray["bottom"]->m_VertexBuffer->SetDeclaration(declaration);
+	m_MeshList["top"]->m_VertexBuffer->SetDeclaration(declaration);
+	m_MeshList["bottom"]->m_VertexBuffer->SetDeclaration(declaration);
 }
 
 void CSoaringIsland::Update()
@@ -266,36 +266,36 @@ void CSoaringIsland::Update()
 	vLightDir.y = 0.0f;
 	vLightDir.z = sin(LightAngle);
 
-	m_MeshArray["top"]->m_Shader->SetMatrix(m_mWorldViewProjection,"mWorldViewProjection",Core::IShader::VS_SHADER);
-	m_MeshArray["bottom"]->m_Shader->SetMatrix(m_mWorldViewProjection,"mWorldViewProjection",Core::IShader::VS_SHADER);
+	m_MeshList["top"]->m_Shader->SetMatrix(m_mWorldViewProjection,"mWorldViewProjection",Core::IShader::VS_SHADER);
+	m_MeshList["bottom"]->m_Shader->SetMatrix(m_mWorldViewProjection,"mWorldViewProjection",Core::IShader::VS_SHADER);
 	
-	m_MeshArray["top"]->m_Shader->SetVector(Game::GetEnviromentControllerInstance()->GetCameraInstance()->vPosition,"vCameraEye",Core::IShader::VS_SHADER);
-	m_MeshArray["bottom"]->m_Shader->SetVector(Game::GetEnviromentControllerInstance()->GetCameraInstance()->vPosition,"vCameraEye",Core::IShader::VS_SHADER);
+	m_MeshList["top"]->m_Shader->SetVector(Game::GetEnviromentControllerInstance()->GetCameraInstance()->vPosition,"vCameraEye",Core::IShader::VS_SHADER);
+	m_MeshList["bottom"]->m_Shader->SetVector(Game::GetEnviromentControllerInstance()->GetCameraInstance()->vPosition,"vCameraEye",Core::IShader::VS_SHADER);
 
-	m_MeshArray["top"]->m_Shader->SetVector(vLightDir,"vLightDir",Core::IShader::VS_SHADER);
-	m_MeshArray["bottom"]->m_Shader->SetVector(vLightDir,"vLightDir",Core::IShader::VS_SHADER);
+	m_MeshList["top"]->m_Shader->SetVector(vLightDir,"vLightDir",Core::IShader::VS_SHADER);
+	m_MeshList["bottom"]->m_Shader->SetVector(vLightDir,"vLightDir",Core::IShader::VS_SHADER);
 }
 
 void CSoaringIsland::Render()
 {
 	float discard_dir = 1.0f;
 	float discard_value = 0.0f;
-	m_MeshArray["top"]->m_Shader->SetFloat(discard_dir,"fDiscardUp",Core::IShader::PS_SHADER);
-	m_MeshArray["top"]->m_Shader->SetFloat(discard_value,"fDiscardHeight",Core::IShader::PS_SHADER);
-	m_MeshArray["top"]->m_Shader->SetTexture(m_MeshArray["top"]->m_TextureArray[0],"Texture_01",Core::IShader::PS_SHADER);
-	m_MeshArray["top"]->m_Shader->SetTexture(m_MeshArray["top"]->m_TextureArray[1],"Texture_02",Core::IShader::PS_SHADER);
-	m_MeshArray["top"]->m_Shader->SetTexture(m_MeshArray["top"]->m_TextureArray[2],"Texture_03",Core::IShader::PS_SHADER);
-	m_MeshArray["top"]->m_Shader->SetTexture(m_MeshArray["top"]->m_TextureArray[3],"Texture_01_NH",Core::IShader::PS_SHADER);
-	m_MeshArray["top"]->m_Shader->SetTexture(m_MeshArray["top"]->m_TextureArray[4],"Texture_02_NH",Core::IShader::PS_SHADER);
-	m_MeshArray["top"]->m_Shader->SetTexture(m_MeshArray["top"]->m_TextureArray[5],"Texture_03_NH",Core::IShader::PS_SHADER);
-	m_MeshArray["top"]->Draw();
+	m_MeshList["top"]->m_Shader->SetFloat(discard_dir,"fDiscardUp",Core::IShader::PS_SHADER);
+	m_MeshList["top"]->m_Shader->SetFloat(discard_value,"fDiscardHeight",Core::IShader::PS_SHADER);
+	m_MeshList["top"]->m_Shader->SetTexture(m_MeshList["top"]->m_TextureArray[0],"Texture_01",Core::IShader::PS_SHADER);
+	m_MeshList["top"]->m_Shader->SetTexture(m_MeshList["top"]->m_TextureArray[1],"Texture_02",Core::IShader::PS_SHADER);
+	m_MeshList["top"]->m_Shader->SetTexture(m_MeshList["top"]->m_TextureArray[2],"Texture_03",Core::IShader::PS_SHADER);
+	m_MeshList["top"]->m_Shader->SetTexture(m_MeshList["top"]->m_TextureArray[3],"Texture_01_NH",Core::IShader::PS_SHADER);
+	m_MeshList["top"]->m_Shader->SetTexture(m_MeshList["top"]->m_TextureArray[4],"Texture_02_NH",Core::IShader::PS_SHADER);
+	m_MeshList["top"]->m_Shader->SetTexture(m_MeshList["top"]->m_TextureArray[5],"Texture_03_NH",Core::IShader::PS_SHADER);
+	m_MeshList["top"]->Draw();
 
 	discard_dir = -1.0f;
-	m_MeshArray["bottom"]->m_Shader->SetFloat(discard_dir,"fDiscardUp",Core::IShader::PS_SHADER);
-	m_MeshArray["bottom"]->m_Shader->SetFloat(discard_value,"fDiscardHeight",Core::IShader::PS_SHADER);
-	m_MeshArray["bottom"]->m_Shader->SetTexture(m_MeshArray["bottom"]->m_TextureArray[0],"Texture_01",Core::IShader::PS_SHADER);
-	m_MeshArray["bottom"]->m_Shader->SetTexture(m_MeshArray["bottom"]->m_TextureArray[1],"Texture_02",Core::IShader::PS_SHADER);
-	m_MeshArray["bottom"]->m_Shader->SetTexture(m_MeshArray["bottom"]->m_TextureArray[2],"Texture_01_NH",Core::IShader::PS_SHADER);
-	m_MeshArray["bottom"]->m_Shader->SetTexture(m_MeshArray["bottom"]->m_TextureArray[3],"Texture_02_NH",Core::IShader::PS_SHADER);
+	m_MeshList["bottom"]->m_Shader->SetFloat(discard_dir,"fDiscardUp",Core::IShader::PS_SHADER);
+	m_MeshList["bottom"]->m_Shader->SetFloat(discard_value,"fDiscardHeight",Core::IShader::PS_SHADER);
+	m_MeshList["bottom"]->m_Shader->SetTexture(m_MeshList["bottom"]->m_TextureArray[0],"Texture_01",Core::IShader::PS_SHADER);
+	m_MeshList["bottom"]->m_Shader->SetTexture(m_MeshList["bottom"]->m_TextureArray[1],"Texture_02",Core::IShader::PS_SHADER);
+	m_MeshList["bottom"]->m_Shader->SetTexture(m_MeshList["bottom"]->m_TextureArray[2],"Texture_01_NH",Core::IShader::PS_SHADER);
+	m_MeshList["bottom"]->m_Shader->SetTexture(m_MeshList["bottom"]->m_TextureArray[3],"Texture_02_NH",Core::IShader::PS_SHADER);
 	//m_MeshArray["bottom"]->Draw();
 }

@@ -37,7 +37,7 @@ namespace Enviroment
 		std::string m_FirstChunkName;
 	public :
 		CLandscape();
-		virtual void Load(std::string _fileName);
+		virtual void Load(std::vector<SResource> _resource);
 		virtual void Update();
 		virtual void Render();
 		__forceinline float** GetHeightData() { return m_MapData; }

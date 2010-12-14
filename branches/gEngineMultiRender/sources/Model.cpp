@@ -11,12 +11,27 @@ CModel::CModel()
 	
 }
 
-void CModel::Load(std::string value)
+CModel::~CModel()
 {
-	m_MeshArray["main"] = CResource::GetMeshControllerInstance()->Load(value,Core::CMesh::EXT_3DS);
-	m_MeshArray["main"]->m_TextureArray[0] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\tank_diffuse.dds",Core::ITexture::DDS_EXT);
-	m_MeshArray["main"]->m_TextureArray[1] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\tank_diffuse_nh.dds",Core::ITexture::DDS_EXT);
-	m_MeshArray["main"]->m_Shader = CResource::GetShaderControllerInstance()->Load("Content\\shaders\\basic_02");
+
+}
+
+void CModel::Load(std::vector<SResource> _resource)
+{
+	std::vector<SResource>::iterator resourceIteratorBegin = _resource.begin();
+	std::vector<SResource>::iterator resourceIteratorEnd = _resource.end();
+
+	while(resourceIteratorBegin != resourceIteratorEnd)
+	{
+		m_MeshList[resourceIteratorBegin->m_Name] = CResource::GetMeshControllerInstance()->Load(resourceIteratorBegin->m_MeshFile,resourceIteratorBegin->m_Extension);
+		for(unsigned int index = 0; index < K_MAX_TEXTURES_PER_MESH; ++index)
+		{
+			if(resourceIteratorBegin->m_TextureFileList[index].length())
+				m_MeshList[resourceIteratorBegin->m_Name]->m_TextureArray[index] = CResource::GetTextureControllerInstance()->Load(resourceIteratorBegin->m_TextureFileList[index],Core::ITexture::DDS_EXT);
+		}
+		m_MeshList[resourceIteratorBegin->m_Name]->m_Shader = CResource::GetShaderControllerInstance()->Load(resourceIteratorBegin->m_ShaderFile);	
+		resourceIteratorBegin++;
+	}
 }
 
 void CModel::Update()
@@ -30,15 +45,31 @@ void CModel::Update()
 	vLightDir.y = 0.0f;
 	vLightDir.z = sin(LightAngle);
 
-	m_MeshArray["main"]->m_Shader->SetMatrix(m_mWorldViewProjection,"mWorldViewProjection",Core::IShader::VS_SHADER);
-	m_MeshArray["main"]->m_Shader->SetVector(Game::GetEnviromentControllerInstance()->GetCameraInstance()->vPosition,"vCameraEye",Core::IShader::VS_SHADER);
-	m_MeshArray["main"]->m_Shader->SetVector(vLightDir,"vLightDir",Core::IShader::VS_SHADER);
+	std::map<std::string,Core::CMesh*>::iterator meshIteratorBegin = m_MeshList.begin();
+	std::map<std::string,Core::CMesh*>::iterator meshIteratorEnd = m_MeshList.end();
+
+	while(meshIteratorBegin != meshIteratorEnd)
+	{
+		meshIteratorBegin->second->m_Shader->SetMatrix(m_mWorldViewProjection,"mWorldViewProjection",Core::IShader::VS_SHADER);
+		meshIteratorBegin->second->m_Shader->SetMatrix(m_mWorld,"mWorld",Core::IShader::VS_SHADER);
+		meshIteratorBegin->second->m_Shader->SetVector(Game::GetEnviromentControllerInstance()->GetCameraInstance()->vPosition,"vCameraEye",Core::IShader::VS_SHADER);
+		meshIteratorBegin->second->m_Shader->SetVector(vLightDir,"vLightDir",Core::IShader::VS_SHADER);
+		meshIteratorBegin++;
+	}
 }
 
 void CModel::Render()
 {
 	Core::CGlobal::GetRender()->SetCullFace(Core::IRender::CULL_CCW);
-	m_MeshArray["main"]->m_Shader->SetTexture(m_MeshArray["main"]->m_TextureArray[0],"Texture_01",Core::IShader::PS_SHADER);
-	m_MeshArray["main"]->m_Shader->SetTexture(m_MeshArray["main"]->m_TextureArray[1],"Texture_01_NH",Core::IShader::PS_SHADER);
-	m_MeshArray["main"]->Draw();
+	
+	std::map<std::string,Core::CMesh*>::iterator meshIteratorBegin = m_MeshList.begin();
+	std::map<std::string,Core::CMesh*>::iterator meshIteratorEnd = m_MeshList.end();
+
+	while(meshIteratorBegin != meshIteratorEnd)
+	{
+		meshIteratorBegin->second->m_Shader->SetTexture(meshIteratorBegin->second->m_TextureArray[0],"Texture_01",Core::IShader::PS_SHADER);
+		meshIteratorBegin->second->m_Shader->SetTexture(meshIteratorBegin->second->m_TextureArray[1],"Texture_01_NH",Core::IShader::PS_SHADER);
+		meshIteratorBegin->second->Draw();
+		meshIteratorBegin++;
+	}
 }
