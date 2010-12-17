@@ -14,7 +14,7 @@ CLandscape::CLandscape()
 	m_ChunkSize = 64;
 
 	m_MapScaleFactor = 1.0f;
-	m_TextureScaleFactor = 8.0f;
+	m_TextureScaleFactor = 16.0f;
 	m_MapHeightFactor = 0.1f;
 	m_Name = "landscape_";
 	m_FirstChunkName = "landscape_0";
@@ -98,12 +98,14 @@ void CLandscape::Load(std::vector<SResource> _resource)
 	for(unsigned int i = 0; i < m_Width;++i)
         for(unsigned int j = 0; j < m_Height;++j)
 		{
+			
 			v_data[index].vPosition = math::Vector3d(i*m_MapScaleFactor,m_MapData[i][j] * m_MapHeightFactor,j*m_MapScaleFactor);
 			v_data[index].vTexCoord = math::Vector2d(static_cast<float>(i) / m_TextureScaleFactor,static_cast<float>(j) / m_TextureScaleFactor);
+			v_data[index].vSplatting = 0x00000000;
 			if(v_data[index].vPosition.y > 13.0f)
-				v_data[index].vSplatting = math::Vector4d(0.0f,1.0f,0.0f,0.0f);
+				v_data[index].vSplatting = 0x0000FF00;
 			else
-				v_data[index].vSplatting = math::Vector4d(1.0f,0.0f,0.0f,0.0f);
+				v_data[index].vSplatting = 0x00FF0000;
 			++index;
 		}
 
@@ -132,12 +134,26 @@ void CLandscape::Load(std::vector<SResource> _resource)
 	Math::Util::SVertexTBN * dataTBN = Math::Util::CalculateTBN(v_data,i_data,m_Width * m_Height,index_count,sizeof(SVertex));
 	for(int i = 0; i < m_Width * m_Height; ++i)
 	{
-		v_data[i].vNormal = dataTBN[i].vNormal;
-		v_data[i].vNormal.normalize();
-		v_data[i].vTangent = dataTBN[i].vTangent;
-		v_data[i].vTangent.normalize(); 
-		v_data[i].vBinormal = dataTBN[i].vBinormal;
-		v_data[i].vBinormal.normalize();
+		dataTBN[i].vNormal.normalize();
+
+		v_data[i].NormalX = (unsigned char)(((dataTBN[i].vNormal.x + 1) / 2) * 255);
+		v_data[i].NormalY = (unsigned char)(((dataTBN[i].vNormal.y + 1) / 2) * 255);
+		v_data[i].NormalZ = (unsigned char)(((dataTBN[i].vNormal.z + 1) / 2) * 255);
+		v_data[i].NormalW = 0;
+
+		dataTBN[i].vTangent.normalize();
+
+		v_data[i].TangentX = (unsigned char)(((dataTBN[i].vTangent.x + 1) / 2) * 255);
+		v_data[i].TangentY = (unsigned char)(((dataTBN[i].vTangent.y + 1) / 2) * 255);
+		v_data[i].TangentZ = (unsigned char)(((dataTBN[i].vTangent.z + 1) / 2) * 255);
+		v_data[i].TangentW = 0;
+
+		//v_data[i].vNormal = dataTBN[i].vNormal;
+		//v_data[i].vNormal.normalize();
+		//v_data[i].vTangent = dataTBN[i].vTangent;
+		//v_data[i].vTangent.normalize(); 
+		//v_data[i].vBinormal = dataTBN[i].vBinormal;
+		//v_data[i].vBinormal.normalize();
 	}
 	delete[] dataTBN;
 
@@ -146,39 +162,39 @@ void CLandscape::Load(std::vector<SResource> _resource)
 	m_MeshList[m_FirstChunkName]->m_VertexBuffer->CommitToVRAM();
 
 	Core::IVertexBuffer::SVertexDeclaration declaration;
-	declaration.m_Elements = new Core::IVertexBuffer::SElementDeclaration[6];
+	declaration.m_Elements = new Core::IVertexBuffer::SElementDeclaration[5];
 	
 	declaration.m_Elements[0].m_Index = 0;
 	declaration.m_Elements[0].m_Size = Core::IVertexBuffer::ELEMENT_FLOAT3;
 	declaration.m_Elements[0].m_Type = Core::IVertexBuffer::ELEMENT_POSITION;
-	declaration.m_Elements[0].m_Offset = 0 * sizeof(float);
+	declaration.m_Elements[0].m_Offset = 0;
 
 	declaration.m_Elements[1].m_Index = 0;
 	declaration.m_Elements[1].m_Size = Core::IVertexBuffer::ELEMENT_FLOAT2;
 	declaration.m_Elements[1].m_Type = Core::IVertexBuffer::ELEMENT_TEXCOORD;
-	declaration.m_Elements[1].m_Offset = 3 * sizeof(float);
+	declaration.m_Elements[1].m_Offset = 12;
 
 	declaration.m_Elements[2].m_Index = 0;
-	declaration.m_Elements[2].m_Size = Core::IVertexBuffer::ELEMENT_FLOAT3;
-	declaration.m_Elements[2].m_Type = Core::IVertexBuffer::ELEMENT_NORMAL;
-	declaration.m_Elements[2].m_Offset = 5 * sizeof(float);
+	declaration.m_Elements[2].m_Size = Core::IVertexBuffer::ELEMENT_BYTE4;
+	declaration.m_Elements[2].m_Type = Core::IVertexBuffer::ELEMENT_COLOR;
+	declaration.m_Elements[2].m_Offset = 20;
 
 	declaration.m_Elements[3].m_Index = 1;
-	declaration.m_Elements[3].m_Size = Core::IVertexBuffer::ELEMENT_FLOAT3;
-	declaration.m_Elements[3].m_Type = Core::IVertexBuffer::ELEMENT_TEXCOORD;
-	declaration.m_Elements[3].m_Offset = 8 * sizeof(float);
+	declaration.m_Elements[3].m_Size = Core::IVertexBuffer::ELEMENT_BYTE4;
+	declaration.m_Elements[3].m_Type = Core::IVertexBuffer::ELEMENT_COLOR;
+	declaration.m_Elements[3].m_Offset = 24;
 
 	declaration.m_Elements[4].m_Index = 2;
-	declaration.m_Elements[4].m_Size = Core::IVertexBuffer::ELEMENT_FLOAT3;
-	declaration.m_Elements[4].m_Type = Core::IVertexBuffer::ELEMENT_TEXCOORD;
-	declaration.m_Elements[4].m_Offset = 11 * sizeof(float);
+	declaration.m_Elements[4].m_Size = Core::IVertexBuffer::ELEMENT_BYTE4;
+	declaration.m_Elements[4].m_Type = Core::IVertexBuffer::ELEMENT_COLOR;
+	declaration.m_Elements[4].m_Offset = 28;
 
-	declaration.m_Elements[5].m_Index = 3;
-	declaration.m_Elements[5].m_Size = Core::IVertexBuffer::ELEMENT_FLOAT4;
-	declaration.m_Elements[5].m_Type = Core::IVertexBuffer::ELEMENT_TEXCOORD;
-	declaration.m_Elements[5].m_Offset = 14 * sizeof(float);
+	//declaration.m_Elements[5].m_Index = 2;
+	//declaration.m_Elements[5].m_Size = Core::IVertexBuffer::ELEMENT_FLOAT3;
+	//declaration.m_Elements[5].m_Type = Core::IVertexBuffer::ELEMENT_TEXCOORD;
+	//declaration.m_Elements[5].m_Offset = 48;
 
-	declaration.m_ElementCount = 6;
+	declaration.m_ElementCount = 5;
 
 	chunkIndex = 0;
 	for(unsigned int _i = 0; _i < m_Width / m_ChunkSize; ++_i)
@@ -192,7 +208,6 @@ void CLandscape::Load(std::vector<SResource> _resource)
 			for(unsigned int i = _i * m_ChunkSize; i <= ( _i * m_ChunkSize + m_ChunkSize - 1); ++i)
 				for(unsigned int j = _j * m_ChunkSize; j <= ( _j * m_ChunkSize + m_ChunkSize - 1); ++j)
 				{
-
 					if((i  >= (m_Width - 1)) || (j >= (m_Width - 1)))
 					{
 						i_data[index] = i + j * m_Width;

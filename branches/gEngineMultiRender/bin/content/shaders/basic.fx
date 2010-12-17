@@ -69,17 +69,16 @@ sampler Texture_03_NH_Sampler = sampler_state {
 struct VS_INPUT {
 	float3 vPosition      : POSITION;
 	float2 vTexCoord      : TEXCOORD0;
-	float3 vNormal		  : NORMAL;
-	float3 vTangent		  : TEXCOORD1;
-	float3 vBinormal	  : TEXCOORD2;
-	float4 vSplatting     : TEXCOORD3;
+	float4 vSplatting     : COLOR0;
+	float4 vNormal		  : COLOR1;
+	float4 vTangent		  : COLOR2;
 };
 
 struct VS_OUTPUT {
    float4 vPosition		   : POSITION;
+   float4 vSplatting       : COLOR0;
    float2 vTexCoord	       : TEXCOORD0;
    float3 vDiscardPosition : TEXCOORD1;
-   float4 vSplatting       : TEXCOORD2;
    float3 vCameraEye       : TEXCOORD3;
    float3 vLightDir        : TEXCOORD4;
    float  fReflectFactor   : TEXCOORD5;
@@ -94,7 +93,10 @@ VS_OUTPUT vs_main(VS_INPUT IN)
    OUT.vDiscardPosition = IN.vPosition;
    OUT.vSplatting = IN.vSplatting;
    
-   float3x3 mTangentSpace = float3x3(IN.vTangent,IN.vBinormal,IN.vNormal);
+   float3 vTangent = IN.vTangent.yzw * 2.0f - 1.0f;
+   float3 vNormal = IN.vNormal.yzw * 2.0f - 1.0f;
+   
+   float3x3 mTangentSpace = float3x3(vTangent,cross(vTangent,vNormal),vNormal);
    OUT.vLightDir = mul(mTangentSpace,vLightDir);
    OUT.vCameraEye = mul(mTangentSpace,vCameraEye - IN.vPosition);
    OUT.fReflectFactor = IN.vPosition.y;
@@ -136,6 +138,7 @@ float4 ps_main(VS_OUTPUT IN) : COLOR
 	
     float4 vColor = vDiffuseColor * vDiffuseFactor + vSpecularFactor * vSpecularColor + fRimPower * vRimColor;
     vColor.a = IN.fReflectFactor / fOceanLevel;
+   // vColor = IN.vSplatting;
     return vColor;
 }
 

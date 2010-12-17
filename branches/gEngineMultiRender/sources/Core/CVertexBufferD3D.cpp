@@ -48,7 +48,7 @@ void CVertexBufferD3D::SetDeclaration(Core::IVertexBuffer::SVertexDeclaration &_
 	{
 		dx_vertex_declaration[i].Stream = 0;
 		dx_vertex_declaration[i].Offset = m_declaration.m_Elements[i].m_Offset;
-		dx_vertex_declaration[i].Type = m_declaration.m_Elements[i].m_Size - 1;
+		dx_vertex_declaration[i].Type = m_declaration.m_Elements[i].m_Size;
 		dx_vertex_declaration[i].Method = D3DDECLMETHOD_DEFAULT;
 		dx_vertex_declaration[i].Usage = m_declaration.m_Elements[i].m_Type;
 		dx_vertex_declaration[i].UsageIndex = m_declaration.m_Elements[i].m_Index;

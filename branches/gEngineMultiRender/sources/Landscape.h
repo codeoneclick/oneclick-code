@@ -11,10 +11,24 @@ namespace Enviroment
 		{
 			math::Vector3d vPosition;
 			math::Vector2d vTexCoord;
-			math::Vector3d vNormal;
-			math::Vector3d vTangent;
-			math::Vector3d vBinormal;
-			math::Vector4d vSplatting;
+			DWORD vSplatting;
+			union 
+			{
+				struct 
+				{
+					unsigned char NormalW, NormalX, NormalY, NormalZ;
+				};
+				DWORD vNormal;
+			};
+
+			union 
+			{
+				struct 
+				{
+					unsigned char TangentW, TangentX, TangentY, TangentZ;
+				};
+				DWORD vTangent;
+			};
 		};
 
 		struct SChunk
