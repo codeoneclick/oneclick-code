@@ -59,6 +59,7 @@ void CLandscape::Load(std::vector<SResource> _resource)
 			m_MeshList[m_Name + strIndex]->m_TextureArray[3] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\sand_nh.dds",Core::ITexture::DDS_EXT);
 			m_MeshList[m_Name + strIndex]->m_TextureArray[4] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\grass_nh.dds",Core::ITexture::DDS_EXT);
 			m_MeshList[m_Name + strIndex]->m_TextureArray[5] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\road_nh.dds",Core::ITexture::DDS_EXT);
+			m_MeshList[m_Name + strIndex]->m_TextureArray[6] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\grid_mask.dds",Core::ITexture::DDS_EXT);
 			m_MeshList[m_Name + strIndex]->m_Shader = CResource::GetShaderControllerInstance()->Load("Content\\shaders\\basic");
 			m_MeshList[m_Name + strIndex]->m_VertexBuffer = Core::CGlobal::GetDevice()->CreateVertexBuffer();
 			m_MeshList[m_Name + strIndex]->m_IndexBuffer = Core::CGlobal::GetDevice()->CreateIndexBuffer();
@@ -147,13 +148,6 @@ void CLandscape::Load(std::vector<SResource> _resource)
 		v_data[i].TangentY = (unsigned char)(((dataTBN[i].vTangent.y + 1) / 2) * 255);
 		v_data[i].TangentZ = (unsigned char)(((dataTBN[i].vTangent.z + 1) / 2) * 255);
 		v_data[i].TangentW = 0;
-
-		//v_data[i].vNormal = dataTBN[i].vNormal;
-		//v_data[i].vNormal.normalize();
-		//v_data[i].vTangent = dataTBN[i].vTangent;
-		//v_data[i].vTangent.normalize(); 
-		//v_data[i].vBinormal = dataTBN[i].vBinormal;
-		//v_data[i].vBinormal.normalize();
 	}
 	delete[] dataTBN;
 
@@ -188,11 +182,6 @@ void CLandscape::Load(std::vector<SResource> _resource)
 	declaration.m_Elements[4].m_Size = Core::IVertexBuffer::ELEMENT_BYTE4;
 	declaration.m_Elements[4].m_Type = Core::IVertexBuffer::ELEMENT_COLOR;
 	declaration.m_Elements[4].m_Offset = 28;
-
-	//declaration.m_Elements[5].m_Index = 2;
-	//declaration.m_Elements[5].m_Size = Core::IVertexBuffer::ELEMENT_FLOAT3;
-	//declaration.m_Elements[5].m_Type = Core::IVertexBuffer::ELEMENT_TEXCOORD;
-	//declaration.m_Elements[5].m_Offset = 48;
 
 	declaration.m_ElementCount = 5;
 
@@ -307,6 +296,7 @@ void CLandscape::Render()
 		beginMeshIterator->second->m_Shader->SetTexture(beginMeshIterator->second->m_TextureArray[3],"Texture_01_NH",Core::IShader::PS_SHADER);
 		beginMeshIterator->second->m_Shader->SetTexture(beginMeshIterator->second->m_TextureArray[4],"Texture_02_NH",Core::IShader::PS_SHADER);
 		beginMeshIterator->second->m_Shader->SetTexture(beginMeshIterator->second->m_TextureArray[5],"Texture_03_NH",Core::IShader::PS_SHADER);
+		beginMeshIterator->second->m_Shader->SetTexture(beginMeshIterator->second->m_TextureArray[6],"Texture_grid_mask",Core::IShader::PS_SHADER);
 		beginMeshIterator->second->Draw();
 
 		beginMeshIterator++;

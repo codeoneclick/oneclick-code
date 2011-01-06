@@ -14,9 +14,14 @@ float fSpecularPower = 16.0f;
 
 float fOceanLevel = 12.0f;
 
-float fRimBias = 0.25f;
+float fRimStart = 0.8f;
+float fRimEnd = 1.0f;
+
+float fRimFactor = 4.0f;
 
 float4 vRimColor = float4(0.5f,0.5f,0.0f,1.0f);
+
+float fGridMaskFactor = 4.0f;
 
 texture Texture_01;
 sampler Texture_01_Sampler = sampler_state {
@@ -66,6 +71,14 @@ sampler Texture_03_NH_Sampler = sampler_state {
 	MipFilter = LINEAR;
 };
 
+texture Texture_grid_mask;
+sampler Texture_grid_mask_Sampler = sampler_state {
+	Texture = <Texture_grid_mask>;
+	MinFilter = LINEAR;
+	MagFilter = LINEAR;
+	MipFilter = LINEAR;
+};
+
 struct VS_INPUT {
 	float3 vPosition      : POSITION;
 	float2 vTexCoord      : TEXCOORD0;
@@ -78,10 +91,10 @@ struct VS_OUTPUT {
    float4 vPosition		   : POSITION;
    float4 vSplatting       : COLOR0;
    float2 vTexCoord	       : TEXCOORD0;
-   float3 vDiscardPosition : TEXCOORD1;
-   float3 vCameraEye       : TEXCOORD3;
-   float3 vLightDir        : TEXCOORD4;
-   float  fReflectFactor   : TEXCOORD5;
+   float3 vNormal          : TEXCOORD1;
+   float3 vTangent		   : TEXCOORD2;
+   float3 vWorldPosition   : TEXCOORD3;
+   float  fReflectFactor   : TEXCOORD4;
 };
 
 
@@ -90,31 +103,35 @@ VS_OUTPUT vs_main(VS_INPUT IN)
    VS_OUTPUT OUT = (VS_OUTPUT)0;
    OUT.vPosition = mul( float4(IN.vPosition,1.0f) ,mWorldViewProjection);
    OUT.vTexCoord = IN.vTexCoord;
-   OUT.vDiscardPosition = IN.vPosition;
    OUT.vSplatting = IN.vSplatting;
    
    float3 vTangent = IN.vTangent.yzw * 2.0f - 1.0f;
    float3 vNormal = IN.vNormal.yzw * 2.0f - 1.0f;
    
-   float3x3 mTangentSpace = float3x3(vTangent,cross(vTangent,vNormal),vNormal);
-   OUT.vLightDir = mul(mTangentSpace,vLightDir);
-   OUT.vCameraEye = mul(mTangentSpace,vCameraEye - IN.vPosition);
+   OUT.vTangent = vTangent;
+   OUT.vNormal = vNormal;
+   OUT.vWorldPosition = IN.vPosition;
    OUT.fReflectFactor = IN.vPosition.y;
    return OUT;
 }
 
 float4 ps_main(VS_OUTPUT IN) : COLOR 
 {	
-    IN.vCameraEye = normalize(IN.vCameraEye);
-    IN.vLightDir = normalize(IN.vLightDir);
+	IN.vTangent = normalize(IN.vTangent);
+	IN.vNormal = normalize(IN.vNormal);
+
+	float3x3 mTangentSpace = float3x3(IN.vTangent,cross(IN.vTangent,IN.vNormal),IN.vNormal);
+	float3 vCameraEyeTangentSpace = normalize(mul(mTangentSpace,vCameraEye - IN.vWorldPosition)); 
+	float3 vCameraEyeWorldSpace = normalize(vCameraEye - IN.vWorldPosition);
+	float3 vLightDirTangentSpace = normalize(mul(mTangentSpace,vLightDir));
    
     float fHeightPower = 0.0f;
     float2 vDisplaceTexCoord = IN.vTexCoord;
     fHeightPower = tex2D(Texture_01_NH_Sampler, IN.vTexCoord).a * IN.vSplatting.x + 
-					    tex2D(Texture_02_NH_Sampler, IN.vTexCoord).a * IN.vSplatting.y + 
-					    tex2D(Texture_03_NH_Sampler, IN.vTexCoord).a * IN.vSplatting.z;
+				   tex2D(Texture_02_NH_Sampler, IN.vTexCoord).a * IN.vSplatting.y + 
+				   tex2D(Texture_03_NH_Sampler, IN.vTexCoord).a * IN.vSplatting.z;
     fHeightPower *= 0.04f;
-	vDisplaceTexCoord = vDisplaceTexCoord + (IN.vCameraEye.xy * fHeightPower);
+	vDisplaceTexCoord = vDisplaceTexCoord + (vCameraEyeTangentSpace.xy * fHeightPower);
     
     float3 vNormalColor = tex2D(Texture_01_NH_Sampler, vDisplaceTexCoord).rgb * IN.vSplatting.x + 
 						  tex2D(Texture_02_NH_Sampler, vDisplaceTexCoord).rgb * IN.vSplatting.y + 
@@ -129,16 +146,17 @@ float4 ps_main(VS_OUTPUT IN) : COLOR
 	
 	float4 vAmbientColor = vDiffuseColor;						
 	
-	float vDiffuseFactor = saturate(dot(vNormalColor, IN.vLightDir) * 0.5f + 0.5f);
+	float vDiffuseFactor = saturate(dot(vNormalColor, vLightDirTangentSpace) * 0.5f + 0.75f);
     
-	float3 vLightReflect = reflect(IN.vLightDir, vNormalColor);
-	float vSpecularFactor = pow(max(0.0f, dot(vLightReflect, IN.vCameraEye) ), fSpecularPower);
+	float3 vLightReflect = reflect(vLightDirTangentSpace, vNormalColor);
+	float vSpecularFactor = pow(max(0.0f, dot(vLightReflect, vCameraEyeTangentSpace) ), fSpecularPower);
 	
-	float fRimPower = smoothstep(0.5f , 1.0f ,1.0f - fRimBias - dot(vNormalColor,-IN.vCameraEye));
+	float fRimPower = smoothstep(fRimStart , fRimEnd ,1.0f - dot(normalize(IN.vNormal),-vCameraEyeWorldSpace));
 	
-    float4 vColor = vDiffuseColor * vDiffuseFactor + vSpecularFactor * vSpecularColor + fRimPower * vRimColor;
+	float4 vGridColor = tex2D( Texture_grid_mask_Sampler, IN.vTexCoord * fGridMaskFactor) * float4(1.0f,1.0f,1.0f,1.0f);
+	
+    float4 vColor = vDiffuseColor * vDiffuseFactor + vSpecularFactor * vSpecularColor + fRimPower * vDiffuseColor * fRimFactor + vGridColor;
     vColor.a = IN.fReflectFactor / fOceanLevel;
-   // vColor = IN.vSplatting;
     return vColor;
 }
 

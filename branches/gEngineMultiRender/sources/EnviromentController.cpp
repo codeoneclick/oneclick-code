@@ -146,7 +146,7 @@ void EnviromentController::Update(DWORD time)
 	}
 
 	m_Camera->vLookAt.y = GetLandscapeHeight(m_Camera->vLookAt.x,m_Camera->vLookAt.z);
-	m_Camera->vPosition.y = 24.0f;//GetLandscapeHeight(m_Camera->vPosition.x,m_Camera->vPosition.z) + 8.0f;
+	m_Camera->vPosition.y = 48.0f;//GetLandscapeHeight(m_Camera->vPosition.x,m_Camera->vPosition.z) + 8.0f;
 	m_CharacterControl->m_vPosition = m_Camera->vLookAt;
 
 	m_CharacterControl->m_vRotation.x = -GetLandscapeRotation(m_CharacterControl->m_vPosition).x;

@@ -56,8 +56,6 @@ CDeviceD3D::CDeviceD3D()
     //m_device->SetRenderState(D3DRS_ALPHAREF, (DWORD)128);
 	//m_device->SetRenderState(D3DRS_VERTEXBLEND, D3DVBF_TWEENING);
     m_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW);
-	
-
 }
 
 Core::ITexture* CDeviceD3D::CreateTexture()
