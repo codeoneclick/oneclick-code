@@ -10,6 +10,7 @@ package Digger
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.utils.Dictionary;
 	import flash.utils.Timer;
 	/**
 	 * ...
@@ -17,49 +18,106 @@ package Digger
 	 */
 	public class Player
 	{
-		public  static var m_Position:Point;
-		public  static var m_PositionIndex:Point;
-		private var m_MoveToIndex:Point;
-		private var m_MovePointPosition:Point;
-		private var m_DirectionType:String; 
-		private var m_IsMove:Boolean;
-		private var m_BitmapData:BitmapData;
-		private  var m_Bitmap:Bitmap;
-		public  var m_BitmapContainer:Sprite;
-		private var m_Speed:int;
-		private var m_DeltaMovePosition:Point;
-		private static var m_CurrentExplosion:Explosion;
+		public static var STATE_IDLE:String = "STATE_IDLE";
+		public static var STATE_MOVE:String = "STATE_MOVE";
+		public static var STATE_SHOOT:String = "STATE_SHOOT";
 		
-		private var m_FramesCount:int;
-		private var m_CurrentFrame:int;
-		private var m_AnimationTimer:Timer;
+		public static var DIRECTION_UP:String = "UP";
+		public static var DIRECTION_DOWN:String = "DOWN";
+		public static var DIRECTION_LEFT:String = "LEFT";
+		public static var DIRECTION_RIGHT:String = "RIGHT";
+		
+		private var m_Position:Point = new Point(0, 0);
+		public function set Position(value:Point):void
+		{
+			m_Position = new Point(value.x, value.y);
+		}
+		
+		public function get Position():Point
+		{
+			return new Point(m_Position.x, m_Position.y);
+		}
+		
+		private var m_Index:Point = new Point(0, 0);
+		public function set Index(value:Point):void
+		{
+			m_Index = new Point(value.x, value.y);
+		}
+		
+		public function get Index():Point
+		{
+			return new Point(m_Index.x, m_Index.y);
+		}
+		
+		private var m_Direction:String = DIRECTION_LEFT;
+		public function get Direction():String
+		{
+			return m_Direction;
+		}
+		
+		public function set Direction(value:String):void
+		{
+			m_Direction = value;
+			
+			switch(m_Direction)
+			{
+				case DIRECTION_UP:
+					m_Container.rotation = -90;
+				break;
+				case DIRECTION_DOWN:
+					m_Container.rotation = 90;
+				break;
+				case DIRECTION_LEFT:
+					m_Container.rotation = 0;
+				break;
+				case DIRECTION_RIGHT:
+					m_Container.rotation = 180;
+				break;
+			}
+		}
+		
+		private var m_NextIndex:Point = new Point(0, 0);
+		private var m_NextPosition:Point = new Point(0, 0);
+		
+		private var m_Speed:Number = 4;
+		private var m_IsMove:Boolean = false;
+		
+		private var m_State:String = STATE_IDLE;
+		public function set State(value:String):void
+		{
+			m_State = value;
+		}
+		
+		private var m_BitmapData:BitmapData;
+		private var m_Bitmap:Bitmap;
+		private var m_Container:Sprite;
+		public function get  Container():Sprite
+		{
+			return m_Container;
+		}
+		
+		private var m_AnimController:AnimController = null;
+		
+		public static var m_Explosion:Explosion = null;
 		
 		public function Player() 
 		{
-			m_Position = new Point(0, 0);
-			m_PositionIndex = new Point(0, 0);
-			m_MoveToIndex = new Point(0, 0);
-			m_MovePointPosition = new Point(0, 0);
-			m_DeltaMovePosition = new Point(0, 0);
-			m_IsMove = false;
-			m_Speed = 4;
-			m_DirectionType = "NONE";
 			m_BitmapData = new BitmapData(DiggerSetting.m_ElementWidth , DiggerSetting.m_ElementHeight );
 			m_Bitmap = new Bitmap(m_BitmapData);	
-			m_BitmapData.copyPixels(Resource.m_ContainerPNG["player_run01_frame0"], new Rectangle(0, 0, DiggerSetting.m_ElementWidth, DiggerSetting.m_ElementHeight), new Point(0, 0));
-			m_BitmapContainer = new Sprite();
+			m_Container = new Sprite();
 			m_Bitmap.x = -m_Bitmap.width / 2;
 			m_Bitmap.y = -m_Bitmap.height / 2;
-			m_BitmapContainer.scaleX = new Number(0.6);
-			m_BitmapContainer.scaleY = new Number(0.6);
-			m_BitmapContainer.filters = [getBitmapFilter()];
-			m_BitmapContainer.addChild(m_Bitmap);
+			m_Container.scaleX = new Number(0.6);
+			m_Container.scaleY = new Number(0.6);
+			m_Container.filters = [getBitmapFilter()];
+			m_Container.addChild(m_Bitmap);
 			
-			m_AnimationTimer = new Timer(100);
-			m_AnimationTimer.addEventListener(TimerEvent.TIMER, OnAnimation);
-			m_AnimationTimer.start();
-			m_FramesCount = 12;
-			m_CurrentFrame = 0;
+			m_AnimController = new AnimController(m_BitmapData);
+			m_AnimController.AddAnim("p_idle_", 20);
+			m_AnimController.AddAnim("p_shoot_", 20);
+			m_AnimController.AddAnim("player_run01_frame", 12);
+			m_AnimController.AddAnim("p_hole_", 12);
+			m_AnimController.StartAnim("p_idle_", true);
 		}
 		
 		 private function getBitmapFilter():BitmapFilter {
@@ -87,110 +145,145 @@ package Digger
 		
 		public static function Add():void
 		{
-			m_CurrentExplosion = new Explosion(new Point(m_Position.x, m_Position.y));
+			//m_CurrentExplosion = new Explosion(new Point(m_Position.x, m_Position.y));
 		}
 
 		
 		public function MoveUp():void
 		{
-			if (m_PositionIndex.y == 0 || m_IsMove) 
-				return;
-			m_MoveToIndex.y--;
-			m_MovePointPosition.y -= DiggerSetting.m_ElementHeight;
-			m_IsMove = true;
-			m_DirectionType = "UP";
-			m_DeltaMovePosition.x = 0;
-			m_DeltaMovePosition.y = 0;
-			if ((Level.m_Playground[m_MoveToIndex.x][m_MoveToIndex.y] as Element).GetType() != "element_empty_01")
-				m_CurrentExplosion = new Explosion(new Point(m_Position.x, m_Position.y - DiggerSetting.m_ElementHeight / 2));
-			(Level.m_Playground[m_PositionIndex.x][m_PositionIndex.y] as Element).RemoveEdge("UP");
-			(Level.m_Playground[m_MoveToIndex.x][m_MoveToIndex.y] as Element).RemoveEdge("DOWN");
-			(Level.m_Playground[m_MoveToIndex.x][m_MoveToIndex.y] as Element).SetType("element_empty_01");
-			(Level.m_Playground[m_PositionIndex.x][m_PositionIndex.y] as Element).SetType("element_empty_01");
-			(Level.m_Playground[m_PositionIndex.x][m_PositionIndex.y] as Element).Update();
-			(Level.m_Playground[m_MoveToIndex.x][m_MoveToIndex.y] as Element).Update();
-			m_BitmapContainer.rotation = -90;
+			if (m_IsMove) return;
+			Direction = DIRECTION_UP;
+			if (m_Index.y == 0) return;
+			if ((Level.m_Playground[m_Index.x][m_Index.y - 1] as Element).GetType() != "element_empty_01")
+			{
+				m_AnimController.StartAnim("p_hole_", true);
+				m_Explosion = new Explosion(new Point(m_Position.x, m_Position.y - DiggerSetting.m_ElementHeight / 2));
+			}
+			else
+			{
+				m_AnimController.StartAnim("player_run01_frame", true);
+			}
+			m_NextIndex.y--;
+			OnMoveStart(DIRECTION_UP, DIRECTION_DOWN);
 		}
 		
 		public function MoveDown():void
 		{
-			if (m_PositionIndex.y == (DiggerSetting.m_PlaygroundHeight - 1) || m_IsMove) 
-				return;
-			m_MoveToIndex.y++;
-			m_MovePointPosition.y += DiggerSetting.m_ElementHeight;
-			m_IsMove = true;
-			m_DirectionType = "DOWN";
-			m_DeltaMovePosition.x = 0;
-			m_DeltaMovePosition.y = 0;
-			if ((Level.m_Playground[m_MoveToIndex.x][m_MoveToIndex.y] as Element).GetType() != "element_empty_01")
-				m_CurrentExplosion = new Explosion(new Point(m_Position.x, m_Position.y + DiggerSetting.m_ElementHeight / 2));
-			(Level.m_Playground[m_PositionIndex.x][m_PositionIndex.y] as Element).RemoveEdge("DOWN");
-			(Level.m_Playground[m_MoveToIndex.x][m_MoveToIndex.y] as Element).RemoveEdge("UP");
-			(Level.m_Playground[m_MoveToIndex.x][m_MoveToIndex.y] as Element).SetType("element_empty_01");
-			(Level.m_Playground[m_PositionIndex.x][m_PositionIndex.y] as Element).SetType("element_empty_01");
-			(Level.m_Playground[m_PositionIndex.x][m_PositionIndex.y] as Element).Update();
-			(Level.m_Playground[m_MoveToIndex.x][m_MoveToIndex.y] as Element).Update();
-			m_BitmapContainer.rotation = 90;
+			if (m_IsMove) return;
+			Direction = DIRECTION_DOWN;
+			if (m_Index.y == (DiggerSetting.m_PlaygroundHeight - 1)) return;
+			if ((Level.m_Playground[m_Index.x][m_Index.y + 1] as Element).GetType() != "element_empty_01") 
+			{
+				m_AnimController.StartAnim("p_hole_", true);
+				m_Explosion = new Explosion(new Point(m_Position.x, m_Position.y + DiggerSetting.m_ElementHeight / 2));
+			}
+			else
+			{
+				m_AnimController.StartAnim("player_run01_frame", true);
+			}
+			m_NextIndex.y++;
+			OnMoveStart(DIRECTION_DOWN, DIRECTION_UP);
 		}
 		
 		public function MoveLeft():void
 		{
-			if (m_PositionIndex.x == (DiggerSetting.m_PlaygroundWidth - 1) || m_IsMove) 
-				return;
-			m_MoveToIndex.x++;
-			m_MovePointPosition.x += DiggerSetting.m_ElementWidth;
-			m_IsMove = true;
-			m_DirectionType = "LEFT";
-			m_DeltaMovePosition.x = 0;
-			m_DeltaMovePosition.y = 0;
-			if ((Level.m_Playground[m_MoveToIndex.x][m_MoveToIndex.y] as Element).GetType() != "element_empty_01")
-				m_CurrentExplosion = new Explosion(new Point(m_Position.x + DiggerSetting.m_ElementWidth / 2, m_Position.y));
-			(Level.m_Playground[m_PositionIndex.x][m_PositionIndex.y] as Element).RemoveEdge("LEFT");
-			(Level.m_Playground[m_MoveToIndex.x][m_MoveToIndex.y] as Element).RemoveEdge("RIGHT");
-			(Level.m_Playground[m_MoveToIndex.x][m_MoveToIndex.y] as Element).SetType("element_empty_01");
-			(Level.m_Playground[m_PositionIndex.x][m_PositionIndex.y] as Element).SetType("element_empty_01");
-			(Level.m_Playground[m_PositionIndex.x][m_PositionIndex.y] as Element).Update();
-			(Level.m_Playground[m_MoveToIndex.x][m_MoveToIndex.y] as Element).Update();
-			m_BitmapContainer.rotation = 0;
+			if (m_IsMove) return;
+			
+			Direction = DIRECTION_LEFT;
+			if (m_Index.x == (DiggerSetting.m_PlaygroundWidth - 1)) return;
+			if ((Level.m_Playground[m_Index.x + 1][m_Index.y] as Element).GetType() != "element_empty_01") 
+			{
+				m_AnimController.StartAnim("p_hole_", true);
+				m_Explosion = new Explosion(new Point(m_Position.x + DiggerSetting.m_ElementWidth / 2, m_Position.y));
+			}
+			else
+			{
+				m_AnimController.StartAnim("player_run01_frame", true);
+			}
+				
+			m_NextIndex.x++;
+			OnMoveStart(DIRECTION_LEFT, DIRECTION_RIGHT);
 		}
 		
 		public function MoveRight():void
 		{
-			if (m_PositionIndex.x == 0 || m_IsMove) 
-				return;
-			m_MoveToIndex.x--;
-			m_MovePointPosition.x -= DiggerSetting.m_ElementWidth;
-			m_IsMove = true;
-			m_DirectionType = "RIGHT";
-			m_DeltaMovePosition.x = 0;
-			m_DeltaMovePosition.y = 0;
-			if ((Level.m_Playground[m_MoveToIndex.x][m_MoveToIndex.y] as Element).GetType() != "element_empty_01")
-				m_CurrentExplosion = new Explosion(new Point(m_Position.x - DiggerSetting.m_ElementWidth / 2, m_Position.y));
-			(Level.m_Playground[m_PositionIndex.x][m_PositionIndex.y] as Element).RemoveEdge("RIGHT");
-			(Level.m_Playground[m_MoveToIndex.x][m_MoveToIndex.y] as Element).RemoveEdge("LEFT");
-			(Level.m_Playground[m_MoveToIndex.x][m_MoveToIndex.y] as Element).SetType("element_empty_01");
-			(Level.m_Playground[m_PositionIndex.x][m_PositionIndex.y] as Element).SetType("element_empty_01");
-			(Level.m_Playground[m_PositionIndex.x][m_PositionIndex.y] as Element).Update();
-			(Level.m_Playground[m_MoveToIndex.x][m_MoveToIndex.y] as Element).Update();
+			if (m_IsMove) return;
 			
-			m_BitmapContainer.rotation = 180;
+			Direction = DIRECTION_RIGHT;
+			if (m_Index.x == 0) return;
+			if ((Level.m_Playground[m_Index.x - 1][m_Index.y] as Element).GetType() != "element_empty_01") 
+			{
+				m_AnimController.StartAnim("p_hole_", true);
+				m_Explosion = new Explosion(new Point(m_Position.x - DiggerSetting.m_ElementWidth / 2, m_Position.y));
+			}
+			else
+			{
+				m_AnimController.StartAnim("player_run01_frame", true);
+			}
+			m_NextIndex.x--;
+			OnMoveStart(DIRECTION_RIGHT, DIRECTION_LEFT);
+		}
+		
+		private function OnMoveStart(edge_01:String,edge_02:String):void
+		{
+			(Level.m_Playground[m_Index.x][m_Index.y] as Element).RemoveEdge(edge_01);
+			(Level.m_Playground[m_Index.x][m_Index.y] as Element).SetType("element_empty_01");
+			(Level.m_Playground[m_Index.x][m_Index.y] as Element).Update();
+			(Level.m_Playground[m_NextIndex.x][m_NextIndex.y] as Element).RemoveEdge(edge_02);
+			(Level.m_Playground[m_NextIndex.x][m_NextIndex.y] as Element).SetType("element_empty_01");
+			(Level.m_Playground[m_NextIndex.x][m_NextIndex.y] as Element).Update();
+			
+			m_NextPosition = new Point(0, 0);
+			m_IsMove = true;
 		}
 		
 		public function Update():void
 		{
-			switch(m_DirectionType)
+			OnMove();
+			if(m_State == STATE_IDLE && m_IsMove)
+				m_State = STATE_MOVE;
+			
+			switch(m_State)
+			{
+				case STATE_IDLE :
+				{
+					m_AnimController.StartAnim("p_idle_", true);
+				}
+				break;
+				case STATE_MOVE :
+				{
+					
+				}
+				break;
+				case STATE_SHOOT :
+				{
+					m_AnimController.StartAnim("p_shoot_", false);
+				}
+				break;
+				default :
+					
+			}
+			
+			m_Container.x = m_Position.x + m_Bitmap.width / 2;
+			m_Container.y = m_Position.y + m_Bitmap.height / 2;
+		}
+		
+		private function OnMove():void
+		{
+			if (!m_IsMove) return;
+			switch(m_Direction)
 			{
 				case "UP" :
-					if (m_DeltaMovePosition.y > -DiggerSetting.m_ElementHeight)
+					if (m_NextPosition.y > -DiggerSetting.m_ElementHeight)
 					{
 						if (m_Position.y < Setting.m_Height / 2 && DiggerGame.m_PlaygroundBitmap.y < 0)
 						{
 							DiggerGame.m_PlaygroundBitmap.y += m_Speed;
-							m_CurrentExplosion.m_DeltaPosition.y += m_Speed;
+							m_Explosion.m_DeltaPosition.y += m_Speed;
 						}
 						else
 							m_Position.y -= m_Speed;
-						m_DeltaMovePosition.y -= m_Speed;
+						m_NextPosition.y -= m_Speed;
 					}
 					else
 					{
@@ -198,16 +291,16 @@ package Digger
 					}
 				break;
 				case "DOWN" :
-					if (m_DeltaMovePosition.y < DiggerSetting.m_ElementHeight)
+					if (m_NextPosition.y < DiggerSetting.m_ElementHeight)
 					{
 						if (m_Position.y > Setting.m_Height / 2 && DiggerGame.m_PlaygroundBitmap.y > -Setting.m_Height)
 						{
 							DiggerGame.m_PlaygroundBitmap.y -= m_Speed;
-							m_CurrentExplosion.m_DeltaPosition.y -= m_Speed;
+							m_Explosion.m_DeltaPosition.y -= m_Speed;
 						}
 						else
 							m_Position.y += m_Speed;
-						m_DeltaMovePosition.y += m_Speed;
+						m_NextPosition.y += m_Speed;
 					}
 					else
 					{
@@ -215,17 +308,17 @@ package Digger
 					}
 				break;
 				case "LEFT" :
-					if (m_DeltaMovePosition.x < DiggerSetting.m_ElementWidth)
+					if (m_NextPosition.x < DiggerSetting.m_ElementWidth)
 					{
 						
 						if (m_Position.x > Setting.m_Width / 2  && DiggerGame.m_PlaygroundBitmap.x > -Setting.m_Width)
 						{
 							DiggerGame.m_PlaygroundBitmap.x -= m_Speed;
-							m_CurrentExplosion.m_DeltaPosition.x -= m_Speed;
+							m_Explosion.m_DeltaPosition.x -= m_Speed;
 						}
 						else
 							m_Position.x += m_Speed;
-						m_DeltaMovePosition.x += m_Speed;
+						m_NextPosition.x += m_Speed;
 					}
 					else
 					{
@@ -233,16 +326,16 @@ package Digger
 					}
 				break;
 				case "RIGHT" :
-					if (m_DeltaMovePosition.x > -DiggerSetting.m_ElementWidth)
+					if (m_NextPosition.x > -DiggerSetting.m_ElementWidth)
 					{
 						if (m_Position.x < Setting.m_Width / 2 && DiggerGame.m_PlaygroundBitmap.x < 0)
 						{
 							DiggerGame.m_PlaygroundBitmap.x += m_Speed;
-							m_CurrentExplosion.m_DeltaPosition.x += m_Speed;
+							m_Explosion.m_DeltaPosition.x += m_Speed;
 						}
 						else
 							m_Position.x -= m_Speed; 
-						m_DeltaMovePosition.x -= m_Speed;
+						m_NextPosition.x -= m_Speed;
 					}
 					else
 					{
@@ -250,29 +343,15 @@ package Digger
 					}
 				break;
 			}
-			
-			m_BitmapContainer.x = m_Position.x + m_Bitmap.width / 2;
-			m_BitmapContainer.y = m_Position.y + m_Bitmap.height / 2;
-		}
-		
-		private function OnAnimation(event:TimerEvent):void
-		{
-			m_BitmapData.copyPixels(Resource.m_ContainerPNG["player_run01_frame" + m_CurrentFrame.toString()], new Rectangle(0, 0, DiggerSetting.m_ElementWidth, DiggerSetting.m_ElementHeight), new Point(0, 0));
-			m_CurrentFrame++;
-			if (m_CurrentFrame == m_FramesCount)
-			{
-				m_CurrentFrame = 0;
-			}
 		}
 		
 		private function MoveEnd():void
 		{
 			m_IsMove = false;
-			m_PositionIndex = new Point(m_MoveToIndex.x, m_MoveToIndex.y);
-			m_DirectionType = "NONE";
-			(Level.m_Playground[m_PositionIndex.x][m_PositionIndex.y] as Element).Update();
+			m_Index = new Point(m_NextIndex.x, m_NextIndex.y);
+			(Level.m_Playground[m_NextIndex.x][m_NextIndex.y] as Element).Update();
 		}
-		
+
 	}
 
 }

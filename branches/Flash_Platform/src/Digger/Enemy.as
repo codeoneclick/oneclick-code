@@ -15,9 +15,9 @@ package Digger
 	 */
 	public class Enemy
 	{
-		public  static var m_Position:Point;
-		public  static var m_PositionIndex:Point;
-		private var m_MoveToIndex:Point;
+		public  var m_Position:Point;
+		public  var m_PositionIndex:Point;
+		public var m_MoveToIndex:Point;
 		private var m_MovePointPosition:Point;
 		private var m_DirectionType:String; 
 		private var m_FramesCount:int;
@@ -29,27 +29,57 @@ package Digger
 		private var m_Speed:int;
 		private var m_DeltaMovePosition:Point;
 		private static var m_CurrentExplosion:Explosion;
+		private var m_AnimController:AnimController = null;
 		
 		public function Enemy() 
 		{
-			m_Position = new Point(0, 0);
-			m_PositionIndex = new Point(0, 0);
-			m_MoveToIndex = new Point(0, 0);
+			m_Position = new Point(4*DiggerSetting.m_ElementHeight, 1 * DiggerSetting.m_ElementHeight);
+			m_PositionIndex = new Point(4, 1);
+			m_MoveToIndex = new Point(4,1);
 			m_MovePointPosition = new Point(0, 0);
 			m_DeltaMovePosition = new Point(0, 0);
 			m_IsMove = false;
-			m_Speed = 4;
+			m_Speed = 1;
 			m_DirectionType = "NONE";
 			m_BitmapData = new BitmapData(DiggerSetting.m_ElementWidth , DiggerSetting.m_ElementHeight );
 			m_Bitmap = new Bitmap(m_BitmapData);	
-			m_BitmapData.copyPixels(Resource.m_ContainerPNG["element_player"], new Rectangle(0, 0, DiggerSetting.m_ElementWidth, DiggerSetting.m_ElementHeight), new Point(0, 0));
+			//m_BitmapData.copyPixels(Resource.m_ContainerPNG["e01_move_0"], new Rectangle(0, 0, DiggerSetting.m_ElementWidth, DiggerSetting.m_ElementHeight), new Point(0, 0));
 			m_BitmapContainer = new Sprite();
 			m_Bitmap.x = -m_Bitmap.width / 2;
 			m_Bitmap.y = -m_Bitmap.height / 2;
 			m_BitmapContainer.scaleX = new Number(0.6);
 			m_BitmapContainer.scaleY = new Number(0.6);
 			m_BitmapContainer.addChild(m_Bitmap);
+			
+			m_BitmapContainer.filters = [getBitmapFilter()];
+			
+			m_AnimController = new AnimController(m_BitmapData);
+			m_AnimController.AddAnim("e01_move_", 20);
+			m_AnimController.StartAnim("e01_move_", true);
 		}
+		
+		private function getBitmapFilter():BitmapFilter {
+            var color:Number = 0x000000;
+            var angle:Number = 45;
+            var alpha:Number = 1.0;
+            var blurX:Number = 2;
+            var blurY:Number = 2;
+            var distance:Number = 10;
+            var strength:Number = 0.8;
+            var inner:Boolean = false;
+            var knockout:Boolean = false;
+            var quality:Number = BitmapFilterQuality.HIGH;
+            return new DropShadowFilter(distance,
+                                        angle,
+                                        color,
+                                        alpha,
+                                        blurX,
+                                        blurY,
+                                        strength,
+                                        quality,
+                                        inner,
+                                        knockout);
+        }
 		
 		public function MoveUp():void
 		{
@@ -65,7 +95,7 @@ package Digger
 			m_DirectionType = "UP";
 			m_DeltaMovePosition.x = 0;
 			m_DeltaMovePosition.y = 0;
-			m_BitmapContainer.rotation = 90;
+			m_BitmapContainer.rotation = -90;
 		}
 		
 		public function MoveDown():void
@@ -82,7 +112,7 @@ package Digger
 			m_DirectionType = "DOWN";
 			m_DeltaMovePosition.x = 0;
 			m_DeltaMovePosition.y = 0;
-			m_BitmapContainer.rotation = -90;
+			m_BitmapContainer.rotation = 90;
 		}
 		
 		public function MoveLeft():void

@@ -20,6 +20,23 @@ package Digger
 			{
 				Resource.m_ContentLoader.LoadPNG("player_run01_frame" + i.toString());
 			}
+			
+			for (i = 0; i < 20; ++i)
+			{
+				Resource.m_ContentLoader.LoadPNG("p_idle_" + i.toString());
+			}
+			for (i = 0; i < 20; ++i)
+			{
+				Resource.m_ContentLoader.LoadPNG("p_shoot_" + i.toString());
+			}
+			for (i = 0; i < 12; ++i)
+			{
+				Resource.m_ContentLoader.LoadPNG("p_hole_" + i.toString());
+			}
+			for (i = 0; i < 20; ++i)
+			{
+				Resource.m_ContentLoader.LoadPNG("e01_move_" + i.toString());
+			}
 			Resource.m_ContentLoader.Start();
 		}
 		
