@@ -147,36 +147,36 @@ C3DS::S3DSFile* C3DS::ReadData(std::string value)
 void C3DS::Commit(S3DSFile *in_value, Core::CMesh *out_value)
 {
 	out_value->m_VertexBuffer = Core::CGlobal::GetDevice()->CreateVertexBuffer();
-	S3DSVertex *v_data = (S3DSVertex*)out_value->m_VertexBuffer->Load(in_value->nVerteces,sizeof(S3DSVertex));
+	S3DSVertex *v_data = (S3DSVertex*)out_value->m_VertexBuffer->Load(in_value->nVerteces,sizeof(S3DSVertex),0);
 	memcpy(v_data,in_value->vertexData,sizeof(S3DSVertex) * in_value->nVerteces);
 
 	Core::IVertexBuffer::SVertexDeclaration declaration;
 	declaration.m_Elements = new Core::IVertexBuffer::SElementDeclaration[5];
 	
-	declaration.m_Elements[0].m_Index = 0;
-	declaration.m_Elements[0].m_Size = Core::IVertexBuffer::ELEMENT_FLOAT3;
-	declaration.m_Elements[0].m_Type = Core::IVertexBuffer::ELEMENT_POSITION;
-	declaration.m_Elements[0].m_Offset = 0 * sizeof(float);
+	declaration.m_Elements[0].m_index = 0;
+	declaration.m_Elements[0].m_size = Core::IVertexBuffer::ELEMENT_FLOAT3;
+	declaration.m_Elements[0].m_type = Core::IVertexBuffer::ELEMENT_POSITION;
+	declaration.m_Elements[0].m_offset = 0 * sizeof(float);
 
-	declaration.m_Elements[1].m_Index = 0;
-	declaration.m_Elements[1].m_Size = Core::IVertexBuffer::ELEMENT_FLOAT2;
-	declaration.m_Elements[1].m_Type = Core::IVertexBuffer::ELEMENT_TEXCOORD;
-	declaration.m_Elements[1].m_Offset = 3 * sizeof(float);
+	declaration.m_Elements[1].m_index = 0;
+	declaration.m_Elements[1].m_size = Core::IVertexBuffer::ELEMENT_FLOAT2;
+	declaration.m_Elements[1].m_type = Core::IVertexBuffer::ELEMENT_TEXCOORD;
+	declaration.m_Elements[1].m_offset = 3 * sizeof(float);
 
-	declaration.m_Elements[2].m_Index = 0;
-	declaration.m_Elements[2].m_Size = Core::IVertexBuffer::ELEMENT_FLOAT3;
-	declaration.m_Elements[2].m_Type = Core::IVertexBuffer::ELEMENT_NORMAL;
-	declaration.m_Elements[2].m_Offset = 5 * sizeof(float);
+	declaration.m_Elements[2].m_index = 0;
+	declaration.m_Elements[2].m_size = Core::IVertexBuffer::ELEMENT_FLOAT3;
+	declaration.m_Elements[2].m_type = Core::IVertexBuffer::ELEMENT_NORMAL;
+	declaration.m_Elements[2].m_offset = 5 * sizeof(float);
 
-	declaration.m_Elements[3].m_Index = 1;
-	declaration.m_Elements[3].m_Size = Core::IVertexBuffer::ELEMENT_FLOAT3;
-	declaration.m_Elements[3].m_Type = Core::IVertexBuffer::ELEMENT_TEXCOORD;
-	declaration.m_Elements[3].m_Offset = 8 * sizeof(float);
+	declaration.m_Elements[3].m_index = 1;
+	declaration.m_Elements[3].m_size = Core::IVertexBuffer::ELEMENT_FLOAT3;
+	declaration.m_Elements[3].m_type = Core::IVertexBuffer::ELEMENT_TEXCOORD;
+	declaration.m_Elements[3].m_offset = 8 * sizeof(float);
 
-	declaration.m_Elements[4].m_Index = 2;
-	declaration.m_Elements[4].m_Size = Core::IVertexBuffer::ELEMENT_FLOAT3;
-	declaration.m_Elements[4].m_Type = Core::IVertexBuffer::ELEMENT_TEXCOORD;
-	declaration.m_Elements[4].m_Offset = 11 * sizeof(float);
+	declaration.m_Elements[4].m_index = 2;
+	declaration.m_Elements[4].m_size = Core::IVertexBuffer::ELEMENT_FLOAT3;
+	declaration.m_Elements[4].m_type = Core::IVertexBuffer::ELEMENT_TEXCOORD;
+	declaration.m_Elements[4].m_offset = 11 * sizeof(float);
 
 	declaration.m_ElementCount = 5;
 
@@ -198,7 +198,7 @@ void C3DS::Commit(S3DSFile *in_value, Core::CMesh *out_value)
 	}
 	delete[] dataTBN;
 
-	out_value->m_VertexBuffer->CommitToVRAM();
+	out_value->m_VertexBuffer->CommitToVRAM(0);
 	out_value->m_IndexBuffer->CommitToVRAM();
 
 	delete[] in_value->vertexData;

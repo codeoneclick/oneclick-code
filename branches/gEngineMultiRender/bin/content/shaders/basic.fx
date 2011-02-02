@@ -21,7 +21,7 @@ float fRimFactor = 4.0f;
 
 float4 vRimColor = float4(0.5f,0.5f,0.0f,1.0f);
 
-float fGridMaskFactor = 4.0f;
+float fGridMaskFactor = 16.0f;
 
 texture Texture_01;
 sampler Texture_01_Sampler = sampler_state {
@@ -82,9 +82,9 @@ sampler Texture_grid_mask_Sampler = sampler_state {
 struct VS_INPUT {
 	float3 vPosition      : POSITION;
 	float2 vTexCoord      : TEXCOORD0;
-	float4 vSplatting     : COLOR0;
-	float4 vNormal		  : COLOR1;
-	float4 vTangent		  : COLOR2;
+	float4 vNormal		  : COLOR0;
+	float4 vTangent		  : COLOR1;
+	float4 vSplatting     : COLOR2;
 };
 
 struct VS_OUTPUT {
@@ -153,7 +153,7 @@ float4 ps_main(VS_OUTPUT IN) : COLOR
 	
 	float fRimPower = smoothstep(fRimStart , fRimEnd ,1.0f - dot(normalize(IN.vNormal),-vCameraEyeWorldSpace));
 	
-	float4 vGridColor = tex2D( Texture_grid_mask_Sampler, IN.vTexCoord * fGridMaskFactor) * float4(1.0f,1.0f,1.0f,1.0f);
+	float4 vGridColor = tex2D( Texture_grid_mask_Sampler, IN.vTexCoord * fGridMaskFactor) * float4(IN.vSplatting.x,IN.vSplatting.y,IN.vSplatting.z,1.0f);
 	
     float4 vColor = vDiffuseColor * vDiffuseFactor + vSpecularFactor * vSpecularColor + fRimPower * vDiffuseColor * fRimFactor + vGridColor;
     vColor.a = IN.fReflectFactor / fOceanLevel;

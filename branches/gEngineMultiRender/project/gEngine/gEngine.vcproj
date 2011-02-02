@@ -62,7 +62,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="opengl32.lib glu32.lib cg.lib cgGL.lib dxerr.lib dxguid.lib d3dx9d.lib d3d9.lib"
+				AdditionalDependencies="dxerr.lib dxguid.lib d3dx9d.lib d3d9.lib opengl32.lib glu32.lib cg.lib cgGL.lib"
 				OutputFile="..\..\bin\$(ProjectName).exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"

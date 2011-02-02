@@ -21,7 +21,7 @@ void COcean::Load(std::vector<SResource> _resource)
 	m_MeshList["ocean_01"]->m_VertexBuffer = Core::CGlobal::GetDevice()->CreateVertexBuffer();
 	m_MeshList["ocean_01"]->m_IndexBuffer = Core::CGlobal::GetDevice()->CreateIndexBuffer();
 	
-	SVertex* v_data_01 = (SVertex*)m_MeshList["ocean_01"]->m_VertexBuffer->Load(4, sizeof(SVertex));
+	SVertex* v_data_01 = (SVertex*)m_MeshList["ocean_01"]->m_VertexBuffer->Load(4, sizeof(SVertex),0);
 	
 	v_data_01[0].vPosition = math::Vector3d(0.0f, 0.0f, 0.0f);
 	v_data_01[0].vTexCoord = math::Vector2d(0.0f, 0.0f);
@@ -42,21 +42,21 @@ void COcean::Load(std::vector<SResource> _resource)
 	i_data_01[4] = 2;
 	i_data_01[5] = 3;
 
-	m_MeshList["ocean_01"]->m_VertexBuffer->CommitToVRAM();
+	m_MeshList["ocean_01"]->m_VertexBuffer->CommitToVRAM(0);
 	m_MeshList["ocean_01"]->m_IndexBuffer->CommitToVRAM();
 
 	Core::IVertexBuffer::SVertexDeclaration declaration;
 	declaration.m_Elements = new Core::IVertexBuffer::SElementDeclaration[2];
 	
-	declaration.m_Elements[0].m_Index = 0;
-	declaration.m_Elements[0].m_Size = Core::IVertexBuffer::ELEMENT_FLOAT3;
-	declaration.m_Elements[0].m_Type = Core::IVertexBuffer::ELEMENT_POSITION;
-	declaration.m_Elements[0].m_Offset = 0 * sizeof(float);
+	declaration.m_Elements[0].m_index = 0;
+	declaration.m_Elements[0].m_size = Core::IVertexBuffer::ELEMENT_FLOAT3;
+	declaration.m_Elements[0].m_type = Core::IVertexBuffer::ELEMENT_POSITION;
+	declaration.m_Elements[0].m_offset = 0 * sizeof(float);
 
-	declaration.m_Elements[1].m_Index = 0;
-	declaration.m_Elements[1].m_Size = Core::IVertexBuffer::ELEMENT_FLOAT2;
-	declaration.m_Elements[1].m_Type = Core::IVertexBuffer::ELEMENT_TEXCOORD;
-	declaration.m_Elements[1].m_Offset = 3 * sizeof(float);
+	declaration.m_Elements[1].m_index = 0;
+	declaration.m_Elements[1].m_size = Core::IVertexBuffer::ELEMENT_FLOAT2;
+	declaration.m_Elements[1].m_type = Core::IVertexBuffer::ELEMENT_TEXCOORD;
+	declaration.m_Elements[1].m_offset = 3 * sizeof(float);
 
 	declaration.m_ElementCount = 2;
 	m_MeshList["ocean_01"]->m_VertexBuffer->SetDeclaration(declaration);

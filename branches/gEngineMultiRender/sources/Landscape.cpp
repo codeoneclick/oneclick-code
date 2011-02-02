@@ -72,8 +72,6 @@ void CLandscape::Load(std::vector<SResource> _resource)
 
 			chunkIndex++;
 		}
-	
-	SVertex* v_data = (SVertex*)m_MeshList[m_FirstChunkName]->m_VertexBuffer->Load(m_Width * m_Height,sizeof(SVertex));
 
 	for(unsigned int i = 0; i < m_Width;++i)
         for(unsigned int j = 0; j < m_Height;++j)
@@ -95,21 +93,15 @@ void CLandscape::Load(std::vector<SResource> _resource)
             m_MapData[i][j] = currentHeight;
          }
 
+	SVertexStream0* v_data = (SVertexStream0*)m_MeshList[m_FirstChunkName]->m_VertexBuffer->Load(m_Width * m_Height,sizeof(SVertexStream0),0);
 	unsigned int index = 0;
 	for(unsigned int i = 0; i < m_Width;++i)
         for(unsigned int j = 0; j < m_Height;++j)
 		{
-			
 			v_data[index].vPosition = math::Vector3d(i*m_MapScaleFactor,m_MapData[i][j] * m_MapHeightFactor,j*m_MapScaleFactor);
 			v_data[index].vTexCoord = math::Vector2d(static_cast<float>(i) / m_TextureScaleFactor,static_cast<float>(j) / m_TextureScaleFactor);
-			v_data[index].vSplatting = 0x00000000;
-			if(v_data[index].vPosition.y > 13.0f)
-				v_data[index].vSplatting = 0x0000FF00;
-			else
-				v_data[index].vSplatting = 0x00FF0000;
 			++index;
 		}
-
 
 	unsigned int index_count = (m_Width - 1)*(m_Height - 1) * 6;
 	unsigned int *i_data = new unsigned int[index_count];
@@ -132,7 +124,7 @@ void CLandscape::Load(std::vector<SResource> _resource)
             index++;
 		}
 
-	Math::Util::SVertexTBN * dataTBN = Math::Util::CalculateTBN(v_data,i_data,m_Width * m_Height,index_count,sizeof(SVertex));
+	Math::Util::SVertexTBN * dataTBN = Math::Util::CalculateTBN(v_data,i_data,m_Width * m_Height,index_count,sizeof(SVertexStream0));
 	for(int i = 0; i < m_Width * m_Height; ++i)
 	{
 		dataTBN[i].vNormal.normalize();
@@ -153,35 +145,54 @@ void CLandscape::Load(std::vector<SResource> _resource)
 
 	delete[] i_data;
 
-	m_MeshList[m_FirstChunkName]->m_VertexBuffer->CommitToVRAM();
+	m_MeshList[m_FirstChunkName]->m_VertexBuffer->CommitToVRAM(0);
+
+	SVertexStream1* v_data1 = (SVertexStream1*)m_MeshList[m_FirstChunkName]->m_VertexBuffer->Load(m_Width * m_Height,sizeof(SVertexStream1),1);
+	index = 0;
+	for(unsigned int i = 0; i < m_Width;++i)
+        for(unsigned int j = 0; j < m_Height;++j)
+		{
+			v_data1[index].vSplatting = 0x00000000;
+			if(v_data[index].vPosition.y > 13.0f)
+				v_data1[index].vSplatting = 0x0000FF00;
+			else
+				v_data1[index].vSplatting = 0x00FF0000;
+			++index;
+		}
+	m_MeshList[m_FirstChunkName]->m_VertexBuffer->CommitToVRAM(1);
 
 	Core::IVertexBuffer::SVertexDeclaration declaration;
 	declaration.m_Elements = new Core::IVertexBuffer::SElementDeclaration[5];
 	
-	declaration.m_Elements[0].m_Index = 0;
-	declaration.m_Elements[0].m_Size = Core::IVertexBuffer::ELEMENT_FLOAT3;
-	declaration.m_Elements[0].m_Type = Core::IVertexBuffer::ELEMENT_POSITION;
-	declaration.m_Elements[0].m_Offset = 0;
+	declaration.m_Elements[0].m_stream = 0;
+	declaration.m_Elements[0].m_index = 0;
+	declaration.m_Elements[0].m_size = Core::IVertexBuffer::ELEMENT_FLOAT3;
+	declaration.m_Elements[0].m_type = Core::IVertexBuffer::ELEMENT_POSITION;
+	declaration.m_Elements[0].m_offset = 0;
 
-	declaration.m_Elements[1].m_Index = 0;
-	declaration.m_Elements[1].m_Size = Core::IVertexBuffer::ELEMENT_FLOAT2;
-	declaration.m_Elements[1].m_Type = Core::IVertexBuffer::ELEMENT_TEXCOORD;
-	declaration.m_Elements[1].m_Offset = 12;
+	declaration.m_Elements[1].m_stream = 0;
+	declaration.m_Elements[1].m_index = 0;
+	declaration.m_Elements[1].m_size = Core::IVertexBuffer::ELEMENT_FLOAT2;
+	declaration.m_Elements[1].m_type = Core::IVertexBuffer::ELEMENT_TEXCOORD;
+	declaration.m_Elements[1].m_offset = 12;
 
-	declaration.m_Elements[2].m_Index = 0;
-	declaration.m_Elements[2].m_Size = Core::IVertexBuffer::ELEMENT_BYTE4;
-	declaration.m_Elements[2].m_Type = Core::IVertexBuffer::ELEMENT_COLOR;
-	declaration.m_Elements[2].m_Offset = 20;
+	declaration.m_Elements[2].m_stream = 0;
+	declaration.m_Elements[2].m_index = 0;
+	declaration.m_Elements[2].m_size = Core::IVertexBuffer::ELEMENT_BYTE4;
+	declaration.m_Elements[2].m_type = Core::IVertexBuffer::ELEMENT_COLOR;
+	declaration.m_Elements[2].m_offset = 20;
 
-	declaration.m_Elements[3].m_Index = 1;
-	declaration.m_Elements[3].m_Size = Core::IVertexBuffer::ELEMENT_BYTE4;
-	declaration.m_Elements[3].m_Type = Core::IVertexBuffer::ELEMENT_COLOR;
-	declaration.m_Elements[3].m_Offset = 24;
+	declaration.m_Elements[3].m_stream = 0;
+	declaration.m_Elements[3].m_index = 1;
+	declaration.m_Elements[3].m_size = Core::IVertexBuffer::ELEMENT_BYTE4;
+	declaration.m_Elements[3].m_type = Core::IVertexBuffer::ELEMENT_COLOR;
+	declaration.m_Elements[3].m_offset = 24;
 
-	declaration.m_Elements[4].m_Index = 2;
-	declaration.m_Elements[4].m_Size = Core::IVertexBuffer::ELEMENT_BYTE4;
-	declaration.m_Elements[4].m_Type = Core::IVertexBuffer::ELEMENT_COLOR;
-	declaration.m_Elements[4].m_Offset = 28;
+	declaration.m_Elements[4].m_stream = 1;
+	declaration.m_Elements[4].m_index = 2;
+	declaration.m_Elements[4].m_size = Core::IVertexBuffer::ELEMENT_BYTE4;
+	declaration.m_Elements[4].m_type = Core::IVertexBuffer::ELEMENT_COLOR;
+	declaration.m_Elements[4].m_offset = 0;
 
 	declaration.m_ElementCount = 5;
 
@@ -230,7 +241,7 @@ void CLandscape::Load(std::vector<SResource> _resource)
 					index++;
 				}
 			m_MeshList[m_Name + strIndex]->m_IndexBuffer->CommitToVRAM();
-			m_MeshList[m_Name + strIndex]->m_VertexBuffer->AdoptVertexBuffer(m_MeshList[m_FirstChunkName]->m_VertexBuffer);
+			m_MeshList[m_Name + strIndex]->m_VertexBuffer->CopyVertexBufferRef(m_MeshList[m_FirstChunkName]->m_VertexBuffer,0,0);
 			m_MeshList[m_Name + strIndex]->m_VertexBuffer->SetDeclaration(declaration);
 			chunkIndex++;
 		}

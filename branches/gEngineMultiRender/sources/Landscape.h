@@ -7,11 +7,10 @@ namespace Enviroment
 {
 	class CLandscape : public CDummy
 	{
-		struct SVertex
+		/*struct SVertex
 		{
 			math::Vector3d vPosition;
 			math::Vector2d vTexCoord;
-			DWORD vSplatting;
 			union 
 			{
 				struct 
@@ -20,7 +19,6 @@ namespace Enviroment
 				};
 				DWORD vNormal;
 			};
-
 			union 
 			{
 				struct 
@@ -29,6 +27,34 @@ namespace Enviroment
 				};
 				DWORD vTangent;
 			};
+			DWORD vSplatting;
+		};*/
+
+		struct SVertexStream0
+		{
+			math::Vector3d vPosition;
+			math::Vector2d vTexCoord;
+			union 
+			{
+				struct 
+				{
+					unsigned char NormalW, NormalX, NormalY, NormalZ;
+				};
+				DWORD vNormal;
+			};
+			union 
+			{
+				struct 
+				{
+					unsigned char TangentW, TangentX, TangentY, TangentZ;
+				};
+				DWORD vTangent;
+			};
+		};
+
+		struct SVertexStream1
+		{
+			DWORD vSplatting;
 		};
 
 		struct SChunk

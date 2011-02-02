@@ -66,8 +66,8 @@ void CSoaringIsland::Load(std::string _fileName)
 	m_MeshList["bottom"]->m_VertexBuffer = Core::CGlobal::GetDevice()->CreateVertexBuffer();
 	m_MeshList["bottom"]->m_IndexBuffer = Core::CGlobal::GetDevice()->CreateIndexBuffer();
 	
-	SVertex* v_data_top = (SVertex*)m_MeshList["top"]->m_VertexBuffer->Load(m_Width * m_Height,sizeof(SVertex));
-	SVertex* v_data_bottom = (SVertex*)m_MeshList["bottom"]->m_VertexBuffer->Load(m_Width * m_Height,sizeof(SVertex));
+	SVertex* v_data_top = (SVertex*)m_MeshList["top"]->m_VertexBuffer->Load(m_Width * m_Height,sizeof(SVertex),0);
+	SVertex* v_data_bottom = (SVertex*)m_MeshList["bottom"]->m_VertexBuffer->Load(m_Width * m_Height,sizeof(SVertex),0);
 
 	for(unsigned int i = 0; i < m_Width;++i)
         for(unsigned int j = 0; j < m_Height;++j)
@@ -205,49 +205,49 @@ void CSoaringIsland::Load(std::string _fileName)
 		}
 		delete[] dataTBN;
 
-		m_MeshList["top"]->m_VertexBuffer->CommitToVRAM();
+		m_MeshList["top"]->m_VertexBuffer->CommitToVRAM(0);
 		m_MeshList["top"]->m_IndexBuffer->CommitToVRAM();
-		m_MeshList["bottom"]->m_VertexBuffer->CommitToVRAM();
+		m_MeshList["bottom"]->m_VertexBuffer->CommitToVRAM(0);
 		m_MeshList["bottom"]->m_IndexBuffer->CommitToVRAM();
 	
 
 	Core::IVertexBuffer::SVertexDeclaration declaration;
 	declaration.m_Elements = new Core::IVertexBuffer::SElementDeclaration[7];
 	
-	declaration.m_Elements[0].m_Index = 0;
-	declaration.m_Elements[0].m_Size = Core::IVertexBuffer::ELEMENT_FLOAT3;
-	declaration.m_Elements[0].m_Type = Core::IVertexBuffer::ELEMENT_POSITION;
-	declaration.m_Elements[0].m_Offset = 0 * sizeof(float);
+	declaration.m_Elements[0].m_index = 0;
+	declaration.m_Elements[0].m_size = Core::IVertexBuffer::ELEMENT_FLOAT3;
+	declaration.m_Elements[0].m_type = Core::IVertexBuffer::ELEMENT_POSITION;
+	declaration.m_Elements[0].m_offset = 0 * sizeof(float);
 
-	declaration.m_Elements[1].m_Index = 0;
-	declaration.m_Elements[1].m_Size = Core::IVertexBuffer::ELEMENT_FLOAT2;
-	declaration.m_Elements[1].m_Type = Core::IVertexBuffer::ELEMENT_TEXCOORD;
-	declaration.m_Elements[1].m_Offset = 3 * sizeof(float);
+	declaration.m_Elements[1].m_index = 0;
+	declaration.m_Elements[1].m_size = Core::IVertexBuffer::ELEMENT_FLOAT2;
+	declaration.m_Elements[1].m_type = Core::IVertexBuffer::ELEMENT_TEXCOORD;
+	declaration.m_Elements[1].m_offset = 3 * sizeof(float);
 
-	declaration.m_Elements[2].m_Index = 0;
-	declaration.m_Elements[2].m_Size = Core::IVertexBuffer::ELEMENT_FLOAT3;
-	declaration.m_Elements[2].m_Type = Core::IVertexBuffer::ELEMENT_NORMAL;
-	declaration.m_Elements[2].m_Offset = 5 * sizeof(float);
+	declaration.m_Elements[2].m_index = 0;
+	declaration.m_Elements[2].m_size = Core::IVertexBuffer::ELEMENT_FLOAT3;
+	declaration.m_Elements[2].m_type = Core::IVertexBuffer::ELEMENT_NORMAL;
+	declaration.m_Elements[2].m_offset = 5 * sizeof(float);
 
-	declaration.m_Elements[3].m_Index = 1;
-	declaration.m_Elements[3].m_Size = Core::IVertexBuffer::ELEMENT_FLOAT3;
-	declaration.m_Elements[3].m_Type = Core::IVertexBuffer::ELEMENT_TEXCOORD;
-	declaration.m_Elements[3].m_Offset = 8 * sizeof(float);
+	declaration.m_Elements[3].m_index = 1;
+	declaration.m_Elements[3].m_size = Core::IVertexBuffer::ELEMENT_FLOAT3;
+	declaration.m_Elements[3].m_type = Core::IVertexBuffer::ELEMENT_TEXCOORD;
+	declaration.m_Elements[3].m_offset = 8 * sizeof(float);
 
-	declaration.m_Elements[4].m_Index = 2;
-	declaration.m_Elements[4].m_Size = Core::IVertexBuffer::ELEMENT_FLOAT3;
-	declaration.m_Elements[4].m_Type = Core::IVertexBuffer::ELEMENT_TEXCOORD;
-	declaration.m_Elements[4].m_Offset = 11 * sizeof(float);
+	declaration.m_Elements[4].m_index = 2;
+	declaration.m_Elements[4].m_size = Core::IVertexBuffer::ELEMENT_FLOAT3;
+	declaration.m_Elements[4].m_type = Core::IVertexBuffer::ELEMENT_TEXCOORD;
+	declaration.m_Elements[4].m_offset = 11 * sizeof(float);
 
-	declaration.m_Elements[5].m_Index = 3;
-	declaration.m_Elements[5].m_Size = Core::IVertexBuffer::ELEMENT_FLOAT4;
-	declaration.m_Elements[5].m_Type = Core::IVertexBuffer::ELEMENT_TEXCOORD;
-	declaration.m_Elements[5].m_Offset = 14 * sizeof(float);
+	declaration.m_Elements[5].m_index = 3;
+	declaration.m_Elements[5].m_size = Core::IVertexBuffer::ELEMENT_FLOAT4;
+	declaration.m_Elements[5].m_type = Core::IVertexBuffer::ELEMENT_TEXCOORD;
+	declaration.m_Elements[5].m_offset = 14 * sizeof(float);
 
-	declaration.m_Elements[6].m_Index = 4;
-	declaration.m_Elements[6].m_Size = Core::IVertexBuffer::ELEMENT_FLOAT;
-	declaration.m_Elements[6].m_Type = Core::IVertexBuffer::ELEMENT_TEXCOORD;
-	declaration.m_Elements[6].m_Offset = 18 * sizeof(float);
+	declaration.m_Elements[6].m_index = 4;
+	declaration.m_Elements[6].m_size = Core::IVertexBuffer::ELEMENT_FLOAT;
+	declaration.m_Elements[6].m_type = Core::IVertexBuffer::ELEMENT_TEXCOORD;
+	declaration.m_Elements[6].m_offset = 18 * sizeof(float);
 
 	declaration.m_ElementCount = 7;
 
