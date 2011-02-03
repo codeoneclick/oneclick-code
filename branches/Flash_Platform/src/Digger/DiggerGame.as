@@ -10,6 +10,7 @@ package Digger
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Timer;
+	
 	/**
 	 * ...
 	 * @author OneClick

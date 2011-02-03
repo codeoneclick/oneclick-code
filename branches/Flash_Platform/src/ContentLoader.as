@@ -1,6 +1,7 @@
 package  
 {
 	import flash.display.BitmapData;
+	import flash.display.DisplayObject;
 	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.events.TimerEvent;
@@ -51,7 +52,7 @@ package
 			var URL:String = event.target.url;
 			var value:String = URL.substring(m_Path.length + URL.search(m_Path), URL.length - 4);
 			Resource.m_ContainerPNG[value] = new BitmapData(m_PNGSizeScale.x, m_PNGSizeScale.y, true, 0x00FFFFFF);
-			(Resource.m_ContainerPNG[value] as BitmapData).draw(m_PNGLoaderList[value]); 
+			(Resource.m_ContainerPNG[value] as BitmapData).draw(event.target.content as DisplayObject); 
 			m_LoadIndex--;
 		}
 		

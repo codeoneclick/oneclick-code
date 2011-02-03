@@ -1,5 +1,6 @@
 ﻿package 
 {
+	import Common.testViewer;
 	import Digger.DiggerGame;
 	import Digger.Input;
 	import flash.display.MovieClip;
@@ -23,6 +24,7 @@
 		public  var m_CurrentGame:Object; 
 		private var m_Resource:Resource;
 		private var m_Input:Input;
+		private var m_testView:testViewer;
 		
 		public function Main():void 
 		{
@@ -44,6 +46,9 @@
 			stage.frameRate = 30;
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, m_Input.OnKeyDown);
 			stage.addEventListener(KeyboardEvent.KEY_UP, m_Input.OnKeyUp);
+			m_testView = new testViewer();
+			addChild(m_testView);
+			
 		}	
 		
 		private function GameCicle(event:TimerEvent):void
