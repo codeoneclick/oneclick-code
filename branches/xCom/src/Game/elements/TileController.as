@@ -11,7 +11,7 @@ package Game.elements
 	 */
 	public class TileController extends IController
 	{
-		private var m_dataPath:String = "content/element_ground.png";
+		private var m_dataPath:String = "content/forest_grass_01.png";
 		private var m_dataType:String = "bitmap_data";
 		
 		public function TileController(_container:DisplayObjectContainer) 
@@ -44,12 +44,12 @@ package Game.elements
 		
 		private function onMouseOver(_event:TileEvent):void
 		{
-			m_viewer.filters = [new GlowFilter()];
+			m_viewer.alpha = 0.25;
 		}
 		
 		private function onMouseOut(_event:TileEvent):void
 		{
-			m_viewer.filters = null;
+			m_viewer.alpha = 1.0;
 		}
 	}
 
