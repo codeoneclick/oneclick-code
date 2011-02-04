@@ -36,6 +36,8 @@ package Game.level
 					(m_tileMap[i][j] as TileController).setScreenPosition(i * k_TILE_WIDTH + j * k_TILE_WIDTH / 2, j * k_TILE_HEIGH / 2);
 				}
 			}
+			m_viewer.scaleX = 2.0;
+			m_viewer.scaleY = 2.0;
 		}
 		
 	}
