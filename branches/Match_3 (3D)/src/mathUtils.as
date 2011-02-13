@@ -56,8 +56,8 @@
 			matrixZero(matrixProjection);
 			var yScale:Number = new Number( 1 / Math.tan(fov/2) );
 			var xScale:Number = new Number( yScale );
-			matrixProjection.m[0] = xScale;
-			matrixProjection.m[5] = yScale;
+			matrixProjection.m[0] = 0.1;//xScale;
+			matrixProjection.m[5] = 1.1;//yScale;
 			matrixProjection.m[10] = farPlane / (nearPlane - farPlane);
 			matrixProjection.m[11] = 1.0;
 			matrixProjection.m[14] = -nearPlane * farPlane / (nearPlane - farPlane);

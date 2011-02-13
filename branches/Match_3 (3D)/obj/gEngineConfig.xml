@@ -14,15 +14,15 @@
     </define>
     <define append="true">
       <name>CONFIG::timeStamp</name>
-      <value>'20.01.2011'</value>
+      <value>'2/14/2011'</value>
     </define>
     <source-path append="true">
-      <path-element>D:\Develop\Flash_Work\Match_3 (3D)\src</path-element>
+      <path-element>D:\Develop\flash_3d_simple\src</path-element>
       <path-element>C:\Program Files\FlashDevelop\Library\AS3\classes</path-element>
     </source-path>
   </compiler>
   <file-specs>
-    <path-element>D:\Develop\Flash_Work\Match_3 (3D)\src\gameMatch3.as</path-element>
+    <path-element>D:\Develop\flash_3d_simple\src\gameMatch3.as</path-element>
   </file-specs>
   <default-background-color>#FFFFFF</default-background-color>
   <default-frame-rate>30</default-frame-rate>

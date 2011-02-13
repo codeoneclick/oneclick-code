@@ -322,15 +322,15 @@
 		public function refresh():void
 		{
 			pointLeftTop.z = 0;
-			pointLeftTop.x = -sizeHalf.x;
-			pointLeftTop.y = -sizeHalf.y;
+			pointLeftTop.x = 0;
+			pointLeftTop.y = 0;
 			////////////////////////////////
 			pointRightTop.z = 0;
 			pointRightTop.x = sizeHalf.x;
-			pointRightTop.y = -sizeHalf.y;
+			pointRightTop.y = 0;
 			////////////////////////////////
 			pointLeftBottom.z = 0;
-			pointLeftBottom.x = -sizeHalf.x;
+			pointLeftBottom.x = 0;
 			pointLeftBottom.y = sizeHalf.y;
 			////////////////////////////////
 			pointRightBottom.z = 0;
@@ -348,12 +348,43 @@
 			this.refresh();
 			this.rotateLocal();
 			this.translate();
-			this.rotateGlobal();
+			
+			//this.rotateGlobal();
 		}
 		
 		public function rasterize(matrixProjection:matrix):void
 		{
-			screenPointLeftBottom  = mathUtils.matrixMulVector(this.pointLeftBottom, matrixProjection);
+			var d:Number = 1;
+			
+			var ar:Number = 800 / 600;
+			
+			screenPointLeftBottom.x = pointLeftBottom.x * d / pointLeftBottom.z;
+			screenPointLeftBottom.y = pointLeftBottom.y * d  * ar / pointLeftBottom.z;
+			
+			screenPointLeftTop.x = pointLeftTop.x * d / pointLeftTop.z;
+			screenPointLeftTop.y = pointLeftTop.y * d * ar  / pointLeftTop.z;
+			
+			screenPointRightBottom.x = pointRightBottom.x * d / pointRightBottom.z;
+			screenPointRightBottom.y = pointRightBottom.y * d  * ar  / pointRightBottom.z;
+			
+			screenPointRightTop.x = pointRightTop.x * d / pointRightTop.z;
+			screenPointRightTop.y = pointRightTop.y * d  * ar  / pointRightTop.z;
+
+			
+			screenPointLeftBottom.x = (screenPointLeftBottom.x + 1) * (0.5 * 800 - 0.5);
+			screenPointLeftBottom.y = ( 600 - 1 ) - ( screenPointLeftBottom.y + 1 ) * ( 0.5 * 600 - 0.5); 
+			
+			screenPointLeftTop.x = (screenPointLeftTop.x + 1) * (0.5 * 800 - 0.5);
+			screenPointLeftTop.y = ( 600 - 1 ) - ( screenPointLeftTop.y + 1 ) * ( 0.5 * 600 - 0.5); 
+			
+			screenPointRightBottom.x = (screenPointRightBottom.x + 1) * (0.5 * 800 - 0.5);
+			screenPointRightBottom.y = ( 600 - 1 ) - ( screenPointRightBottom.y + 1 ) * ( 0.5 * 600 - 0.5); 
+			
+			screenPointRightTop.x = (screenPointRightTop.x + 1) * (0.5 * 800 - 0.5);
+			screenPointRightTop.y = ( 600 - 1 ) - ( screenPointRightTop.y + 1 ) * ( 0.5 * 600 - 0.5); 
+			
+			
+			/*screenPointLeftBottom  = mathUtils.matrixMulVector(this.pointLeftBottom, matrixProjection);
 			screenPointLeftTop     = mathUtils.matrixMulVector(this.pointLeftTop, matrixProjection );
 			screenPointRightBottom = mathUtils.matrixMulVector(this.pointRightBottom, matrixProjection );
 			screenPointRightTop    = mathUtils.matrixMulVector(this.pointRightTop, matrixProjection);			
@@ -372,7 +403,7 @@
 			/////////////////////////////////////////////////////////////////////////////////
 			screenPointLeftBottom.x = (-screenPointLeftBottom.x / screenPointLeftBottom.w)*this.size.x;
 			screenPointLeftBottom.y = (-screenPointLeftBottom.y / screenPointLeftBottom.w)*this.size.y;
-			screenPointLeftBottom.z = 0.0;	
+			screenPointLeftBottom.z = 0.0;	*/
 		}
 		
 		private function rotateGlobal():void
@@ -437,6 +468,11 @@
 			pointRightBottom.z += position.z;
 			pointRightBottom.x += position.x;
 			pointRightBottom.y += position.y;
+			
+			//pointLeftTop.z /= size.x;
+			//pointRightTop.z /= size.x;
+			//pointLeftBottom.z /= size.x;
+			//pointRightBottom.z /= size.x;
 		}
 		
 		private function rotateLocal():void 
@@ -450,7 +486,7 @@
 			pointRightBottom = mathUtils.matrixMulVector(this.pointRightBottom, this.matrixRotationX);
 			pointRightTop    = mathUtils.matrixMulVector(this.pointRightTop, this.matrixRotationX);
 		
-			pointLeftBottom  = mathUtils.matrixMulVector(this.pointLeftBottom, this.matrixRotationY);
+			/*pointLeftBottom  = mathUtils.matrixMulVector(this.pointLeftBottom, this.matrixRotationY);
 			pointLeftTop     = mathUtils.matrixMulVector(this.pointLeftTop, this.matrixRotationY);
 			pointRightBottom = mathUtils.matrixMulVector(this.pointRightBottom, this.matrixRotationY);
 			pointRightTop    = mathUtils.matrixMulVector(this.pointRightTop, this.matrixRotationY);
@@ -458,7 +494,7 @@
 			pointLeftBottom  = mathUtils.matrixMulVector(this.pointLeftBottom, this.matrixRotationZ);
 			pointLeftTop     = mathUtils.matrixMulVector(this.pointLeftTop, this.matrixRotationZ);
 			pointRightBottom = mathUtils.matrixMulVector(this.pointRightBottom, this.matrixRotationZ);
-			pointRightTop    = mathUtils.matrixMulVector(this.pointRightTop, this.matrixRotationZ);
+			pointRightTop    = mathUtils.matrixMulVector(this.pointRightTop, this.matrixRotationZ);*/
 		}
 	}
 }

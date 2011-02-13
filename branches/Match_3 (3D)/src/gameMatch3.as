@@ -248,6 +248,7 @@
 			loader.sources_manager["background"].select2D.addEventListener(MouseEvent.MOUSE_DOWN, on2DClick);
 			loader.sources_manager["background"].select3D.addEventListener(MouseEvent.MOUSE_DOWN, on3DClick);
 			loader.sources_manager["background"].selectSkin.addEventListener(MouseEvent.MOUSE_DOWN, onSkinClick);
+
 		}
 		
 		public function findPath():void
@@ -489,16 +490,16 @@
 		
 			var i:int;
 			var index:int = 0;
-			for (i = -sizeLine/2; i < sizeLine/2; i++){
+			for (i = 0; i < sizeLine; i++){
 				var j:int;
-				for (j = -sizeLine/2; j < sizeLine/2; j++)
+				for (j = 0; j < sizeLine; j++)
 				{
-					this.planes[index].position.y = 0;
-					this.planes[index].position.x = 85 * i+32;
-					this.planes[index].position.z = 85 * j+32;
-					this.planes[index].localRotation.x = 3.14 / 2;
-					this.planes[index].globalRotation.x = nAngle;
-					this.planes[index].globalRotation.y = this.globalRotation.y;
+					this.planes[index].position.y = -300;
+					this.planes[index].position.x = 40 * i - 200;
+					this.planes[index].position.z = 40 * j + 400;
+					this.planes[index].localRotation.x += 0.01; 
+					//this.planes[index].globalRotation.x = nAngle;
+					//this.planes[index].globalRotation.y = this.globalRotation.y;
 					this.planes[index].update();
 					this.planes[index].rasterize(this.matrixProjection);
 					this.planes[index].draw();
@@ -645,6 +646,13 @@
 		{
 			if (!isImagesLoad[0] && !isImagesLoad[1])
 				return;
+				
+				//loader.sources_manager["background"].select2D.y = 400;
+				//	loader.sources_manager["background"].select2D.x = 200;
+				//		loader.sources_manager["background"].select2D.z = 200;
+		//	loader.sources_manager["background"].select2D.rotationX += 1;
+		
+		this.updateRender();
 		
 			var i:int;
 			for (i = 0; i < sizePanel; i++)
