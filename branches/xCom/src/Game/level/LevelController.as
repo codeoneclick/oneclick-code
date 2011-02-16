@@ -2,6 +2,7 @@ package Game.level
 {
 	import common.mvc.IController;
 	import flash.display.DisplayObjectContainer;
+	import flash.geom.Vector3D;
 	import Game.elements.TileController;
 	/**
 	 * ...
@@ -33,7 +34,8 @@ package Game.level
 				for (var j:int = 0; j < m_levelHeight; j++)
 				{
 					m_tileMap[i][j] = new TileController(m_viewer);
-					(m_tileMap[i][j] as TileController).setScreenPosition(i * k_TILE_WIDTH + j * k_TILE_WIDTH / 2, j * k_TILE_HEIGH / 2);
+					(m_tileMap[i][j] as TileController).position = new Vector3D(32 * i - 200,-300, 32 * j + 400);
+					//(m_tileMap[i][j] as TileController).setScreenPosition(i * k_TILE_WIDTH + j * k_TILE_WIDTH / 2, j * k_TILE_HEIGH / 2);
 				}
 			}
 			m_viewer.scaleX = 2.0;

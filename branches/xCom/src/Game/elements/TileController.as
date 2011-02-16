@@ -5,6 +5,7 @@ package Game.elements
 	import flash.events.MouseEvent;
 	import flash.filters.GlowFilter;
 	import flash.geom.Point;
+	import flash.geom.Vector3D;
 	/**
 	 * ...
 	 * @author ...
@@ -32,15 +33,20 @@ package Game.elements
 		
 		private function onPositionUpdate(_event:TileEvent):void
 		{
-			var screenPosition:Point = _event.data;
-			m_viewer.x = screenPosition.x;
-			m_viewer.y = screenPosition.y;
+			//var screenPosition:Point = _event.data;
+			//m_viewer.x = screenPosition.x;
+			//m_viewer.y = screenPosition.y;
 		}
 		
-		public function setScreenPosition(_x:int, _y:int):void
+		public function set position(_value:Vector3D):void
 		{
-			(m_model as TileModel).setScreenPosition(_x, _y);
+			m_viewer.position = _value;
 		}
+		
+		//public function setScreenPosition(_x:int, _y:int):void
+		//{
+		//	(m_model as TileModel).setScreenPosition(_x, _y);
+		//}
 		
 		private function onMouseOver(_event:TileEvent):void
 		{

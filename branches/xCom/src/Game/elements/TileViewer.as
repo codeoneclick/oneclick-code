@@ -14,9 +14,9 @@ package Game.elements
 			super(_url, _dataType);
 		}
 		
-		override protected function update(event:Event):void
+		override protected function update(_event:Event):void
 		{
-
+			super.update(_event);
 		}
 		
 	}
