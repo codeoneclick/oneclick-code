@@ -13,23 +13,25 @@ import flash.geom.Point;
 		
 		private var m_size:Point = null;
 		
-		private var m_pointList:Array = new Array();
-		private var m_triangleList:Array = new Array();
+		private var m_pointList:Array = null;
+		private var m_triangleList:Array = null;
 		
 		public function set bitmapData(_value:BitmapData):void
 		{
 			m_bitmapData = _value;
 		}
 		
-		public function Texture(_sprite:Sprite, _size:Point)
+		public function Texture(_sprite:Sprite)
 		{
 			m_sprite = _sprite;
-			m_size = _size;
-			init();
 		}
 		
-		private function init():void
+		public function set size(_size:Point):void
 		{
+			m_size = _size;
+			m_pointList = new Array();
+			m_triangleList = new Array();
+			
 			for (var i:int = 0 ; i < 2 ; i++ )
 			{
 				for (var j:int = 0 ; j < 2 ; j++ )

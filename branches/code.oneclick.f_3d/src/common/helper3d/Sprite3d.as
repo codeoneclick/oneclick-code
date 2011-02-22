@@ -38,16 +38,10 @@
 		protected var m_texture:Texture = null;
 		
 		protected var m_container:DisplayObjectContainer = null;
-		protected var m_loader:ContentLoader = null;
-		
-		protected var m_index:Point = null;
-		
-		public var m_zIndex:int = 0;
-		
+			
 		public function set Position(_value:Vector3D):void
 		{
 			m_position = _value;
-			m_zIndex = m_position.z;
 		}
 		
 		public function get Position():Vector3D
@@ -65,54 +59,42 @@
 			return m_rotation;
 		}
 		
-		public function Sprite3d(_container:DisplayObjectContainer,_loader:ContentLoader, _index:Point, _size:Point) 
+		public function Sprite3d(_container:DisplayObjectContainer, _size:Point) 
 		{
 			m_container = _container;
 			
-			m_loader = _loader;
-			
 			m_size = _size;
 			
-			m_index = _index;
-			
-			m_texture = new Texture(this, new Point(128, 141));
+			m_texture = new Texture(this);
 			
 			init();
 		}
 		
 		private function init():void
 		{
+			m_container.addChild(this);
+			
 			addEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
 			addEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
 		}
 		
-		private function onMouseOver(_event:MouseEvent):void
+		protected function onMouseOver(_event:MouseEvent):void
 		{
-			transform.colorTransform = new ColorTransform(0, 1, 0);
+			
 		}
 		
-		private function onMouseOut(_event:MouseEvent):void
+		protected function onMouseOut(_event:MouseEvent):void
 		{
-			transform.colorTransform = new ColorTransform(1, 1, 1);
+			
 		}
 
-		public function rasterize():void
+		protected function rasterize():void
 		{
-			var mapBD:BitmapData = m_loader.imagesManager["TreasureMap"];
-			
-			if (mapBD == null)
-			{
-				return;
-			}
-			
-			var partBD:BitmapData = new BitmapData(mapBD.width / Main.k_MAP_WIDTH, mapBD.height / Main.k_MAP_HEIGHT);
-			partBD.copyPixels(mapBD, new Rectangle(m_index.x * partBD.width,  m_index.y * partBD.height, partBD.width, partBD.height), new Point(0,0));
-			m_texture.bitmapData = partBD;
 			m_texture.transform(m_sspLeftBottom, m_sspRightBottom, m_sspRightTop, m_sspLeftTop);
 			m_texture.rasterize();
 		}
 		
-		public function update():void
+		protected function update():void
 		{
 			updateObjectSpace();
 			updateWorldSpace();

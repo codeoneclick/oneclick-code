@@ -19,6 +19,7 @@
 	import flash.display.MovieClip;
 	import flash.system.Capabilities;
 	import flash.display.StageScaleMode;
+	import game.Tile;
 
 
 	public class  Main extends Sprite 
@@ -60,7 +61,7 @@
 				m_planes[i] = new Array();
 				for (var j:int = (k_MAP_HEIGHT - 1); j >= 0; j--)
 				{
-					m_planes[i][j] = new Sprite3d(this, m_loader, new Point(i, j), new Point(k_TILE_WIDTH, k_TILE_HEIGHT));
+					m_planes[i][j] = new Tile(this, new Point(k_TILE_WIDTH, k_TILE_HEIGHT), "TreasureMap", new Point(i, j));
 					m_planes[i][j].Rotation.x = 1.57;
 					addChild(m_planes[i][j]);
 				}
@@ -120,8 +121,8 @@
 					m_planes[i][j].Position.y = -200;
 					m_planes[i][j].Position.x = k_TILE_WIDTH / 2 * i + m_cameraOffset.x;
 					m_planes[i][j].Position.z = k_TILE_HEIGHT / 2 * j + m_cameraOffset.y;
-					m_planes[i][j].update();
-					m_planes[i][j].rasterize();
+					//m_planes[i][j].update();
+					//m_planes[i][j].rasterize();
 				}
 			}
 		}
