@@ -12,6 +12,7 @@ package common.loader
 	public class BitmapLoader 
 	{
 		private var m_requestList:Dictionary = new Dictionary();
+		private var m_cacheList:Dictionary = new Dictionary();
 		
 		public function BitmapLoader() 
 		{
@@ -22,7 +23,14 @@ package common.loader
 		{
 			if (m_requestList[_name] != null)
 			{
-				(m_requestList[_name] as Requester).requesters.push(_callback);
+				if (m_cacheList[_name] != null)
+				{
+					_callback(m_cacheList[_name]);
+				}
+				else
+				{
+					(m_requestList[_name] as Requester).requesters.push(_callback);
+				}
 			}
 			else
 			{
@@ -40,6 +48,7 @@ package common.loader
 		{
 			var url:String = _event.target.url;
 			var name:String = url.substring(Core.k_CONTENT_PATH.length + url.search(Core.k_CONTENT_PATH), url.length - ".png".length);
+			m_cacheList[name] = _event.target.content.bitmapData;
 			
 			if (m_requestList[name] != null)
 			{

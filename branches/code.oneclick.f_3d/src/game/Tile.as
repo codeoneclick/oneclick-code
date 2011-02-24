@@ -44,7 +44,7 @@ package game
 		{
 			m_bitamData = new BitmapData(_data.width / Main.k_MAP_WIDTH, _data.height / Main.k_MAP_HEIGHT);
 			m_bitamData.copyPixels(_data, new Rectangle(m_index.x * m_bitamData.width,  m_index.y * m_bitamData.height, m_bitamData.width, m_bitamData.height), new Point(0,0));
-			m_texture.size = new Point(128, 141);
+			m_texture.size = new Point(m_bitamData.width, m_bitamData.height);
 			m_texture.bitmapData = m_bitamData;
 		}
 		

@@ -1,6 +1,5 @@
 ﻿package common.helper3d
 {
-	import common.loader.ContentLoader;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.DisplayObjectContainer;
@@ -17,6 +16,7 @@
 	import flash.geom.Vector3D;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
+	import game.Core;
 	
 
 	public class Sprite3d extends Sprite
@@ -128,34 +128,30 @@
 		
 		private function updateScreenSpace():void
 		{
-			var d:Number = 1;
+			m_sspLeftBottom.x = m_wspLeftBottom.x * Core.camera.Fov / m_wspLeftBottom.z;
+			m_sspLeftBottom.y = m_wspLeftBottom.y * Core.camera.Fov  * Core.camera.AspectRatio / m_wspLeftBottom.z;
 			
-			var ar:Number = 800 / 600;
+			m_sspLeftTop.x = m_wspLeftTop.x * Core.camera.Fov / m_wspLeftTop.z;
+			m_sspLeftTop.y = m_wspLeftTop.y * Core.camera.Fov * Core.camera.AspectRatio  / m_wspLeftTop.z;
 			
-			m_sspLeftBottom.x = m_wspLeftBottom.x * d / m_wspLeftBottom.z;
-			m_sspLeftBottom.y = m_wspLeftBottom.y * d  * ar / m_wspLeftBottom.z;
+			m_sspRightBottom.x = m_wspRightBottom.x * Core.camera.Fov / m_wspRightBottom.z;
+			m_sspRightBottom.y = m_wspRightBottom.y * Core.camera.Fov  * Core.camera.AspectRatio  / m_wspRightBottom.z;
 			
-			m_sspLeftTop.x = m_wspLeftTop.x * d / m_wspLeftTop.z;
-			m_sspLeftTop.y = m_wspLeftTop.y * d * ar  / m_wspLeftTop.z;
-			
-			m_sspRightBottom.x = m_wspRightBottom.x * d / m_wspRightBottom.z;
-			m_sspRightBottom.y = m_wspRightBottom.y * d  * ar  / m_wspRightBottom.z;
-			
-			m_sspRightTop.x = m_wspRightTop.x * d / m_wspRightTop.z;
-			m_sspRightTop.y = m_wspRightTop.y * d  * ar  / m_wspRightTop.z;
+			m_sspRightTop.x = m_wspRightTop.x * Core.camera.Fov / m_wspRightTop.z;
+			m_sspRightTop.y = m_wspRightTop.y * Core.camera.Fov * Core.camera.AspectRatio  / m_wspRightTop.z;
 
 			
-			m_sspLeftBottom.x = (m_sspLeftBottom.x + 1) * (0.5 * 800 - 0.5);
-			m_sspLeftBottom.y = ( 600 - 1 ) - ( m_sspLeftBottom.y + 1 ) * ( 0.5 * 600 - 0.5); 
+			m_sspLeftBottom.x = ( m_sspLeftBottom.x + 1) * (0.5 * Core.camera.ScreenWidth - 0.5);
+			m_sspLeftBottom.y = ( Core.camera.ScreenHeight - 1 ) - ( m_sspLeftBottom.y + 1 ) * ( 0.5 * Core.camera.ScreenHeight - 0.5); 
 			
-			m_sspLeftTop.x = (m_sspLeftTop.x + 1) * (0.5 * 800 - 0.5);
-			m_sspLeftTop.y = ( 600 - 1 ) - ( m_sspLeftTop.y + 1 ) * ( 0.5 * 600 - 0.5); 
+			m_sspLeftTop.x = ( m_sspLeftTop.x + 1) * (0.5 * Core.camera.ScreenWidth - 0.5);
+			m_sspLeftTop.y = ( Core.camera.ScreenHeight - 1 ) - ( m_sspLeftTop.y + 1 ) * ( 0.5 * Core.camera.ScreenHeight - 0.5); 
 			
-			m_sspRightBottom.x = (m_sspRightBottom.x + 1) * (0.5 * 800 - 0.5);
-			m_sspRightBottom.y = ( 600 - 1 ) - ( m_sspRightBottom.y + 1 ) * ( 0.5 * 600 - 0.5); 
+			m_sspRightBottom.x = ( m_sspRightBottom.x + 1) * (0.5 * Core.camera.ScreenWidth - 0.5);
+			m_sspRightBottom.y = ( Core.camera.ScreenHeight - 1 ) - ( m_sspRightBottom.y + 1 ) * ( 0.5 * Core.camera.ScreenHeight - 0.5); 
 			
-			m_sspRightTop.x = (m_sspRightTop.x + 1) * (0.5 * 800 - 0.5);
-			m_sspRightTop.y = ( 600 - 1 ) - ( m_sspRightTop.y + 1 ) * ( 0.5 * 600 - 0.5); 
+			m_sspRightTop.x = ( m_sspRightTop.x + 1) * ( 0.5 * Core.camera.ScreenWidth - 0.5 );
+			m_sspRightTop.y = ( Core.camera.ScreenHeight - 1 ) - ( m_sspRightTop.y + 1 ) * ( 0.5 * Core.camera.ScreenHeight - 0.5); 
 		}
 		
 		private function rotate():void
