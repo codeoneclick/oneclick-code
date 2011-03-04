@@ -14,7 +14,7 @@ float fSpecularPower = 16.0f;
 
 float fOceanLevel = 12.0f;
 
-float fRimStart = 0.8f;
+float fRimStart = 0.85f;
 float fRimEnd = 1.0f;
 
 float fRimFactor = 4.0f;

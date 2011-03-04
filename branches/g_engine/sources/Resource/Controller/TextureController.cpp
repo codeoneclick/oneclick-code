@@ -5,7 +5,7 @@ using namespace Controller;
 
 CTextureController::CTextureController()
 {
-	InitializeCriticalSection( &_m_critical_section );
+	InitializeCriticalSection( &m_criticalSection );
 }
 
 CTextureController::~CTextureController()
@@ -25,37 +25,34 @@ Core::ITexture* CTextureController::Load(std::string _value, Core::ITexture::TEX
 	{
 		_m_resource_container[_value] = Core::CGlobal::GetDevice()->CreateTexture();
 		_m_resource_container[_value]->m_extension = _ext;
-		EnterCriticalSection( &_m_critical_section );
-		_m_request_container.push_back(_value);	
-		LeaveCriticalSection( &_m_critical_section );	
+		EnterCriticalSection( &m_criticalSection );
+		m_requestList.push_back(_value);	
+		LeaveCriticalSection( &m_criticalSection );	
 		return _m_resource_container[_value];
 	}
 }
 
-void CTextureController::WorkInPreloadingThread()
+void CTextureController::Update()
 {
-	if(!_m_request_container.size()) return;
-	EnterCriticalSection( &_m_critical_section );
-	std::vector<std::string>::iterator request_iterator = _m_request_container.begin();
-	while(request_iterator != _m_request_container.end())
+	if(!m_requestList.size()) return;
+	EnterCriticalSection( &m_criticalSection );
+	std::vector<std::string>::iterator request_iterator = m_requestList.begin();
+	while(request_iterator != m_requestList.end())
 	{
 		_m_resource_container[*request_iterator]->ReadFromFile(*request_iterator);
 		++request_iterator;
 	}
-	LeaveCriticalSection( &_m_critical_section );		
-}
+	LeaveCriticalSection( &m_criticalSection );	
 
-void CTextureController::WorkInMainThread()
-{
-	std::vector<std::string>::iterator request_iterator = _m_request_container.begin();
-	if(request_iterator != _m_request_container.end())
+	request_iterator = m_requestList.begin();
+	if(request_iterator != m_requestList.end())
 	{
 		if(_m_resource_container[*request_iterator]->m_is_read_data)
 		{
 			_m_resource_container[*request_iterator]->CommitToVRAM();
-			EnterCriticalSection( &_m_critical_section );
-			_m_request_container.erase(request_iterator);
-			LeaveCriticalSection( &_m_critical_section );
+			EnterCriticalSection( &m_criticalSection );
+			m_requestList.erase(request_iterator);
+			LeaveCriticalSection( &m_criticalSection );
 		}
 	}
 }

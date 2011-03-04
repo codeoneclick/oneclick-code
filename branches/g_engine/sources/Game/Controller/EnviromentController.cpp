@@ -151,8 +151,6 @@ void EnviromentController::Update(DWORD time)
 	m_CharacterControl->m_vRotation.x = -GetLandscapeRotation(m_CharacterControl->m_vPosition).x;
 	m_CharacterControl->m_vRotation.z = GetLandscapeRotation(m_CharacterControl->m_vPosition).z;
 	m_CharacterControl->m_vRotation.y = m_Camera->vRotation.y;
-	
-	CResource::WorkInMainTread();
 }
 
 void EnviromentController::Render(Video::CRenderController::ERenderTexture value)

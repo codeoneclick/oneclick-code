@@ -8,10 +8,14 @@
 class CResource
 {
 	friend DWORD __stdcall PreloadingThread(void* _value);
+
 	private :
-		static Controller::CTextureController *m_TextureController;
-		static Controller::CMeshController *m_MeshController;
-		static Controller::CShaderController *m_ShaderController;
+		static const std::string TEXTURE_CONTROLLER;
+		static const std::string MESH_CONTROLLER;
+		static const std::string SHADER_CONTROLLER;
+
+	private :
+		static std::map<std::string,Controller::IResourceController*> m_controllers;
 
 		static HANDLE m_Thread;
 	public :
@@ -22,8 +26,7 @@ class CResource
 		static void Enable();
 		static void Disable();
 
-		static void WorkInMainTread();
-		static void WorkInPreloadingTread();
+		static void Update();
 };
 
 #endif

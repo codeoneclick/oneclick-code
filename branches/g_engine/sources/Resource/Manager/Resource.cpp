@@ -1,44 +1,44 @@
 #include "Resource.h"
 
+const std::string CResource::TEXTURE_CONTROLLER = "TEXTURE_CONTROLLER";
+const std::string CResource::MESH_CONTROLLER = "MESH_CONTROLLER";
+const std::string CResource::SHADER_CONTROLLER = "SHADER_CONTROLLER";
+
+std::map<std::string,Controller::IResourceController*> CResource::m_controllers;
+
 DWORD __stdcall PreloadingThread(void* value)
 {
-	CResource::WorkInPreloadingTread();
+	CResource::Update();
     return NULL;
 }
 
 HANDLE CResource::m_Thread = NULL;
 
-Controller::CTextureController *CResource::m_TextureController = NULL;
-
 Controller::CTextureController *CResource::GetTextureControllerInstance()
 {	
-	if(m_TextureController == NULL)
+	if(m_controllers[TEXTURE_CONTROLLER] == NULL)
 	{
-		m_TextureController = new Controller::CTextureController();
+		m_controllers[TEXTURE_CONTROLLER] = new Controller::CTextureController();
 	}
-	return m_TextureController;
+	return (Controller::CTextureController*)m_controllers[TEXTURE_CONTROLLER];
 }
-
-Controller::CMeshController *CResource::m_MeshController = NULL;
 
 Controller::CMeshController *CResource::GetMeshControllerInstance()
 {	
-	if(m_MeshController == NULL)
+	if(m_controllers[MESH_CONTROLLER] == NULL)
 	{
-		m_MeshController = new Controller::CMeshController();
+		m_controllers[MESH_CONTROLLER] = new Controller::CMeshController();
 	}
-	return m_MeshController;
+	return (Controller::CMeshController*)m_controllers[MESH_CONTROLLER];
 }
-
-Controller::CShaderController *CResource::m_ShaderController = NULL;
 
 Controller::CShaderController *CResource::GetShaderControllerInstance()
 {
-	if(m_ShaderController == NULL)
+	if(m_controllers[SHADER_CONTROLLER] == NULL)
 	{
-		m_ShaderController = new Controller::CShaderController();
+		m_controllers[SHADER_CONTROLLER] = new Controller::CShaderController();
 	}
-	return m_ShaderController;
+	return (Controller::CShaderController*)m_controllers[SHADER_CONTROLLER];
 }
 
 void CResource::Enable()
@@ -52,24 +52,18 @@ void CResource::Disable()
 
 }
 
-void CResource::WorkInPreloadingTread()
+void CResource::Update()
 {
 	while(true)
 	{
-		Sleep(1000);
-		if(m_TextureController != NULL) 
-			m_TextureController->WorkInPreloadingThread();
-		if(m_ShaderController != NULL)
-			m_ShaderController->Update();
-		if(m_MeshController != NULL)
-			m_MeshController->Update();
+		Sleep(1);
+		std::map<std::string,Controller::IResourceController*>::iterator beginIterator = m_controllers.begin();
+		std::map<std::string,Controller::IResourceController*>::iterator endIterator = m_controllers.end();
 
-		if(m_TextureController != NULL) 
-			m_TextureController->WorkInMainThread();
+		while(beginIterator != endIterator)
+		{
+			(*beginIterator).second->Update();
+			beginIterator++;
+		}
 	}
-}
-
-void CResource::WorkInMainTread()
-{
-		
 }
