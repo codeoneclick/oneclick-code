@@ -38,6 +38,8 @@
 		protected var m_texture:Texture = null;
 		
 		protected var m_container:DisplayObjectContainer = null;
+		
+		protected var m_parent:Container3d = null;
 			
 		public function set Position(_value:Vector3D):void
 		{
@@ -57,6 +59,16 @@
 		public function get Rotation():Vector3D
 		{
 			return m_rotation;
+		}
+		
+		public function set Parent(_value:Container3d):void
+		{
+			m_parent = _value;
+		}
+		
+		public function get Parent():Container3d
+		{
+			return m_parent;
 		}
 		
 		public function Sprite3d(_container:DisplayObjectContainer, _size:Point) 
@@ -87,17 +99,29 @@
 		{
 			
 		}
+		
+		protected function updateCulling():void
+		{
+			if (m_wspLeftBottom.z < 0 || m_wspLeftTop.z < 0 || m_wspRightBottom.z < 0 || m_wspRightTop.z < 0)
+				visible = false;
+			else
+				visible = true;
+		}
 
 		protected function rasterize():void
 		{
-			m_texture.transform(m_sspLeftBottom, m_sspRightBottom, m_sspRightTop, m_sspLeftTop);
-			m_texture.rasterize();
+			if (visible)
+			{
+				m_texture.transform(m_sspLeftBottom, m_sspRightBottom, m_sspRightTop, m_sspLeftTop);
+				m_texture.rasterize();
+			}
 		}
 		
 		protected function update():void
 		{
 			updateObjectSpace();
 			updateWorldSpace();
+			updateCulling();
 			updateScreenSpace();
 		}
 		
@@ -108,22 +132,30 @@
 			m_wspLeftTop.y = 0;
 
 			m_wspRightTop.z = 0;
-			m_wspRightTop.x = m_size.x / 2;
+			m_wspRightTop.x = m_size.x;
 			m_wspRightTop.y = 0;
 
 			m_wspLeftBottom.z = 0;
 			m_wspLeftBottom.x = 0;
-			m_wspLeftBottom.y = m_size.y / 2;
+			m_wspLeftBottom.y = m_size.y;
 
 			m_wspRightBottom.z = 0;
-			m_wspRightBottom.x = m_size.x / 2;
-			m_wspRightBottom.y = m_size.y / 2;
+			m_wspRightBottom.x = m_size.x;
+			m_wspRightBottom.y = m_size.y;
 		}
 		
 		private function updateWorldSpace():void
 		{
-			rotate();
-			translate();
+			rotate(m_rotation);
+			translate(m_position);
+			
+			var container:Container3d = m_parent;
+			while (container != null)
+			{
+				rotate(container.Rotation);
+				translate(container.Position);
+				container = container.Parent;
+			}
 		}
 		
 		private function updateScreenSpace():void
@@ -154,11 +186,11 @@
 			m_sspRightTop.y = ( Core.camera.ScreenHeight - 1 ) - ( m_sspRightTop.y + 1 ) * ( 0.5 * Core.camera.ScreenHeight - 0.5); 
 		}
 		
-		private function rotate():void
+		private function rotate(_vector:Vector3D):void
 		{
-			var mRX:Matrix3d = Matrix3d.matrixRotateX(m_rotation.x);
-		    var mRY:Matrix3d = Matrix3d.matrixRotateY(m_rotation.y);
-			var mRZ:Matrix3d = Matrix3d.matrixRotateZ(m_rotation.z);
+			var mRX:Matrix3d = Matrix3d.matrixRotateX(_vector.x);
+		    var mRY:Matrix3d = Matrix3d.matrixRotateY(_vector.y);
+			var mRZ:Matrix3d = Matrix3d.matrixRotateZ(_vector.z);
 			
 			m_wspLeftBottom  = Matrix3d.matrixMulVector(m_wspLeftBottom, mRX);
 			m_wspLeftTop     = Matrix3d.matrixMulVector(m_wspLeftTop, mRX);
@@ -176,23 +208,23 @@
 			m_wspRightTop    = Matrix3d.matrixMulVector(m_wspRightTop, mRZ);
 		}
 		
-		private function translate():void
+		private function translate(_vector:Vector3D):void
 		{
-			m_wspLeftTop.x += m_position.x;
-			m_wspLeftTop.y += m_position.y;
-			m_wspLeftTop.z += m_position.z;
+			m_wspLeftTop.x += _vector.x;
+			m_wspLeftTop.y += _vector.y;
+			m_wspLeftTop.z += _vector.z;
 			
-			m_wspRightTop.x += m_position.x;
-			m_wspRightTop.y += m_position.y;
-			m_wspRightTop.z += m_position.z;
+			m_wspRightTop.x += _vector.x;
+			m_wspRightTop.y += _vector.y;
+			m_wspRightTop.z += _vector.z;
 			
-			m_wspLeftBottom.x += m_position.x;
-			m_wspLeftBottom.y += m_position.y;
-			m_wspLeftBottom.z += m_position.z;
+			m_wspLeftBottom.x += _vector.x;
+			m_wspLeftBottom.y += _vector.y;
+			m_wspLeftBottom.z += _vector.z;
 			
-			m_wspRightBottom.x += m_position.x;
-			m_wspRightBottom.y += m_position.y;
-			m_wspRightBottom.z += m_position.z;
+			m_wspRightBottom.x += _vector.x;
+			m_wspRightBottom.y += _vector.y;
+			m_wspRightBottom.z += _vector.z;
 		}
 	}
 }

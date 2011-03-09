@@ -13,6 +13,9 @@ package game
 	 */
 	public class Tile extends Sprite3d
 	{
+		public static const k_TILE_WIDTH:int = 64;
+		public static const k_TILE_HEIGHT:int = 64;
+		
 		protected var m_index:Point = null;
 		protected var m_bitamData:BitmapData = null;
 		protected var m_resName:String = "";
@@ -42,8 +45,9 @@ package game
 		
 		private function onResLoad(_data:BitmapData):void
 		{
-			m_bitamData = new BitmapData(_data.width / Main.k_MAP_WIDTH, _data.height / Main.k_MAP_HEIGHT);
-			m_bitamData.copyPixels(_data, new Rectangle(m_index.x * m_bitamData.width,  m_index.y * m_bitamData.height, m_bitamData.width, m_bitamData.height), new Point(0,0));
+			m_bitamData = _data;
+			//new BitmapData(_data.width , _data.height);
+			//m_bitamData.copyPixels(_data, new Rectangle(m_index.x * m_bitamData.width,  m_index.y * m_bitamData.height, m_bitamData.width, m_bitamData.height), new Point(0,0));
 			m_texture.size = new Point(m_bitamData.width, m_bitamData.height);
 			m_texture.bitmapData = m_bitamData;
 		}

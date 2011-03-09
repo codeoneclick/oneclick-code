@@ -86,6 +86,8 @@ package game
 				
 			if (m_position.x < m_offsetMin.x)
 				m_position.x = m_offsetMin.x;
+				
+			m_position.y = -200;
 		}
 		
 	}

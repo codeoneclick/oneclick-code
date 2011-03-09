@@ -1,6 +1,7 @@
 package game 
 {
 	import common.loader.BitmapLoader;
+	import flash.display.DisplayObjectContainer;
 	import flash.display.Stage;
 	/**
 	 * ...
@@ -12,6 +13,8 @@ package game
 		public static const k_CONTENT_PATH:String = "Content/";
 		
 		private static var m_stage:Stage = null;
+		
+		private static var m_displayContainer:DisplayObjectContainer = null;
 		
 		private static var m_bitmapLoader:BitmapLoader = null;
 		
@@ -27,6 +30,16 @@ package game
 		public static function get stage():Stage
 		{
 			return m_stage;
+		}
+		
+		public static function set displayContainer(_value:DisplayObjectContainer):void
+		{
+			m_displayContainer = _value;
+		}
+		
+		public static function get displayContainer():DisplayObjectContainer
+		{
+			return m_displayContainer;
 		}
 		
 		public static function get bitmapLoader():BitmapLoader

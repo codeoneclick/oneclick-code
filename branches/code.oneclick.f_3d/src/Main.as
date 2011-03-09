@@ -20,19 +20,15 @@
 	import flash.display.StageScaleMode;
 	import game.Camera;
 	import game.Core;
+	import game.Game;
 	import game.Tile;
 
 
 	public class  Main extends Sprite 
-	{
-		private var m_planes:Array = null;  			
+	{	
 		
-		public static const k_MAP_WIDTH:int  = 12;
-		public static const k_MAP_HEIGHT:int = 12;
+		private var m_game:Game = null;
 		
-		public static const k_TILE_WIDTH:int = 128;
-		public static const k_TILE_HEIGHT:int = 128;
-	
 		public function Main():void 
 		{
 			if (stage) init();
@@ -44,34 +40,13 @@
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			stage.frameRate = 60;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
-			stage.addEventListener(Event.ENTER_FRAME, update);
+			stage.stageWidth = 100;
 			
 			Core.stage = stage;
+			Core.displayContainer = this;
 			Core.init();
-
-			m_planes = new Array();
-			for (var i:int = 0; i < k_MAP_WIDTH; i++)
-			{
-				m_planes[i] = new Array();
-				for (var j:int = (k_MAP_HEIGHT - 1); j >= 0; j--)
-				{
-					m_planes[i][j] = new Tile(this, new Point(k_TILE_WIDTH, k_TILE_HEIGHT), "TreasureMap", new Point(i, j));
-					m_planes[i][j].Rotation.x = 1.57;
-				}
-			}
+			
+			m_game = new Game();
 		}	
-		
-		private function update(_event:Event):void
-		{
-			for (var i:int = 0; i < k_MAP_WIDTH; i++)
-			{
-				for (var j:int = 0; j < k_MAP_HEIGHT; j++)
-				{
-					m_planes[i][j].Position.y = -200;
-					m_planes[i][j].Position.x = k_TILE_WIDTH / 2 * i + Core.camera.Position.x;
-					m_planes[i][j].Position.z = k_TILE_HEIGHT / 2 * j + Core.camera.Position.z;
-				}
-			}
-		}
 	}
 }
