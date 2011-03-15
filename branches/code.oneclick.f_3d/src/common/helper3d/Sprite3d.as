@@ -21,6 +21,9 @@
 
 	public class Sprite3d extends Sprite
 	{
+		public static const k_ALIGN_ZERO:int = 0;
+		public static const k_ALIGN_CENTER:int = 1;
+		
 		protected var m_position:Vector3D = new Vector3D();
 		protected var m_rotation:Vector3D = new Vector3D();
 		protected var m_size:Point = new Point();
@@ -40,6 +43,10 @@
 		protected var m_container:DisplayObjectContainer = null;
 		
 		protected var m_parent:Container3d = null;
+		
+		protected var m_align:int = 0;
+		
+		protected var m_zIndex:Number = 0;
 			
 		public function set Position(_value:Vector3D):void
 		{
@@ -71,11 +78,18 @@
 			return m_parent;
 		}
 		
-		public function Sprite3d(_container:DisplayObjectContainer, _size:Point) 
+		public function get zIndex():Number
+		{
+			return m_zIndex;
+		}
+		
+		public function Sprite3d(_container:DisplayObjectContainer, _size:Point, _align:int) 
 		{
 			m_container = _container;
 			
 			m_size = _size;
+			
+			m_align = _align;
 			
 			m_texture = new Texture(this);
 			
@@ -102,10 +116,15 @@
 		
 		protected function updateCulling():void
 		{
-			if (m_wspLeftBottom.z < 0 || m_wspLeftTop.z < 0 || m_wspRightBottom.z < 0 || m_wspRightTop.z < 0)
+			if (m_wspLeftBottom.z < Core.camera.nearPlane || m_wspLeftTop.z < Core.camera.nearPlane || m_wspRightBottom.z < Core.camera.nearPlane || m_wspRightTop.z < Core.camera.nearPlane ||
+				m_wspLeftBottom.z > Core.camera.farPlane || m_wspLeftTop.z > Core.camera.farPlane || m_wspRightBottom.z > Core.camera.farPlane || m_wspRightTop.z > Core.camera.farPlane)
+			{
 				visible = false;
+			}
 			else
+			{
 				visible = true;
+			}
 		}
 
 		protected function rasterize():void
@@ -127,21 +146,67 @@
 		
 		private function updateObjectSpace():void
 		{
-			m_wspLeftTop.z = 0;
-			m_wspLeftTop.x = 0;
-			m_wspLeftTop.y = 0;
+			switch(m_align)
+			{
+				case k_ALIGN_CENTER :
+				{
+					m_wspLeftTop.z = 0;
+					m_wspLeftTop.x = -m_size.x / 2;
+					m_wspLeftTop.y = -m_size.y / 2;
 
-			m_wspRightTop.z = 0;
-			m_wspRightTop.x = m_size.x;
-			m_wspRightTop.y = 0;
+					m_wspRightTop.z = 0;
+					m_wspRightTop.x = m_size.x / 2;
+					m_wspRightTop.y = -m_size.y / 2;
 
-			m_wspLeftBottom.z = 0;
-			m_wspLeftBottom.x = 0;
-			m_wspLeftBottom.y = m_size.y;
+					m_wspLeftBottom.z = 0;
+					m_wspLeftBottom.x = -m_size.y / 2;
+					m_wspLeftBottom.y = m_size.y / 2;
 
-			m_wspRightBottom.z = 0;
-			m_wspRightBottom.x = m_size.x;
-			m_wspRightBottom.y = m_size.y;
+					m_wspRightBottom.z = 0;
+					m_wspRightBottom.x = m_size.x / 2;
+					m_wspRightBottom.y = m_size.y / 2;
+				}
+				break;
+				case k_ALIGN_ZERO :
+				{
+					m_wspLeftTop.z = 0;
+					m_wspLeftTop.x = 0;
+					m_wspLeftTop.y = 0;
+
+					m_wspRightTop.z = 0;
+					m_wspRightTop.x = m_size.x;
+					m_wspRightTop.y = 0;
+
+					m_wspLeftBottom.z = 0;
+					m_wspLeftBottom.x = 0;
+					m_wspLeftBottom.y = m_size.y;
+
+					m_wspRightBottom.z = 0;
+					m_wspRightBottom.x = m_size.x;
+					m_wspRightBottom.y = m_size.y;
+				}
+				break;
+				
+				default :
+				{
+					m_wspLeftTop.z = 0;
+					m_wspLeftTop.x = 0;
+					m_wspLeftTop.y = 0;
+
+					m_wspRightTop.z = 0;
+					m_wspRightTop.x = m_size.x;
+					m_wspRightTop.y = 0;
+
+					m_wspLeftBottom.z = 0;
+					m_wspLeftBottom.x = 0;
+					m_wspLeftBottom.y = m_size.y;
+
+					m_wspRightBottom.z = 0;
+					m_wspRightBottom.x = m_size.x;
+					m_wspRightBottom.y = m_size.y;
+				}
+				break;
+			}
 		}
 		
 		private function updateWorldSpace():void
@@ -184,6 +249,8 @@
 			
 			m_sspRightTop.x = ( m_sspRightTop.x + 1) * ( 0.5 * Core.camera.ScreenWidth - 0.5 );
 			m_sspRightTop.y = ( Core.camera.ScreenHeight - 1 ) - ( m_sspRightTop.y + 1 ) * ( 0.5 * Core.camera.ScreenHeight - 0.5); 
+			
+			m_zIndex = (m_sspLeftBottom.y + m_sspLeftTop.y + m_sspRightBottom.y + m_sspRightTop.y) / 4;
 		}
 		
 		private function rotate(_vector:Vector3D):void

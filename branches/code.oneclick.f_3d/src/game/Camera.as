@@ -13,6 +13,9 @@ package game
 		private var m_screenWidth:int = 800;
 		private var m_screenHeight:int = 600;
 		
+		private var m_farPlane:Number = 1024.0;
+		private var m_nearPlane:Number = 0.1;
+		
 		private var m_fovRatio:Number = 1;
 		
 		private var m_offsetMax:Vector3D = new Vector3D();
@@ -58,6 +61,16 @@ package game
 			return m_fovRatio;
 		}
 		
+		public function get nearPlane():Number
+		{
+			return m_nearPlane;
+		}
+		
+		public function get farPlane():Number
+		{
+			return m_farPlane;
+		}
+		
 		public function Camera() 
 		{
 			init();
@@ -68,8 +81,8 @@ package game
 			m_offsetMax.x = 512;
 			m_offsetMax.z = 768;
 			
-			m_offsetMin.x = -1024;
-			m_offsetMin.z = 128;
+			m_offsetMin.x = -512;
+			m_offsetMin.z = -128;
 			Core.stage.addEventListener(Event.ENTER_FRAME, update);
 		}
 		

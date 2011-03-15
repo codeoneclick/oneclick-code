@@ -20,9 +20,11 @@ package game
 		protected var m_bitamData:BitmapData = null;
 		protected var m_resName:String = "";
 		
+		protected var m_intersect:Boolean = false;
+		
 		public function Tile(_container:DisplayObjectContainer, _size:Point, _name:String, _index:Point) 
 		{
-			super(_container, _size);
+			super(_container, _size, Sprite3d.k_ALIGN_CENTER);
 			m_index = _index;
 			m_resName = _name;
 			init();
@@ -60,17 +62,33 @@ package game
 		override protected function onMouseOut(_event:MouseEvent):void 
 		{
 			super.onMouseOut(_event);
+			m_intersect = false;
 		}
 		
 		override protected function onMouseOver(_event:MouseEvent):void 
 		{
 			super.onMouseOver(_event);
+			m_intersect = true;
 		}
 		
 		private function onUpdate(_event:Event):void
 		{
+			onUpdateLogic();
+			
 			update();
 			rasterize();
+		}
+		
+		private function onUpdateLogic():void
+		{
+			if (m_intersect)
+			{
+				m_rotation.x += 0.1;
+			}
+			else
+			{
+				m_rotation.x = 1.57;
+			}
 		}
 		
 	}
