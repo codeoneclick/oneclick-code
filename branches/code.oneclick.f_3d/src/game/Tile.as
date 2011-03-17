@@ -5,6 +5,8 @@ package game
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.filters.BlurFilter;
+	import flash.filters.GlowFilter;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	/**
@@ -83,11 +85,11 @@ package game
 		{
 			if (m_intersect)
 			{
-				m_rotation.x += 0.1;
+				filters = [new GlowFilter(0x000000,1,6,6,6,1,true)];
 			}
 			else
 			{
-				m_rotation.x = 1.57;
+				filters = [];
 			}
 		}
 		

@@ -19,6 +19,10 @@ package game
 		
 		private var m_tiles:Array = new Array();
 		private var m_tilesList:Array = new Array();
+		
+		private var m_walls:Array = new Array();
+		private var m_wallsList:Array = new Array();
+		
 		private var m_mapContainer:Container3d = new Container3d();
 		
 		private var m_visualLayers:Dictionary = new Dictionary();
@@ -49,6 +53,22 @@ package game
 					m_tilesList.push(m_tiles[i][j]);
 				}
 			}	
+			
+			for (var i:int = 0; i < k_MAP_WIDTH / 2; i++)
+			{
+				m_walls[i] = new Array();
+				for (var j:int = 0; j < k_MAP_HEIGHT / 2; j++)
+				{
+					m_walls[i][j] = new Tile(m_visualLayers[K_CHARACTER_LAYER], new Point(Tile.k_TILE_WIDTH, Tile.k_TILE_HEIGHT), k_TILE_RES_NAME, new Point(i, j));
+					m_walls[i][j].Parent = m_mapContainer;
+					m_walls[i][j].Rotation.y = 1.57;
+					m_walls[i][j].Position.x = Tile.k_TILE_WIDTH * i - Tile.k_TILE_WIDTH * k_MAP_WIDTH / 2;
+					m_walls[i][j].Position.z = Tile.k_TILE_HEIGHT * j - Tile.k_TILE_HEIGHT * k_MAP_HEIGHT / 2;
+					m_walls[i][j].Position.y = Tile.k_TILE_WIDTH / 2;
+					m_wallsList.push(m_walls[i][j]);
+				}
+			}	
+			
 			Core.stage.addEventListener(Event.ENTER_FRAME, update);
 		}
 		
@@ -58,7 +78,7 @@ package game
 			m_mapContainer.Position.z = Core.camera.Position.z;
 			m_mapContainer.Position.y = Core.camera.Position.y;
 			zOrder();
-			m_mapContainer.Rotation.y = 0.785;
+			m_mapContainer.Rotation.y += 0.0785;
 		}
 		
 		private function zOrder():void
@@ -68,6 +88,13 @@ package game
 			for (var i:int = 0; i < m_tilesList.length; i++)
 			{
 				mapLayer.setChildIndex(m_tilesList[i], i);
+			}	
+			
+			var characterLayer:Sprite = m_visualLayers[K_CHARACTER_LAYER];
+			m_wallsList.sortOn("zIndex", Array.NUMERIC);
+			for (var i:int = 0; i < m_wallsList.length; i++)
+			{
+				characterLayer.setChildIndex(m_wallsList[i], i);
 			}	
 		}
 	}
