@@ -9,17 +9,6 @@ package common.helper3d
 	{
 		protected var m_position:Vector3D = new Vector3D();
 		protected var m_rotation:Vector3D = new Vector3D();
-		protected var m_parent:Container3d = null;
-		
-		public function set Parent(_value:Container3d):void
-		{
-			m_parent = _value;
-		}
-		
-		public function get Parent():Container3d
-		{
-			return m_parent;
-		}
 		
 		public function set Position(_value:Vector3D):void
 		{

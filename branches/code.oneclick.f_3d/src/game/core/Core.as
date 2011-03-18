@@ -1,4 +1,4 @@
-package game 
+package game.core 
 {
 	import common.loader.BitmapLoader;
 	import flash.display.DisplayObjectContainer;

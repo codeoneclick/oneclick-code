@@ -18,10 +18,8 @@
 	import flash.display.MovieClip;
 	import flash.system.Capabilities;
 	import flash.display.StageScaleMode;
-	import game.Camera;
-	import game.Core;
+	import game.core.Core;
 	import game.Game;
-	import game.Tile;
 
 
 	public class  Main extends Sprite 

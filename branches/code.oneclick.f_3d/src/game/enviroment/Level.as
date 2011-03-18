@@ -1,10 +1,13 @@
-package game 
+package game.enviroment 
 {
 	import common.helper3d.Container3d;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Point;
 	import flash.utils.Dictionary;
+	import game.core.Core;
+	import game.enviroment.Building;
+	import game.enviroment.GroundCell;
 	/**
 	 * ...
 	 * @author ...
@@ -45,11 +48,11 @@ package game
 				m_tiles[i] = new Array();
 				for (var j:int = 0; j < k_MAP_HEIGHT; j++)
 				{
-					m_tiles[i][j] = new Tile(m_visualLayers[k_MAP_LAYER], new Point(Tile.k_TILE_WIDTH, Tile.k_TILE_HEIGHT), k_TILE_RES_NAME, new Point(i, j));
+					m_tiles[i][j] = new GroundCell(m_visualLayers[k_MAP_LAYER], new Point(GroundCell.k_WIDTH, GroundCell.k_HEIGHT), k_TILE_RES_NAME);
 					m_tiles[i][j].Parent = m_mapContainer;
 					m_tiles[i][j].Rotation.x = 1.57;
-					m_tiles[i][j].Position.x = Tile.k_TILE_WIDTH * i - Tile.k_TILE_WIDTH * k_MAP_WIDTH / 2;
-					m_tiles[i][j].Position.z = Tile.k_TILE_HEIGHT * j - Tile.k_TILE_HEIGHT * k_MAP_HEIGHT / 2;
+					m_tiles[i][j].Position.x = (GroundCell.k_WIDTH - 1) * i - GroundCell.k_WIDTH * k_MAP_WIDTH / 2;
+					m_tiles[i][j].Position.z = (GroundCell.k_HEIGHT - 1) * j - GroundCell.k_HEIGHT * k_MAP_HEIGHT / 2;
 					m_tilesList.push(m_tiles[i][j]);
 				}
 			}	
@@ -59,12 +62,20 @@ package game
 				m_walls[i] = new Array();
 				for (var j:int = 0; j < k_MAP_HEIGHT / 2; j++)
 				{
-					m_walls[i][j] = new Tile(m_visualLayers[K_CHARACTER_LAYER], new Point(Tile.k_TILE_WIDTH, Tile.k_TILE_HEIGHT), k_TILE_RES_NAME, new Point(i, j));
+					m_walls[i][j] = new Building(m_visualLayers[K_CHARACTER_LAYER], new Point(GroundCell.k_WIDTH, GroundCell.k_HEIGHT), "eyecatcher02");
 					m_walls[i][j].Parent = m_mapContainer;
-					m_walls[i][j].Rotation.y = 1.57;
-					m_walls[i][j].Position.x = Tile.k_TILE_WIDTH * i - Tile.k_TILE_WIDTH * k_MAP_WIDTH / 2;
+					m_walls[i][j].Rotation.y = 0;
+					m_walls[i][j].Position.x = GroundCell.k_WIDTH * i - GroundCell.k_WIDTH * k_MAP_WIDTH / 2;
+					m_walls[i][j].Position.z = GroundCell.k_HEIGHT * j - GroundCell.k_HEIGHT * k_MAP_HEIGHT / 2;
+					m_walls[i][j].Position.y = GroundCell.k_WIDTH / 2;
+					
+					/*m_walls[i][j] = new Tile(m_visualLayers[K_CHARACTER_LAYER], new Point(Tile.k_TILE_WIDTH, Tile.k_TILE_HEIGHT), k_TILE_RES_NAME, new Point(i, j));
+					m_walls[i][j].Parent = m_mapContainer;
+					m_walls[i][j].Rotation.y = 0;
+					m_walls[i][j].Position.x = Tile.k_TILE_WIDTH * i - Tile.k_TILE_WIDTH * k_MAP_WIDTH / 2 + Tile.k_TILE_WIDTH / 2;
 					m_walls[i][j].Position.z = Tile.k_TILE_HEIGHT * j - Tile.k_TILE_HEIGHT * k_MAP_HEIGHT / 2;
-					m_walls[i][j].Position.y = Tile.k_TILE_WIDTH / 2;
+					m_walls[i][j].Position.y = Tile.k_TILE_WIDTH / 2;*/
+					
 					m_wallsList.push(m_walls[i][j]);
 				}
 			}	
@@ -78,7 +89,7 @@ package game
 			m_mapContainer.Position.z = Core.camera.Position.z;
 			m_mapContainer.Position.y = Core.camera.Position.y;
 			zOrder();
-			m_mapContainer.Rotation.y += 0.0785;
+			m_mapContainer.Rotation.y += 0.0285;
 		}
 		
 		private function zOrder():void
@@ -95,6 +106,7 @@ package game
 			for (var i:int = 0; i < m_wallsList.length; i++)
 			{
 				characterLayer.setChildIndex(m_wallsList[i], i);
+				m_wallsList[i].Rotation.y -= 0.0285;
 			}	
 		}
 	}

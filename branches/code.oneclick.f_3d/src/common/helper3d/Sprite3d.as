@@ -16,7 +16,7 @@
 	import flash.geom.Vector3D;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
-	import game.Core;
+	import game.core.Core;
 	
 
 	public class Sprite3d extends Sprite
@@ -144,7 +144,7 @@
 			updateScreenSpace();
 		}
 		
-		private function updateObjectSpace():void
+		protected function updateObjectSpace():void
 		{
 			switch(m_align)
 			{
@@ -209,21 +209,20 @@
 			}
 		}
 		
-		private function updateWorldSpace():void
+		protected function updateWorldSpace():void
 		{
 			rotate(m_rotation);
 			translate(m_position);
 			
 			var container:Container3d = m_parent;
-			while (container != null)
+			if (container != null)
 			{
 				rotate(container.Rotation);
 				translate(container.Position);
-				container = container.Parent;
 			}
 		}
 		
-		private function updateScreenSpace():void
+		protected function updateScreenSpace():void
 		{
 			m_sspLeftBottom.x = m_wspLeftBottom.x * Core.camera.Fov / m_wspLeftBottom.z;
 			m_sspLeftBottom.y = m_wspLeftBottom.y * Core.camera.Fov  * Core.camera.AspectRatio / m_wspLeftBottom.z;
@@ -253,7 +252,7 @@
 			m_zIndex = (m_sspLeftBottom.y + m_sspLeftTop.y + m_sspRightBottom.y + m_sspRightTop.y) / 4;
 		}
 		
-		private function rotate(_vector:Vector3D):void
+		protected function rotate(_vector:Vector3D):void
 		{
 			var mRX:Matrix3d = Matrix3d.matrixRotateX(_vector.x);
 		    var mRY:Matrix3d = Matrix3d.matrixRotateY(_vector.y);
@@ -275,7 +274,7 @@
 			m_wspRightTop    = Matrix3d.matrixMulVector(m_wspRightTop, mRZ);
 		}
 		
-		private function translate(_vector:Vector3D):void
+		protected function translate(_vector:Vector3D):void
 		{
 			m_wspLeftTop.x += _vector.x;
 			m_wspLeftTop.y += _vector.y;

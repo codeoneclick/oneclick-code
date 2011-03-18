@@ -1,4 +1,4 @@
-package game 
+package game.enviroment 
 {
 	import common.helper3d.Sprite3d;
 	import flash.display.BitmapData;
@@ -8,27 +8,22 @@ package game
 	import flash.filters.BlurFilter;
 	import flash.filters.GlowFilter;
 	import flash.geom.Point;
-	import flash.geom.Rectangle;
+	import game.core.Core;
 	/**
 	 * ...
 	 * @author ...
 	 */
-	public class Tile extends Sprite3d
+	public class GameNode extends Sprite3d
 	{
-		public static const k_TILE_WIDTH:int = 64;
-		public static const k_TILE_HEIGHT:int = 64;
-		
-		protected var m_index:Point = null;
 		protected var m_bitamData:BitmapData = null;
 		protected var m_resName:String = "";
 		
 		protected var m_intersect:Boolean = false;
 		
-		public function Tile(_container:DisplayObjectContainer, _size:Point, _name:String, _index:Point) 
+		public function GameNode(_container:DisplayObjectContainer, _size:Point, _resName:String) 
 		{
 			super(_container, _size, Sprite3d.k_ALIGN_CENTER);
-			m_index = _index;
-			m_resName = _name;
+			m_resName = _resName;
 			init();
 		}
 		
@@ -50,8 +45,6 @@ package game
 		private function onResLoad(_data:BitmapData):void
 		{
 			m_bitamData = _data;
-			//new BitmapData(_data.width , _data.height);
-			//m_bitamData.copyPixels(_data, new Rectangle(m_index.x * m_bitamData.width,  m_index.y * m_bitamData.height, m_bitamData.width, m_bitamData.height), new Point(0,0));
 			m_texture.size = new Point(m_bitamData.width, m_bitamData.height);
 			m_texture.bitmapData = m_bitamData;
 		}
@@ -73,7 +66,7 @@ package game
 			m_intersect = true;
 		}
 		
-		private function onUpdate(_event:Event):void
+		protected function onUpdate(_event:Event):void
 		{
 			onUpdateLogic();
 			
@@ -81,7 +74,7 @@ package game
 			rasterize();
 		}
 		
-		private function onUpdateLogic():void
+		protected function onUpdateLogic():void
 		{
 			if (m_intersect)
 			{

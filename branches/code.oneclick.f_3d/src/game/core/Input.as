@@ -1,4 +1,4 @@
-package game 
+package game.core 
 {
 	import flash.events.MouseEvent;
 	import flash.geom.Point;

@@ -1,4 +1,4 @@
-package game 
+package game.core 
 {
 	import flash.events.Event;
 	import flash.geom.Vector3D;

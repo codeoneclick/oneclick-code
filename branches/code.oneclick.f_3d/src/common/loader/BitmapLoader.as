@@ -4,7 +4,7 @@ package common.loader
 	import flash.events.Event;
 	import flash.net.URLRequest;
 	import flash.utils.Dictionary;
-	import game.Core;
+	import game.core.Core;
 	/**
 	 * ...
 	 * @author ...
