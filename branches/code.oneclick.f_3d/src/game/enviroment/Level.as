@@ -62,7 +62,7 @@ package game.enviroment
 				m_walls[i] = new Array();
 				for (var j:int = 0; j < k_MAP_HEIGHT / 2; j++)
 				{
-					m_walls[i][j] = new Building(m_visualLayers[K_CHARACTER_LAYER], new Point(GroundCell.k_WIDTH, GroundCell.k_HEIGHT), "eyecatcher02");
+					m_walls[i][j] = new Building(m_visualLayers[K_CHARACTER_LAYER], new Point(GroundCell.k_WIDTH, GroundCell.k_HEIGHT), "pic0");
 					m_walls[i][j].Parent = m_mapContainer;
 					m_walls[i][j].Rotation.y = 0;
 					m_walls[i][j].Position.x = GroundCell.k_WIDTH * i - GroundCell.k_WIDTH * k_MAP_WIDTH / 2;

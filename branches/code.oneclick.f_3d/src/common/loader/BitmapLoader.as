@@ -39,7 +39,7 @@ package common.loader
 				m_requestList[_name] = request;
 				
 				request.loader = new Loader();
-				request.loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onLoadComplete);
+				request.loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onLoadComplete, false, 0, true);
 				request.loader.load(new URLRequest(Core.k_CONTENT_PATH + _name + ".png"));
 			}
 		}
