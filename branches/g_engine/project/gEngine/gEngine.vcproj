@@ -303,6 +303,14 @@
 						>
 					</File>
 					<File
+						RelativePath="..\..\sources\Game\Enviroment\Grass.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\sources\Game\Enviroment\Grass.h"
+						>
+					</File>
+					<File
 						RelativePath="..\..\sources\Game\Enviroment\Landscape.cpp"
 						>
 					</File>
@@ -472,6 +480,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\bin\content\shaders\grass.fx"
+					>
+				</File>
+				<File
 					RelativePath="..\..\bin\content\shaders\ocean.fx"
 					>
 				</File>
@@ -495,10 +507,6 @@
 					RelativePath="..\..\bin\content\shaders\sub_surface.fx"
 					>
 				</File>
-			</Filter>
-			<Filter
-				Name="editor"
-				>
 			</Filter>
 		</Filter>
 	</Files>

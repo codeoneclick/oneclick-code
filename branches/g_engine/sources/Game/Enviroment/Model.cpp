@@ -22,13 +22,13 @@ void CModel::Load(std::vector<SResource> _resource)
 
 	while(resourceIteratorBegin != resourceIteratorEnd)
 	{
-		m_MeshList[resourceIteratorBegin->m_Name] = CResource::GetMeshControllerInstance()->Load(resourceIteratorBegin->m_MeshFile,resourceIteratorBegin->m_Extension);
+		m_MeshList[resourceIteratorBegin->m_ResouceFile] = CResource::GetMeshControllerInstance()->Load(resourceIteratorBegin->m_ResouceFile,resourceIteratorBegin->m_Extension);
 		for(unsigned int index = 0; index < K_MAX_TEXTURES_PER_MESH; ++index)
 		{
 			if(resourceIteratorBegin->m_TextureFileList[index].length())
-				m_MeshList[resourceIteratorBegin->m_Name]->m_TextureArray[index] = CResource::GetTextureControllerInstance()->Load(resourceIteratorBegin->m_TextureFileList[index],Core::ITexture::DDS_EXT);
+				m_MeshList[resourceIteratorBegin->m_ResouceFile]->m_TextureArray[index] = CResource::GetTextureControllerInstance()->Load(resourceIteratorBegin->m_TextureFileList[index],Core::ITexture::DDS_EXT);
 		}
-		m_MeshList[resourceIteratorBegin->m_Name]->m_Shader = CResource::GetShaderControllerInstance()->Load(resourceIteratorBegin->m_ShaderFile);	
+		m_MeshList[resourceIteratorBegin->m_ResouceFile]->m_Shader = CResource::GetShaderControllerInstance()->Load(resourceIteratorBegin->m_ShaderFile);	
 		resourceIteratorBegin++;
 	}
 }

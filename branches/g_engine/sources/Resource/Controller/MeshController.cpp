@@ -4,7 +4,6 @@ using namespace Controller;
 
 CMeshController::CMeshController()
 {
-	m_workingPath = "Content\\models\\";
 	InitializeCriticalSection( &m_criticalSection );
 	LoadDefault();
 }

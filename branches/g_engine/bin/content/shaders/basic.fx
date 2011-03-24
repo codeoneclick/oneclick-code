@@ -14,10 +14,10 @@ float fSpecularPower = 16.0f;
 
 float fOceanLevel = 12.0f;
 
-float fRimStart = 0.85f;
+float fRimStart = 0.8f;
 float fRimEnd = 1.0f;
 
-float fRimFactor = 4.0f;
+float fRimFactor = 1.33f;
 
 float4 vRimColor = float4(0.5f,0.5f,0.0f,1.0f);
 
@@ -66,14 +66,6 @@ sampler Texture_02_NH_Sampler = sampler_state {
 texture Texture_03_NH;
 sampler Texture_03_NH_Sampler = sampler_state {
 	Texture = <Texture_03_NH>;
-	MinFilter = LINEAR;
-	MagFilter = LINEAR;
-	MipFilter = LINEAR;
-};
-
-texture Texture_grid_mask;
-sampler Texture_grid_mask_Sampler = sampler_state {
-	Texture = <Texture_grid_mask>;
 	MinFilter = LINEAR;
 	MagFilter = LINEAR;
 	MipFilter = LINEAR;
@@ -149,11 +141,11 @@ float4 ps_main(VS_OUTPUT IN) : COLOR
 	float vDiffuseFactor = saturate(dot(vNormalColor, vLightDirTangentSpace) * 0.5f + 0.75f);
     
 	float3 vLightReflect = reflect(vLightDirTangentSpace, vNormalColor);
-	float vSpecularFactor = pow(max(0.0f, dot(vLightReflect, vCameraEyeTangentSpace) ), fSpecularPower);
+	float vSpecularFactor = pow(max(0.0f, dot(vLightReflect, vCameraEyeTangentSpace) ), fSpecularPower) * IN.vSplatting.x;
 	
 	float fRimPower = smoothstep(fRimStart , fRimEnd ,1.0f - dot(normalize(IN.vNormal),-vCameraEyeWorldSpace));
 	
-	float4 vGridColor = tex2D( Texture_grid_mask_Sampler, IN.vTexCoord * fGridMaskFactor) * float4(IN.vSplatting.x,IN.vSplatting.y,IN.vSplatting.z,1.0f);
+	//float4 vGridColor = tex2D( Texture_grid_mask_Sampler, IN.vTexCoord * fGridMaskFactor) * float4(IN.vSplatting.x,IN.vSplatting.y,IN.vSplatting.z,1.0f);
 	
     float4 vColor = vDiffuseColor * vDiffuseFactor + vSpecularFactor * vSpecularColor + fRimPower * vDiffuseColor * fRimFactor;// + vGridColor;
     vColor.a = IN.fReflectFactor / fOceanLevel;

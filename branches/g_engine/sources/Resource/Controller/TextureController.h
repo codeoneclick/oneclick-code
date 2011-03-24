@@ -3,6 +3,8 @@
 
 #include "../../Core/ITexture.h"
 #include "IResourceController.h"
+#include <list>
+#include "../../Math/Vector3d.h"
 
 namespace Controller
 {
@@ -14,7 +16,7 @@ namespace Controller
 		CTextureController();
 		~CTextureController();
 		Core::ITexture* Load(std::string _value, Core::ITexture::TEXTURE_EXTENSION  _ext);
-		
+		void createNullPtr(math::Vector3d *&_ptr);
 		virtual void Update();
 	};
 };

@@ -5,6 +5,7 @@
 #include "../Enviroment/Landscape.h"
 #include "../Enviroment/Model.h"
 #include "../Enviroment/Ocean.h"
+#include "../Enviroment/Grass.h"
 #include "RenderController.h"
 #include <stdlib.h>
 #include <string>
@@ -23,6 +24,7 @@ private :
 	CDummy* m_CharacterControl;
 	CDummy* m_Landscape;
 	CDummy* m_Ocean;
+	CDummy* m_Grass;
 	float GetLandscapeHeight(float _fPosition_x,float _fPosition_z);
 	math::Vector3d GetLandscapeRotation(math::Vector3d _vPosition);
 	float GetRotationFromNormal(math::Vector3d _vPosition_01,math::Vector3d _vPosition_02);

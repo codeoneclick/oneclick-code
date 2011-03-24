@@ -14,7 +14,6 @@ namespace Controller
 	protected :
 		std::vector<std::string> m_requestList;
 		CRITICAL_SECTION m_criticalSection;
-		std::string m_workingPath;
 	public :
 		virtual void Update() = 0;
 	};

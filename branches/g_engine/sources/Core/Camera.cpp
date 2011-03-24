@@ -19,7 +19,7 @@ Camera::Camera()
 	m_fCameraRotationSpeed = 2.0f;
 	m_fNearPlane = 0.1f;
 	m_fFarPlane  = 1024.0f;
-	m_fDistance = 16.0f;
+	m_fDistance = 32.0f;
 	mProjection = math::MatrixProjection(m_fFov, (float)Core::CWindow::m_Width / (float)Core::CWindow::m_Height, m_fNearPlane, m_fFarPlane);
 }
 

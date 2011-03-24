@@ -1,11 +1,15 @@
 #include "TextureController.h"
 #include "../../Core/CGlobal.h"
 
+
 using namespace Controller;
 
 CTextureController::CTextureController()
 {
 	InitializeCriticalSection( &m_criticalSection );
+	math::Vector3d *p = NULL;
+	p = new math::Vector3d();
+	createNullPtr(p);
 }
 
 CTextureController::~CTextureController()
@@ -17,6 +21,7 @@ Core::ITexture* CTextureController::Load(std::string _value, Core::ITexture::TEX
 {
 	std::map<std::string,Core::ITexture*>::iterator resource_iterator = _m_resource_container.find(_value);
 	
+
 	if(resource_iterator != _m_resource_container.end())
 	{
 		return resource_iterator->second;
@@ -29,6 +34,15 @@ Core::ITexture* CTextureController::Load(std::string _value, Core::ITexture::TEX
 		m_requestList.push_back(_value);	
 		LeaveCriticalSection( &m_criticalSection );	
 		return _m_resource_container[_value];
+	}
+}
+
+void CTextureController::createNullPtr(math::Vector3d *&_ptr)
+{
+	if(_ptr != NULL)
+	{
+		delete _ptr;
+		_ptr = NULL;
 	}
 }
 

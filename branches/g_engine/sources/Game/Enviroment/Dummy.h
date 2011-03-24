@@ -16,9 +16,8 @@ namespace Enviroment
 
 	struct SResource
 	{
-		std::string m_Name;
 		Core::CMesh::MESH_EXTENSION m_Extension;
-		std::string m_MeshFile;
+		std::string m_ResouceFile;
 		std::string m_ShaderFile;
 		std::string m_TextureFileList[K_MAX_TEXTURES_PER_MESH];
 	};

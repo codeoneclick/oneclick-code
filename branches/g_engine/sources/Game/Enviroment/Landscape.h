@@ -7,60 +7,44 @@ namespace Enviroment
 {
 	class CLandscape : public CDummy
 	{
-		/*struct SVertex
+		struct SVertexStreamMesh
 		{
-			math::Vector3d vPosition;
-			math::Vector2d vTexCoord;
+			math::Vector3d m_vPosition;
+			math::Vector2d m_vTexCoord;
 			union 
 			{
 				struct 
 				{
-					unsigned char NormalW, NormalX, NormalY, NormalZ;
+					unsigned char m_cNormalW, m_cNormalX, m_cNormalY, m_cNormalZ;
 				};
-				DWORD vNormal;
+				int m_vNormal;
 			};
 			union 
 			{
 				struct 
 				{
-					unsigned char TangentW, TangentX, TangentY, TangentZ;
+					unsigned char m_cTangentW, m_cTangentX, m_cTangentY, m_cTangentZ;
 				};
-				DWORD vTangent;
-			};
-			DWORD vSplatting;
-		};*/
-
-		struct SVertexStream0
-		{
-			math::Vector3d vPosition;
-			math::Vector2d vTexCoord;
-			union 
-			{
-				struct 
-				{
-					unsigned char NormalW, NormalX, NormalY, NormalZ;
-				};
-				DWORD vNormal;
-			};
-			union 
-			{
-				struct 
-				{
-					unsigned char TangentW, TangentX, TangentY, TangentZ;
-				};
-				DWORD vTangent;
+				int m_vTangent;
 			};
 		};
 
-		struct SVertexStream1
+		struct SVertexStreamSplatting
 		{
-			DWORD vSplatting;
+			union 
+			{
+				struct 
+				{
+					unsigned char m_cSplattingLayer_01, m_cSplattingLayer_02, m_cSplattingLayer_03, m_cSplattingLayer_04;
+				};
+				int m_vSplatting;
+			};
 		};
 
 		struct SChunk
 		{
-			math::Vector2d index;
-			bool bVisible;
+			math::Vector2d m_Index;
+			bool m_bVisible;
 		};
 
 	private :

@@ -8,6 +8,7 @@ EnviromentController::EnviromentController()
 	m_Camera = NULL;
 	m_CharacterControl = NULL;
 	m_Landscape = NULL;
+	m_Grass = NULL;
 }
 
 void EnviromentController::Load()
@@ -15,26 +16,49 @@ void EnviromentController::Load()
 	m_CameraContainer["MainCamera"] = new Camera(); 
 	m_Camera = m_CameraContainer["MainCamera"];
 
-	m_LandscapeContainer["landscape_01"] = new CLandscape();
-	std::vector<SResource> resource;
-	m_LandscapeContainer["landscape_01"]->Load(resource);
+	std::vector<SResource> landscapeResourceContainer;
+	SResource landscapeResource;
+	landscapeResource.m_ResouceFile = "Content\\maps\\map.raw";
+	landscapeResource.m_ShaderFile = "Content\\shaders\\basic";
+	landscapeResource.m_TextureFileList[0] = "Content\\textures\\sand.dds";
+	landscapeResource.m_TextureFileList[1] = "Content\\textures\\grass.dds";
+	landscapeResource.m_TextureFileList[2] = "Content\\textures\\road.dds";
+	landscapeResource.m_TextureFileList[3] = "Content\\textures\\sand_nh.dds";
+	landscapeResource.m_TextureFileList[4] = "Content\\textures\\grass_nh.dds";
+	landscapeResource.m_TextureFileList[5] = "Content\\textures\\road_nh.dds";
+	landscapeResource.m_TextureFileList[6] = "Content\\textures\\grid_mask.dds";
+	landscapeResourceContainer.push_back(landscapeResource);
+
+	m_LandscapeContainer["landscape_01"] = new CLandscape();	
+	m_LandscapeContainer["landscape_01"]->Load(landscapeResourceContainer);
 	m_Landscape = m_LandscapeContainer["landscape_01"];
 
+	std::vector<SResource> oceanResourceContainer;
 	m_OceanContainer["ocean_01"] = new COcean();
-	m_OceanContainer["ocean_01"]->Load(resource);
+	m_OceanContainer["ocean_01"]->Load(oceanResourceContainer);
 	m_Ocean = m_OceanContainer["ocean_01"];
 
-	SResource nodeResource;
-	nodeResource.m_MeshFile = "Content\\models\\tank.3ds";
-	nodeResource.m_Name = "model_01";
-	nodeResource.m_Extension = Core::CMesh::EXT_3DS;
-	nodeResource.m_ShaderFile = "Content\\shaders\\basic_02";
-	nodeResource.m_TextureFileList[0] = "Content\\textures\\tank_diffuse.dds";
-	nodeResource.m_TextureFileList[1] = "Content\\textures\\tank_diffuse_nh.dds";
-	resource.push_back(nodeResource);
+	std::vector<SResource> grassResourceContainer;
+	SResource grassResource;
+	grassResource.m_ResouceFile = "Content\\maps\\map.raw";
+	grassResource.m_ShaderFile = "Content\\shaders\\grass";
+	grassResource.m_TextureFileList[0] = "Content\\textures\\mod_02.dds";
+	grassResourceContainer.push_back(grassResource);
+	m_Grass = new CGrass();
+	m_Grass->Load(grassResourceContainer);
+
+	std::vector<SResource> modelResourceContainer;
+	SResource modelNodeResource;
+
+	modelNodeResource.m_ResouceFile = "Content\\models\\tank.3ds";
+	modelNodeResource.m_Extension = Core::CMesh::EXT_3DS;
+	modelNodeResource.m_ShaderFile = "Content\\shaders\\basic_02";
+	modelNodeResource.m_TextureFileList[0] = "Content\\textures\\tank_diffuse.dds";
+	modelNodeResource.m_TextureFileList[1] = "Content\\textures\\tank_diffuse_nh.dds";
+	modelResourceContainer.push_back(modelNodeResource);
 
 	m_ModelContainer["model_01"] = new CModel();
-    m_ModelContainer["model_01"]->Load(resource);
+    m_ModelContainer["model_01"]->Load(modelResourceContainer);
 	m_ModelContainer["model_01"]->m_vRotation.x = -1.57f;
 	m_ModelContainer["model_01"]->m_vScale = math::Vector3d(0.04f,0.04f,0.04f);
 
@@ -139,13 +163,15 @@ void EnviromentController::Update(DWORD time)
 		cModel++;
 	}
 
+	m_Grass->Update();
+
 	if(time  == 1)
 	{
 		m_Camera->mView = math::MatrixView(m_Camera->vPosition,m_Camera->vLookAt,math::Vector3d(0.0f,1.0f,0.0f));
 	}
 
 	m_Camera->vLookAt.y = GetLandscapeHeight(m_Camera->vLookAt.x,m_Camera->vLookAt.z);
-	m_Camera->vPosition.y = 28.0f;//GetLandscapeHeight(m_Camera->vPosition.x,m_Camera->vPosition.z) + 8.0f;
+	m_Camera->vPosition.y = GetLandscapeHeight(m_CharacterControl->m_vPosition.x,m_CharacterControl->m_vPosition.z) + 32.0f;
 	m_CharacterControl->m_vPosition = m_Camera->vLookAt;
 
 	m_CharacterControl->m_vRotation.x = -GetLandscapeRotation(m_CharacterControl->m_vPosition).x;
@@ -179,6 +205,8 @@ void EnviromentController::Render(Video::CRenderController::ERenderTexture value
 				cModel->second->Render();
 				cModel++;
 			}
+
+			m_Grass->Render();
 		}
 		break;
 		case Video::CRenderController::REFLECTION_TEXTURE :
@@ -196,6 +224,8 @@ void EnviromentController::Render(Video::CRenderController::ERenderTexture value
 				cModel->second->Render();
 				cModel++;
 			}
+
+			m_Grass->Render();
 
 			Core::CGlobal::GetDevice()->DisableClipPlane(0);
 		}
@@ -215,6 +245,8 @@ void EnviromentController::Render(Video::CRenderController::ERenderTexture value
 				cModel->second->Render();
 				cModel++;
 			}
+
+			m_Grass->Render();
 
 			Core::CGlobal::GetDevice()->DisableClipPlane(0);
 		}

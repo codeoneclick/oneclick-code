@@ -36,6 +36,10 @@ namespace Core
 		virtual void EnableClipPlane(unsigned int _index, math::Vector3d _point_01, math::Vector3d _point_02, math::Vector3d _point_03) = 0;
 		virtual void DisableClipPlane(unsigned int _index) = 0;
 		virtual void SetCullFace(ECULLFACE _value) = 0;
+		virtual void AlphaBlendEnable() = 0;
+		virtual void AlphaBlendDisable() = 0;
+		virtual void AlphaTestEnable() = 0;
+		virtual void AlphaTestDisable() = 0;
 	};
 };
 

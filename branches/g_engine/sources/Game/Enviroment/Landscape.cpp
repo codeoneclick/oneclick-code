@@ -43,7 +43,8 @@ void CLandscape::ReadData(std::string _fileName)
 
 void CLandscape::Load(std::vector<SResource> _resource)
 {
-	ReadData("Content\\maps\\map.raw");
+	SResource landscapeResource = *_resource.begin();
+	ReadData(landscapeResource.m_ResouceFile);
 	int chunkIndex = 0; 
 	for(unsigned int i = 0; i < m_Width / m_ChunkSize; ++i)
 		for(unsigned int j = 0; j < m_Height / m_ChunkSize; ++j)
@@ -52,21 +53,21 @@ void CLandscape::Load(std::vector<SResource> _resource)
 			itoa(chunkIndex, str, 10);
 			std::string strIndex(str);
 			m_MeshList[m_Name + strIndex] = new Core::CMesh();
-			m_MeshList[m_Name + strIndex]->m_TextureArray[0] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\sand.dds",Core::ITexture::DDS_EXT);
-			m_MeshList[m_Name + strIndex]->m_TextureArray[1] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\grass.dds",Core::ITexture::DDS_EXT);
-			m_MeshList[m_Name + strIndex]->m_TextureArray[2] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\road.dds",Core::ITexture::DDS_EXT);
-			m_MeshList[m_Name + strIndex]->m_TextureArray[3] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\sand_nh.dds",Core::ITexture::DDS_EXT);
-			m_MeshList[m_Name + strIndex]->m_TextureArray[4] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\grass_nh.dds",Core::ITexture::DDS_EXT);
-			m_MeshList[m_Name + strIndex]->m_TextureArray[5] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\road_nh.dds",Core::ITexture::DDS_EXT);
-			m_MeshList[m_Name + strIndex]->m_TextureArray[6] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\grid_mask.dds",Core::ITexture::DDS_EXT);
-			m_MeshList[m_Name + strIndex]->m_Shader = CResource::GetShaderControllerInstance()->Load("Content\\shaders\\basic");
+			for(unsigned int k = 0; k < K_MAX_TEXTURES_PER_MESH; k++)
+			{
+				if(landscapeResource.m_TextureFileList[k].length())
+				{
+					m_MeshList[m_Name + strIndex]->m_TextureArray[k] = CResource::GetTextureControllerInstance()->Load(landscapeResource.m_TextureFileList[k],Core::ITexture::DDS_EXT);
+				}
+			}
+			m_MeshList[m_Name + strIndex]->m_Shader = CResource::GetShaderControllerInstance()->Load(landscapeResource.m_ShaderFile);
 			m_MeshList[m_Name + strIndex]->m_VertexBuffer = Core::CGlobal::GetDevice()->CreateVertexBuffer();
 			m_MeshList[m_Name + strIndex]->m_IndexBuffer = Core::CGlobal::GetDevice()->CreateIndexBuffer();
 			
 			SChunk chunk;
-			chunk.bVisible = true;
-			chunk.index.x = i;
-			chunk.index.y = j;
+			chunk.m_bVisible = true;
+			chunk.m_Index.x = i;
+			chunk.m_Index.y = j;
 			m_ChunkArray[m_Name + strIndex] = chunk;
 
 			chunkIndex++;
@@ -92,13 +93,13 @@ void CLandscape::Load(std::vector<SResource> _resource)
             m_MapData[i][j] = currentHeight;
          }
 
-	SVertexStream0* v_data = (SVertexStream0*)m_MeshList[m_FirstChunkName]->m_VertexBuffer->Load(m_Width * m_Height,sizeof(SVertexStream0),0);
+	SVertexStreamMesh* v_data = (SVertexStreamMesh*)m_MeshList[m_FirstChunkName]->m_VertexBuffer->Load(m_Width * m_Height,sizeof(SVertexStreamMesh),0);
 	unsigned int index = 0;
 	for(unsigned int i = 0; i < m_Width;++i)
         for(unsigned int j = 0; j < m_Height;++j)
 		{
-			v_data[index].vPosition = math::Vector3d(i*m_MapScaleFactor,m_MapData[i][j] * m_MapHeightFactor,j*m_MapScaleFactor);
-			v_data[index].vTexCoord = math::Vector2d(static_cast<float>(i) / m_TextureScaleFactor,static_cast<float>(j) / m_TextureScaleFactor);
+			v_data[index].m_vPosition = math::Vector3d(i*m_MapScaleFactor,m_MapData[i][j] * m_MapHeightFactor,j*m_MapScaleFactor);
+			v_data[index].m_vTexCoord = math::Vector2d(static_cast<float>(i) / m_TextureScaleFactor,static_cast<float>(j) / m_TextureScaleFactor);
 			++index;
 		}
 
@@ -123,22 +124,22 @@ void CLandscape::Load(std::vector<SResource> _resource)
             index++;
 		}
 
-	Math::Util::SVertexTBN * dataTBN = Math::Util::CalculateTBN(v_data,i_data,m_Width * m_Height,index_count,sizeof(SVertexStream0));
+	Math::Util::SVertexTBN * dataTBN = Math::Util::CalculateTBN(v_data,i_data,m_Width * m_Height,index_count,sizeof(SVertexStreamMesh));
 	for(int i = 0; i < m_Width * m_Height; ++i)
 	{
 		dataTBN[i].vNormal.normalize();
 
-		v_data[i].NormalX = (unsigned char)(((dataTBN[i].vNormal.x + 1) / 2) * 255);
-		v_data[i].NormalY = (unsigned char)(((dataTBN[i].vNormal.y + 1) / 2) * 255);
-		v_data[i].NormalZ = (unsigned char)(((dataTBN[i].vNormal.z + 1) / 2) * 255);
-		v_data[i].NormalW = 0;
+		v_data[i].m_cNormalX = (unsigned char)(((dataTBN[i].vNormal.x + 1) / 2) * 255);
+		v_data[i].m_cNormalY = (unsigned char)(((dataTBN[i].vNormal.y + 1) / 2) * 255);
+		v_data[i].m_cNormalZ = (unsigned char)(((dataTBN[i].vNormal.z + 1) / 2) * 255);
+		v_data[i].m_cNormalW = 0;
 
 		dataTBN[i].vTangent.normalize();
 
-		v_data[i].TangentX = (unsigned char)(((dataTBN[i].vTangent.x + 1) / 2) * 255);
-		v_data[i].TangentY = (unsigned char)(((dataTBN[i].vTangent.y + 1) / 2) * 255);
-		v_data[i].TangentZ = (unsigned char)(((dataTBN[i].vTangent.z + 1) / 2) * 255);
-		v_data[i].TangentW = 0;
+		v_data[i].m_cTangentX = (unsigned char)(((dataTBN[i].vTangent.x + 1) / 2) * 255);
+		v_data[i].m_cTangentY = (unsigned char)(((dataTBN[i].vTangent.y + 1) / 2) * 255);
+		v_data[i].m_cTangentZ = (unsigned char)(((dataTBN[i].vTangent.z + 1) / 2) * 255);
+		v_data[i].m_cTangentW = 0;
 	}
 	delete[] dataTBN;
 
@@ -146,16 +147,16 @@ void CLandscape::Load(std::vector<SResource> _resource)
 
 	m_MeshList[m_FirstChunkName]->m_VertexBuffer->CommitToVRAM(0);
 
-	SVertexStream1* v_data1 = (SVertexStream1*)m_MeshList[m_FirstChunkName]->m_VertexBuffer->Load(m_Width * m_Height,sizeof(SVertexStream1),1);
+	SVertexStreamSplatting* v_data1 = (SVertexStreamSplatting*)m_MeshList[m_FirstChunkName]->m_VertexBuffer->Load(m_Width * m_Height,sizeof(SVertexStreamSplatting),1);
 	index = 0;
 	for(unsigned int i = 0; i < m_Width;++i)
         for(unsigned int j = 0; j < m_Height;++j)
 		{
-			v_data1[index].vSplatting = 0x00000000;
-			if(v_data[index].vPosition.y > 13.0f)
-				v_data1[index].vSplatting = 0x0000FF00;
+			v_data1[index].m_vSplatting = 0x00000000;
+			if(v_data[index].m_vPosition.y > 13.0f)
+				v_data1[index].m_vSplatting = 0x0000FF00;
 			else
-				v_data1[index].vSplatting = 0x00FF0000;
+				v_data1[index].m_vSplatting = 0x00FF0000;
 			++index;
 		}
 	m_MeshList[m_FirstChunkName]->m_VertexBuffer->CommitToVRAM(1);
@@ -265,9 +266,9 @@ void CLandscape::Update()
 
 	while(beginMeshIterator != endMeshIterator && beginChunkIterator != endChunkIterator)
 	{
-		if(!Game::GetEnviromentControllerInstance()->GetCameraInstance()->IsBoundingSphereInFrustum(beginChunkIterator->second.index.x * m_ChunkSize + m_ChunkSize / 2, beginChunkIterator->second.index.y * m_ChunkSize + m_ChunkSize / 2, m_ChunkSize))
+		if(!Game::GetEnviromentControllerInstance()->GetCameraInstance()->IsBoundingSphereInFrustum(beginChunkIterator->second.m_Index.x * m_ChunkSize + m_ChunkSize / 2, beginChunkIterator->second.m_Index.y * m_ChunkSize + m_ChunkSize / 2, m_ChunkSize))
 		{
-			beginChunkIterator->second.bVisible = false;
+			beginChunkIterator->second.m_bVisible = false;
 			beginMeshIterator++;
 			beginChunkIterator++;
 			continue;
@@ -276,7 +277,7 @@ void CLandscape::Update()
 		beginMeshIterator->second->m_Shader->SetVector(Game::GetEnviromentControllerInstance()->GetCameraInstance()->vPosition,"vCameraEye",Core::IShader::VS_SHADER);
 		beginMeshIterator->second->m_Shader->SetVector(vLightDir,"vLightDir",Core::IShader::VS_SHADER);
 
-		beginChunkIterator->second.bVisible = true;
+		beginChunkIterator->second.m_bVisible = true;
 		beginMeshIterator++;
 		beginChunkIterator++;
 	}
@@ -294,7 +295,7 @@ void CLandscape::Render()
 
 	while(beginMeshIterator != endMeshIterator && beginChunkIterator != endChunkIterator)
 	{
-		if(!beginChunkIterator->second.bVisible)
+		if(!beginChunkIterator->second.m_bVisible)
 		{
 			beginMeshIterator++;
 			beginChunkIterator++;
