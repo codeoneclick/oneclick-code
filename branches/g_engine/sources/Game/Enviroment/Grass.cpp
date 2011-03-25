@@ -53,23 +53,31 @@ void CGrass::Load(std::vector<SResource> _resource)
 	std::vector<math::Vector3d> grassPoints;
 	unsigned int vertexCount = 0;
 
+	unsigned int grassPeriod = 4;
+	unsigned int grassPeriodCount = 0;
+
 	for(unsigned int i = 0; i < m_Width;++i)
 	{
         for(unsigned int j = 0; j < m_Height;++j)
 		{
-			if(m_MapData[i][j] > 120 && m_MapData[i][j] < 128)
+			if(m_MapData[i][j] > 120 && m_MapData[i][j] < 135)
 			{
-				grassPoints.push_back(math::Vector3d(i, ((float)m_MapData[i][j]) * 0.1f, j));
-				vertexCount += 8;
+				if(grassPeriod == grassPeriodCount)
+				{
+					grassPoints.push_back(math::Vector3d(i, ((float)m_MapData[i][j]) * 0.1f, j));
+					vertexCount += 8;
+					grassPeriodCount = 0;
+				}
+				grassPeriodCount++;
 			}
 		}
 	}
 
 	SVertex* v_data = (SVertex*)m_MeshList["grass"]->m_VertexBuffer->Load(vertexCount,sizeof(SVertex),0);
 	unsigned int index = 0;
-	float offsetX = 2.0f;
-	float offsetY = 4.0f;
-	float offsetZ = 2.0f;
+	float offsetX = 1.0f;
+	float offsetY = 6.0f;
+	float offsetZ = 1.0f;
 	for(unsigned int i = 0; i < grassPoints.size(); i++)
 	{
 		v_data[index].m_vPosition = math::Vector3d(grassPoints[i].x + offsetX, grassPoints[i].y, grassPoints[i].z);
@@ -130,6 +138,9 @@ void CGrass::Update()
 {
 	Matrix();
 
+	static float fTimer = 0.0f;
+	fTimer += 0.01f;
+
 	std::map<std::string,Core::CMesh*>::iterator meshIteratorBegin = m_MeshList.begin();
 	std::map<std::string,Core::CMesh*>::iterator meshIteratorEnd = m_MeshList.end();
 
@@ -137,6 +148,7 @@ void CGrass::Update()
 	{
 		meshIteratorBegin->second->m_Shader->SetMatrix(m_mWorldViewProjection,"mWorldViewProjection",Core::IShader::VS_SHADER);
 		meshIteratorBegin->second->m_Shader->SetMatrix(m_mWorld,"mWorld",Core::IShader::VS_SHADER);
+		meshIteratorBegin->second->m_Shader->SetFloat(fTimer,"fTimer",Core::IShader::VS_SHADER);
 		meshIteratorBegin++;
 	}
 }

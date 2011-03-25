@@ -1,6 +1,8 @@
 float4x4 mWorldViewProjection;
 float4x4 mWorld;
 
+float fTimer;
+
 texture Texture_01;
 sampler Texture_01_Sampler = sampler_state {
 	Texture = <Texture_01>;
@@ -25,6 +27,11 @@ struct VS_OUTPUT
 VS_OUTPUT vs_main(VS_INPUT IN) 
 {
    VS_OUTPUT OUT = (VS_OUTPUT)0;
+   if( IN.vTexCoord.y == 0.0f )  
+   {
+	  IN.vPosition.x += sin(fTimer*(IN.vPosition.x + IN.vPosition.y) * 0.01f)*0.1f;
+	  IN.vPosition.z += cos(fTimer*(IN.vPosition.z + IN.vPosition.x) * 0.01f)*0.3f;
+   }
    OUT.vPosition = mul( float4(IN.vPosition,1.0f) ,mWorldViewProjection);
    OUT.vTexCoord = IN.vTexCoord;
    return OUT;
