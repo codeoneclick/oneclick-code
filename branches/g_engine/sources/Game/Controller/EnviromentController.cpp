@@ -47,6 +47,16 @@ void EnviromentController::Load()
 	m_Grass = new CGrass();
 	m_Grass->Load(grassResourceContainer);
 
+	std::vector<SResource> skyResourceContainer;
+	SResource skyResource;
+	skyResource.m_ShaderFile = "Content\\shaders\\sky";
+	skyResource.m_TextureFileList[0] = "Content\\textures\\skyday.dds";
+	skyResource.m_TextureFileList[1] = "Content\\textures\\skynight.dds";
+	skyResource.m_TextureFileList[2] = "Content\\textures\\sunset.dds";
+	skyResourceContainer.push_back(skyResource);
+	m_Sky = new CSkySphere();
+	m_Sky->Load(skyResourceContainer);
+
 	std::vector<SResource> modelResourceContainer;
 	SResource modelNodeResource;
 
@@ -164,6 +174,9 @@ void EnviromentController::Update(DWORD time)
 	}
 
 	m_Grass->Update();
+	m_Sky->Update();
+	m_Sky->m_vPosition = m_Camera->vPosition;
+	m_Sky->m_vPosition.y -= 2.0f;
 
 	if(time  == 1)
 	{
@@ -171,7 +184,7 @@ void EnviromentController::Update(DWORD time)
 	}
 
 	m_Camera->vLookAt.y = GetLandscapeHeight(m_Camera->vLookAt.x,m_Camera->vLookAt.z);
-	m_Camera->vPosition.y = GetLandscapeHeight(m_CharacterControl->m_vPosition.x,m_CharacterControl->m_vPosition.z) + 12.0f;
+	m_Camera->vPosition.y = GetLandscapeHeight(m_CharacterControl->m_vPosition.x,m_CharacterControl->m_vPosition.z) + 16.0f;
 	m_CharacterControl->m_vPosition = m_Camera->vLookAt;
 
 	m_CharacterControl->m_vRotation.x = -GetLandscapeRotation(m_CharacterControl->m_vPosition).x;
@@ -185,6 +198,7 @@ void EnviromentController::Render(Video::CRenderController::ERenderTexture value
 	{
 		case Video::CRenderController::SCREEN_TEXTURE :
 		{
+			m_Sky->Render();
 			std::map<std::string,CDummy*>::iterator cOcean = m_OceanContainer.begin();
 			while(cOcean != m_OceanContainer.end())
 			{
@@ -206,11 +220,12 @@ void EnviromentController::Render(Video::CRenderController::ERenderTexture value
 				cModel++;
 			}
 
-			m_Grass->Render();
+			m_Grass->Render();	
 		}
 		break;
 		case Video::CRenderController::REFLECTION_TEXTURE :
 		{
+			//m_Sky->Render();
 			std::map<std::string,CDummy*>::iterator cLandscape = m_LandscapeContainer.begin();
 			while(cLandscape != m_LandscapeContainer.end())
 			{
@@ -226,12 +241,13 @@ void EnviromentController::Render(Video::CRenderController::ERenderTexture value
 			}
 
 			m_Grass->Render();
-
+			
 			Core::CGlobal::GetDevice()->DisableClipPlane(0);
 		}
 		break;
 		case Video::CRenderController::REFRACTION_TEXTURE :
 		{
+			//m_Sky->Render();
 			std::map<std::string,CDummy*>::iterator cLandscape = m_LandscapeContainer.begin();
 			while(cLandscape != m_LandscapeContainer.end())
 			{

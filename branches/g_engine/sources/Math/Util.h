@@ -2,6 +2,7 @@
 #define UTIL_H
 
 #include "Vector3d.h"
+#include <ctime>
 
 namespace Math
 {
@@ -15,6 +16,14 @@ namespace Math
 			math::Vector3d vBinormal;
 		};
 	public :
+
+		static inline int Random(int _min, int _max)
+		{
+			//srand(time(NULL));
+			return rand()%( ( _max - _min ) + 1 ) + _min;
+		}
+
+
 		static SVertexTBN* CalculateTBN(void *_v_data,unsigned int *_i_data, unsigned int _vertex_count,unsigned int _index_count, unsigned int _vertex_size)
 		{
 			 char* v_data = reinterpret_cast<char*>(_v_data);

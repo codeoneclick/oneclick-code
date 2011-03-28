@@ -11,7 +11,7 @@ Game::Game()
 
 bool Game::Create()
 {
-	_CreateWindow(800,600,32);
+	_CreateWindow(320,240,32);
 	Core::CGlobal::GetDevice();
 	Video::CRenderController::Init();
 	_enviromentController = new Enviroment::EnviromentController();

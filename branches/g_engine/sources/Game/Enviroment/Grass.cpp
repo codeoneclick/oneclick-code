@@ -2,6 +2,7 @@
 #include "../../Resource/Manager/Resource.h"
 #include "../Game.h"
 #include "../../Core/CGlobal.h"
+#include "../../Math/Util.h"
 
 using namespace Enviroment;
 
@@ -76,10 +77,10 @@ void CGrass::Load(std::vector<SResource> _resource)
 	SVertex* v_data = (SVertex*)m_MeshList["grass"]->m_VertexBuffer->Load(vertexCount,sizeof(SVertex),0);
 	unsigned int index = 0;
 	float offsetX = 1.0f;
-	float offsetY = 6.0f;
 	float offsetZ = 1.0f;
 	for(unsigned int i = 0; i < grassPoints.size(); i++)
 	{
+		float offsetY = Math::Util::Random(2,6);
 		v_data[index].m_vPosition = math::Vector3d(grassPoints[i].x + offsetX, grassPoints[i].y, grassPoints[i].z);
 		v_data[index].m_vTexCoord = math::Vector2d(0.0f,1.0f);
 		index++;
@@ -106,6 +107,26 @@ void CGrass::Load(std::vector<SResource> _resource)
 		v_data[index].m_vTexCoord = math::Vector2d(1.0f,0.0f);
 		index++;
 	}
+
+	Core::IVertexBuffer::SVertexDeclaration declaration;
+	declaration.m_Elements = new Core::IVertexBuffer::SElementDeclaration[2];
+	
+	declaration.m_Elements[0].m_stream = 0;
+	declaration.m_Elements[0].m_index = 0;
+	declaration.m_Elements[0].m_size = Core::IVertexBuffer::ELEMENT_FLOAT3;
+	declaration.m_Elements[0].m_type = Core::IVertexBuffer::ELEMENT_POSITION;
+	declaration.m_Elements[0].m_offset = 0;
+
+	declaration.m_Elements[1].m_stream = 0;
+	declaration.m_Elements[1].m_index = 0;
+	declaration.m_Elements[1].m_size = Core::IVertexBuffer::ELEMENT_FLOAT2;
+	declaration.m_Elements[1].m_type = Core::IVertexBuffer::ELEMENT_TEXCOORD;
+	declaration.m_Elements[1].m_offset = 12;
+
+	declaration.m_ElementCount = 2;
+
+
+	m_MeshList["grass"]->m_VertexBuffer->SetDeclaration(declaration);
 
 	m_MeshList["grass"]->m_VertexBuffer->CommitToVRAM(0);
 

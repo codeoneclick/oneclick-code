@@ -342,6 +342,14 @@
 						RelativePath="..\..\sources\Game\Enviroment\Ocean.h"
 						>
 					</File>
+					<File
+						RelativePath="..\..\sources\Game\Enviroment\SkySphere.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\sources\Game\Enviroment\SkySphere.h"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name="Controller"
@@ -501,6 +509,10 @@
 				</File>
 				<File
 					RelativePath="..\..\bin\content\shaders\reflection_vs.cg"
+					>
+				</File>
+				<File
+					RelativePath="..\..\bin\content\shaders\sky.fx"
 					>
 				</File>
 				<File
