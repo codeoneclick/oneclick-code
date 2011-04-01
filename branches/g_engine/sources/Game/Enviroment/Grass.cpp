@@ -188,7 +188,4 @@ void CGrass::Render()
 		meshIteratorBegin->second->Draw();
 		meshIteratorBegin++;
 	}
-
-	Core::CGlobal::GetDevice()->AlphaBlendEnable();
-	Core::CGlobal::GetDevice()->AlphaTestDisable();
 }

@@ -83,6 +83,9 @@ void COcean::Update()
 void COcean::Render()
 {
 	Core::CGlobal::GetDevice()->SetCullFace(Core::IDevice::CULL_CW);
+	Core::CGlobal::GetDevice()->AlphaBlendDisable();
+	Core::CGlobal::GetDevice()->AlphaTestDisable();
+
 	m_MeshList["ocean_01"]->m_Shader->SetTexture(m_MeshList["ocean_01"]->m_TextureArray[0],"Texture_01",Core::IShader::PS_SHADER);
 	m_MeshList["ocean_01"]->m_Shader->SetTexture(Video::CRenderController::GetRenderTargetTexture(Video::CRenderController::REFLECTION_TEXTURE),"Texture_02",Core::IShader::PS_SHADER);
 	m_MeshList["ocean_01"]->m_Shader->SetTexture(Video::CRenderController::GetRenderTargetTexture(Video::CRenderController::REFRACTION_TEXTURE),"Texture_03",Core::IShader::PS_SHADER);\

@@ -286,6 +286,8 @@ void CLandscape::Update()
 void CLandscape::Render()
 {
 	Core::CGlobal::GetDevice()->SetCullFace(Core::IDevice::CULL_CW);
+	Core::CGlobal::GetDevice()->AlphaBlendDisable();
+	Core::CGlobal::GetDevice()->AlphaTestDisable();
 
 	std::map<std::string,Core::CMesh*>::iterator beginMeshIterator = m_MeshList.begin();
 	std::map<std::string,Core::CMesh*>::iterator endMeshIterator = m_MeshList.end();
@@ -307,7 +309,6 @@ void CLandscape::Render()
 		beginMeshIterator->second->m_Shader->SetTexture(beginMeshIterator->second->m_TextureArray[3],"Texture_01_NH",Core::IShader::PS_SHADER);
 		beginMeshIterator->second->m_Shader->SetTexture(beginMeshIterator->second->m_TextureArray[4],"Texture_02_NH",Core::IShader::PS_SHADER);
 		beginMeshIterator->second->m_Shader->SetTexture(beginMeshIterator->second->m_TextureArray[5],"Texture_03_NH",Core::IShader::PS_SHADER);
-		beginMeshIterator->second->m_Shader->SetTexture(beginMeshIterator->second->m_TextureArray[6],"Texture_grid_mask",Core::IShader::PS_SHADER);
 		beginMeshIterator->second->Draw();
 
 		beginMeshIterator++;

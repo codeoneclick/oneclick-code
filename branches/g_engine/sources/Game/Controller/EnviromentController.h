@@ -8,6 +8,7 @@
 #include "../Enviroment/Grass.h"
 #include "../Enviroment/SkySphere.h"
 #include "RenderController.h"
+#include "CharacterController.h"
 #include <stdlib.h>
 #include <string>
 #include <map>
@@ -21,15 +22,13 @@ private :
     std::map<std::string,CDummy*> m_LandscapeContainer;
 	std::map<std::string,CDummy*> m_OceanContainer;
     std::map<std::string,CDummy*> m_ModelContainer;
+	CharacterController* m_characterController;
 	Camera* m_Camera;
-	CDummy* m_CharacterControl;
+	CDummy* m_Character;
 	CDummy* m_Landscape;
 	CDummy* m_Ocean;
 	CDummy* m_Grass;
 	CDummy* m_Sky;
-	float GetLandscapeHeight(float _fPosition_x,float _fPosition_z);
-	math::Vector3d GetLandscapeRotation(math::Vector3d _vPosition);
-	float GetRotationFromNormal(math::Vector3d _vPosition_01,math::Vector3d _vPosition_02);
 public :
 	EnviromentController();
 	void Load();

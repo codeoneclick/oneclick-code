@@ -355,6 +355,14 @@
 					Name="Controller"
 					>
 					<File
+						RelativePath="..\..\sources\Game\Controller\CharacterController.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\sources\Game\Controller\CharacterController.h"
+						>
+					</File>
+					<File
 						RelativePath="..\..\sources\Game\Controller\EnviromentController.cpp"
 						>
 					</File>

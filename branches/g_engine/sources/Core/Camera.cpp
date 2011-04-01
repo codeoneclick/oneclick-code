@@ -15,11 +15,11 @@ Camera::Camera()
 	m_fFov = 45.0f;
 	m_fRotationAngleXZ = 0.0f;
 	m_fRotationAngleY  = 0.0f;
-	m_fCameraMoveSpeed = 1.5f;
-	m_fCameraRotationSpeed = 2.0f;
+	m_fCameraMoveSpeed = 0.5f;
+	m_fCameraRotationSpeed = 0.5f;
 	m_fNearPlane = 0.1f;
 	m_fFarPlane  = 1024.0f;
-	m_fDistance = 32.0f;
+	m_fDistance = 8.0f;
 	mProjection = math::MatrixProjection(m_fFov, (float)Core::CWindow::m_Width / (float)Core::CWindow::m_Height, m_fNearPlane, m_fFarPlane);
 }
 
@@ -60,10 +60,10 @@ void Camera::RotateRight()
 
 void Camera::Update()
 {
-	MouseController();
-	
+	//KeyboardController();
+
 	vRotation.y = m_fRotationAngleXZ * TO_RAD;
-	vRotation.x = m_fRotationAngleY * TO_RAD;
+	//vRotation.x = m_fRotationAngleY * TO_RAD;
     vPosition.x = vLookAt.x + cos(-(vRotation.y) + 1.57f)* - m_fDistance;
     vPosition.z = vLookAt.z + sin(-(vRotation.y) + 1.57f)* - m_fDistance;
 

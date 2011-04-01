@@ -128,7 +128,7 @@ void CSkySphere::Update()
 		meshIteratorBegin->second->m_Shader->SetMatrix(m_mWorldViewProjection,"mWorldViewProjection",Core::IShader::VS_SHADER);
 
 		static float fTheta = 0.0f;
-		fTheta += 0.005f;
+		fTheta += 0.001f;
 		float y = (float)cos(fTheta);
 		float x = (float)sin(fTheta);
 		float z = (float)sin(fTheta);
