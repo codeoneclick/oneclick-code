@@ -32,7 +32,7 @@ CDeviceD3D::CDeviceD3D()
    D3DParams.BackBufferFormat           = D3DMode.Format;
    D3DParams.BackBufferCount            = 3;
    D3DParams.SwapEffect                 = D3DSWAPEFFECT_DISCARD;
-   D3DParams.PresentationInterval       = D3DPRESENT_INTERVAL_IMMEDIATE;
+   D3DParams.PresentationInterval       = D3DPRESENT_INTERVAL_DEFAULT;
    D3DParams.EnableAutoDepthStencil     = TRUE;
    D3DParams.AutoDepthStencilFormat     = D3DFMT_D24X8;
 

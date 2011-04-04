@@ -315,3 +315,16 @@ void CLandscape::Render()
 		beginChunkIterator++;
 	}
 }
+
+void CLandscape::RefreshVB(int _streamId)
+{
+	SVertexStreamMesh* vertexData = (SVertexStreamMesh*)m_MeshList[m_FirstChunkName]->m_VertexBuffer->Lock(_streamId);
+	unsigned int index = 0;
+	for(unsigned int i = 0; i < m_Width;++i)
+        for(unsigned int j = 0; j < m_Height;++j)
+		{
+			vertexData[index].m_vPosition.y = m_MapData[i][j] * m_MapHeightFactor;
+			++index;
+		}
+	m_MeshList[m_FirstChunkName]->m_VertexBuffer->Unlock(_streamId);
+}

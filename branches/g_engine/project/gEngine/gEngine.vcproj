@@ -303,6 +303,14 @@
 						>
 					</File>
 					<File
+						RelativePath="..\..\sources\Game\Enviroment\EditBrush.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\sources\Game\Enviroment\EditBrush.h"
+						>
+					</File>
+					<File
 						RelativePath="..\..\sources\Game\Enviroment\Grass.cpp"
 						>
 					</File>
@@ -360,6 +368,14 @@
 					</File>
 					<File
 						RelativePath="..\..\sources\Game\Controller\CharacterController.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\sources\Game\Controller\EditorController.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\sources\Game\Controller\EditorController.h"
 						>
 					</File>
 					<File
@@ -493,6 +509,10 @@
 				</File>
 				<File
 					RelativePath="..\..\bin\content\shaders\basic_vs.cg"
+					>
+				</File>
+				<File
+					RelativePath="..\..\bin\content\shaders\brush.fx"
 					>
 				</File>
 				<File

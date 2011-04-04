@@ -95,7 +95,7 @@ float4 ps_main(VS_OUTPUT IN) : COLOR
 	vTexCoordRefractionProj = clamp(vTexCoordRefractionProj, 0.001f, 0.999f); 
 	vRefractionColor = tex2D(Texture_03_Sampler,vTexCoordRefractionProj);
 	
-	float2 vTexCoordReflectionProj = 0.5f + 0.5f * (IN.vTexCoordProj.xy + vNormalColor * 4.0f) / IN.vTexCoordProj.w * float2(1.0f,1.0f);
+	float2 vTexCoordReflectionProj = 0.5f + 0.5f * (IN.vTexCoordProj.xy + vNormalColor) / IN.vTexCoordProj.w;
 	vTexCoordReflectionProj = clamp(vTexCoordReflectionProj, 0.001f, 0.999f);
 	float4 vReflectionColor = tex2D(Texture_02_Sampler,vTexCoordReflectionProj);	
 	

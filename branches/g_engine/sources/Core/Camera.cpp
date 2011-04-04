@@ -20,10 +20,11 @@ Camera::Camera()
 	m_fNearPlane = 0.1f;
 	m_fFarPlane  = 1024.0f;
 	m_fDistance = 8.0f;
+	m_target = NULL;
 	mProjection = math::MatrixProjection(m_fFov, (float)Core::CWindow::m_Width / (float)Core::CWindow::m_Height, m_fNearPlane, m_fFarPlane);
 }
 
-void Camera::MoveForward()
+/*void Camera::MoveForward()
 {
     vLookAt.x += (float)sin(m_fRotationAngleXZ*TO_RAD) * m_fCameraMoveSpeed;
     vLookAt.z += (float)cos(m_fRotationAngleXZ*TO_RAD) * m_fCameraMoveSpeed;
@@ -56,14 +57,13 @@ void Camera::RotateRight()
 {
      m_fRotationAngleXZ += m_fCameraRotationSpeed;
 }
-
+*/
 
 void Camera::Update()
 {
-	//KeyboardController();
+	if(m_target != NULL)
+		vLookAt = m_target->m_vPosition;
 
-	vRotation.y = m_fRotationAngleXZ * TO_RAD;
-	//vRotation.x = m_fRotationAngleY * TO_RAD;
     vPosition.x = vLookAt.x + cos(-(vRotation.y) + 1.57f)* - m_fDistance;
     vPosition.z = vLookAt.z + sin(-(vRotation.y) + 1.57f)* - m_fDistance;
 
@@ -71,7 +71,7 @@ void Camera::Update()
 	RefreshFrustumPlanes();
 }
 
-void Camera::MouseController()
+/*void Camera::MouseController()
 {
 	if( core::Input::mouseR )
 	{
@@ -119,7 +119,7 @@ void Camera::KeyboardController()
 
 	if(core::Input::keys[VK_DOWN])
 		MoveBackward();
-}
+}*/
 
 void Camera::RefreshFrustumPlanes()
 {

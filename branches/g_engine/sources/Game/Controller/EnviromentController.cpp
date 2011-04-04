@@ -122,6 +122,7 @@ void EnviromentController::Update(DWORD time)
 	}
 
 	m_Grass->Update();
+	m_characterController->GetEditController()->GetBrush()->Update();
 	m_Sky->Update();
 	m_Sky->m_vPosition = m_Camera->vPosition;
 	m_Sky->m_vPosition.y -= 2.0f;
@@ -162,7 +163,7 @@ void EnviromentController::Render(Video::CRenderController::ERenderTexture value
 				cModel->second->Render();
 				cModel++;
 			}
-
+			m_characterController->GetEditController()->GetBrush()->Render();
 			m_Grass->Render();	
 		}
 		break;
@@ -176,12 +177,12 @@ void EnviromentController::Render(Video::CRenderController::ERenderTexture value
 				cLandscape++;
 			}
 
-			std::map<std::string,CDummy*>::iterator cModel = m_ModelContainer.begin();
+			/*std::map<std::string,CDummy*>::iterator cModel = m_ModelContainer.begin();
 			while(cModel != m_ModelContainer.end())
 			{
 				cModel->second->Render();
 				cModel++;
-			}
+			}*/
 
 			m_Grass->Render();
 			
@@ -198,13 +199,13 @@ void EnviromentController::Render(Video::CRenderController::ERenderTexture value
 				cLandscape++;
 			}
 
-			std::map<std::string,CDummy*>::iterator cModel = m_ModelContainer.begin();
+			/*std::map<std::string,CDummy*>::iterator cModel = m_ModelContainer.begin();
 			while(cModel != m_ModelContainer.end())
 			{
 				cModel->second->Render();
 				cModel++;
-			}
-
+			}*/
+			m_characterController->GetEditController()->GetBrush()->Render();
 			m_Grass->Render();
 
 			Core::CGlobal::GetDevice()->DisableClipPlane(0);
