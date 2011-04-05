@@ -1,8 +1,8 @@
 #ifndef EDITORCONTROLLER_H
 #define EDITORCONTROLLER_H
 
-#include "../Enviroment/Landscape.h"
-#include "../Enviroment/EditBrush.h"
+#include "../../Game/Enviroment/Landscape.h"
+#include "../Brush.h"
 #include <stdlib.h>
 #include <string>
 #include <map>

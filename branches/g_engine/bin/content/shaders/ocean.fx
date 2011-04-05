@@ -2,7 +2,7 @@ float4x4 mWorldViewProjection;
 float fTimer;
 float fDarkEffect = 0.77f;
 float fSpecularFactor = 128.0f;
-float fNormalmapTile = 16.0f;
+float fNormalmapTile = 32.0f;
 
 float3 vCameraEye;
 float3 vLightDir;
@@ -101,13 +101,12 @@ float4 ps_main(VS_OUTPUT IN) : COLOR
 	
 	float4 vDeepColor = float4(0.35f, 0.60f, 0.77f, 1.0f);
 	float fReflectionFactor = vReflectionColor.r + vReflectionColor.g + vReflectionColor.b;
-	float4 vColorWithRefraction = lerp(vRefractionColor,vDeepColor, (1.0f - vRefractionColor.a));
-	float4 vColorWithReflection = lerp(vReflectionColor,vDeepColor, (1.0f - vRefractionColor.a));
+	vRefractionColor = lerp(vRefractionColor, vDeepColor * (fDarkEffect + vRefractionColor.a), (1.0f - vRefractionColor.a));
 	
 	float3 vLightReflect = reflect(IN.vLightDir, vNormalColor);
 	float vSpecularFactor = pow(max(0.0f, dot(vLightReflect, IN.vCameraEye) ), fSpecularFactor);
 	
-    float4 vColor = lerp(vColorWithRefraction, vColorWithReflection, fReflectionFactor) * vRefractionColor.a * fDarkEffect + float4(vSpecularFactor,vSpecularFactor,vSpecularFactor,1.0f);
+    float4 vColor = lerp(vRefractionColor, vReflectionColor, fReflectionFactor) + float4(vSpecularFactor,vSpecularFactor,vSpecularFactor,1.0f);
     return vColor;
 }
 

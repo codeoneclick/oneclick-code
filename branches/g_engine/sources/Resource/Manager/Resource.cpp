@@ -56,7 +56,7 @@ void CResource::Update()
 {
 	while(true)
 	{
-		Sleep(1000);
+		Sleep(1);
 		std::map<std::string,Controller::IResourceController*>::iterator beginIterator = m_controllers.begin();
 		std::map<std::string,Controller::IResourceController*>::iterator endIterator = m_controllers.end();
 

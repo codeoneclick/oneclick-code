@@ -1,22 +1,22 @@
-#include "EditBrush.h"
-#include "../../Resource/Manager/Resource.h"
-#include "../Game.h"
-#include "../../Core/CGlobal.h"
+#include "Brush.h"
+#include "../Resource/Manager/Resource.h"
+#include "../Game/Game.h"
+#include "../Core/CGlobal.h"
 
 using namespace Enviroment;
 
-CEditBrush::CEditBrush(CLandscape* _landscape)
+CBrush::CBrush(CLandscape* _landscape)
 {
 	m_Width  = 16;
 	m_Height = 16;
 
-	m_heightOffset = 0.1f;
+	m_heightOffset = 0.5f;
 
-	m_Name = "EditBrush";
+	m_Name = "Brush";
 	m_Landscape = _landscape;
 }
 
-void CEditBrush::Load(std::vector<SResource> _resource)
+void CBrush::Load(std::vector<SResource> _resource)
 {
 	SResource brushResource = *_resource.begin();
 	m_MeshList[m_Name] = new Core::CMesh();
@@ -80,7 +80,7 @@ void CEditBrush::Load(std::vector<SResource> _resource)
 	declaration.m_ElementCount = 2;
 }
 
-void CEditBrush::Update()
+void CBrush::Update()
 {
 	Matrix();
 
@@ -99,10 +99,16 @@ void CEditBrush::Update()
 				int posZ = (int)m_brush2DPosition.y + j - m_Height / 2;
 
 				vertexData[index].m_vExtValue = math::Vector2d(0.0f,0.0f);
-				if(posX < 0 || posZ < 0 || posX >= m_Landscape->GetWidth() || posZ >= m_Landscape->GetHeight())
+				if(posX <= 0 || posZ <= 0 || posX >= m_Landscape->GetWidth() || posZ >= m_Landscape->GetHeight())
+				{
+					vertexData[index].m_vPosition = math::Vector3d(posX * m_Landscape->GetScaleFactor() ,0.0f,posZ * m_Landscape->GetScaleFactor());
+					vertexData[index].m_vExtValue = math::Vector2d(0.0f,0.0f);
+					++index;
 					continue;
+				}
+
 				vertexData[index].m_vPosition = math::Vector3d(posX * m_Landscape->GetScaleFactor() ,m_Landscape->GetHeightData()[posX][posZ] * m_Landscape->GetHeightFactor() + m_heightOffset,posZ * m_Landscape->GetScaleFactor());
-				vertexData[index].m_vExtValue = math::Vector2d(1.0f,1.0f);
+				vertexData[index].m_vExtValue = math::Vector2d(0.2f,0.2f);
 				++index;
 			}
 		}
@@ -112,12 +118,13 @@ void CEditBrush::Update()
 	}
 }
 
-void CEditBrush::Render()
+void CBrush::Render()
 {
 	Core::CGlobal::GetDevice()->SetCullFace(Core::IDevice::CULL_NONE);
+	Core::CGlobal::GetDevice()->AlphaBlendEnable();
 	std::map<std::string,Core::CMesh*>::iterator meshIteratorBegin = m_MeshList.begin();
 	std::map<std::string,Core::CMesh*>::iterator meshIteratorEnd = m_MeshList.end();
-
+	
 	while(meshIteratorBegin != meshIteratorEnd)
 	{
 		meshIteratorBegin->second->Draw();

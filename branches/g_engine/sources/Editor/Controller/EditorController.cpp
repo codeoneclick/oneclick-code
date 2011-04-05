@@ -11,7 +11,7 @@ EditorController::EditorController(CDummy* _landscape)
 	SResource brushResource;
 	brushResource.m_ShaderFile = "Content\\shaders\\brush";
 	brushResourceContainer.push_back(brushResource);
-	m_brush = new CEditBrush((CLandscape*)m_landscape);
+	m_brush = new CBrush((CLandscape*)m_landscape);
 	m_brush->Load(brushResourceContainer);
 
 	m_IncValue = 2.7f;
@@ -63,7 +63,7 @@ void EditorController::EditHeight()
 	{
 		 for (int z = minIndZ; z < maxIndZ; z++) 
 		 {
-                if((x < 0) || (z < 0) || x >= landscapeWidth || z >= landscapeHeight) 
+                if((x <= 0) || (z <= 0) || x >= landscapeWidth || z >= landscapeHeight) 
 					continue;
 
 				float distance = math::Vector3d(x - m_vWorkingPosition.x, 0.0f, z - m_vWorkingPosition.z).length();
@@ -91,7 +91,7 @@ void EditorController::EditHeight()
 		{
                 for (int z = minIndZ; z < maxIndZ; z++) 
 				{
-                        if((x < 0) || (z < 0) || x >= landscapeWidth || z >= landscapeHeight) 
+                        if((x <= 0) || (z <= 0) || x >= landscapeWidth || z >= landscapeHeight) 
 							continue;
 
                         float distance = math::Vector3d(x - m_vWorkingPosition.x, 0.0f, z - m_vWorkingPosition.z).length();

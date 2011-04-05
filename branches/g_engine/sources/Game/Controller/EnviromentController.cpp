@@ -34,7 +34,7 @@ void EnviromentController::Load()
 	m_Landscape = m_LandscapeContainer["landscape_01"];
 
 	std::vector<SResource> oceanResourceContainer;
-	m_OceanContainer["ocean_01"] = new COcean();
+	m_OceanContainer["ocean_01"] = new COcean((CLandscape*)m_Landscape);
 	m_OceanContainer["ocean_01"]->Load(oceanResourceContainer);
 	m_Ocean = m_OceanContainer["ocean_01"];
 
@@ -125,7 +125,7 @@ void EnviromentController::Update(DWORD time)
 	m_characterController->GetEditController()->GetBrush()->Update();
 	m_Sky->Update();
 	m_Sky->m_vPosition = m_Camera->vPosition;
-	m_Sky->m_vPosition.y -= 2.0f;
+	m_Sky->m_vPosition.y -= 128.0f;
 
 	if(time  == 1)
 	{

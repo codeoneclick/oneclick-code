@@ -24,6 +24,7 @@ namespace Core
 		__forceinline static LPDIRECT3DDEVICE9 Ref() { return m_device; } 
 
 		virtual ITexture* CreateTexture() = 0;
+		virtual ITexture* CreateTextureCube() = 0;
 		virtual IShader* CreateShader() = 0;
 		virtual IVertexBuffer* CreateVertexBuffer() = 0;
 		virtual IIndexBuffer* CreateIndexBuffer() = 0;

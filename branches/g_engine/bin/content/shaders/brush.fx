@@ -23,7 +23,7 @@ VS_OUTPUT vs_main(VS_INPUT IN)
 
 float4 ps_main(VS_OUTPUT IN) : COLOR 
 {	
-    float4 vColor = float4(0.0f,1.0f,0.0f,0.2f);
+    float4 vColor = float4(0.0f,1.0f,0.0f,IN.vExtValue.x);
     return vColor;
 }
 

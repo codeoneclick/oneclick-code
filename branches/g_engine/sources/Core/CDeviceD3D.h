@@ -4,6 +4,7 @@
 #include "IDevice.h"
 
 #include "CTextureD3D.h"
+#include "CTextureCubeD3D.h"
 #include "CShaderD3D.h"
 #include "CVertexBufferD3D.h"
 #include "CIndexBufferD3D.h"
@@ -25,6 +26,7 @@ namespace Core
 		~CDeviceD3D();
 
 		virtual ITexture* CreateTexture();
+		virtual ITexture* CreateTextureCube();
 		virtual IShader* CreateShader();
 		virtual IVertexBuffer* CreateVertexBuffer();
 		virtual IIndexBuffer* CreateIndexBuffer();

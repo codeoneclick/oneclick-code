@@ -37,6 +37,8 @@ void CLandscape::ReadData(std::string _fileName)
 		{
 			fread(&readValue,sizeof(unsigned char),1,file);
 			m_MapData[i][j] = static_cast<float>(readValue);
+			if(i == 0 || j == 0 || i == ( m_Width - 1) || j == ( m_Height - 1))
+				m_MapData[i][j] = 0.0f;
 		}
 	fclose( file );
 }

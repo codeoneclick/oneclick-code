@@ -1,12 +1,12 @@
-#ifndef EDITBRUSH_H
-#define EDITBRUSH_H
+#ifndef BRUSH_H
+#define BRUSH_H
 
-#include "Dummy.h"
-#include "Landscape.h"
+#include "../Game/Enviroment/Dummy.h"
+#include "../Game/Enviroment/Landscape.h"
 
 namespace Enviroment
 {
-	class CEditBrush : public CDummy
+	class CBrush : public CDummy
 	{
 		struct SVertex
 		{
@@ -23,7 +23,7 @@ namespace Enviroment
 		math::Vector2d m_brush2DPosition;
 		float		   m_workingRadius;
 	public :
-		CEditBrush(CLandscape* _landscape);
+		CBrush(CLandscape* _landscape);
 		virtual void Load(std::vector<SResource> _resource);
 		virtual void Update();
 		virtual void Render();

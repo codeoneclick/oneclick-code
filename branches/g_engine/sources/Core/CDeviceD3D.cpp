@@ -70,6 +70,12 @@ Core::ITexture* CDeviceD3D::CreateTexture()
 	return out_texture;
 }
 
+Core::ITexture* CDeviceD3D::CreateTextureCube()
+{
+	CTextureCubeD3D* out_texture = new CTextureCubeD3D();
+	return out_texture;
+}
+
 Core::IShader* CDeviceD3D::CreateShader()
 {
 	CShaderD3D *out_shader = new CShaderD3D();

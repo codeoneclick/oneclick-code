@@ -224,6 +224,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\sources\Core\CTextureCubeD3D.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\sources\Core\CTextureCubeD3D.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\sources\Core\CTextureD3D.cpp"
 					>
 				</File>
@@ -303,14 +311,6 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\sources\Game\Enviroment\EditBrush.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\..\sources\Game\Enviroment\EditBrush.h"
-						>
-					</File>
-					<File
 						RelativePath="..\..\sources\Game\Enviroment\Grass.cpp"
 						>
 					</File>
@@ -368,14 +368,6 @@
 					</File>
 					<File
 						RelativePath="..\..\sources\Game\Controller\CharacterController.h"
-						>
-					</File>
-					<File
-						RelativePath="..\..\sources\Game\Controller\EditorController.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\..\sources\Game\Controller\EditorController.h"
 						>
 					</File>
 					<File
@@ -471,6 +463,30 @@
 					RelativePath="..\..\sources\Math\Vector3d.h"
 					>
 				</File>
+			</Filter>
+			<Filter
+				Name="Editor"
+				>
+				<File
+					RelativePath="..\..\sources\Editor\Brush.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\sources\Editor\Brush.h"
+					>
+				</File>
+				<Filter
+					Name="Controller"
+					>
+					<File
+						RelativePath="..\..\sources\Editor\Controller\EditorController.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\sources\Editor\Controller\EditorController.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter

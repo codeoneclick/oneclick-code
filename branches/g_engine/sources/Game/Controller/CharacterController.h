@@ -5,7 +5,7 @@
 #include "../Enviroment/Landscape.h"
 #include "../Enviroment/Model.h"
 #include "RenderController.h"
-#include "EditorController.h"
+#include "../../Editor/Controller/EditorController.h"
 #include <stdlib.h>
 #include <string>
 #include <map>

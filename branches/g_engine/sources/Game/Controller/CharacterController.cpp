@@ -92,7 +92,7 @@ void CharacterController::Update(DWORD _time)
 	MouseControl();
 	EditorUpdate();
 	m_cEditController->SetWorkingPosition(m_vPosition);
-	((CEditBrush*)m_cEditController->GetBrush())->Set2DPosition(math::Vector2d(m_vPosition.x,m_vPosition.z));
+	((CBrush*)m_cEditController->GetBrush())->Set2DPosition(math::Vector2d(m_vPosition.x,m_vPosition.z));
 	m_cEditController->SetWorkingArea(16.0f);
 	m_cEditController->Update();
 #else

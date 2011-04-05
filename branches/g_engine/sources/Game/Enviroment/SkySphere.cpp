@@ -118,7 +118,7 @@ void CSkySphere::Update()
 {
 	Matrix();
 
-	//m_vScale = math::Vector3d(32.0f,32.0f,32.0f);
+	m_vScale = math::Vector3d(32.0f,32.0f,32.0f);
 
 	std::map<std::string,Core::CMesh*>::iterator meshIteratorBegin = m_MeshList.begin();
 	std::map<std::string,Core::CMesh*>::iterator meshIteratorEnd = m_MeshList.end();
@@ -144,7 +144,7 @@ void CSkySphere::Update()
 void CSkySphere::Render()
 {
 	Core::CGlobal::GetDevice()->SetCullFace(Core::IDevice::CULL_NONE);
-	Core::CGlobal::GetDevice()->Ref()->SetRenderState(D3DRS_ZENABLE, FALSE);//AlphaBlendDisable();
+	//Core::CGlobal::GetDevice()->Ref()->SetRenderState(D3DRS_ZENABLE, FALSE);//AlphaBlendDisable();
 	//Core::CGlobal::GetDevice()->AlphaTestEnable();
 	std::map<std::string,Core::CMesh*>::iterator meshIteratorBegin = m_MeshList.begin();
 	std::map<std::string,Core::CMesh*>::iterator meshIteratorEnd = m_MeshList.end();
@@ -157,7 +157,7 @@ void CSkySphere::Render()
 		meshIteratorBegin->second->Draw();
 		meshIteratorBegin++;
 	}
-	Core::CGlobal::GetDevice()->Ref()->SetRenderState(D3DRS_ZENABLE, TRUE);
+	//Core::CGlobal::GetDevice()->Ref()->SetRenderState(D3DRS_ZENABLE, TRUE);
 	//Core::CGlobal::GetDevice()->AlphaBlendEnable();
 	//Core::CGlobal::GetDevice()->AlphaTestDisable();
 }

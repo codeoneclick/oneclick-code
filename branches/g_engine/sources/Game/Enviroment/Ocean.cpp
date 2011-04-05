@@ -5,23 +5,25 @@
 
 using namespace Enviroment;
 
-COcean::COcean()
+COcean::COcean(CLandscape* _landscape)
 {
-	m_Width  = 256;
-	m_Height = 256;
-	m_vPosition.y = 12.0f;
+	m_Width  = _landscape->GetWidth() * 3.0f;
+	m_Height = _landscape->GetHeight() * 3.0f;
+	m_HeightLevel = 12.0f;
+	m_vPosition = math::Vector3d(-(float)(_landscape->GetWidth()), m_HeightLevel, -(float)(_landscape->GetHeight()));
+	m_Name = "ocean";
 }
 
 void COcean::Load(std::vector<SResource> _resource)
 {
-	m_MeshList["ocean_01"] = new Core::CMesh();
-	m_MeshList["ocean_01"]->m_TextureArray[0] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\water.dds",Core::ITexture::DDS_EXT);
-	m_MeshList["ocean_01"]->m_TextureArray[1] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\sand.dds",Core::ITexture::DDS_EXT);
-	m_MeshList["ocean_01"]->m_Shader = CResource::GetShaderControllerInstance()->Load("Content\\shaders\\ocean");
-	m_MeshList["ocean_01"]->m_VertexBuffer = Core::CGlobal::GetDevice()->CreateVertexBuffer();
-	m_MeshList["ocean_01"]->m_IndexBuffer = Core::CGlobal::GetDevice()->CreateIndexBuffer();
+	m_MeshList[m_Name] = new Core::CMesh();
+	m_MeshList[m_Name]->m_TextureArray[0] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\water.dds",Core::ITexture::DDS_EXT);
+	m_MeshList[m_Name]->m_TextureArray[1] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\sand.dds",Core::ITexture::DDS_EXT);
+	m_MeshList[m_Name]->m_Shader = CResource::GetShaderControllerInstance()->Load("Content\\shaders\\ocean");
+	m_MeshList[m_Name]->m_VertexBuffer = Core::CGlobal::GetDevice()->CreateVertexBuffer();
+	m_MeshList[m_Name]->m_IndexBuffer = Core::CGlobal::GetDevice()->CreateIndexBuffer();
 	
-	SVertex* v_data_01 = (SVertex*)m_MeshList["ocean_01"]->m_VertexBuffer->Load(4, sizeof(SVertex),0);
+	SVertex* v_data_01 = (SVertex*)m_MeshList[m_Name]->m_VertexBuffer->Load(4, sizeof(SVertex),0);
 	
 	v_data_01[0].vPosition = math::Vector3d(0.0f, 0.0f, 0.0f);
 	v_data_01[0].vTexCoord = math::Vector2d(0.0f, 0.0f);
@@ -32,7 +34,7 @@ void COcean::Load(std::vector<SResource> _resource)
 	v_data_01[3].vPosition = math::Vector3d(m_Width, 0.0f, m_Height);
 	v_data_01[3].vTexCoord = math::Vector2d(1.0f, 1.0f);
 
-	unsigned int *i_data_01 = m_MeshList["ocean_01"]->m_IndexBuffer->Load(6);
+	unsigned int *i_data_01 = m_MeshList[m_Name]->m_IndexBuffer->Load(6);
 	
 	i_data_01[0] = 0;
 	i_data_01[1] = 2;
@@ -42,8 +44,8 @@ void COcean::Load(std::vector<SResource> _resource)
 	i_data_01[4] = 2;
 	i_data_01[5] = 3;
 
-	m_MeshList["ocean_01"]->m_VertexBuffer->CommitToVRAM(0);
-	m_MeshList["ocean_01"]->m_IndexBuffer->CommitToVRAM();
+	m_MeshList[m_Name]->m_VertexBuffer->CommitToVRAM(0);
+	m_MeshList[m_Name]->m_IndexBuffer->CommitToVRAM();
 
 	Core::IVertexBuffer::SVertexDeclaration declaration;
 	declaration.m_Elements = new Core::IVertexBuffer::SElementDeclaration[2];
@@ -59,7 +61,7 @@ void COcean::Load(std::vector<SResource> _resource)
 	declaration.m_Elements[1].m_offset = 3 * sizeof(float);
 
 	declaration.m_ElementCount = 2;
-	m_MeshList["ocean_01"]->m_VertexBuffer->SetDeclaration(declaration);
+	m_MeshList[m_Name]->m_VertexBuffer->SetDeclaration(declaration);
 }
 
 void COcean::Update()
@@ -72,12 +74,12 @@ void COcean::Update()
 	vLightDir.z = sin(LightAngle);
 
 	Matrix();
-	m_MeshList["ocean_01"]->m_Shader->SetMatrix(m_mWorldViewProjection,"mWorldViewProjection",Core::IShader::VS_SHADER);
+	m_MeshList[m_Name]->m_Shader->SetMatrix(m_mWorldViewProjection,"mWorldViewProjection",Core::IShader::VS_SHADER);
 	static float fTimer = 0.0f;
 	fTimer += 0.01f;
-	m_MeshList["ocean_01"]->m_Shader->SetFloat(fTimer,"fTimer",Core::IShader::PS_SHADER);
-	m_MeshList["ocean_01"]->m_Shader->SetVector(Game::GetEnviromentControllerInstance()->GetCameraInstance()->vPosition,"vCameraEye",Core::IShader::VS_SHADER);
-	m_MeshList["ocean_01"]->m_Shader->SetVector(vLightDir,"vLightDir",Core::IShader::VS_SHADER);
+	m_MeshList[m_Name]->m_Shader->SetFloat(fTimer,"fTimer",Core::IShader::PS_SHADER);
+	m_MeshList[m_Name]->m_Shader->SetVector(Game::GetEnviromentControllerInstance()->GetCameraInstance()->vPosition,"vCameraEye",Core::IShader::VS_SHADER);
+	m_MeshList[m_Name]->m_Shader->SetVector(vLightDir,"vLightDir",Core::IShader::VS_SHADER);
 }
 
 void COcean::Render()
@@ -86,9 +88,9 @@ void COcean::Render()
 	Core::CGlobal::GetDevice()->AlphaBlendDisable();
 	Core::CGlobal::GetDevice()->AlphaTestDisable();
 
-	m_MeshList["ocean_01"]->m_Shader->SetTexture(m_MeshList["ocean_01"]->m_TextureArray[0],"Texture_01",Core::IShader::PS_SHADER);
-	m_MeshList["ocean_01"]->m_Shader->SetTexture(Video::CRenderController::GetRenderTargetTexture(Video::CRenderController::REFLECTION_TEXTURE),"Texture_02",Core::IShader::PS_SHADER);
-	m_MeshList["ocean_01"]->m_Shader->SetTexture(Video::CRenderController::GetRenderTargetTexture(Video::CRenderController::REFRACTION_TEXTURE),"Texture_03",Core::IShader::PS_SHADER);\
-	m_MeshList["ocean_01"]->m_Shader->SetTexture(m_MeshList["ocean_01"]->m_TextureArray[1],"Texture_04",Core::IShader::PS_SHADER);
-	m_MeshList["ocean_01"]->Draw();
+	m_MeshList[m_Name]->m_Shader->SetTexture(m_MeshList[m_Name]->m_TextureArray[0],"Texture_01",Core::IShader::PS_SHADER);
+	m_MeshList[m_Name]->m_Shader->SetTexture(Video::CRenderController::GetRenderTargetTexture(Video::CRenderController::REFLECTION_TEXTURE),"Texture_02",Core::IShader::PS_SHADER);
+	m_MeshList[m_Name]->m_Shader->SetTexture(Video::CRenderController::GetRenderTargetTexture(Video::CRenderController::REFRACTION_TEXTURE),"Texture_03",Core::IShader::PS_SHADER);\
+	m_MeshList[m_Name]->m_Shader->SetTexture(m_MeshList[m_Name]->m_TextureArray[1],"Texture_04",Core::IShader::PS_SHADER);
+	m_MeshList[m_Name]->Draw();
 }
