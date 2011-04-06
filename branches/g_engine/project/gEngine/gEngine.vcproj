@@ -532,6 +532,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\bin\content\shaders\CryEngine2Sky.fx"
+					>
+				</File>
+				<File
 					RelativePath="..\..\bin\content\shaders\grass.fx"
 					>
 				</File>

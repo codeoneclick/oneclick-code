@@ -80,7 +80,7 @@ float4 ps_main(VS_OUTPUT IN) : COLOR
 		color = lerp(fogColorSunset, fogColorNight, min(1, -IN.vLightDir.y));
 	}
 	
-	return color;
+	return float4(1.0f,0.0f,0.0f,1.0f);
 }
 
 technique mesh {

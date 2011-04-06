@@ -104,7 +104,7 @@ void CharacterController::Update(DWORD _time)
 void CharacterController::CharacterUpdate()
 {
 	m_vPosition.y = GetLandscapeHeight(m_vPosition.x, m_vPosition.z);
-	m_camera->vPosition.y = GetLandscapeHeight(m_vPosition.x,m_vPosition.z) + 4.0f;
+	m_camera->vPosition.y = 32.0f;//GetLandscapeHeight(m_vPosition.x,m_vPosition.z) + 4.0f;
 	m_character->m_vPosition = m_vPosition;
 
 	m_character->m_vRotation.x = -GetLandscapeRotation(m_vPosition).x;
@@ -117,7 +117,7 @@ void CharacterController::CharacterUpdate()
 void CharacterController::EditorUpdate()
 {
 	m_vPosition.y = GetLandscapeHeight(m_vPosition.x, m_vPosition.z);
-	m_camera->vPosition.y = GetLandscapeHeight(m_vPosition.x,m_vPosition.z) + m_cameraHeightUnderTarget;
+	m_camera->vPosition.y = 32.0f;//GetLandscapeHeight(m_vPosition.x,m_vPosition.z) + m_cameraHeightUnderTarget;
 	m_character->m_vPosition = m_vPosition;
 	
 	m_camera->vRotation.y = m_vRotation.y * TO_RAD;

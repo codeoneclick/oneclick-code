@@ -49,7 +49,7 @@ void EnviromentController::Load()
 
 	std::vector<SResource> skyResourceContainer;
 	SResource skyResource;
-	skyResource.m_ShaderFile = "Content\\shaders\\sky";
+	skyResource.m_ShaderFile = "Content\\shaders\\CryEngine2Sky";
 	skyResource.m_TextureFileList[0] = "Content\\textures\\skyday.dds";
 	skyResource.m_TextureFileList[1] = "Content\\textures\\skynight.dds";
 	skyResource.m_TextureFileList[2] = "Content\\textures\\sunset.dds";
@@ -125,7 +125,7 @@ void EnviromentController::Update(DWORD time)
 	m_characterController->GetEditController()->GetBrush()->Update();
 	m_Sky->Update();
 	m_Sky->m_vPosition = m_Camera->vPosition;
-	m_Sky->m_vPosition.y -= 128.0f;
+	m_Sky->m_vPosition.y =  11.85f;
 
 	if(time  == 1)
 	{
