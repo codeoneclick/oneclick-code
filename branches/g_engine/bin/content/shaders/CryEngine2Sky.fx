@@ -89,10 +89,9 @@ float fCos = dot(vSunPos, In.t1) /length(In.t1);
 float fCos2 = fCos * fCos;
 
 float3 Mie = getMiePhase(fCos, fCos2) * c1;
-Out.color.a = log2( length( Mie ) * 2500.0f);
+Out.color.a = 1.0f;
 
 Out.color.rgb = getRayleighPhase(fCos2) * c0 + Mie;
-Out.color.rgb = lerp(Out.color.rgb, float3(0.05f, 0.30f, 0.47f), 0.5f);
 return Out;
 }
 

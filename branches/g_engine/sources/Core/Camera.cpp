@@ -63,7 +63,7 @@ void Camera::Update()
 {
 	if(m_target != NULL)
 		vLookAt = m_target->m_vPosition;
-	vLookAt.y += 8.0f;
+	vLookAt.y += 16.0f;
     vPosition.x = vLookAt.x + cos(-(vRotation.y) + 1.57f)* - m_fDistance;
     vPosition.z = vLookAt.z + sin(-(vRotation.y) + 1.57f)* - m_fDistance;
 	vPosition.y = 32.0f;

@@ -75,11 +75,12 @@ void COcean::Update()
 
 	Matrix();
 	m_MeshList[m_Name]->m_Shader->SetMatrix(m_mWorldViewProjection,"mWorldViewProjection",Core::IShader::VS_SHADER);
+	m_MeshList[m_Name]->m_Shader->SetMatrix(m_mWorld,"mWorld",Core::IShader::VS_SHADER);
 	static float fTimer = 0.0f;
 	fTimer += 0.01f;
 	m_MeshList[m_Name]->m_Shader->SetFloat(fTimer,"fTimer",Core::IShader::PS_SHADER);
 	m_MeshList[m_Name]->m_Shader->SetVector(Game::GetEnviromentControllerInstance()->GetCameraInstance()->vPosition,"vCameraEye",Core::IShader::VS_SHADER);
-	m_MeshList[m_Name]->m_Shader->SetVector(vLightDir,"vLightDir",Core::IShader::VS_SHADER);
+	m_MeshList[m_Name]->m_Shader->SetVector(Game::GetEnviromentControllerInstance()->GetCameraInstance()->m_LightDir,"vLightDir",Core::IShader::VS_SHADER);
 }
 
 void COcean::Render()

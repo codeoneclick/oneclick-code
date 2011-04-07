@@ -18,7 +18,7 @@ void EnviromentController::Load()
 
 	std::vector<SResource> landscapeResourceContainer;
 	SResource landscapeResource;
-	landscapeResource.m_ResouceFile = "Content\\maps\\map.raw";
+	landscapeResource.m_ResouceFile = "Content\\maps\\Kbsd_Heightmap_Example.raw";
 	landscapeResource.m_ShaderFile = "Content\\shaders\\basic";
 	landscapeResource.m_TextureFileList[0] = "Content\\textures\\sand.dds";
 	landscapeResource.m_TextureFileList[1] = "Content\\textures\\grass.dds";
@@ -40,7 +40,7 @@ void EnviromentController::Load()
 
 	std::vector<SResource> grassResourceContainer;
 	SResource grassResource;
-	grassResource.m_ResouceFile = "Content\\maps\\map.raw";
+	grassResource.m_ResouceFile = "Content\\maps\\Kbsd_Heightmap_Example.raw";
 	grassResource.m_ShaderFile = "Content\\shaders\\grass";
 	grassResource.m_TextureFileList[0] = "Content\\textures\\mod_02.dds";
 	grassResourceContainer.push_back(grassResource);
@@ -125,7 +125,7 @@ void EnviromentController::Update(DWORD time)
 	m_characterController->GetEditController()->GetBrush()->Update();
 	m_Sky->Update();
 	m_Sky->m_vPosition = m_Camera->vPosition;
-	m_Sky->m_vPosition.y =  11.85f;
+	m_Sky->m_vPosition.y = 11.85f;
 
 	if(time  == 1)
 	{

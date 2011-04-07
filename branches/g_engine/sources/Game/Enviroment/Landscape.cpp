@@ -276,6 +276,7 @@ void CLandscape::Update()
 			continue;
 		}
 		beginMeshIterator->second->m_Shader->SetMatrix(m_mWorldViewProjection,"mWorldViewProjection",Core::IShader::VS_SHADER);
+		beginMeshIterator->second->m_Shader->SetMatrix(m_mWorld,"mWorld",Core::IShader::VS_SHADER);
 		beginMeshIterator->second->m_Shader->SetVector(Game::GetEnviromentControllerInstance()->GetCameraInstance()->vPosition,"vCameraEye",Core::IShader::VS_SHADER);
 		beginMeshIterator->second->m_Shader->SetVector(vLightDir,"vLightDir",Core::IShader::VS_SHADER);
 

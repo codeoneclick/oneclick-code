@@ -1,4 +1,5 @@
 float4x4 mWorldViewProjection;
+float4x4 mWorld;
 
 float3 vCameraEye;
 float3 vLightDir;
@@ -89,6 +90,7 @@ struct VS_OUTPUT {
    float  fReflectFactor   : TEXCOORD4;
 };
 
+float FogDensity = 1024.0f;
 
 VS_OUTPUT vs_main(VS_INPUT IN) 
 {
@@ -102,7 +104,7 @@ VS_OUTPUT vs_main(VS_INPUT IN)
    
    OUT.vTangent = vTangent;
    OUT.vNormal = vNormal;
-   OUT.vWorldPosition = IN.vPosition;
+   OUT.vWorldPosition = mul(float4(IN.vPosition,1.0f),mWorld).xyz;
    OUT.fReflectFactor = IN.vPosition.y;
    return OUT;
 }
@@ -147,14 +149,20 @@ float4 ps_main(VS_OUTPUT IN) : COLOR
 	
 	//float4 vGridColor = tex2D( Texture_grid_mask_Sampler, IN.vTexCoord * fGridMaskFactor) * float4(IN.vSplatting.x,IN.vSplatting.y,IN.vSplatting.z,1.0f);
 	
+	
+	float dist = length(vCameraEye - IN.vWorldPosition);
+	float Fog = saturate((dist - 256.0f) / 512.0f);
+	
     float4 vColor = vDiffuseColor * vDiffuseFactor + vSpecularFactor * vSpecularColor + fRimPower * vDiffuseColor * fRimFactor;// + vGridColor;
+    float4 FogColor = float4(1.0f, 1.0f, 1.0f, 1.0f); 
+    vColor = lerp(vColor,FogColor, Fog);
     vColor.a = IN.fReflectFactor / fOceanLevel;
     return vColor;
 }
 
 technique mesh {
 	pass p0 {
-		VertexShader = compile vs_2_0 vs_main();
-		PixelShader = compile ps_2_0  ps_main();
+		VertexShader = compile vs_3_0 vs_main();
+		PixelShader = compile ps_3_0  ps_main();
 	}
 }

@@ -259,8 +259,9 @@ void CSkySphere::SetTime(float T)
 		math::Vector3d Zenith = math::Vector3d(0,1,0);
 		m_fSunTheta = acos(math::dot(m_vSunDir,Zenith));
 		
-
 		m_vSunDir.normalize();
+
+		Game::GetEnviromentControllerInstance()->GetCameraInstance()->m_LightDir = m_vSunDir;	
 
 		UpdateSkyBuffer();
 }

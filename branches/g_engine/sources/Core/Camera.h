@@ -45,6 +45,8 @@ class Camera
 		bool IsBoundingSphereInFrustum( float _x, float _z, float _fRadius );
 		inline void SetTarget(CDummy *_target) { m_target = _target; };
 		inline void SetDistanceToTarget(float _distance) { m_fDistance = _distance; }
+
+		math::Vector3d m_LightDir;
 };
 };
 
