@@ -2,10 +2,11 @@
 #define CSKYSPHERE_H
 
 #include "Dummy.h"
+#include "../../Core/CLight.h"
 
 namespace Enviroment
 {
-	class CSkySphere : public CDummy
+	class CSkyDome : public CDummy
 	{
 		struct SVertex
 		{
@@ -13,23 +14,12 @@ namespace Enviroment
 			math::Vector2d m_vTexCoord;
 		};
 
-		struct SXVertex
-		{
-			math::Vector3d m_vPosition;
-			math::Vector2d m_vTexCoord;
-			char value[12];
-		};
-
-		math::Vector3d m_vSunDir;
-		float m_fSunTheta;
-		float m_fSunPhi;
+		CLight* m_LightRef;
 
 		unsigned int m_nSize;
 		unsigned int m_nSamples;
 
-		bool m_bSkyBuffer;
 		math::Vector3d m_vInvWavelength4;
-		LPDIRECT3DTEXTURE9 m_pSkyBuffer, m_pSkyBackBuffer;	
 		float m_fScaleOverScaleDepth;
 		float m_fScale;
 		float m_fRayleighScaleDepth;
@@ -47,11 +37,8 @@ namespace Enviroment
 		float m_fg2;
 		
 
-		void SetTime(float T);
-		void UpdateSkyBuffer();
+		void RefreshAtmosphericTexture();
 		float scale(float fCos);
-		LPDIRECT3DTEXTURE9 GetRead();
-		LPDIRECT3DTEXTURE9 GetWrite();
 		math::Vector3d expv( const math::Vector3d &v );
 
 		unsigned int m_Cols;
@@ -59,10 +46,11 @@ namespace Enviroment
 		float m_fOuterRadius;
 
 	public :
-		CSkySphere();
+		CSkyDome();
 		virtual void Load(std::vector<SResource> _resource);
 		virtual void Update();
 		virtual void Render();
+		inline float GetSkyHeight() { return m_fInnerRadius; };
 	};
 };
 

@@ -117,7 +117,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
+				Optimization="1"
 				EnableIntrinsicFunctions="true"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				RuntimeLibrary="2"
@@ -216,19 +216,19 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\sources\Core\CLight.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\sources\Core\CLight.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\sources\Core\CShaderD3D.cpp"
 					>
 				</File>
 				<File
 					RelativePath="..\..\sources\Core\CShaderD3D.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\sources\Core\CTextureCubeD3D.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\sources\Core\CTextureCubeD3D.h"
 					>
 				</File>
 				<File
@@ -303,6 +303,14 @@
 					Name="Enviroment"
 					>
 					<File
+						RelativePath="..\..\sources\Game\Enviroment\CSkyDome.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\sources\Game\Enviroment\CSkyDome.h"
+						>
+					</File>
+					<File
 						RelativePath="..\..\sources\Game\Enviroment\Dummy.cpp"
 						>
 					</File>
@@ -348,14 +356,6 @@
 					</File>
 					<File
 						RelativePath="..\..\sources\Game\Enviroment\Ocean.h"
-						>
-					</File>
-					<File
-						RelativePath="..\..\sources\Game\Enviroment\SkySphere.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\..\sources\Game\Enviroment\SkySphere.h"
 						>
 					</File>
 				</Filter>

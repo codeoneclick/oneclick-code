@@ -38,9 +38,6 @@ void CRenderController::Render2Texture(Video::CRenderController::ERenderTexture 
 			Game::GetEnviromentControllerInstance()->Update(1);
 			Game::GetEnviromentControllerInstance()->Render(value);
 			Core::CGlobal::GetDevice()->EndRenderTarget();
-
-			//if( ::GetAsyncKeyState('T') & 0x8000f )
-			//	D3DXSaveTextureToFile("C:\\temp.png",D3DXIFF_PNG,((Core::CTextureD3D*)m_RenderTargetTextureContainer[value])->m_addr,NULL);
 		}
 		break;
 		case CRenderController::REFRACTION_TEXTURE :

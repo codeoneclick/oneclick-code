@@ -140,7 +140,7 @@ float4 ps_main(VS_OUTPUT IN) : COLOR
 	
 	float4 vAmbientColor = vDiffuseColor;						
 	
-	float vDiffuseFactor = saturate(dot(vNormalColor, vLightDirTangentSpace) * 0.5f + 0.75f);
+	float vDiffuseFactor = saturate(dot(vNormalColor, -vLightDirTangentSpace) * 0.5f + 0.5f);
     
 	float3 vLightReflect = reflect(vLightDirTangentSpace, vNormalColor);
 	float vSpecularFactor = pow(max(0.0f, dot(vLightReflect, vCameraEyeTangentSpace) ), fSpecularPower) * IN.vSplatting.x;

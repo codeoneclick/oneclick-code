@@ -10,6 +10,7 @@ namespace Core
 	{
 	public :
 		CTextureD3D();
+		CTextureD3D(unsigned int _width, unsigned int _height,ITexture::TEXTURE_BPP _bpp);
 		~CTextureD3D();
 
 		IDirect3DTexture9 *m_addr;
@@ -18,6 +19,8 @@ namespace Core
 		virtual void ReadFromFile(std::string _file_name);
 		virtual void CommitToVRAM();
 		virtual void SetAsRenderTarget(unsigned int _Width, unsigned int _Height);
+		virtual void* Lock();
+		virtual void Unlock();
 	};
 };
 

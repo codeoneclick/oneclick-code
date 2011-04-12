@@ -38,7 +38,6 @@ namespace Core
 		virtual void SetVector(math::Vector4d  &_vector, std::string _param, EShader _type) = 0;
 		virtual void SetFloat(float  &_value, std::string _param, EShader _type) = 0;
 		virtual void SetTexture(ITexture *_texture, std::string _param, EShader _type) = 0;
-		virtual void SetD3DTexture(LPDIRECT3DTEXTURE9 _texture, std::string _param, EShader _type) = 0;
 	};
 };
 

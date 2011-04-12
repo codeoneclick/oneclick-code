@@ -21,13 +21,6 @@ class Camera
 		float m_aFrustumPlanes[6][4];
 
 		CDummy *m_target;
-
-		void MoveForward();
-		void MoveBackward();
-		void MoveRight();
-		void MoveLeft();
-		void RotateLeft();
-		void RotateRight();
 		void RefreshFrustumPlanes();
 
 		void MouseController();
@@ -45,8 +38,7 @@ class Camera
 		bool IsBoundingSphereInFrustum( float _x, float _z, float _fRadius );
 		inline void SetTarget(CDummy *_target) { m_target = _target; };
 		inline void SetDistanceToTarget(float _distance) { m_fDistance = _distance; }
-
-		math::Vector3d m_LightDir;
+		math::Vector3d m_FogColor;
 };
 };
 

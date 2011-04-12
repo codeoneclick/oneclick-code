@@ -6,6 +6,7 @@ using namespace Enviroment;
 EnviromentController::EnviromentController()
 {
 	m_Camera = NULL;
+	m_Light = NULL;
 	m_Character = NULL;
 	m_Landscape = NULL;
 	m_Grass = NULL;
@@ -16,12 +17,15 @@ void EnviromentController::Load()
 	m_CameraContainer["MainCamera"] = new Camera(); 
 	m_Camera = m_CameraContainer["MainCamera"];
 
+	m_LightContainer["MainLight"] = new CLight();
+	m_Light = m_LightContainer["MainLight"];
+
 	std::vector<SResource> landscapeResourceContainer;
 	SResource landscapeResource;
-	landscapeResource.m_ResouceFile = "Content\\maps\\Kbsd_Heightmap_Example.raw";
+	landscapeResource.m_ResouceFile = "Content\\maps\\map.raw";
 	landscapeResource.m_ShaderFile = "Content\\shaders\\basic";
-	landscapeResource.m_TextureFileList[0] = "Content\\textures\\sand.dds";
-	landscapeResource.m_TextureFileList[1] = "Content\\textures\\grass.dds";
+	landscapeResource.m_TextureFileList[0] = "Content\\textures\\island_v1_tex.dds";
+	landscapeResource.m_TextureFileList[1] = "Content\\textures\\grass_turf_v2_tex.dds";
 	landscapeResource.m_TextureFileList[2] = "Content\\textures\\road.dds";
 	landscapeResource.m_TextureFileList[3] = "Content\\textures\\sand_nh.dds";
 	landscapeResource.m_TextureFileList[4] = "Content\\textures\\grass_nh.dds";
@@ -40,9 +44,9 @@ void EnviromentController::Load()
 
 	std::vector<SResource> grassResourceContainer;
 	SResource grassResource;
-	grassResource.m_ResouceFile = "Content\\maps\\Kbsd_Heightmap_Example.raw";
+	grassResource.m_ResouceFile = "Content\\maps\\map.raw";
 	grassResource.m_ShaderFile = "Content\\shaders\\grass";
-	grassResource.m_TextureFileList[0] = "Content\\textures\\mod_02.dds";
+	grassResource.m_TextureFileList[0] = "Content\\textures\\grass_v1_basic_tex.dds";
 	grassResourceContainer.push_back(grassResource);
 	m_Grass = new CGrass();
 	m_Grass->Load(grassResourceContainer);
@@ -54,7 +58,7 @@ void EnviromentController::Load()
 	skyResource.m_TextureFileList[1] = "Content\\textures\\skynight.dds";
 	skyResource.m_TextureFileList[2] = "Content\\textures\\sunset.dds";
 	skyResourceContainer.push_back(skyResource);
-	m_Sky = new CSkySphere();
+	m_Sky = new CSkyDome();
 	m_Sky->Load(skyResourceContainer);
 
 	std::vector<SResource> modelResourceContainer;
@@ -81,6 +85,8 @@ void EnviromentController::Load()
 
 void EnviromentController::Update(DWORD time)
 {
+	m_Light->Update();
+
 	if(time != 1)
 		m_Camera->Update();
 
@@ -125,7 +131,7 @@ void EnviromentController::Update(DWORD time)
 	m_characterController->GetEditController()->GetBrush()->Update();
 	m_Sky->Update();
 	m_Sky->m_vPosition = m_Camera->vPosition;
-	m_Sky->m_vPosition.y = 11.85f;
+	m_Sky->m_vPosition.y = m_Camera->vPosition.y - ((CSkyDome*)m_Sky)->GetSkyHeight();
 
 	if(time  == 1)
 	{
@@ -169,7 +175,6 @@ void EnviromentController::Render(Video::CRenderController::ERenderTexture value
 		break;
 		case Video::CRenderController::REFLECTION_TEXTURE :
 		{
-			//m_Sky->Render();
 			std::map<std::string,CDummy*>::iterator cLandscape = m_LandscapeContainer.begin();
 			while(cLandscape != m_LandscapeContainer.end())
 			{

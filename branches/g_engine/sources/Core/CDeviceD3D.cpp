@@ -54,8 +54,7 @@ CDeviceD3D::CDeviceD3D()
     m_device->SetRenderState(D3DRS_SRCBLEND,D3DBLEND_SRCALPHA);
     m_device->SetRenderState(D3DRS_DESTBLEND,D3DBLEND_INVSRCALPHA); 
     m_device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL);
-    m_device->SetRenderState(D3DRS_ALPHAREF, (DWORD)128);
-	//m_device->SetRenderState(D3DRS_VERTEXBLEND, D3DVBF_TWEENING);
+    m_device->SetRenderState(D3DRS_ALPHAREF, (DWORD)64);
     m_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW);
 }
 
@@ -70,9 +69,9 @@ Core::ITexture* CDeviceD3D::CreateTexture()
 	return out_texture;
 }
 
-Core::ITexture* CDeviceD3D::CreateTextureCube()
+Core::ITexture* CDeviceD3D::CreateTextureExt(unsigned int _width, unsigned int _height,ITexture::TEXTURE_BPP _bpp)
 {
-	CTextureCubeD3D* out_texture = new CTextureCubeD3D();
+	CTextureD3D *out_texture = new CTextureD3D(_width,_height,_bpp);
 	return out_texture;
 }
 

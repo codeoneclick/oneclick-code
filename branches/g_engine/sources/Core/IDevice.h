@@ -14,7 +14,6 @@ namespace Core
 	{
 	public :
 		enum ECULLFACE { CULL_NONE = 0, CULL_CW, CULL_CCW };
-
 	protected :
 		static LPDIRECT3DDEVICE9 m_device;
 	public :
@@ -24,7 +23,7 @@ namespace Core
 		__forceinline static LPDIRECT3DDEVICE9 Ref() { return m_device; } 
 
 		virtual ITexture* CreateTexture() = 0;
-		virtual ITexture* CreateTextureCube() = 0;
+		virtual ITexture* CreateTextureExt(unsigned int _width, unsigned int _height,ITexture::TEXTURE_BPP _bpp) = 0;
 		virtual IShader* CreateShader() = 0;
 		virtual IVertexBuffer* CreateVertexBuffer() = 0;
 		virtual IIndexBuffer* CreateIndexBuffer() = 0;

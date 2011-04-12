@@ -41,6 +41,7 @@ namespace Enviroment
 
 		math::Vector3d  *m_vCameraPosition;
 		math::Vector3d  *m_vLightDirection;
+		std::string m_Name;
 		void Matrix();
 	public :
 		CDummy();

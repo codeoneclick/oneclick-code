@@ -57,7 +57,6 @@ namespace Enviroment
 		float          **m_MapData;
 		std::map<std::string,SChunk> m_ChunkArray;
 		void ReadData(std::string _fileName);
-		std::string m_Name;
 		std::string m_FirstChunkName;
 	public :
 		CLandscape();

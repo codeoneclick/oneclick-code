@@ -28,10 +28,7 @@ Core::ITexture* CTextureController::Load(std::string _value, Core::ITexture::TEX
 	}
 	else
 	{
-		if(_ext == Core::ITexture::DDS_CUBE_EXT)
-			_m_resource_container[_value] = Core::CGlobal::GetDevice()->CreateTextureCube();
-		else
-			_m_resource_container[_value] = Core::CGlobal::GetDevice()->CreateTexture();
+		_m_resource_container[_value] = Core::CGlobal::GetDevice()->CreateTexture();
 		_m_resource_container[_value]->m_extension = _ext;
 		EnterCriticalSection( &m_criticalSection );
 		m_requestList.push_back(_value);	

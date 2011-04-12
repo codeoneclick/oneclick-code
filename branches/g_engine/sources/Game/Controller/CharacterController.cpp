@@ -1,7 +1,7 @@
 #include "CharacterController.h"
 #include "../../Core/Input.h"
 
-#define EDITOR_ENABLE 1
+//#define EDITOR_ENABLE 1
 
 using namespace Enviroment;
 
@@ -26,8 +26,8 @@ CharacterController::CharacterController(Camera* _camera, CDummy* _character, CD
 
 	m_character->m_vScale = math::Vector3d(0.01f,0.01f,0.01f);
 	_camera->SetTarget(_character);
-	_camera->SetDistanceToTarget(64.0f);
-	m_cameraHeightUnderTarget = 32.0f;
+	_camera->SetDistanceToTarget(4.0f);
+	m_cameraHeightUnderTarget = 4.0f;
 
 	m_cEditController = new EditorController(m_landscape);
 }
@@ -104,7 +104,7 @@ void CharacterController::Update(DWORD _time)
 void CharacterController::CharacterUpdate()
 {
 	m_vPosition.y = GetLandscapeHeight(m_vPosition.x, m_vPosition.z);
-	m_camera->vPosition.y = 32.0f;//GetLandscapeHeight(m_vPosition.x,m_vPosition.z) + 4.0f;
+	m_camera->vPosition.y = GetLandscapeHeight(m_camera->vPosition.x,m_camera->vPosition.z) + 2.0f;
 	m_character->m_vPosition = m_vPosition;
 
 	m_character->m_vRotation.x = -GetLandscapeRotation(m_vPosition).x;

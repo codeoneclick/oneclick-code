@@ -1,5 +1,3 @@
-string description = "CryEngine2"; 
-
 float3 vEye;
 float3 vSunPos;
 float3 vInvWavelength;
@@ -12,99 +10,82 @@ float fKmESun;
 
 float4x4 worldViewProj : WorldViewProjection;
 
-float Exposure = -2.0;
-float c = 0.002f; // height falloff
-float b = 0.002f; // global density
-
-Texture tSkyBuffer;
-
-sampler SkyBuffer = sampler_state 
-{
-    Texture = <tSkyBuffer>;
-    AddressU  = WRAP;        
+texture Texture_01;
+sampler Texture_01_Sampler = sampler_state {
+	Texture = <Texture_01>;
+	AddressU  = WRAP;        
     AddressV  = CLAMP;
-    MIPFILTER = NONE;
-    MINFILTER = POINT;
-    MAGFILTER = POINT;
+	MinFilter = NONE;
+	MagFilter = POINT;
+	MipFilter = POINT;
 };
 
-// Vertex Shader
-struct vertexInput {
-    float3 pos      : POSITION;
-    float2 t0       : TEXCOORD0;
-};
-
-struct vertexOutput {
-	float4 pos : POSITION;
-	float2 t0 : TEXCOORD0;
-    float3 t1 : TEXCOORD1;
-};
-
-vertexOutput SkyFromGround_VS(vertexInput In ) 
+struct VS_INPUT 
 {
-	vertexOutput Out;
-	Out.t0 = In.t0;
-	Out.t1 = vEye - In.pos; 
-	Out.pos = mul( float4(In.pos.xyz, 1.0), worldViewProj);
-	return Out;
+   float3 vPosition  : POSITION;
+   float2 vTexCoord  : TEXCOORD0;
+};
+
+struct VS_OUTPUT 
+{
+	float4 vPosition    : POSITION;
+	float2 vTexCoord_01 : TEXCOORD0;
+    float3 vTexCoord_02 : TEXCOORD1;
+};
+
+VS_OUTPUT main_vs(VS_INPUT IN ) 
+{
+	VS_OUTPUT OUT = (VS_OUTPUT)0;
+	OUT.vTexCoord_01 = IN.vTexCoord;
+	OUT.vTexCoord_02 = vEye - IN.vPosition; 
+	OUT.vPosition = mul( float4(IN.vPosition, 1.0f), worldViewProj);
+	return OUT;
 } 
 
-// Calculates the Mie phase function
 float getMiePhase(float fCos, float fCos2)
 {
-	return vHG.x * (1.0 + fCos2) / pow(vHG.y - vHG.z * fCos, 1.5);
+	return vHG.x * (1.0f + fCos2) / pow(vHG.y - vHG.z * fCos, 1.5);
 }
-
-// Calculates the Rayleigh phase function
 float getRayleighPhase(float fCos2)
 {
-	return 0.75 + 0.75 * fCos2;
+	return 0.75f + 0.75f * fCos2;
 }
 
-//Pixel Shader
-struct pixelOutput {
-    float4 color  : COLOR0;
-};  
-
-pixelOutput SkyFromGround_PS( vertexOutput In)
+float4 main_ps( VS_OUTPUT IN) : COLOR 
 {
-pixelOutput  Out;
 
-float2 interp = frac( In.t0 * Tex.x );
+	float2 interp = frac( IN.vTexCoord_01 * Tex.x );
 
-float4 S00 = tex2D( SkyBuffer, In.t0 ).rgba;
-float4 S10 = tex2D( SkyBuffer, In.t0 + float2(Tex.y, 0.0f) ).rgba;
-float4 S01 = tex2D( SkyBuffer, In.t0 + float2(0.0f, Tex.y) ).rgba;
-float4 S11 = tex2D( SkyBuffer, In.t0 + float2(Tex.y, Tex.y) ).rgba;
+	float4 S00 = tex2D( Texture_01_Sampler, IN.vTexCoord_01 );
+	float4 S10 = tex2D( Texture_01_Sampler, IN.vTexCoord_01 + float2(Tex.y, 0.0f));
+	float4 S01 = tex2D( Texture_01_Sampler, IN.vTexCoord_01 + float2(0.0f, Tex.y));
+	float4 S11 = tex2D( Texture_01_Sampler, IN.vTexCoord_01 + float2(Tex.y, Tex.y));
 
-float4 Dx1 = lerp(S00, S10, interp.x);
-float4 Dx2 = lerp(S01, S11, interp.x);
+	float4 Dx1 = lerp(S00, S10, interp.x);
+	float4 Dx2 = lerp(S01, S11, interp.x);
 
-float4 vSamples = lerp(Dx1, Dx2, interp.y);
+	float4 vSamples = lerp(Dx1, Dx2, interp.y);
 
-float3 c0 = vSamples.rgb * (vInvWavelength * fKrESun);
-float3 c1 = vSamples.rgb * fKmESun;
+	float3 c0 = vSamples.rgb * (vInvWavelength * fKrESun);
+	float3 c1 = vSamples.rgb * fKmESun;
 
-float fCos = dot(vSunPos, In.t1) /length(In.t1);
-float fCos2 = fCos * fCos;
+	float fCos = dot(vSunPos, IN.vTexCoord_02) /length(IN.vTexCoord_02);
+	float fCos2 = fCos * fCos;
 
-float3 Mie = getMiePhase(fCos, fCos2) * c1;
-Out.color.a = 1.0f;
+	float3 Mie = getMiePhase(fCos, fCos2) * c1;
+	
+	float4 vColor;
 
-Out.color.rgb = getRayleighPhase(fCos2) * c0 + Mie;
-return Out;
+	vColor.rgb = getRayleighPhase(fCos2) * c0 + Mie;
+	vColor.a = 1.0f;
+	return vColor;
 }
 
-technique Sky_dx9 
+technique sky 
 {
-	pass pRenderSky
+	pass p0
 	{	 
-		ZEnable = true;
-		ZWriteEnable = false;
-		AlphaBlendEnable = false;
-    	FVF = XYZ | TEX1;
-    
-    	VertexShader = compile vs_2_0 SkyFromGround_VS( );
-    	PixelShader = compile ps_2_0 SkyFromGround_PS( );
+    	VertexShader = compile vs_2_0 main_vs( );
+    	PixelShader = compile ps_2_0 main_ps( );
 	}
 }

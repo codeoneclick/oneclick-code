@@ -19,7 +19,6 @@ namespace Math
 
 		static inline int Random(int _min, int _max)
 		{
-			//srand(time(NULL));
 			return rand()%( ( _max - _min ) + 1 ) + _min;
 		}
 

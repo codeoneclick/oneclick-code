@@ -79,9 +79,3 @@ void CShaderD3D::SetTexture(Core::ITexture *_texture, std::string _param, Core::
 	if(!m_is_commit) return;
 	m_addr->SetTexture(_param.c_str(), ((CTextureD3D*)_texture)->m_addr );
 }
-
-void CShaderD3D::SetD3DTexture(LPDIRECT3DTEXTURE9 _texture, std::string _param, EShader _type)
-{
-	if(!m_is_commit) return;
-	m_addr->SetTexture(_param.c_str(), _texture );
-}
