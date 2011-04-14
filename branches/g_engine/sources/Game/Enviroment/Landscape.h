@@ -69,6 +69,7 @@ namespace Enviroment
 		__forceinline float GetScaleFactor() { return m_MapScaleFactor; }
 		__forceinline float GetHeightFactor() { return m_MapHeightFactor; }
 		void RefreshVB(int _streamId);
+		void DrawTraces(float _x, float _z);
 	};
 };
 

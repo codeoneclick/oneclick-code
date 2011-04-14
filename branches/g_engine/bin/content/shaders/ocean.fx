@@ -90,11 +90,11 @@ float4 ps_main(VS_OUTPUT IN) : COLOR
     float2 vTexCoordRefractionProj = 0.5f + 0.5f * IN.vTexCoordProj.xy / IN.vTexCoordProj.w * float2(1.0f,-1.0f);
     float4 vRefractionColor = tex2D(Texture_03_Sampler,vTexCoordRefractionProj);
 	
-	vTexCoordRefractionProj = 0.5f + 0.5f * (IN.vTexCoordProj.xy + vNormalColor * (1.0f - vRefractionColor.a) * 3.0f) / IN.vTexCoordProj.w * float2(1.0f,-1.0f);
+	vTexCoordRefractionProj = 0.5f + 0.5f * (IN.vTexCoordProj.xy + vNormalColor * (1.0f - vRefractionColor.a)) / IN.vTexCoordProj.w * float2(1.0f,-1.0f);
 	vTexCoordRefractionProj = clamp(vTexCoordRefractionProj, 0.001f, 0.999f); 
 	vRefractionColor = tex2D(Texture_03_Sampler,vTexCoordRefractionProj);
 	
-	float2 vTexCoordReflectionProj = 0.5f + 0.5f * (IN.vTexCoordProj.xy + vNormalColor) / IN.vTexCoordProj.w;
+	float2 vTexCoordReflectionProj = 0.5f + 0.5f * (IN.vTexCoordProj.xy) / IN.vTexCoordProj.w;
 	vTexCoordReflectionProj = clamp(vTexCoordReflectionProj, 0.001f, 0.999f);
 	float4 vReflectionColor = tex2D(Texture_02_Sampler,vTexCoordReflectionProj);	
 	
@@ -102,7 +102,7 @@ float4 ps_main(VS_OUTPUT IN) : COLOR
 	float vSpecularFactor = pow(max(0.0f,dot(vLightReflect, vLightDirPixel)), fSpecularFactor);
 	
 	float fReflectionFactor = vReflectionColor.r + vReflectionColor.g + vReflectionColor.b;
-	vRefractionColor = lerp(vRefractionColor, vDeepColor * (fDarkEffect + vRefractionColor.a) , (1.0f - vRefractionColor.a));
+	vRefractionColor = lerp(vRefractionColor + vDeepColor * 0.5f, vDeepColor * (fDarkEffect + vRefractionColor.a) , (1.0f - vRefractionColor.a));
     float4 vColor = lerp(vRefractionColor, vReflectionColor, fReflectionFactor) + float4(vSpecularFactor,vSpecularFactor,vSpecularFactor,1.0f);
     
     float fDistance = length(vCameraEye - IN.vWorldPosition);

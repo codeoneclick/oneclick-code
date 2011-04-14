@@ -37,13 +37,6 @@ void CModel::Update()
 {
 	Matrix();
 
-	static math::Vector3d vLightDir = math::Vector3d(0.0f, 0.0f, 0.0f);
-	static float LightAngle = 0.0f;
-	LightAngle += 0.01f;
-	vLightDir.x = cos(LightAngle);
-	vLightDir.y = 0.0f;
-	vLightDir.z = sin(LightAngle);
-
 	std::map<std::string,Core::CMesh*>::iterator meshIteratorBegin = m_MeshList.begin();
 	std::map<std::string,Core::CMesh*>::iterator meshIteratorEnd = m_MeshList.end();
 
@@ -52,7 +45,7 @@ void CModel::Update()
 		meshIteratorBegin->second->m_Shader->SetMatrix(m_mWorldViewProjection,"mWorldViewProjection",Core::IShader::VS_SHADER);
 		meshIteratorBegin->second->m_Shader->SetMatrix(m_mWorld,"mWorld",Core::IShader::VS_SHADER);
 		meshIteratorBegin->second->m_Shader->SetVector(Game::GetEnviromentControllerInstance()->GetCameraInstance()->vPosition,"vCameraEye",Core::IShader::VS_SHADER);
-		meshIteratorBegin->second->m_Shader->SetVector(vLightDir,"vLightDir",Core::IShader::VS_SHADER);
+		meshIteratorBegin->second->m_Shader->SetVector(Game::GetEnviromentControllerInstance()->GetLightInstance()->GetDirection(),"vLightDir",Core::IShader::VS_SHADER);
 		meshIteratorBegin++;
 	}
 }

@@ -324,3 +324,10 @@ void CLandscape::RefreshVB(int _streamId)
 		}
 	m_MeshList[m_FirstChunkName]->m_VertexBuffer->Unlock(_streamId);
 }
+
+void CLandscape::DrawTraces(float _x, float _z)
+{
+	SVertexStreamSplatting *vertexData = (SVertexStreamSplatting*)m_MeshList[m_FirstChunkName]->m_VertexBuffer->Lock(1);
+	vertexData[(int)_x * m_Width+ (int)_z].m_vSplatting = 0x000000FF;
+	m_MeshList[m_FirstChunkName]->m_VertexBuffer->Unlock(1);
+}

@@ -24,8 +24,8 @@ void EnviromentController::Load()
 	SResource landscapeResource;
 	landscapeResource.m_ResouceFile = "Content\\maps\\map.raw";
 	landscapeResource.m_ShaderFile = "Content\\shaders\\basic";
-	landscapeResource.m_TextureFileList[0] = "Content\\textures\\island_v1_tex.dds";
-	landscapeResource.m_TextureFileList[1] = "Content\\textures\\grass_turf_v2_tex.dds";
+	landscapeResource.m_TextureFileList[0] = "Content\\textures\\sand.dds";
+	landscapeResource.m_TextureFileList[1] = "Content\\textures\\grass.dds";
 	landscapeResource.m_TextureFileList[2] = "Content\\textures\\road.dds";
 	landscapeResource.m_TextureFileList[3] = "Content\\textures\\sand_nh.dds";
 	landscapeResource.m_TextureFileList[4] = "Content\\textures\\grass_nh.dds";
@@ -94,8 +94,8 @@ void EnviromentController::Update(DWORD time)
 	math::Vector3d vCameraLookAt = m_Camera->vLookAt;
 	if(time  == 1)
 	{
-		vCameraPosition.y = -m_Camera->vPosition.y  + m_Ocean->m_vPosition.y * 2.0f + 0.33f;
-		vCameraLookAt.y = -m_Camera->vLookAt.y + m_Ocean->m_vPosition.y * 2.0f + 0.33f;
+		vCameraPosition.y = -m_Camera->vPosition.y  + m_Ocean->m_vPosition.y * 2.0f + 0.16f;
+		vCameraLookAt.y = -m_Camera->vLookAt.y + m_Ocean->m_vPosition.y * 2.0f + 0.16f;
 		m_Camera->mView = math::MatrixView(vCameraPosition, vCameraLookAt, math::Vector3d(0.0f,-1.0f,0.0f));
 		Core::CGlobal::GetDevice()->EnableClipPlane(0,math::Vector3d(0.0f,m_Ocean->m_vPosition.y,0.0f),math::Vector3d(0.0f,m_Ocean->m_vPosition.y,1.0f),math::Vector3d(1.0f,m_Ocean->m_vPosition.y,0.0f));
 	}
@@ -204,12 +204,12 @@ void EnviromentController::Render(Video::CRenderController::ERenderTexture value
 				cLandscape++;
 			}
 
-			/*std::map<std::string,CDummy*>::iterator cModel = m_ModelContainer.begin();
+			std::map<std::string,CDummy*>::iterator cModel = m_ModelContainer.begin();
 			while(cModel != m_ModelContainer.end())
 			{
 				cModel->second->Render();
 				cModel++;
-			}*/
+			}
 			m_characterController->GetEditController()->GetBrush()->Render();
 			m_Grass->Render();
 

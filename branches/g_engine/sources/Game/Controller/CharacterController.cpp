@@ -19,15 +19,21 @@ CharacterController::CharacterController(Camera* _camera, CDummy* _character, CD
 #endif
 
 	m_minMoveSpeed = 0.0f;
-	m_maxForwardMoveSpeed = 0.5f;
-	m_maxBackwardMoveSpeed = -0.25f;
-	m_moveAcceleration = 0.001f;
+	m_maxForwardMoveSpeed = 0.1f;
+	m_maxBackwardMoveSpeed = -0.05f;
+	m_moveAcceleration = 0.0001f;
 	m_dragFactor = 5.0f;
 
 	m_character->m_vScale = math::Vector3d(0.01f,0.01f,0.01f);
+	m_vPosition = math::Vector3d(24.0f,0.0f,24.0f);
 	_camera->SetTarget(_character);
+#ifdef EDITOR_ENABLE
+	_camera->SetDistanceToTarget(64.0f);
+	m_cameraHeightUnderTarget = 8.0f;
+#else
 	_camera->SetDistanceToTarget(4.0f);
 	m_cameraHeightUnderTarget = 4.0f;
+#endif
 
 	m_cEditController = new EditorController(m_landscape);
 }
@@ -105,6 +111,8 @@ void CharacterController::CharacterUpdate()
 {
 	m_vPosition.y = GetLandscapeHeight(m_vPosition.x, m_vPosition.z);
 	m_camera->vPosition.y = GetLandscapeHeight(m_camera->vPosition.x,m_camera->vPosition.z) + 2.0f;
+	if(m_camera->vPosition.y < 14.0f)
+		m_camera->vPosition.y = 14.0f;
 	m_character->m_vPosition = m_vPosition;
 
 	m_character->m_vRotation.x = -GetLandscapeRotation(m_vPosition).x;
@@ -177,8 +185,13 @@ void CharacterController::KeyboardControl()
 		}
 	}
 
-	m_vPosition.x += (float)sin(m_vRotation.y * TO_RAD) * m_currentMoveSpeed;
-    m_vPosition.z += (float)cos(m_vRotation.y * TO_RAD) * m_currentMoveSpeed;
+	if(GetLandscapeHeight(m_vPosition.x + (float)sin(m_vRotation.y * TO_RAD) * m_currentMoveSpeed, m_vPosition.z + (float)cos(m_vRotation.y * TO_RAD) * m_currentMoveSpeed) > 12.0f)
+	{
+		m_vPosition.x += (float)sin(m_vRotation.y * TO_RAD) * m_currentMoveSpeed;
+		m_vPosition.z += (float)cos(m_vRotation.y * TO_RAD) * m_currentMoveSpeed;
+	}
+
+	//((CLandscape*)m_landscape)->DrawTraces(m_vPosition.x,m_vPosition.z);
 }
 
 void CharacterController::MouseControl()

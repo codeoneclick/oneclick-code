@@ -24,6 +24,8 @@ float4 vRimColor = float4(0.5f,0.5f,0.0f,1.0f);
 
 float fGridMaskFactor = 16.0f;
 
+float fTraceTile = 8.0f;
+
 texture Texture_01;
 sampler Texture_01_Sampler = sampler_state {
 	Texture = <Texture_01>;
@@ -87,7 +89,6 @@ struct VS_OUTPUT {
    float3 vNormal          : TEXCOORD1;
    float3 vTangent		   : TEXCOORD2;
    float3 vWorldPosition   : TEXCOORD3;
-   float  fReflectFactor   : TEXCOORD4;
 };
 
 float FogDensity = 1024.0f;
@@ -104,8 +105,7 @@ VS_OUTPUT vs_main(VS_INPUT IN)
    
    OUT.vTangent = vTangent;
    OUT.vNormal = vNormal;
-   OUT.vWorldPosition = mul(float4(IN.vPosition,1.0f),mWorld).xyz;
-   OUT.fReflectFactor = IN.vPosition.y;
+   OUT.vWorldPosition = IN.vPosition;
    return OUT;
 }
 
@@ -114,7 +114,7 @@ float4 ps_main(VS_OUTPUT IN) : COLOR
 	IN.vTangent = normalize(IN.vTangent);
 	IN.vNormal = normalize(IN.vNormal);
 	
-	float3x3 mTangentSpace = float3x3(IN.vTangent,cross(IN.vTangent,IN.vNormal),IN.vNormal);
+	float3x3 mTangentSpace = float3x3(-IN.vTangent,cross(IN.vTangent,IN.vNormal),IN.vNormal);
 	float3 vCameraEyeTangentSpace = normalize(mul(mTangentSpace,vCameraEye - IN.vWorldPosition)); 
 	float3 vCameraEyeWorldSpace = normalize(vCameraEye - IN.vWorldPosition);
 	float3 vLightDirTangentSpace = normalize(mul(mTangentSpace,vLightDir));
@@ -124,14 +124,14 @@ float4 ps_main(VS_OUTPUT IN) : COLOR
     fHeightPower = tex2D(Texture_01_NH_Sampler, IN.vTexCoord).a * IN.vSplatting.x + 
 				   tex2D(Texture_02_NH_Sampler, IN.vTexCoord).a * IN.vSplatting.y + 
 				   tex2D(Texture_03_NH_Sampler, IN.vTexCoord).a * IN.vSplatting.z;
-    fHeightPower *= 0.04f;
+    fHeightPower = fHeightPower * 0.04f - 0.03f;
 	vDisplaceTexCoord = vDisplaceTexCoord + (vCameraEyeTangentSpace.xy * fHeightPower);
     
     float3 vNormalColor = tex2D(Texture_01_NH_Sampler, vDisplaceTexCoord).rgb * IN.vSplatting.x + 
 						  tex2D(Texture_02_NH_Sampler, vDisplaceTexCoord).rgb * IN.vSplatting.y + 
 						  tex2D(Texture_03_NH_Sampler, vDisplaceTexCoord).rgb * IN.vSplatting.z;
 	
-	vNormalColor = vNormalColor * 2 - 1;
+	vNormalColor = vNormalColor * 2.0f - 1.0f;
 	vNormalColor = normalize(vNormalColor);
 	
 	float4 vDiffuseColor =  tex2D( Texture_01_Sampler, vDisplaceTexCoord )*IN.vSplatting.x + 
@@ -156,7 +156,7 @@ float4 ps_main(VS_OUTPUT IN) : COLOR
     float4 vColor = vDiffuseColor * vDiffuseFactor + vSpecularFactor * vSpecularColor + fRimPower * vDiffuseColor * fRimFactor;// + vGridColor;
     float4 FogColor = float4(1.0f, 1.0f, 1.0f, 1.0f); 
     vColor = lerp(vColor,FogColor, Fog);
-    vColor.a = IN.fReflectFactor / fOceanLevel;
+    vColor.a = IN.vWorldPosition.y / fOceanLevel;
     return vColor;
 }
 
