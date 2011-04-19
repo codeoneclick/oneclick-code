@@ -1,6 +1,7 @@
 package game.enviroment 
 {
 	import common.helper3d.Container3d;
+	import common.helper3d.Sprite3d;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Point;
@@ -20,15 +21,15 @@ package game.enviroment
 		public static const K_CHARACTER_LAYER:String = "CHARACTER_LAYER";
 		private const k_TILE_RES_NAME:String = "Tile";
 		
-		private var m_tiles:Array = new Array();
-		private var m_tilesList:Array = new Array();
-		
-		private var m_walls:Array = new Array();
-		private var m_wallsList:Array = new Array();
+		private var m_tilesList:Vector.<GroundCell> = new Vector.<GroundCell>();
+		private var m_wallsList:Vector.<Building> = new Vector.<Building>();
 		
 		private var m_mapContainer:Container3d = new Container3d();
 		
 		private var m_visualLayers:Dictionary = new Dictionary();
+		
+		private static var m_workingGroundCell:GroundCell = null;
+		private static var m_workingBuildingCell:Building = null;
 		
 		public function Level() 
 		{
@@ -45,38 +46,44 @@ package game.enviroment
 			
 			for (var i:int = 0; i < k_MAP_WIDTH; i++)
 			{
-				m_tiles[i] = new Array();
 				for (var j:int = 0; j < k_MAP_HEIGHT; j++)
 				{
-					m_tiles[i][j] = new GroundCell(m_visualLayers[k_MAP_LAYER], new Point(GroundCell.k_WIDTH, GroundCell.k_HEIGHT), k_TILE_RES_NAME);
-					m_tiles[i][j].Parent = m_mapContainer;
-					m_tiles[i][j].Rotation.x = 1.57;
-					m_tiles[i][j].Position.x = (GroundCell.k_WIDTH - 1) * i - GroundCell.k_WIDTH * k_MAP_WIDTH / 2;
-					m_tiles[i][j].Position.z = (GroundCell.k_HEIGHT - 1) * j - GroundCell.k_HEIGHT * k_MAP_HEIGHT / 2;
-					m_tilesList.push(m_tiles[i][j]);
+					m_workingGroundCell = new GroundCell(m_visualLayers[k_MAP_LAYER], new Point(GroundCell.k_WIDTH, GroundCell.k_HEIGHT), k_TILE_RES_NAME);
+					m_workingGroundCell.Parent = m_mapContainer;
+					m_workingGroundCell.Rotation.x = 1.57;
+					m_workingGroundCell.Position.x = (GroundCell.k_WIDTH - 1) * i - GroundCell.k_WIDTH * k_MAP_WIDTH / 2;
+					m_workingGroundCell.Position.z = (GroundCell.k_HEIGHT - 1) * j - GroundCell.k_HEIGHT * k_MAP_HEIGHT / 2;
+					m_tilesList.push(m_workingGroundCell);
 				}
 			}	
 			
-			for (var i:int = 0; i < k_MAP_WIDTH / 2; i++)
+			for (var i:int = 0; i < k_MAP_WIDTH; i++)
 			{
-				m_walls[i] = new Array();
-				for (var j:int = 0; j < k_MAP_HEIGHT / 2; j++)
+				for (var j:int = 0; j < k_MAP_HEIGHT; j++)
 				{
-					m_walls[i][j] = new Building(m_visualLayers[K_CHARACTER_LAYER], new Point(GroundCell.k_WIDTH, GroundCell.k_HEIGHT), "pic0");
-					m_walls[i][j].Parent = m_mapContainer;
-					m_walls[i][j].Rotation.y = 0;
-					m_walls[i][j].Position.x = GroundCell.k_WIDTH * i - GroundCell.k_WIDTH * k_MAP_WIDTH / 2;
-					m_walls[i][j].Position.z = GroundCell.k_HEIGHT * j - GroundCell.k_HEIGHT * k_MAP_HEIGHT / 2;
-					m_walls[i][j].Position.y = GroundCell.k_WIDTH / 2;
+					if (i % 2 > 0)
+					{
+						m_workingBuildingCell = new Building(m_visualLayers[K_CHARACTER_LAYER], new Point(GroundCell.k_WIDTH, GroundCell.k_HEIGHT), "pic0");
+					}
+					else if ( j % 2 > 0)
+					{
+						m_workingBuildingCell = new Building(m_visualLayers[K_CHARACTER_LAYER], new Point(GroundCell.k_WIDTH, GroundCell.k_HEIGHT), "pic1");
+					}
+					else
+					{
+						m_workingBuildingCell = new Building(m_visualLayers[K_CHARACTER_LAYER], new Point(GroundCell.k_WIDTH, GroundCell.k_HEIGHT), "pic3");
+					}
 					
-					/*m_walls[i][j] = new Tile(m_visualLayers[K_CHARACTER_LAYER], new Point(Tile.k_TILE_WIDTH, Tile.k_TILE_HEIGHT), k_TILE_RES_NAME, new Point(i, j));
-					m_walls[i][j].Parent = m_mapContainer;
-					m_walls[i][j].Rotation.y = 0;
-					m_walls[i][j].Position.x = Tile.k_TILE_WIDTH * i - Tile.k_TILE_WIDTH * k_MAP_WIDTH / 2 + Tile.k_TILE_WIDTH / 2;
-					m_walls[i][j].Position.z = Tile.k_TILE_HEIGHT * j - Tile.k_TILE_HEIGHT * k_MAP_HEIGHT / 2;
-					m_walls[i][j].Position.y = Tile.k_TILE_WIDTH / 2;*/
+					if ( i == 0 || j == 0 || i == (k_MAP_WIDTH - 1) || j == (k_MAP_WIDTH - 1))
+						m_workingBuildingCell = new Building(m_visualLayers[K_CHARACTER_LAYER], new Point(GroundCell.k_WIDTH, GroundCell.k_HEIGHT), "pic2");
+				
+					m_workingBuildingCell.Parent = m_mapContainer;
+					m_workingBuildingCell.Rotation.y = 0;
+					m_workingBuildingCell.Position.x = GroundCell.k_WIDTH * i - GroundCell.k_WIDTH * k_MAP_WIDTH / 2;
+					m_workingBuildingCell.Position.z = GroundCell.k_HEIGHT * j - GroundCell.k_HEIGHT * k_MAP_HEIGHT / 2;
+					m_workingBuildingCell.Position.y = GroundCell.k_WIDTH / 2;
 					
-					m_wallsList.push(m_walls[i][j]);
+					m_wallsList.push(m_workingBuildingCell);
 				}
 			}	
 			
@@ -85,29 +92,36 @@ package game.enviroment
 		
 		private function update(_event:Event):void
 		{
-			m_mapContainer.Position.x = Core.camera.Position.x;
-			m_mapContainer.Position.z = Core.camera.Position.z;
-			m_mapContainer.Position.y = Core.camera.Position.y;
+			m_mapContainer.Position = Core.camera.Position;
 			zOrder();
-			m_mapContainer.Rotation.y += 0.0285;
+			m_mapContainer.Rotation.y = 0.7;//+= 0.0285;
 		}
 		
 		private function zOrder():void
 		{
 			var mapLayer:Sprite = m_visualLayers[k_MAP_LAYER];
-			m_tilesList.sortOn("zIndex", Array.NUMERIC);
+			m_tilesList.sort(spriteSorter);
 			for (var i:int = 0; i < m_tilesList.length; i++)
 			{
 				mapLayer.setChildIndex(m_tilesList[i], i);
 			}	
 			
 			var characterLayer:Sprite = m_visualLayers[K_CHARACTER_LAYER];
-			m_wallsList.sortOn("zIndex", Array.NUMERIC);
+			m_wallsList.sort(spriteSorter);
 			for (var i:int = 0; i < m_wallsList.length; i++)
 			{
 				characterLayer.setChildIndex(m_wallsList[i], i);
-				m_wallsList[i].Rotation.y -= 0.0285;
+				m_wallsList[i].Rotation.y = -0.7;//-= 0.0285;
 			}	
+		}
+		
+		private final function spriteSorter(_value_01:Sprite3d,_value_02:Sprite3d) : Number
+		{
+			if (_value_01.zIndex < _value_02.zIndex)
+				return -1;
+			if (_value_01.zIndex > _value_02.zIndex)
+				return 1;
+			return 0;
 		}
 	}
 }

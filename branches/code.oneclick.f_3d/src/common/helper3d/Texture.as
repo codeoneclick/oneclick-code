@@ -1,6 +1,7 @@
 ﻿package common.helper3d
 {
 	
+import flash.display.Graphics;
 import flash.display.Sprite;
 import flash.geom.Matrix;
 import flash.display.BitmapData;
@@ -15,6 +16,8 @@ import flash.geom.Point;
 		
 		private var m_pointList:Array = null;
 		private var m_triangleList:Array = null;
+		
+		private static var m_graphics:Graphics = null;
 		
 		public function set bitmapData(_value:BitmapData):void
 		{
@@ -104,11 +107,12 @@ import flash.geom.Point;
 				
 				matrixT.invert();
 				matrixT.concat( matrixS );
-				m_sprite.graphics.beginBitmapFill( m_bitmapData, matrixT, false, false );
-				m_sprite.graphics.moveTo( point_0.sx, point_0.sy );
-				m_sprite.graphics.lineTo( point_1.sx, point_1.sy );
-				m_sprite.graphics.lineTo( point_2.sx, point_2.sy );
-				m_sprite.graphics.endFill();
+				m_graphics = m_sprite.graphics;
+				m_graphics.beginBitmapFill( m_bitmapData, matrixT, false, false );
+				m_graphics.moveTo( point_0.sx, point_0.sy );
+				m_graphics.lineTo( point_1.sx, point_1.sy );
+				m_graphics.lineTo( point_2.sx, point_2.sy );
+				m_graphics.endFill();
 			}
 		} 
 	}

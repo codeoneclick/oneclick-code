@@ -56,7 +56,7 @@ package common.loader
 				{
 					((m_requestList[name] as Requester).requesters[i] as Function)(_event.target.content.bitmapData);
 				}
-				(m_requestList[name] as Requester).requesters = new Array();	
+				(m_requestList[name] as Requester).requesters = new Vector.<Function>();	
 			}
 		}
 	}

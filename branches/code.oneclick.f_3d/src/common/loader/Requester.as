@@ -8,7 +8,7 @@ package common.loader
 	public class Requester 
 	{
 		private var m_loader:Loader = null;
-		private var m_requesters:Array = new Array();
+		private var m_requesters:Vector.<Function> = new Vector.<Function>();
 		
 		public function set loader(_value:Loader):void
 		{
@@ -20,12 +20,12 @@ package common.loader
 			return m_loader;
 		}
 		
-		public function get requesters():Array
+		public function get requesters():Vector.<Function> 
 		{
 			return m_requesters;
 		}
 		
-		public function set requesters(_value:Array):void
+		public function set requesters(_value:Vector.<Function>):void
 		{
 			m_requesters = _value;
 		}

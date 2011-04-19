@@ -69,7 +69,6 @@ package game.enviroment
 		protected function onUpdate(_event:Event):void
 		{
 			onUpdateLogic();
-			
 			update();
 			rasterize();
 		}
@@ -78,7 +77,7 @@ package game.enviroment
 		{
 			if (m_intersect)
 			{
-				filters = [new GlowFilter(0x000000,1,6,6,6,1,true)];
+				filters = [new GlowFilter(0xFFFF00,1,6,6,6,1,true)];
 			}
 			else
 			{

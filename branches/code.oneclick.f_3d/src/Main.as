@@ -3,6 +3,7 @@
 	import common.helper3d.Sprite3d;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
+	import flash.display.StageQuality;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.TextEvent;
@@ -39,7 +40,7 @@
 			stage.frameRate = 60;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.stageWidth = 100;
-			
+			stage.quality =  StageQuality.LOW;
 			Core.stage = stage;
 			Core.displayContainer = this;
 			Core.init();

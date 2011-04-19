@@ -9,11 +9,11 @@
 	public class Matrix3d 
 	{
 		
-		public var m:Array;
+		public var m:Vector.<Number> = null;
 		
 		public function Matrix3d() 
 		{
-			m = new Array(16);
+			m = new Vector.<Number>(16);
 		}
 		
 		public static function matrixMulMatrix(matrixOneIn:Matrix3d, matrixTwoIn:Matrix3d):Matrix3d
