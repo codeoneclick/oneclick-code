@@ -21,7 +21,15 @@ package game.enviroment
 		{
 			for ( i = 0; i < k_MAX_MESH_NODE; i++)
 			{
-				m_meshNodeList.push(new MeshNode(_container, _size, _resName,MeshNode.k_MESH_HALF_01));
+				if ((i % 2) == 0)
+				{
+					m_meshNodeList.push(new MeshNode(_container, _size, _resName, MeshNode.k_MESH_HALF_01));
+				}
+				else
+				{
+					m_meshNodeList.push(new MeshNode(_container, _size, _resName, MeshNode.k_MESH_HALF_02));
+				}
+					
 				m_meshNodeList[i].Parent = _parentContainer;
 				_zOrderSortContainer.push(m_meshNodeList[i]);
 			}
