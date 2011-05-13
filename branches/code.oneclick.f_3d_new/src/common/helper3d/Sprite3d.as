@@ -28,15 +28,19 @@
 		protected var m_rotation:Vector3D = new Vector3D();
 		protected var m_size:Point = new Point();
 		
-		protected var m_wspLeftTop:Vector3D = new Vector3D();				
-		protected var m_wspLeftBottom:Vector3D = new Vector3D();
-		protected var m_wspRightTop:Vector3D = new Vector3D();	
-		protected var m_wspRightBottom:Vector3D = new Vector3D();
+		protected static var m_wspLeftTop:Vector3D = new Vector3D();				
+		protected static var m_wspLeftBottom:Vector3D = new Vector3D();
+		protected static var m_wspRightTop:Vector3D = new Vector3D();	
+		protected static var m_wspRightBottom:Vector3D = new Vector3D();
 		
 		protected var m_sspLeftTop:Point = new Point();				
 		protected var m_sspLeftBottom:Point = new Point();
 		protected var m_sspRightTop:Point = new Point();
 		protected var m_sspRightBottom:Point = new Point();
+		
+		protected static var mRX:Matrix3d = null;
+		protected static var mRY:Matrix3d = null;
+		protected static var mRZ:Matrix3d = null;
 		
 		protected var m_texture:Texture = null;
 		
@@ -76,6 +80,11 @@
 		public function get Parent():Container3d
 		{
 			return m_parent;
+		}
+		
+		public function get Size():Point
+		{
+			return m_size;
 		}
 		
 		public function get zIndex():Number
@@ -254,9 +263,9 @@
 		
 		protected function rotate(_vector:Vector3D):void
 		{
-			var mRX:Matrix3d = Matrix3d.matrixRotateX(_vector.x);
-		    var mRY:Matrix3d = Matrix3d.matrixRotateY(_vector.y);
-			var mRZ:Matrix3d = Matrix3d.matrixRotateZ(_vector.z);
+			mRX = Matrix3d.matrixRotateX(_vector.x);
+		    mRY = Matrix3d.matrixRotateY(_vector.y);
+			mRZ = Matrix3d.matrixRotateZ(_vector.z);
 			
 			m_wspLeftBottom  = Matrix3d.matrixMulVector(m_wspLeftBottom, mRX);
 			m_wspLeftTop     = Matrix3d.matrixMulVector(m_wspLeftTop, mRX);
