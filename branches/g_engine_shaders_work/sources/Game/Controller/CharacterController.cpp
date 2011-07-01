@@ -29,8 +29,8 @@ CharacterController::CharacterController(Camera* _camera, CDummy* _character, CD
 	m_vPosition = math::Vector3d(24.0f,0.0f,24.0f);
 	_camera->SetTarget(_character);
 #ifdef EDITOR_ENABLE
-	_camera->SetDistanceToTarget(16.0f);
-	m_cameraHeightUnderTarget = 2.0f;
+	_camera->SetDistanceToTarget(64.0f);
+	m_cameraHeightUnderTarget = 8.0f;
 #else
 	_camera->SetDistanceToTarget(8.0f);
 	m_cameraHeightUnderTarget = 4.0f;

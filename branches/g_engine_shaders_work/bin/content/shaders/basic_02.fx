@@ -55,19 +55,19 @@ VS_OUTPUT vs_main(VS_INPUT IN)
    OUT.vPosition = mul( float4(IN.vPosition,1.0f) ,mWorldViewProjection);
    OUT.vTexCoord = IN.vTexCoord;
    
-   float3x3 mTangentSpace;
+   /*float3x3 mTangentSpace;
    mTangentSpace[0] = -IN.vTangent;
    mTangentSpace[1] = -IN.vBinormal;
    mTangentSpace[2] = -IN.vNormal;
    
    OUT.vLightDir = mul(mTangentSpace,vLightDir);
-   OUT.vCameraEye = mul(mTangentSpace,IN.vPosition - vCameraEye);
+   OUT.vCameraEye = mul(mTangentSpace,IN.vPosition - vCameraEye);*/
    return OUT;
 }
 
 float4 ps_main(VS_OUTPUT IN) : COLOR 
 {	
-    IN.vCameraEye = normalize(IN.vCameraEye);
+    /*IN.vCameraEye = normalize(IN.vCameraEye);
     IN.vLightDir = normalize(IN.vLightDir);
    
     float fHeightPower = 0.0f;
@@ -95,7 +95,11 @@ float4 ps_main(VS_OUTPUT IN) : COLOR
 	float fRimPower = smoothstep(0.5f , 1.0f ,1.0f - fRimBias - dot(vNormalColor,-IN.vCameraEye));
   
     float4 vColor = vDiffuseColor * vDiffuseFactor + vAmbientColor * fAmbientFactor + vSpecularFactor * vSpecularColor;// + vRimColor * fRimPower;
-    return vColor;
+    return vColor;*/
+    
+    float4 vDiffuseColor =  tex2D( Texture_01_Sampler, IN.vTexCoord);
+    vDiffuseColor.a = 1.0f;
+    return vDiffuseColor;
 }
 
 technique mesh {

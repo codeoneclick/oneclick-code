@@ -50,7 +50,7 @@ struct VS_OUTPUT
    float2 vTexCoord	       : TEXCOORD0;
    float4 vTexCoordProj    : TEXCOORD1;
    float3 vWorldPosition   : TEXCOORD2;
-   float3x3 mTangentSpace  : TEXCOORD3;
+   //float3x3 mTangentSpace  : TEXCOORD3;
 };
 
 
@@ -63,52 +63,68 @@ VS_OUTPUT vs_main(VS_INPUT IN)
    
    OUT.vWorldPosition = mul(float4(IN.vPosition,1.0f), mWorld).xyz;
    
-   float3 vBinormal = float3( 1.0f,  0.0f, 0.0f );
-   float3 vTangent  = float3( 0.0f,  0.0f, 1.0f );
-   float3 vNormal   = float3( 0.0f,  1.0f, 0.0f );
+   //float3 vBinormal = float3( 1.0f,  0.0f, 0.0f );
+  // float3 vTangent  = float3( 0.0f,  0.0f, 1.0f );
+  // float3 vNormal   = float3( 0.0f,  1.0f, 0.0f );
    
-   float3x3 mTangentSpace = float3x3(vTangent,vBinormal,vNormal);
-   OUT.mTangentSpace = mTangentSpace;
+  // float3x3 mTangentSpace = float3x3(vTangent,vBinormal,vNormal);
+   //OUT.mTangentSpace = mTangentSpace;
    return OUT;
 }
 
 float4 ps_main(VS_OUTPUT IN) : COLOR 
 {	
-	float3 vLightDirPix = normalize(mul(IN.mTangentSpace,vLightDir));
-	float3 vCameraEyePix = normalize(mul(IN.mTangentSpace,vCameraEye - IN.vWorldPosition));
+    float3 vBinormal = float3( 1.0f,  0.0f, 0.0f );
+    float3 vTangent  = float3( 0.0f,  0.0f, 1.0f );
+    float3 vNormal   = float3( 0.0f,  1.0f, 0.0f );
+    float3x3 mTangentSpace = float3x3(vTangent,vBinormal,vNormal);
 
-	IN.vTexCoord *= fTileFactor;
-	float2 vTexCoord_01 = float2(IN.vTexCoord.x + sin(fTimer)*0.07f,
-								 IN.vTexCoord.y - cos(fTimer)*0.09f);
+	float3 vLightDirPix = normalize( mul( mTangentSpace, vLightDir ) );
+	float3 vCameraEyePix = normalize( mul( mTangentSpace, vCameraEye - IN.vWorldPosition ) );
 	
-	float2 vTexCoord_02 = float2(IN.vTexCoord.x - sin(fTimer)*0.09f,
-								 IN.vTexCoord.y + cos(fTimer)*0.07f);
+	//float3 vEyeTS = mul( mTangentSpace, normalize( vCameraEye - IN.vwPosition ) ); 
+	//float3 vEyeWS = normalize( vCameraEye - IN.vwPosition );
+	//float3 vLightTS = normalize( mul( mTangentSpace, vLightDir ) );
+   
+    IN.vTexCoord *= fTileFactor;
+    float4 vReliefTexture = tex2D( Texture_01_Sampler, IN.vTexCoord );
+					
+    float fHeight = vReliefTexture.w * 0.06f - 0.03f;
+	float2 vDisTexCoord = IN.vTexCoord - vCameraEyePix.xy * fHeight;
+
+	
+	float2 vTexCoord_01 = float2(vDisTexCoord.x + sin(fTimer)*0.07f,
+								 vDisTexCoord.y - cos(fTimer)*0.09f);
+	
+	float2 vTexCoord_02 = float2(vDisTexCoord.x - sin(fTimer)*0.09f,
+								 vDisTexCoord.y + cos(fTimer)*0.07f);
 
     float3 vNormalColor = normalize((tex2D( Texture_01_Sampler, vTexCoord_01 ) * 2.0f - 1.0f ) + 
 								    (tex2D( Texture_01_Sampler, vTexCoord_02 ) * 2.0f - 1.0f ));
 						  
 	float3 vNormalColorWS = vNormalColor;					  
 						  
-	vNormalColor = normalize(mul(IN.mTangentSpace, vNormalColor));
+	vNormalColor = normalize(mul(mTangentSpace, vNormalColor));
 	
     float2 vTexCoordRefractionProj = 0.5f + 0.5f * IN.vTexCoordProj.xy / IN.vTexCoordProj.w * float2(1.0f,-1.0f);
     float4 vRefractionColor = tex2D(Texture_03_Sampler,vTexCoordRefractionProj);
 	
-	vTexCoordRefractionProj = 0.5f + 0.5f * (IN.vTexCoordProj.xy + vNormalColorWS * (1.0f - vRefractionColor.a)) / IN.vTexCoordProj.w * float2(1.0f,-1.0f);
+	vTexCoordRefractionProj = 0.5f + 0.5f * (IN.vTexCoordProj.xy + vNormalColorWS * 8.0f * (1.0f - vRefractionColor.a)) / IN.vTexCoordProj.w * float2(1.0f,-1.0f);
 	vTexCoordRefractionProj = clamp(vTexCoordRefractionProj, 0.001f, 0.999f); 
 	vRefractionColor = tex2D(Texture_03_Sampler,vTexCoordRefractionProj);
 	
-	float2 vTexCoordReflectionProj = 0.5f + 0.5f * (IN.vTexCoordProj.xy + vNormalColorWS) / IN.vTexCoordProj.w;
+	float2 vTexCoordReflectionProj = 0.5f + 0.5f * (IN.vTexCoordProj.xy + vNormalColorWS * 8.0f) / IN.vTexCoordProj.w;
 	vTexCoordReflectionProj = clamp(vTexCoordReflectionProj, 0.001f, 0.999f);
 	float4 vReflectionColor = tex2D(Texture_02_Sampler,vTexCoordReflectionProj);	
 	
 	float3 vLightReflect = normalize(reflect(vCameraEyePix,vNormalColor));
 	float vSpecularFactor = pow(max(0.0f,dot(vLightReflect, vLightDirPix)), fSpecularFactor);
 	
-	float fReflectionFactor = vReflectionColor.r + vReflectionColor.g + vReflectionColor.b;
-	vRefractionColor = lerp(vRefractionColor + vDeepColor * fDarkEffect, vDeepColor * (fDarkEffect + vRefractionColor.a) , (1.0f - vRefractionColor.a));
-    float4 vColor = lerp(vRefractionColor, vReflectionColor, fReflectionFactor) + float4(vSpecularFactor,vSpecularFactor,vSpecularFactor,1.0f);
-    
+	float fresnelTerm = dot(normalize(vCameraEye - IN.vWorldPosition), float3( 0.0f,  1.0f, 0.0f ));
+	vRefractionColor = lerp(vRefractionColor, vDeepColor, (1.0f - vRefractionColor.a));
+	float vDiffuseFactor = saturate( dot ( vNormalColor, vLightDirPix ) * 0.5f + 0.5f);
+    float4 vColor = lerp(vReflectionColor, vRefractionColor, fresnelTerm) + float4(vSpecularFactor,vSpecularFactor,vSpecularFactor,1.0f) + vDeepColor * vDiffuseFactor;
+   
     float fDistance = length( vOceanCenter - IN.vWorldPosition );
 	float fFogFactor = saturate((fDistance - fFogStart) / fFogEnd);
 	float fLuminanceFactor = dot(vLuminanceColor, vFogColor.rgb );

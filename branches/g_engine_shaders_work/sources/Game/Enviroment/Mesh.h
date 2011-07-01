@@ -12,7 +12,7 @@ namespace Core
 	class CMesh
 	{
 	public :
-		enum MESH_EXTENSION { EXT_3DS = 0, EXT_MD2 };
+		enum MESH_EXTENSION { EXT_3DS = 0, EXT_MD2, EXT_M3 };
 		MESH_EXTENSION m_Extension;
 		
 		IVertexBuffer *m_VertexBuffer;

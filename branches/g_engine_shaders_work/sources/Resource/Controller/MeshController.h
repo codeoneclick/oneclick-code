@@ -3,6 +3,7 @@
 
 #include "IResourceController.h"
 #include "../Loader/3DS.h"
+#include "../Loader/CM2.h"
 
 
 namespace Controller

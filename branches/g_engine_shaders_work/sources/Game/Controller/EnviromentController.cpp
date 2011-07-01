@@ -25,13 +25,13 @@ void EnviromentController::Load()
 
 	std::vector<SResource> landscapeResourceContainer;
 	SResource landscapeResource;
-	landscapeResource.m_ResouceFile = "Content\\maps\\map.raw";
+	landscapeResource.m_ResouceFile = "Content\\maps\\Kbsd_Heightmap_Example.raw";
 	landscapeResource.m_ShaderFile = "Content\\shaders\\basic";
-	landscapeResource.m_TextureFileList[0] = "Content\\textures\\road.dds";
-	landscapeResource.m_TextureFileList[1] = "Content\\textures\\grass.dds";
+	landscapeResource.m_TextureFileList[0] = "Content\\textures\\sand.dds";
+	landscapeResource.m_TextureFileList[1] = "Content\\textures\\road.dds";
 	landscapeResource.m_TextureFileList[2] = "Content\\textures\\road.dds";
-	landscapeResource.m_TextureFileList[3] = "Content\\textures\\road_nh.dds";
-	landscapeResource.m_TextureFileList[4] = "Content\\textures\\grass_nh.dds";
+	landscapeResource.m_TextureFileList[3] = "Content\\textures\\sand_nh.dds";
+	landscapeResource.m_TextureFileList[4] = "Content\\textures\\road_nh.dds";
 	landscapeResource.m_TextureFileList[5] = "Content\\textures\\road_nh.dds";
 	landscapeResource.m_TextureFileList[6] = "Content\\textures\\grid_mask.dds";
 	landscapeResourceContainer.push_back(landscapeResource);
@@ -47,7 +47,7 @@ void EnviromentController::Load()
 
 	std::vector<SResource> grassResourceContainer;
 	SResource grassResource;
-	grassResource.m_ResouceFile = "Content\\maps\\map.raw";
+	grassResource.m_ResouceFile = "Content\\maps\\Kbsd_Heightmap_Example.raw";
 	grassResource.m_ShaderFile = "Content\\shaders\\grass";
 	grassResource.m_TextureFileList[0] = "Content\\textures\\grass_v1_basic_tex.dds";
 	grassResourceContainer.push_back(grassResource);
@@ -67,17 +67,17 @@ void EnviromentController::Load()
 	std::vector<SResource> modelResourceContainer;
 	SResource modelNodeResource;
 
-	modelNodeResource.m_ResouceFile = "Content\\models\\tank.3ds";
-	modelNodeResource.m_Extension = Core::CMesh::EXT_3DS;
+	modelNodeResource.m_ResouceFile = "Content\\models\\Autoturret.m3";
+	modelNodeResource.m_Extension = Core::CMesh::EXT_M3;
 	modelNodeResource.m_ShaderFile = "Content\\shaders\\basic_02";
-	modelNodeResource.m_TextureFileList[0] = "Content\\textures\\tank_diffuse.dds";
+	modelNodeResource.m_TextureFileList[0] = "Content\\textures\\autoturret_diffuse.dds";
 	modelNodeResource.m_TextureFileList[1] = "Content\\textures\\tank_diffuse_nh.dds";
 	modelResourceContainer.push_back(modelNodeResource);
 
 	m_ModelContainer["model_01"] = new CModel();
     m_ModelContainer["model_01"]->Load(modelResourceContainer);
-	m_ModelContainer["model_01"]->m_vRotation.x = -1.57f;
-	m_ModelContainer["model_01"]->m_vScale = math::Vector3d(0.04f,0.04f,0.04f);
+	//m_ModelContainer["model_01"]->m_vRotation.x = -1.57f;
+	m_ModelContainer["model_01"]->m_vScale = math::Vector3d(2.04f,2.04f,2.04f);
 
 	m_Character = m_ModelContainer["model_01"];
 

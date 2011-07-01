@@ -139,7 +139,6 @@ float4 ps_main(VS_OUTPUT IN) : COLOR
 	
     float4 vColor = vDiffuseColor * vDiffuseFactor + /*vSpecularFactor * vSpecularColor + */ fRimPower * vDiffuseColor * fRimFactor;
     vColor.a = IN.vwPosition.y / fOceanLevel;
-	//vColor.rgb = IN.vNormal;
     return vColor;
 }
 

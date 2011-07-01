@@ -454,6 +454,14 @@
 						RelativePath="..\..\sources\Resource\Loader\3DS.h"
 						>
 					</File>
+					<File
+						RelativePath="..\..\sources\Resource\Loader\CM2.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\sources\Resource\Loader\CM2.h"
+						>
+					</File>
 				</Filter>
 			</Filter>
 			<Filter

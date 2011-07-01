@@ -35,6 +35,7 @@ void CModel::Load(std::vector<SResource> _resource)
 
 void CModel::Update()
 {
+	m_vScale = math::Vector3d(14.0f, 14.0f, 14.0f);
 	Matrix();
 
 	std::map<std::string,Core::CMesh*>::iterator meshIteratorBegin = m_MeshList.begin();
@@ -52,7 +53,7 @@ void CModel::Update()
 
 void CModel::Render()
 {
-	Core::CGlobal::GetDevice()->SetCullFace(Core::IDevice::CULL_CCW);
+	Core::CGlobal::GetDevice()->SetCullFace(Core::IDevice::CULL_NONE);
 	
 	std::map<std::string,Core::CMesh*>::iterator meshIteratorBegin = m_MeshList.begin();
 	std::map<std::string,Core::CMesh*>::iterator meshIteratorEnd = m_MeshList.end();

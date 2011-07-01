@@ -17,7 +17,7 @@ COcean::COcean(CLandscape* _landscape)
 void COcean::Load(std::vector<SResource> _resource)
 {
 	m_MeshList[m_Name] = new Core::CMesh();
-	m_MeshList[m_Name]->m_TextureArray[0] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\water.dds",Core::ITexture::DDS_EXT);
+	m_MeshList[m_Name]->m_TextureArray[0] = CResource::GetTextureControllerInstance()->Load("Content\\textures\\waterbump.dds",Core::ITexture::DDS_EXT);
 	m_MeshList[m_Name]->m_Shader = CResource::GetShaderControllerInstance()->Load("Content\\shaders\\ocean");
 	m_MeshList[m_Name]->m_VertexBuffer = Core::CGlobal::GetDevice()->CreateVertexBuffer();
 	m_MeshList[m_Name]->m_IndexBuffer = Core::CGlobal::GetDevice()->CreateIndexBuffer();

@@ -30,6 +30,12 @@ void CMeshController::ReadData(std::string _value)
 				m_DataContainer[_value] = Loader::C3DS::ReadData(_value);
 			}
 			break;
+			
+			case Core::CMesh::EXT_M3 :
+			{
+				m_DataContainer[_value] = Loader::CM2::ReadData(_value);
+			}
+			break;
 		}
 		
 }
@@ -76,6 +82,13 @@ void CMeshController::Update()
 				case Core::CMesh::EXT_3DS :
 				{
 					Loader::C3DS::Commit((Loader::C3DS::S3DSFile*)dataIterator->second,m_ResourceContainer[(*requestIterator)]);
+					m_DataContainer.erase(dataIterator);
+				}
+				break;
+
+				case Core::CMesh::EXT_M3 :
+				{
+					Loader::CM2::Commit((Loader::CM2::SMeshBuffer*)dataIterator->second,m_ResourceContainer[(*requestIterator)]);
 					m_DataContainer.erase(dataIterator);
 				}
 				break;
