@@ -9,6 +9,7 @@ package game
 	import core.Global;
 	import flash.events.MouseEvent;
 	import flash.filters.GlowFilter;
+	import flash.geom.Point;
 	/**
 	 * ...
 	 * @author codeoneclick
@@ -18,6 +19,7 @@ package game
 		protected var m_container:DisplayObjectContainer = null;
 		protected var m_intersect:Boolean = false;
 		protected var m_bitmap:Bitmap = null;
+		protected var m_position:Point = new Point( 0, 0);
 	
 		public function GameNode(_container:DisplayObjectContainer) 
 		{
@@ -43,17 +45,22 @@ package game
 		
 		protected function onUpdate(_event:Event):void
 		{
+			onIntersectUpdate();
+			
+			x = m_position.x - Global.camera.position.x;
+			y = m_position.y - Global.camera.position.y;
+		}
+		
+		protected function onIntersectUpdate():void
+		{
 			if (m_intersect)
 			{
-				filters = [new GlowFilter(0x00FFFFFF)];
+				alpha = 0.5;
 			}
 			else
 			{
-				filters = null;
+				alpha = 1.0;
 			}
-			
-			x -= Global.camera.offset.x;
-			y -= Global.camera.offset.y;
 		}
 		
 		protected function onMouseOut(_event:MouseEvent):void
@@ -64,6 +71,16 @@ package game
 		protected function onMouseOver(_event:MouseEvent):void
 		{
 			m_intersect = true;
+		}
+		
+		public function set position(_value:Point):void
+		{
+			m_position = _value;
+		}
+		
+		public function get position():Point
+		{
+			return m_position;
 		}
 		
 	}

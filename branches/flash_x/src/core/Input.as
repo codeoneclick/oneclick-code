@@ -35,16 +35,12 @@ package core
 		}
 		
 		private function onMouseMove(_event:MouseEvent):void
-		{
-			Global.camera.offset = new Point(0, 0);
-			
+		{	
 			if (m_isMouseDown)
 			{
 				m_mouseDragOffset.x = m_oldMousePos.x - _event.stageX;
 				m_mouseDragOffset.y = m_oldMousePos.y - _event.stageY;
 				
-				Global.camera.offset = m_mouseDragOffset;
-			
 				if (m_mouseDragOffset.x != 0)
 					Global.camera.position.x += m_mouseDragOffset.x;
 				

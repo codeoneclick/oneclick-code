@@ -30,7 +30,6 @@ package game
 			Global.displayContainer.addChild(m_visualLayers[k_GAME_NODE_LAYER_02]);
 			m_characterNode = new Character(m_visualLayers[k_GAME_NODE_LAYER_02]);
 			m_characterNode.Load("character_01");
-			m_visualLayers[k_GAME_NODE_LAYER_01].scaleX = 5;
 		}
 		
 		public function createMap(_width:int, _height:int):void
@@ -43,13 +42,13 @@ package game
 					m_gameNodeContainer[i].Load("tile_01");
 					if ( j % 2 > 0 )
 					{
-						m_gameNodeContainer[i].x = i * k_TILE_WIDTH;
-						m_gameNodeContainer[i].y = j * k_TILE_HEIGHT;
+						m_gameNodeContainer[i].position.x = i * k_TILE_WIDTH;
+						m_gameNodeContainer[i].position.y = j * k_TILE_HEIGHT;
 					}
 					else
 					{
-						m_gameNodeContainer[i].x = i * k_TILE_WIDTH + k_TILE_WIDTH / 2;
-						m_gameNodeContainer[i].y = j * k_TILE_HEIGHT;
+						m_gameNodeContainer[i].position.x = i * k_TILE_WIDTH + k_TILE_WIDTH / 2;
+						m_gameNodeContainer[i].position.y = j * k_TILE_HEIGHT;
 					}
 				}
 			}

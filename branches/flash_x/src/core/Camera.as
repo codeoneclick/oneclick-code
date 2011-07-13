@@ -8,7 +8,6 @@ package core
 	public class Camera 
 	{
 		private var m_position:Point = new Point(0, 0);
-		private var m_offset:Point = new Point(0, 0);
 		
 		public function Camera() 
 		{
@@ -24,16 +23,7 @@ package core
 		{
 			return m_position;
 		}
-		
-		public function set offset(_value:Point):void
-		{
-			m_offset = _value;
-		}
-		
-		public function get offset():Point
-		{
-			return m_offset;
-		}
+	
 	}
 
 }

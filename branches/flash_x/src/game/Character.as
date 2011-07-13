@@ -3,6 +3,7 @@ package game
 	import flash.display.BitmapData;
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
+	import flash.filters.GlowFilter;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
@@ -52,6 +53,18 @@ package game
 				m_currentFrame = 0;
 				
 			m_bitmap.bitmapData = m_animationSequence[k_ANIMATION_MOVE][m_currentFrame];
+		}
+		
+		override protected function onIntersectUpdate():void 
+		{
+			if (m_intersect)
+			{
+				filters = [new GlowFilter(0x00FFFFFF)];
+			}
+			else
+			{
+				filters = null;
+			}
 		}
 		
 	}
