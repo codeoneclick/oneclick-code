@@ -9,6 +9,7 @@ package game
 	import core.Global;
 	import flash.events.MouseEvent;
 	import flash.filters.GlowFilter;
+	import flash.geom.ColorTransform;
 	import flash.geom.Point;
 	/**
 	 * ...
@@ -25,6 +26,13 @@ package game
 		{
 			m_container = _container;
 			m_bitmap = new Bitmap();
+			this.addChild(m_bitmap);
+			m_container.addChild(this);
+			
+			addEventListener(Event.ENTER_FRAME, onUpdate, false, 0, true);
+			addEventListener(MouseEvent.MOUSE_OUT, onMouseOut, false, 0, true);
+			addEventListener(MouseEvent.MOUSE_OVER, onMouseOver, false, 0, true);
+			addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown, false, 0, true);
 		}
 		
 		public function Load(_name:String):void
@@ -35,12 +43,6 @@ package game
 		protected function onLoadResource(_data:BitmapData):void
 		{
 			m_bitmap.bitmapData = _data;
-			this.addChild(m_bitmap);
-			m_container.addChild(this);
-			
-			addEventListener(Event.ENTER_FRAME, onUpdate, false, 0, true);
-			addEventListener(MouseEvent.MOUSE_OUT, onMouseOut, false, 0, true);
-			addEventListener(MouseEvent.MOUSE_OVER, onMouseOver, false, 0, true);
 		}
 		
 		protected function onUpdate(_event:Event):void
@@ -55,11 +57,11 @@ package game
 		{
 			if (m_intersect)
 			{
-				alpha = 0.5;
+				transform.colorTransform = new ColorTransform(255, 1, 1);
 			}
 			else
 			{
-				alpha = 1.0;
+				transform.colorTransform = new ColorTransform(1, 1, 1);
 			}
 		}
 		
@@ -71,6 +73,11 @@ package game
 		protected function onMouseOver(_event:MouseEvent):void
 		{
 			m_intersect = true;
+		}
+		
+		protected function onMouseDown(_event:MouseEvent):void
+		{
+			Load( "tile_0" + Global.editorController.previewSelectedIndex );
 		}
 		
 		public function set position(_value:Point):void

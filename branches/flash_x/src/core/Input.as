@@ -19,9 +19,9 @@ package core
 		
 		private function init():void
 		{
-			Global.stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
-			Global.stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
-			Global.stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
+			Global.inGameContainer.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
+			Global.inGameContainer.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+			Global.inGameContainer.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
 		}
 		
 		private function onMouseDown(_event:MouseEvent):void

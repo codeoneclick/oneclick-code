@@ -52,7 +52,10 @@ package game
 			if ( m_currentFrame >= m_framesCount )
 				m_currentFrame = 0;
 				
-			m_bitmap.bitmapData = m_animationSequence[k_ANIMATION_MOVE][m_currentFrame];
+			//if (m_animationSequence[k_ANIMATION_MOVE][m_currentFrame] != null)
+			//{
+			//	m_bitmap.bitmapData = m_animationSequence[k_ANIMATION_MOVE][m_currentFrame];
+			//}
 		}
 		
 		override protected function onIntersectUpdate():void 

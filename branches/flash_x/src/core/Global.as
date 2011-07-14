@@ -1,9 +1,11 @@
 package core 
 {
 	import common.resource.ResourceController;
+	import editor.EditorController;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Stage;
 	import game.SceneController;
+	import ui.UIController;
 	/**
 	 * ...
 	 * @author codeoneclick
@@ -13,15 +15,23 @@ package core
 		
 		private static var m_stage:Stage = null;
 		
-		private static var m_displayContainer:DisplayObjectContainer = null;
+		private static var m_inGameContainer:DisplayObjectContainer = null;
+		
+		private static var m_uiContainer:DisplayObjectContainer = null;
 		
 		private static var m_resourceController:ResourceController = null;
 		
 		private static var m_sceneController:SceneController = null;
 		
+		private static var m_uiController:UIController = null;
+		
 		private static var m_input:Input = null;
 		
 		private static var m_camera:Camera = null;
+		
+		private static var m_setting:Setting = new Setting();
+		
+		private static var m_editorController:EditorController = null;
 		
 		public function Global() 
 		{
@@ -38,14 +48,24 @@ package core
 			return m_stage;
 		}
 		
-		public static function set displayContainer(_value:DisplayObjectContainer):void
+		public static function set inGameContainer(_value:DisplayObjectContainer):void
 		{
-			m_displayContainer = _value;
+			m_inGameContainer = _value;
 		}
 		
-		public static function get displayContainer():DisplayObjectContainer
+		public static function get inGameContainer():DisplayObjectContainer
 		{
-			return m_displayContainer;
+			return m_inGameContainer;
+		}
+		
+		public static function set uiContainer(_value:DisplayObjectContainer):void
+		{
+			m_uiContainer = _value;
+		}
+		
+		public static function get uiContainer():DisplayObjectContainer
+		{
+			return m_uiContainer;
 		}
 		
 		public static function get resourceController():ResourceController
@@ -68,6 +88,16 @@ package core
 			return m_sceneController;
 		}
 		
+		public static function set uiController(_value:UIController):void
+		{
+			m_uiController = _value;
+		}
+		
+		public static function get uiController():UIController
+		{
+			return m_uiController;
+		}
+		
 		public static function set input(_value:Input):void
 		{
 			m_input = _value;
@@ -86,6 +116,21 @@ package core
 		public static function get camera():Camera
 		{
 			return m_camera;
+		}
+		
+		public static function get setting():Setting
+		{
+			return m_setting;
+		}
+		
+		public static function set editorController(_value:EditorController):void
+		{
+			m_editorController = _value;
+		}
+		
+		public static function get editorController():EditorController
+		{
+			return m_editorController;
 		}
 		
 	}

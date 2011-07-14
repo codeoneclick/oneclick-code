@@ -2,10 +2,13 @@ package
 {
 	import core.Global;
 	import core.Input;
+	import editor.EditorController;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import core.Camera;
+	import flash.utils.Dictionary;
 	import game.SceneController;
+	import ui.UIController;
 	
 	/**
 	 * ...
@@ -13,6 +16,10 @@ package
 	 */
 	public class Main extends Sprite 
 	{
+		
+		private static const k_UI_LAYER:String = "UI_LAYER";
+		private static const k_IN_GAME_LAYER:String = "IN_GAME_LAYER";
+		private static const m_layerContainer:Dictionary = new Dictionary();
 		
 		public function Main():void 
 		{
@@ -23,12 +30,23 @@ package
 		private function init(e:Event = null):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
+			
+			m_layerContainer[k_UI_LAYER] = new Sprite();
+			m_layerContainer[k_IN_GAME_LAYER] = new Sprite();
+			
+			this.addChild(m_layerContainer[k_IN_GAME_LAYER]);
+			this.addChild(m_layerContainer[k_UI_LAYER]);
+			
 			Global.stage = stage;
 			Global.stage.frameRate = 60;
+			Global.inGameContainer = m_layerContainer[k_IN_GAME_LAYER];
+			Global.uiContainer = m_layerContainer[k_UI_LAYER];
+			Global.sceneController = new SceneController();
+			Global.editorController = new EditorController();
+			Global.uiController = new UIController();
 			Global.input = new Input();
 			Global.camera = new Camera();
-			Global.displayContainer = this;
-			Global.sceneController = new SceneController();
+		
 		}
 		
 	}
