@@ -19,6 +19,8 @@ package core
 		
 		private static var m_uiContainer:DisplayObjectContainer = null;
 		
+		private static var m_backContainer:DisplayObjectContainer = null;
+		
 		private static var m_resourceController:ResourceController = null;
 		
 		private static var m_sceneController:SceneController = null;
@@ -131,6 +133,16 @@ package core
 		public static function get editorController():EditorController
 		{
 			return m_editorController;
+		}
+		
+		public static function get backContainer():DisplayObjectContainer
+		{
+			return m_backContainer;
+		}
+		
+		public static function set backContainer(_value:DisplayObjectContainer):void
+		{
+			m_backContainer = _value;
 		}
 		
 	}

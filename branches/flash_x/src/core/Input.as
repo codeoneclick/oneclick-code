@@ -22,6 +22,10 @@ package core
 			Global.inGameContainer.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 			Global.inGameContainer.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
 			Global.inGameContainer.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
+			
+			Global.backContainer.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
+			Global.backContainer.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+			Global.backContainer.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
 		}
 		
 		private function onMouseDown(_event:MouseEvent):void

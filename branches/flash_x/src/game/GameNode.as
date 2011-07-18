@@ -11,6 +11,7 @@ package game
 	import flash.filters.GlowFilter;
 	import flash.geom.ColorTransform;
 	import flash.geom.Point;
+	import flash.utils.Dictionary;
 	/**
 	 * ...
 	 * @author codeoneclick
@@ -19,14 +20,12 @@ package game
 	{
 		protected var m_container:DisplayObjectContainer = null;
 		protected var m_intersect:Boolean = false;
-		protected var m_bitmap:Bitmap = null;
-		protected var m_position:Point = new Point( 0, 0);
+		protected var m_position:Point = new Point( 0, 0 );
 	
 		public function GameNode(_container:DisplayObjectContainer) 
 		{
 			m_container = _container;
-			m_bitmap = new Bitmap();
-			this.addChild(m_bitmap);
+
 			m_container.addChild(this);
 			
 			addEventListener(Event.ENTER_FRAME, onUpdate, false, 0, true);
@@ -35,14 +34,14 @@ package game
 			addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown, false, 0, true);
 		}
 		
-		public function Load(_name:String):void
+		public function Load(_name:String, _sectorType:String):void
 		{
 			Global.resourceController.LoadPNG(_name, onLoadResource);
 		}
 		
 		protected function onLoadResource(_data:BitmapData):void
 		{
-			m_bitmap.bitmapData = _data;
+			
 		}
 		
 		protected function onUpdate(_event:Event):void
@@ -77,7 +76,7 @@ package game
 		
 		protected function onMouseDown(_event:MouseEvent):void
 		{
-			Load( "tile_0" + Global.editorController.previewSelectedIndex );
+			
 		}
 		
 		public function set position(_value:Point):void
@@ -88,6 +87,15 @@ package game
 		public function get position():Point
 		{
 			return m_position;
+		}
+		
+		public static function sorter(_value_01:GameNode, _value_02:GameNode):int
+		{
+			if (_value_01.position.y < _value_02.position.y)
+				return -1;
+			if (_value_01.position.y > _value_02.position.y)
+				return 1;
+			return 0;
 		}
 		
 	}

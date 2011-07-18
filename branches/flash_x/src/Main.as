@@ -19,6 +19,7 @@ package
 		
 		private static const k_UI_LAYER:String = "UI_LAYER";
 		private static const k_IN_GAME_LAYER:String = "IN_GAME_LAYER";
+		private static const k_BACK_LAYER:String = "BACK_LAYER";
 		private static const m_layerContainer:Dictionary = new Dictionary();
 		
 		public function Main():void 
@@ -33,7 +34,9 @@ package
 			
 			m_layerContainer[k_UI_LAYER] = new Sprite();
 			m_layerContainer[k_IN_GAME_LAYER] = new Sprite();
+			m_layerContainer[k_BACK_LAYER] = new Sprite();
 			
+			this.addChild(m_layerContainer[k_BACK_LAYER]);
 			this.addChild(m_layerContainer[k_IN_GAME_LAYER]);
 			this.addChild(m_layerContainer[k_UI_LAYER]);
 			
@@ -41,8 +44,10 @@ package
 			Global.stage.frameRate = 60;
 			Global.inGameContainer = m_layerContainer[k_IN_GAME_LAYER];
 			Global.uiContainer = m_layerContainer[k_UI_LAYER];
-			Global.sceneController = new SceneController();
+			Global.backContainer = m_layerContainer[k_BACK_LAYER];
 			Global.editorController = new EditorController();
+			Global.sceneController = new SceneController();
+			Global.sceneController.initDefault();
 			Global.uiController = new UIController();
 			Global.input = new Input();
 			Global.camera = new Camera();

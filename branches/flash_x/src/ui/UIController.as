@@ -21,10 +21,10 @@ package ui
 		{
 			
 			m_previewList[k_LAYER_TILE] = new TileList();
-			m_previewList[k_LAYER_OBJECT] = new TileList();
+			//m_previewList[k_LAYER_OBJECT] = new TileList();
 			
 			Global.uiContainer.addChild(m_previewList[k_LAYER_TILE]);
-			Global.uiContainer.addChild(m_previewList[k_LAYER_OBJECT]);
+			//Global.uiContainer.addChild(m_previewList[k_LAYER_OBJECT]);
 			
 			m_previewList[k_LAYER_TILE].width = Global.setting.windowWidth;
 			m_previewList[k_LAYER_TILE].height = 64;
@@ -33,15 +33,13 @@ package ui
 			m_previewList[k_LAYER_TILE].columnWidth = 64;
 			m_previewList[k_LAYER_TILE].rowHeight = 64;
 			m_previewList[k_LAYER_TILE].direction = ScrollBarDirection.HORIZONTAL;
-			m_previewList[k_LAYER_TILE].addItem( { label:"", source:"content/tile_00.png" } );
-			m_previewList[k_LAYER_TILE].addItem( { label:"", source:"content/tile_01.png" } );	
-			m_previewList[k_LAYER_TILE].addItem( { label:"", source:"content/tile_02.png" } );	
-			m_previewList[k_LAYER_TILE].addItem( { label:"", source:"content/tile_03.png" } );	
-			m_previewList[k_LAYER_TILE].addItem( { label:"", source:"content/tile_04.png" } );	
-			m_previewList[k_LAYER_TILE].addItem( { label:"", source:"content/tile_06.png" } );	
+			m_previewList[k_LAYER_TILE].addItem( { label:"", source:"content/sector_00.png" } );
+			m_previewList[k_LAYER_TILE].addItem( { label:"", source:"content/sector_01.png" } );	
+			m_previewList[k_LAYER_TILE].addItem( { label:"", source:"content/sector_02.png" } );	
+			m_previewList[k_LAYER_TILE].addItem( { label:"", source:"content/sector_03.png" } );	
 			m_previewList[k_LAYER_TILE].addEventListener(Event.CHANGE, onPreviewItemChange);
 			
-			m_previewList[k_LAYER_OBJECT].width = Global.setting.windowWidth;
+			/*m_previewList[k_LAYER_OBJECT].width = Global.setting.windowWidth;
 			m_previewList[k_LAYER_OBJECT].height = 64;
 			m_previewList[k_LAYER_OBJECT].x = 0;
 			m_previewList[k_LAYER_OBJECT].y = Global.setting.windowHeight - m_previewList[k_LAYER_OBJECT].height * 2;
@@ -50,7 +48,7 @@ package ui
 			m_previewList[k_LAYER_OBJECT].direction = ScrollBarDirection.HORIZONTAL;
 			m_previewList[k_LAYER_OBJECT].addItem( { label:"", source:"content/tile_00.png" } );
 			m_previewList[k_LAYER_OBJECT].addItem( { label:"", source:"content/tile_05.png" } );	
-			m_previewList[k_LAYER_OBJECT].addEventListener(Event.CHANGE, onPreviewItemChange);
+			m_previewList[k_LAYER_OBJECT].addEventListener(Event.CHANGE, onPreviewItemChange);*/
 			
 			
 		}
