@@ -4,6 +4,7 @@ package game
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.DisplayObjectContainer;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.utils.Dictionary;
@@ -29,6 +30,8 @@ package game
 		protected var m_sectorName:String = "sector_00";
 		
 		protected var m_index:Point = new Point();
+		
+		protected var m_boundBitmapData:BitmapData = null;
 		
 		public function Sector(_container:DisplayObjectContainer) 
 		{
@@ -78,17 +81,43 @@ package game
 				}
 			}
 			m_sectorInQueue = "";
+			
+			m_boundBitmapData = new BitmapData( this.width, this.height, true, 0x00000000 );
+			m_boundBitmapData.draw( this );	
 		}
 		
-		override protected function onMouseDown(_event:MouseEvent):void 
+		override protected function onUpdate(_event:Event):void 
 		{
-			if (m_sectorName == k_SECTOR_DEFAULT_NAME) 
+			m_intersect = isIntersect( Global.stage.mouseX, Global.stage.mouseY );
+			super.onUpdate(_event);
+		}
+		
+		override protected function onMouseClick(_event:MouseEvent):void 
+		{
+			m_intersect = isIntersect( _event.stageX, _event.stageY );
+			if ( m_intersect )
 			{
-				Global.editorController.addSector( m_index, k_SECTOR_NAME + Global.editorController.previewSelectedIndex, k_SECTOR_MIDDLE );
+				if (m_sectorName == k_SECTOR_DEFAULT_NAME) 
+				{
+					Global.editorController.addSector( m_index, k_SECTOR_NAME + Global.editorController.previewSelectedIndex, k_SECTOR_MIDDLE );
+				}
+				else
+				{
+					Global.editorController.changeSector( m_index, k_SECTOR_NAME + Global.editorController.previewSelectedIndex, k_SECTOR_MIDDLE );
+				}
+			}
+		}
+		
+		protected function isIntersect(_x:Number, _y:Number):uint
+		{
+			if (m_boundBitmapData != null)
+			{
+				var mouseLocalPosition:Point = globalToLocal(new Point( _x, _y ));
+				return m_boundBitmapData.getPixel(mouseLocalPosition.x, mouseLocalPosition.y);
 			}
 			else
 			{
-				Global.editorController.changeSector( m_index, k_SECTOR_NAME + Global.editorController.previewSelectedIndex, k_SECTOR_MIDDLE );
+				return 0x00000000;
 			}
 		}
 		
@@ -100,6 +129,16 @@ package game
 		public function get index():Point
 		{
 			return m_index;
+		}
+		
+		public function get sectorName():String 
+		{
+			return m_sectorName;
+		}
+		
+		public function set sectorName(_value:String):void
+		{
+			m_sectorName = _value;
 		}
 	}
 

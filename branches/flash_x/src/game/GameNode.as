@@ -19,7 +19,7 @@ package game
 	public class GameNode extends Sprite
 	{
 		protected var m_container:DisplayObjectContainer = null;
-		protected var m_intersect:Boolean = false;
+		protected var m_intersect:uint = 0x00000000;
 		protected var m_position:Point = new Point( 0, 0 );
 	
 		public function GameNode(_container:DisplayObjectContainer) 
@@ -27,6 +27,8 @@ package game
 			m_container = _container;
 
 			m_container.addChild(this);
+			
+			Global.inGameContainer.addEventListener( MouseEvent.CLICK, onMouseClick );
 			
 			addEventListener(Event.ENTER_FRAME, onUpdate, false, 0, true);
 			addEventListener(MouseEvent.MOUSE_OUT, onMouseOut, false, 0, true);
@@ -66,15 +68,20 @@ package game
 		
 		protected function onMouseOut(_event:MouseEvent):void
 		{
-			m_intersect = false;
+			
 		}
 		
 		protected function onMouseOver(_event:MouseEvent):void
 		{
-			m_intersect = true;
+
 		}
 		
 		protected function onMouseDown(_event:MouseEvent):void
+		{
+			
+		}
+		
+		protected function onMouseClick(_event:MouseEvent):void
 		{
 			
 		}

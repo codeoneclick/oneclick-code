@@ -4,6 +4,7 @@ package game
 	import fl.controls.Button;
 	import flash.display.Sprite;
 	import flash.geom.Point;
+	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
 	/**
 	 * ...
@@ -38,7 +39,6 @@ package game
 		
 		public function addSector(_position:Point, _sectorName:String, _sectorType:String):Boolean
 		{
-			
 			if ( m_mapContainer[k_SECTOR_INDEX + _position.x] != null && m_mapContainer[k_SECTOR_INDEX + _position.x][k_SECTOR_INDEX + _position.y] != null )
 			{
 				changeSector(_position, _sectorName, _sectorType);
@@ -141,36 +141,54 @@ package game
 			}
 		}
 		
-		/*public function createLayer(_width:int, _height:int, _name:String):void
+		public function SaveMapData():ByteArray
 		{
-			m_visualLayers[_name] = new LayerContainer(_name);
-			Global.inGameContainer.addChild(m_visualLayers[_name]);
-			createMap( _width, _height, (m_visualLayers[_name] as LayerContainer).getSubLayer(LayerContainer.k_TILE_LAYER) );
-			createMap( _width, _height, (m_visualLayers[_name] as LayerContainer).getSubLayer(LayerContainer.k_OBJECT_LAYER) );
+			var mapData:ByteArray = new ByteArray();
+			var sector:Sector = null;
+			
+			mapData.writeInt(m_gameNodeContainer.length);
+			
+			for ( var i:int = 0; i < m_gameNodeContainer.length; i++)
+			{
+				sector = m_gameNodeContainer[i] as Sector;
+				mapData.writeInt(sector.index.x);
+				mapData.writeInt(sector.index.y);
+				mapData.writeUTF(sector.sectorName);
+				mapData.writeUTF(Sector.k_SECTOR_MIDDLE);
+  			}
+			
+			return mapData;
 		}
 		
-		private function createMap(_width:int, _height:int, _container:Sprite):void
+		public function LoadMapData(_data:ByteArray):void
 		{
-			for ( var j:int = 0; j < _height; j++ )
+			var sectorCount:int = _data.readInt();
+			
+			for ( var i:int = 0; i < sectorCount; i++ )
 			{
-				for ( var i:int = 0; i < _width; i++ )
-				{	
-					m_gameNodeContainer[i] = new GameNode(_container);
-					m_gameNodeContainer[i].Load("tile_04", GameNode.k_SECTOR_MIDDLE);
-					if ( j % 2 > 0 )
-					{
-						m_gameNodeContainer[i].position.x = i * k_TILE_WIDTH;
-						m_gameNodeContainer[i].position.y = j * k_TILE_HEIGHT / 2;
-					}
-					else
-					{
-						m_gameNodeContainer[i].position.x = i * k_TILE_WIDTH + k_TILE_WIDTH / 2;
-						m_gameNodeContainer[i].position.y = j * k_TILE_HEIGHT / 2;
-					}
+				var index:Point = new Point();
+				index.x = _data.readInt();
+				index.y = _data.readInt();
+				var name:String = _data.readUTF();
+				var type:String =  _data.readUTF();
+				if ( name != Sector.k_SECTOR_DEFAULT_NAME )
+				{
+					Global.editorController.addSector(new Point(index.x, index.y), name, Sector.k_SECTOR_MIDDLE);
 				}
 			}
-		}*/
+		}
 		
+		public function ClearMapData():void
+		{
+			for ( var i:int = 0; i < m_gameNodeContainer.length; i++)
+			{
+				m_visualLayers[k_DEFAULT_LAYER].removeChild(m_gameNodeContainer[i]);
+			}
+			
+			m_gameNodeContainer = new Vector.<GameNode>();
+			m_mapContainer = new Dictionary();
+		}
+	
 	}
 
 }
