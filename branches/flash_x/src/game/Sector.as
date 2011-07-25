@@ -1,6 +1,8 @@
 package game 
 {
 	import core.Global;
+	import editor.EditAction;
+	import editor.UndoRedoController;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.DisplayObjectContainer;
@@ -51,8 +53,8 @@ package game
 			m_sectorName = _name;
 			m_sectorInQueue = _sectorType;
 			super.Load(_name, _sectorType);
+			super.LoadBoundData(k_SECTOR_DEFAULT_NAME);
 		}
-		
 		
 		override protected function onLoadResource(_data:BitmapData):void 
 		{
@@ -76,14 +78,16 @@ package game
 				
 				default :
 				{
-					m_sectorInQueue = "";
+					//m_sectorInQueue = "";
 					throw Error;
 				}
 			}
-			m_sectorInQueue = "";
-			
-			m_boundBitmapData = new BitmapData( this.width, this.height, true, 0x00000000 );
-			m_boundBitmapData.draw( this );	
+			//m_sectorInQueue = "";
+		}
+		
+		override protected function onLoadBoundData(_data:BitmapData):void 
+		{
+			m_boundBitmapData = _data;
 		}
 		
 		override protected function onUpdate(_event:Event):void 
@@ -97,13 +101,22 @@ package game
 			m_intersect = isIntersect( _event.stageX, _event.stageY );
 			if ( m_intersect )
 			{
+				if ( (k_SECTOR_NAME + Global.editorController.selectSectorName) == k_SECTOR_DEFAULT_NAME )
+				{
+					UndoRedoController.logAction(EditAction.k_REMOVE_ACTION, m_index, k_SECTOR_MIDDLE, m_sectorName, "");
+					Global.editorController.removeSector(m_index);
+					return;
+				}
+				
 				if (m_sectorName == k_SECTOR_DEFAULT_NAME) 
 				{
-					Global.editorController.addSector( m_index, k_SECTOR_NAME + Global.editorController.previewSelectedIndex, k_SECTOR_MIDDLE );
+					UndoRedoController.logAction(EditAction.k_ADD_ACTION, m_index, k_SECTOR_MIDDLE, k_SECTOR_NAME + Global.editorController.selectSectorName, "");
+					Global.editorController.addSector( m_index, k_SECTOR_NAME + Global.editorController.selectSectorName, k_SECTOR_MIDDLE );
 				}
 				else
 				{
-					Global.editorController.changeSector( m_index, k_SECTOR_NAME + Global.editorController.previewSelectedIndex, k_SECTOR_MIDDLE );
+					UndoRedoController.logAction(EditAction.k_CHANGE_ACTION, m_index, k_SECTOR_MIDDLE, k_SECTOR_NAME + Global.editorController.selectSectorName, m_sectorName);
+					Global.editorController.changeSector( m_index, k_SECTOR_NAME + Global.editorController.selectSectorName, k_SECTOR_MIDDLE );
 				}
 			}
 		}
@@ -118,6 +131,32 @@ package game
 			else
 			{
 				return 0x00000000;
+			}
+		}
+		
+		public function unLoad(_sectorType:String):void
+		{
+			switch(_sectorType)
+			{
+				case k_SECTOR_DOWN :
+				{
+					(m_bitmapList[k_SECTOR_DOWN] as Bitmap).bitmapData = null;
+				}
+				break;
+				
+				case k_SECTOR_MIDDLE :
+				{
+					(m_bitmapList[k_SECTOR_DOWN] as Bitmap).bitmapData = null;
+					(m_bitmapList[k_SECTOR_UP] as Bitmap).bitmapData = null;
+					(m_bitmapList[k_SECTOR_MIDDLE] as Bitmap).bitmapData = null;
+				}
+				break;
+				
+				case k_SECTOR_UP :
+				{
+					(m_bitmapList[k_SECTOR_UP] as Bitmap).bitmapData = null;
+				}
+				break;
 			}
 		}
 		

@@ -47,7 +47,7 @@ package ui
 		
 		private function onSelect(_event:Event):void
 		{
-			Global.editorController.previewSelectedIndex = (_event.target as TileList).selectedIndex;
+			Global.editorController.selectSectorName = (_event.target as TileList).selectedIndex;
 		}
 		
 	}

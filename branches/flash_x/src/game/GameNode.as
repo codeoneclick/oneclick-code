@@ -41,7 +41,30 @@ package game
 			Global.resourceController.LoadPNG(_name, onLoadResource);
 		}
 		
+		public function LoadBoundData(_name:String):void
+		{
+			Global.resourceController.LoadPNG(_name, onLoadBoundData);
+		}
+		
+		
+		public function unLoadAll():void
+		{
+			m_container.removeChild(this);
+			
+			Global.inGameContainer.removeEventListener( MouseEvent.CLICK, onMouseClick );
+			
+			removeEventListener(Event.ENTER_FRAME, onUpdate);
+			removeEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
+			removeEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
+			removeEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
+		}
+		
 		protected function onLoadResource(_data:BitmapData):void
+		{
+			
+		}
+		
+		protected function onLoadBoundData(_data:BitmapData):void
 		{
 			
 		}

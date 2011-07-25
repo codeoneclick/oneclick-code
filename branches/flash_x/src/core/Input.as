@@ -1,6 +1,8 @@
 package core 
 {
+	import editor.UndoRedoController;
 	import flash.events.Event;
+	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.ui.Mouse;
@@ -10,6 +12,9 @@ package core
 	 */
 	public class Input 
 	{
+		private static const k_KEY_Z:int = 90;
+		
+		
 		private var m_isMouseDown:Boolean = false;
 		private var m_oldMousePos:Point = new Point();
 		private var m_mouseDragOffset:Point = new Point();
@@ -29,6 +34,8 @@ package core
 			Global.backContainer.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 			Global.backContainer.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
 			Global.backContainer.addEventListener(Event.ENTER_FRAME, onUpdate);
+			
+			Global.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 			
 			//Mouse.hide();
 			m_cursor = new Cursor(Global.inGameContainer);
@@ -62,6 +69,14 @@ package core
 
 			m_oldMousePos.x = Global.stage.mouseX;
 			m_oldMousePos.y = Global.stage.mouseY;
+		}
+		
+		private function onKeyUp(_event:KeyboardEvent):void
+		{
+			if ( _event.ctrlKey && _event.keyCode == k_KEY_Z )
+			{
+				UndoRedoController.undo();
+			}
 		}
 		
 		public function get mousePosition():Point
