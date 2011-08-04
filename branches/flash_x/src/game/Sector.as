@@ -1,8 +1,7 @@
 package game 
 {
 	import core.Global;
-	import editor.EditAction;
-	import editor.UndoRedoController;
+	import editor.EditorController;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.DisplayObjectContainer;
@@ -103,19 +102,19 @@ package game
 			{
 				if ( (k_SECTOR_NAME + Global.editorController.selectSectorName) == k_SECTOR_DEFAULT_NAME )
 				{
-					UndoRedoController.logAction(EditAction.k_REMOVE_ACTION, m_index, k_SECTOR_MIDDLE, m_sectorName, "");
+					Global.editorController.addLog(EditorController.k_EDIT_REMOVE, m_index, k_SECTOR_MIDDLE, m_sectorName, "");
 					Global.editorController.removeSector(m_index);
 					return;
 				}
 				
 				if (m_sectorName == k_SECTOR_DEFAULT_NAME) 
 				{
-					UndoRedoController.logAction(EditAction.k_ADD_ACTION, m_index, k_SECTOR_MIDDLE, k_SECTOR_NAME + Global.editorController.selectSectorName, "");
+					Global.editorController.addLog(EditorController.k_EDIT_ADD, m_index, k_SECTOR_MIDDLE, k_SECTOR_NAME + Global.editorController.selectSectorName, "");
 					Global.editorController.addSector( m_index, k_SECTOR_NAME + Global.editorController.selectSectorName, k_SECTOR_MIDDLE );
 				}
 				else
 				{
-					UndoRedoController.logAction(EditAction.k_CHANGE_ACTION, m_index, k_SECTOR_MIDDLE, k_SECTOR_NAME + Global.editorController.selectSectorName, m_sectorName);
+					Global.editorController.addLog(EditorController.k_EDIT_CHANGE, m_index, k_SECTOR_MIDDLE, k_SECTOR_NAME + Global.editorController.selectSectorName, m_sectorName);
 					Global.editorController.changeSector( m_index, k_SECTOR_NAME + Global.editorController.selectSectorName, k_SECTOR_MIDDLE );
 				}
 			}

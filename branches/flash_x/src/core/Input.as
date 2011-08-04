@@ -1,6 +1,5 @@
 package core 
 {
-	import editor.UndoRedoController;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
@@ -13,7 +12,6 @@ package core
 	public class Input 
 	{
 		private static const k_KEY_Z:int = 90;
-		
 		
 		private var m_isMouseDown:Boolean = false;
 		private var m_oldMousePos:Point = new Point();
@@ -75,7 +73,7 @@ package core
 		{
 			if ( _event.ctrlKey && _event.keyCode == k_KEY_Z )
 			{
-				UndoRedoController.undo();
+				Global.editorController.undo();
 			}
 		}
 		
