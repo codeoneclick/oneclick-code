@@ -32,7 +32,7 @@ package common.resource
 			return m_path;
 		}
 		
-		public function LoadPNG(_name:String, _callback:Function):void
+		public function loadPNG(_name:String, _callback:Function):void
 		{
 			if ( m_cacheResource[_name] != null)
 			{

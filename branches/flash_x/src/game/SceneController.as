@@ -27,7 +27,7 @@ package game
 		public function SceneController() 
 		{
 			m_background = new Background(Global.backContainer);
-			m_background.Load("back_02");
+			m_background.load("back_02");
 		}
 		
 		public function initDefault():void

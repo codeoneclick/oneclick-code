@@ -15,8 +15,7 @@ package
 	 * @author codeoneclick
 	 */
 	public class Main extends Sprite 
-	{
-		
+	{		
 		private static const k_UI_LAYER:String = "UI_LAYER";
 		private static const k_IN_GAME_LAYER:String = "IN_GAME_LAYER";
 		private static const k_BACK_LAYER:String = "BACK_LAYER";
@@ -50,10 +49,7 @@ package
 			Global.sceneController.initDefault();
 			Global.uiController = new UIController();
 			Global.input = new Input();
-			Global.camera = new Camera();
-		
-		}
-		
-	}
-	
+			Global.camera = new Camera();		
+		}		
+	}	
 }

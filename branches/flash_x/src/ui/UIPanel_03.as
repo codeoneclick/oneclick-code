@@ -42,11 +42,15 @@ package ui
 			m_plane.addChild(m_preview);
 		}
 		
-		private function onSelect(_event:Event):void
+		private function onSelect(event:Event):void
 		{
-			Global.editorController.pickDecoName = (_event.target as TileList).selectedIndex;
-		}
-		
+			var tile:TileList = event.target as TileList;
+			Global.editorController.pickDecoName = tile.selectedIndex;			
+			
+			var arr:Array = tile.dataProvider.getItemAt(tile.selectedIndex).source.split("/");
+			arr = (arr[1] as String).split(".");
+			var name:String = arr[0] as String;
+			Global.mouseIcon.setElementIcon(name);
+		}		
 	}
-
 }

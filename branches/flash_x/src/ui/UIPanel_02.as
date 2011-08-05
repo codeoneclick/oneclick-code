@@ -43,15 +43,19 @@ package ui
 			m_preview.addItem( { label:"", source:"content/sector_09.png" } );
 			m_preview.addItem( { label:"", source:"content/sector_010.png" } );
 			
-			m_preview.addEventListener(Event.CHANGE, onSelect);
+			m_preview.addEventListener(Event.CHANGE, onSelect);			
 			m_plane.addChild(m_preview);
 		}
 		
-		private function onSelect(_event:Event):void
+		private function onSelect(event:Event):void
 		{
-			Global.editorController.pickSectorName = (_event.target as TileList).selectedIndex;
-		}
-		
+			var tile:TileList = event.target as TileList;
+			Global.editorController.pickSectorName = tile.selectedIndex;
+			
+			var arr:Array = tile.dataProvider.getItemAt(tile.selectedIndex).source.split("/");
+			arr = (arr[1] as String).split(".");
+			var name:String = arr[0] as String;
+			Global.mouseIcon.setElementIcon(name);
+		}		
 	}
-
 }

@@ -35,6 +35,8 @@ package core
 		
 		private static var m_editorController:EditorController = null;
 		
+		private static var m_mouseIcon:GameMouseIcon = null;
+		
 		public function Global() 
 		{
 			
@@ -143,6 +145,16 @@ package core
 		public static function set backContainer(_value:DisplayObjectContainer):void
 		{
 			m_backContainer = _value;
+		}
+		
+		public static function set mouseIcon(icon:GameMouseIcon):void
+		{
+			m_mouseIcon = icon;
+		}
+		
+		public static function get mouseIcon():GameMouseIcon
+		{
+			return m_mouseIcon;
 		}
 		
 	}

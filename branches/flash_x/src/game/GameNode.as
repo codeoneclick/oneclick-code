@@ -38,12 +38,12 @@ package game
 		
 		public function Load(_name:String, _sectorType:String):void
 		{
-			Global.resourceController.LoadPNG(_name, onLoadResource);
+			Global.resourceController.loadPNG(_name, onLoadResource);
 		}
 		
 		public function LoadBoundData(_name:String):void
 		{
-			Global.resourceController.LoadPNG(_name, onLoadBoundData);
+			Global.resourceController.loadPNG(_name, onLoadBoundData);
 		}
 		
 		

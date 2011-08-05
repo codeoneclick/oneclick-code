@@ -28,7 +28,7 @@ package core
 		
 		public function Load(_name:String):void
 		{
-			Global.resourceController.LoadPNG(_name, onLoadResource);
+			Global.resourceController.loadPNG(_name, onLoadResource);
 		}
 		
 		protected function onLoadResource(_data:BitmapData):void

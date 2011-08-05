@@ -23,9 +23,9 @@ package game
 			m_container.addChild(this);
 		}
 		
-		public function Load(_name:String):void
+		public function load(_name:String):void
 		{
-			Global.resourceController.LoadPNG(_name, onLoadResource);
+			Global.resourceController.loadPNG(_name, onLoadResource);
 		}
 		
 		protected function onLoadResource(_data:BitmapData):void
