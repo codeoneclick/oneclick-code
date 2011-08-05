@@ -43,6 +43,8 @@ package game
 			m_bitmapList[k_SECTOR_LAYER_01] = new Bitmap();
 			m_bitmapList[k_SECTOR_LAYER_02] = new Bitmap();
 			
+			m_bitmapList[k_SECTOR_LAYER_02].y -= k_SECTOR_HEIGHT / 2;
+			
 			this.addChild(m_bitmapList[k_SECTOR_LAYER_01]);
 			this.addChild(m_bitmapList[k_SECTOR_LAYER_02]);
 		}
