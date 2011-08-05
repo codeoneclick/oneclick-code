@@ -4,6 +4,7 @@ package
 	import core.Input;
 	import editor.EditorController;
 	import flash.display.Sprite;
+	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import core.Camera;
 	import flash.utils.Dictionary;
@@ -40,6 +41,7 @@ package
 			this.addChild(m_layerContainer[k_UI_LAYER]);
 			
 			Global.stage = stage;
+			Global.stage.scaleMode = StageScaleMode.NO_SCALE;
 			Global.stage.frameRate = 60;
 			Global.inGameContainer = m_layerContainer[k_IN_GAME_LAYER];
 			Global.uiContainer = m_layerContainer[k_UI_LAYER];
