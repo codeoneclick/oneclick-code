@@ -20,6 +20,8 @@ package game
 		public static const k_SECTOR_LAYER_02:String = "SECTOR_LAYER_02";
 		public static const k_SECTOR_DEFAULT_NAME:String = "sector_00";
 		public static const k_SECTOR_NAME:String = "sector_0";
+		public static const k_DECO_DEFAULT_NAME:String = "deco_00";
+		public static const k_DECO_NAME:String = "deco_0";
 		
 		public static const k_SECTOR_WIDTH:Number = 90;
 		public static const k_SECTOR_HEIGHT:Number = 45;
@@ -28,6 +30,7 @@ package game
 		protected var m_sectorInQueue:String = "";
 		
 		protected var m_sectorName:String = "sector_00";
+		protected var m_decoName:String = "deco_00";
 		
 		protected var m_index:Point = new Point();
 		
@@ -94,25 +97,53 @@ package game
 			if ( m_intersect )
 			{
 				
-				if ( m_sectorName == k_SECTOR_NAME + Global.editorController.selectSectorName )
-					return;
-				
-				if ( (k_SECTOR_NAME + Global.editorController.selectSectorName) == k_SECTOR_DEFAULT_NAME )
+				if (Global.editorController.pickBookmarkName == EditorController.k_SECTOR_EDIT_MODE)
 				{
-					Global.editorController.addLog(EditorController.k_EDIT_REMOVE, m_index, k_SECTOR_LAYER_01, m_sectorName, "");
-					Global.editorController.removeSector(m_index);
-					return;
+				
+					if ( m_sectorName == k_SECTOR_NAME + Global.editorController.pickSectorName )
+						return;
+					
+					if ( (k_SECTOR_NAME + Global.editorController.pickSectorName) == k_SECTOR_DEFAULT_NAME )
+					{
+						Global.editorController.addLog(EditorController.k_EDIT_REMOVE, m_index, k_SECTOR_LAYER_01, m_sectorName, "");
+						Global.editorController.removeSector(m_index);
+						return;
+					}
+					
+					if (m_sectorName == k_SECTOR_DEFAULT_NAME) 
+					{
+						Global.editorController.addLog(EditorController.k_EDIT_ADD, m_index, k_SECTOR_LAYER_01, k_SECTOR_NAME + Global.editorController.pickSectorName, "");
+						Global.editorController.addSector( m_index, k_SECTOR_NAME + Global.editorController.pickSectorName, k_SECTOR_LAYER_01 );
+					}
+					else
+					{
+						Global.editorController.addLog(EditorController.k_EDIT_CHANGE, m_index, k_SECTOR_LAYER_01, k_SECTOR_NAME + Global.editorController.pickSectorName, m_sectorName);
+						Global.editorController.changeSector( m_index, k_SECTOR_NAME + Global.editorController.pickSectorName, k_SECTOR_LAYER_01 );
+					}
 				}
 				
-				if (m_sectorName == k_SECTOR_DEFAULT_NAME) 
+				if (Global.editorController.pickBookmarkName == EditorController.k_DECO_EDIT_MODE)
 				{
-					Global.editorController.addLog(EditorController.k_EDIT_ADD, m_index, k_SECTOR_LAYER_01, k_SECTOR_NAME + Global.editorController.selectSectorName, "");
-					Global.editorController.addSector( m_index, k_SECTOR_NAME + Global.editorController.selectSectorName, k_SECTOR_LAYER_01 );
-				}
-				else
-				{
-					Global.editorController.addLog(EditorController.k_EDIT_CHANGE, m_index, k_SECTOR_LAYER_01, k_SECTOR_NAME + Global.editorController.selectSectorName, m_sectorName);
-					Global.editorController.changeSector( m_index, k_SECTOR_NAME + Global.editorController.selectSectorName, k_SECTOR_LAYER_01 );
+					if ( m_decoName == k_DECO_NAME + Global.editorController.pickDecoName )
+						return;
+					
+					if ( (k_DECO_NAME + Global.editorController.pickDecoName) == k_DECO_DEFAULT_NAME )
+					{
+						Global.editorController.addLog(EditorController.k_EDIT_REMOVE, m_index, k_SECTOR_LAYER_02, m_decoName, "");
+						Global.editorController.removeSector(m_index);
+						return;
+					}
+					
+					if (m_decoName == k_DECO_DEFAULT_NAME) 
+					{
+						Global.editorController.addLog(EditorController.k_EDIT_ADD, m_index, k_SECTOR_LAYER_02, k_DECO_NAME + Global.editorController.pickDecoName, "");
+						Global.editorController.addSector( m_index, k_DECO_NAME + Global.editorController.pickDecoName, k_SECTOR_LAYER_02 );
+					}
+					else
+					{
+						Global.editorController.addLog(EditorController.k_EDIT_CHANGE, m_index, k_SECTOR_LAYER_02, k_DECO_NAME + Global.editorController.pickDecoName, m_decoName);
+						Global.editorController.changeSector( m_index, k_DECO_NAME + Global.editorController.pickDecoName, k_SECTOR_LAYER_02 );
+					}
 				}
 			}
 		}

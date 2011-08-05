@@ -13,25 +13,50 @@ package editor
 		private static var m_undoQueue:Vector.<Object> = new Vector.<Object>();
 		private static var m_redoQueue:Vector.<Object> = new Vector.<Object>();
 		
+		public static const k_SECTOR_EDIT_MODE:int = 1;
+		public static const k_DECO_EDIT_MODE:int = 2;
+		
 		public static const k_EDIT_ADD:String = "EDIT_ADD";
 		public static const k_EDIT_CHANGE:String = "EDIT_CHANGE";
 		public static const k_EDIT_REMOVE:String = "EDIT_REMOVE";
 		
-		private var m_selectSectorName:int = 0;
+		private var m_pickBookmarkName:int = 0;
+		private var m_pickSectorName:int = 0;
+		private var m_pickDecoName:int = 0;
 		
 		public function EditorController() 
 		{
 			
 		}
 		
-		public function get selectSectorName():int
+		public function get pickSectorName():int
 		{
-			return m_selectSectorName;
+			return m_pickSectorName;
 		}
 		
-		public function set selectSectorName(_value:int):void
+		public function set pickSectorName(_value:int):void
 		{
-			m_selectSectorName = _value;
+			m_pickSectorName = _value;
+		}
+		
+		public function get pickDecoName():int
+		{
+			return m_pickDecoName;
+		}
+		
+		public function set pickDecoName(_value:int):void
+		{
+			m_pickDecoName = _value;
+		}
+		
+		public function get pickBookmarkName():int
+		{
+			return m_pickBookmarkName;
+		}
+		
+		public function set pickBookmarkName(_value:int):void
+		{
+			m_pickBookmarkName = _value;
 		}
 		
 		public function addSector(_position:Point, _sectorName:String, _sectorType:String):void

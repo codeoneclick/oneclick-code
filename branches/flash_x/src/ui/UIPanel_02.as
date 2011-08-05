@@ -35,11 +35,13 @@ package ui
 			m_preview.addItem( { label:"", source:"content/sector_01.png" } );	
 			m_preview.addItem( { label:"", source:"content/sector_02.png" } );	
 			m_preview.addItem( { label:"", source:"content/sector_03.png" } );	
-			
-			m_preview.addItem( { label:"", source:"content/sector_00.png" } );
-			m_preview.addItem( { label:"", source:"content/sector_01.png" } );	
-			m_preview.addItem( { label:"", source:"content/sector_02.png" } );	
-			m_preview.addItem( { label:"", source:"content/sector_03.png" } );	
+			m_preview.addItem( { label:"", source:"content/sector_04.png" } );	
+			m_preview.addItem( { label:"", source:"content/sector_05.png" } );	
+			m_preview.addItem( { label:"", source:"content/sector_06.png" } );	
+			m_preview.addItem( { label:"", source:"content/sector_07.png" } );	
+			m_preview.addItem( { label:"", source:"content/sector_08.png" } );
+			m_preview.addItem( { label:"", source:"content/sector_09.png" } );
+			m_preview.addItem( { label:"", source:"content/sector_010.png" } );
 			
 			m_preview.addEventListener(Event.CHANGE, onSelect);
 			m_plane.addChild(m_preview);
@@ -47,7 +49,7 @@ package ui
 		
 		private function onSelect(_event:Event):void
 		{
-			Global.editorController.selectSectorName = (_event.target as TileList).selectedIndex;
+			Global.editorController.pickSectorName = (_event.target as TileList).selectedIndex;
 		}
 		
 	}
