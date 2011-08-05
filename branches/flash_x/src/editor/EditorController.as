@@ -62,7 +62,10 @@ package editor
 		public function addSector(_position:Point, _sectorName:String, _sectorType:String):void
 		{
 			Global.sceneController.addSector( _position, _sectorName, _sectorType );
-			Global.sceneController.addSubSectors( _position );
+			if (_sectorType == Sector.k_SECTOR_LAYER_01)
+			{
+				Global.sceneController.addSubSectors( _position );
+			}
 			Global.sceneController.zOrder();
 		}
 		
@@ -71,10 +74,13 @@ package editor
 			Global.sceneController.changeSector(_position, _sectorName, _sectorType);
 		}
 		
-		public function removeSector(_position:Point):void
+		public function removeSector(_position:Point, _layer:String):void
 		{
-			Global.sceneController.removeSector(_position);
-			Global.sceneController.removeSubSectors(_position);
+			Global.sceneController.removeSector(_position, _layer);
+			if (_layer == Sector.k_SECTOR_LAYER_01)
+			{
+				Global.sceneController.removeSubSectors(_position);
+			}
 			Global.sceneController.zOrder();
 		}
 		
@@ -104,7 +110,7 @@ package editor
 				{
 					case k_EDIT_ADD :
 					{
-						removeSector(action.position);
+						removeSector(action.position, action.sectorType);
 					}
 					break;
 					case k_EDIT_REMOVE :

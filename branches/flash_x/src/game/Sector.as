@@ -51,7 +51,19 @@ package game
 		
 		override public function Load(_name:String, _sectorType:String):void 
 		{
-			m_sectorName = _name;
+			var test:int = _name.search(k_SECTOR_NAME);
+			
+			if (_name.search(k_SECTOR_NAME) >= 0)
+			{
+				m_sectorName = _name;
+			}
+
+			if (_name.search(k_DECO_NAME) >= 0)
+			{
+				m_decoName = _name;
+			}
+			
+			
 			m_sectorInQueue = _sectorType;
 			super.Load(_name, _sectorType);
 			super.LoadBoundData(k_SECTOR_DEFAULT_NAME);
@@ -69,7 +81,14 @@ package game
 				
 				case k_SECTOR_LAYER_02 :
 				{
-					(m_bitmapList[k_SECTOR_LAYER_02] as Bitmap).bitmapData = _data;
+					if (m_decoName != k_DECO_DEFAULT_NAME)
+					{
+						(m_bitmapList[k_SECTOR_LAYER_02] as Bitmap).bitmapData = _data;
+					}
+					else
+					{
+						(m_bitmapList[k_SECTOR_LAYER_02] as Bitmap).bitmapData = null;
+					}
 				}
 				break;
 				
@@ -108,7 +127,7 @@ package game
 					if ( (k_SECTOR_NAME + Global.editorController.pickSectorName) == k_SECTOR_DEFAULT_NAME )
 					{
 						Global.editorController.addLog(EditorController.k_EDIT_REMOVE, m_index, k_SECTOR_LAYER_01, m_sectorName, "");
-						Global.editorController.removeSector(m_index);
+						Global.editorController.removeSector(m_index, k_SECTOR_LAYER_01);
 						return;
 					}
 					
@@ -126,13 +145,13 @@ package game
 				
 				if (Global.editorController.pickBookmarkName == EditorController.k_DECO_EDIT_MODE)
 				{
-					if ( m_decoName == k_DECO_NAME + Global.editorController.pickDecoName )
+					if ( (m_decoName == k_DECO_NAME + Global.editorController.pickDecoName) || ( m_sectorName == k_SECTOR_DEFAULT_NAME ) )
 						return;
 					
 					if ( (k_DECO_NAME + Global.editorController.pickDecoName) == k_DECO_DEFAULT_NAME )
 					{
 						Global.editorController.addLog(EditorController.k_EDIT_REMOVE, m_index, k_SECTOR_LAYER_02, m_decoName, "");
-						Global.editorController.removeSector(m_index);
+						Global.editorController.removeSector(m_index, k_SECTOR_LAYER_02);
 						return;
 					}
 					
@@ -201,6 +220,16 @@ package game
 		public function set sectorName(_value:String):void
 		{
 			m_sectorName = _value;
+		}
+		
+		public function get decoName():String 
+		{
+			return m_decoName;
+		}
+		
+		public function set decoName(_value:String):void
+		{
+			m_decoName = _value;
 		}
 	}
 

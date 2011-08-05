@@ -101,11 +101,18 @@ package game
 			}
 		}
 		
-		public function removeSector(_position:Point):void
+		public function removeSector(_position:Point, _layer:String):void
 		{
 			if ( m_mapContainer[k_SECTOR_INDEX + _position.x] != null && m_mapContainer[k_SECTOR_INDEX + _position.x][k_SECTOR_INDEX + _position.y] != null )
 			{
-				changeSector(_position, Sector.k_SECTOR_DEFAULT_NAME, Sector.k_SECTOR_LAYER_01);
+				if (_layer == Sector.k_SECTOR_LAYER_01)
+				{
+					changeSector(_position, Sector.k_SECTOR_DEFAULT_NAME, _layer);
+				}
+				else if (_layer == Sector.k_SECTOR_LAYER_02)
+				{
+					changeSector(_position, Sector.k_DECO_DEFAULT_NAME, _layer);
+				}
 			}
 		}
 		
