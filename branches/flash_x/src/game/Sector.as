@@ -27,7 +27,8 @@ package game
 		public static const k_SECTOR_HEIGHT:Number = 45;
 		
 		protected var m_bitmapList:Dictionary = new Dictionary();
-		protected var m_sectorInQueue:String = "";
+		protected var m_loadQueue:Vector.<LoadQueueNode> = new Vector.<LoadQueueNode>();
+		protected var m_currentLoadInQueue:String = "";
 		
 		protected var m_sectorName:String = "sector_00";
 		protected var m_decoName:String = "deco_00";
@@ -47,11 +48,12 @@ package game
 			
 			this.addChild(m_bitmapList[k_SECTOR_LAYER_01]);
 			this.addChild(m_bitmapList[k_SECTOR_LAYER_02]);
+			
+			super.LoadBoundData(k_SECTOR_DEFAULT_NAME);
 		}
 		
 		override public function Load(_name:String, _sectorType:String):void 
 		{
-			var test:int = _name.search(k_SECTOR_NAME);
 			
 			if (_name.search(k_SECTOR_NAME) >= 0)
 			{
@@ -63,15 +65,20 @@ package game
 				m_decoName = _name;
 			}
 			
-			
-			m_sectorInQueue = _sectorType;
-			super.Load(_name, _sectorType);
-			super.LoadBoundData(k_SECTOR_DEFAULT_NAME);
+			if (m_currentLoadInQueue.length == 0)
+			{
+				m_currentLoadInQueue = _sectorType;
+				super.Load(_name, _sectorType);
+			}
+			else
+			{
+				m_loadQueue.push(new LoadQueueNode(_name,_sectorType));
+			}
 		}
 		
 		override protected function onLoadResource(_data:BitmapData):void 
 		{
-			switch( m_sectorInQueue )
+			switch( m_currentLoadInQueue )
 			{
 				case k_SECTOR_LAYER_01 :
 				{
@@ -94,11 +101,17 @@ package game
 				
 				default :
 				{
-					//m_sectorInQueue = "";
 					throw Error;
 				}
 			}
-			//m_sectorInQueue = "";
+			
+			m_currentLoadInQueue = "";
+			
+			if (m_loadQueue.length > 0)
+			{
+				var node:LoadQueueNode = m_loadQueue.pop();
+				Load(node.m_name, node.m_type);	
+			}
 		}
 		
 		override protected function onLoadBoundData(_data:BitmapData):void 
@@ -233,4 +246,16 @@ package game
 		}
 	}
 
+}
+
+class LoadQueueNode
+{
+	public var m_name:String = "";
+	public var m_type:String = "";
+	
+	public function LoadQueueNode(_name:String, _type:String)
+	{
+		m_name = _name;
+		m_type = _type;
+	}
 }

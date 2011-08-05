@@ -268,7 +268,7 @@ package game
 				mapData.writeInt(sector.index.x);
 				mapData.writeInt(sector.index.y);
 				mapData.writeUTF(sector.sectorName);
-				mapData.writeUTF(Sector.k_SECTOR_LAYER_01);
+				mapData.writeUTF(sector.decoName);
   			}
 			
 			return mapData;
@@ -283,12 +283,19 @@ package game
 				var index:Point = new Point();
 				index.x = _data.readInt();
 				index.y = _data.readInt();
-				var name:String = _data.readUTF();
-				var type:String =  _data.readUTF();
-				if ( name != Sector.k_SECTOR_DEFAULT_NAME )
+				
+				var sectorName:String = _data.readUTF();
+				if ( sectorName != Sector.k_SECTOR_DEFAULT_NAME )
 				{
-					Global.editorController.addSector(new Point(index.x, index.y), name, Sector.k_SECTOR_LAYER_01);
+					Global.editorController.addSector(new Point(index.x, index.y), sectorName, Sector.k_SECTOR_LAYER_01);
 				}
+				
+				var decoName:String = _data.readUTF();
+				if ( decoName != Sector.k_SECTOR_DEFAULT_NAME )
+				{
+					Global.editorController.addSector(new Point(index.x, index.y), decoName, Sector.k_SECTOR_LAYER_02);
+				}
+				
 			}
 		}
 		
