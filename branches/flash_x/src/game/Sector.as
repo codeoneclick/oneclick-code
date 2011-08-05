@@ -16,9 +16,8 @@ package game
 	public class Sector extends GameNode
 	{
 		
-		public static const k_SECTOR_UP:String = "SECTOR_UP";
-		public static const k_SECTOR_MIDDLE:String = "SECTOR_MIDDLE";
-		public static const k_SECTOR_DOWN:String = "SECTOR_DOWN";
+		public static const k_SECTOR_LAYER_01:String = "SECTOR_LAYER_01";
+		public static const k_SECTOR_LAYER_02:String = "SECTOR_LAYER_02";
 		public static const k_SECTOR_DEFAULT_NAME:String = "sector_00";
 		public static const k_SECTOR_NAME:String = "sector_0";
 		
@@ -32,19 +31,17 @@ package game
 		
 		protected var m_index:Point = new Point();
 		
-		protected var m_boundBitmapData:BitmapData = null;
+		protected var m_boundShape:BitmapData = null;
 		
 		public function Sector(_container:DisplayObjectContainer) 
 		{
 			super(_container);
 			
-			m_bitmapList[k_SECTOR_UP] = new Bitmap();
-			m_bitmapList[k_SECTOR_MIDDLE] = new Bitmap();
-			m_bitmapList[k_SECTOR_DOWN] = new Bitmap();
+			m_bitmapList[k_SECTOR_LAYER_01] = new Bitmap();
+			m_bitmapList[k_SECTOR_LAYER_02] = new Bitmap();
 			
-			this.addChild(m_bitmapList[k_SECTOR_DOWN]);
-			this.addChild(m_bitmapList[k_SECTOR_MIDDLE]);
-			this.addChild(m_bitmapList[k_SECTOR_UP]);
+			this.addChild(m_bitmapList[k_SECTOR_LAYER_01]);
+			this.addChild(m_bitmapList[k_SECTOR_LAYER_02]);
 		}
 		
 		override public function Load(_name:String, _sectorType:String):void 
@@ -59,19 +56,15 @@ package game
 		{
 			switch( m_sectorInQueue )
 			{
-				case k_SECTOR_UP :
+				case k_SECTOR_LAYER_01 :
 				{
-					(m_bitmapList[k_SECTOR_UP] as Bitmap).bitmapData = _data;
+					(m_bitmapList[k_SECTOR_LAYER_01] as Bitmap).bitmapData = _data;
 				}
 				break;
-				case k_SECTOR_MIDDLE :
+				
+				case k_SECTOR_LAYER_02 :
 				{
-					(m_bitmapList[k_SECTOR_MIDDLE] as Bitmap).bitmapData = _data;
-				}
-				break;
-				case k_SECTOR_DOWN :
-				{
-					(m_bitmapList[k_SECTOR_DOWN] as Bitmap).bitmapData = _data;
+					(m_bitmapList[k_SECTOR_LAYER_02] as Bitmap).bitmapData = _data;
 				}
 				break;
 				
@@ -86,7 +79,7 @@ package game
 		
 		override protected function onLoadBoundData(_data:BitmapData):void 
 		{
-			m_boundBitmapData = _data;
+			m_boundShape = _data;
 		}
 		
 		override protected function onUpdate(_event:Event):void 
@@ -100,32 +93,36 @@ package game
 			m_intersect = isIntersect( _event.stageX, _event.stageY );
 			if ( m_intersect )
 			{
+				
+				if ( m_sectorName == k_SECTOR_NAME + Global.editorController.selectSectorName )
+					return;
+				
 				if ( (k_SECTOR_NAME + Global.editorController.selectSectorName) == k_SECTOR_DEFAULT_NAME )
 				{
-					Global.editorController.addLog(EditorController.k_EDIT_REMOVE, m_index, k_SECTOR_MIDDLE, m_sectorName, "");
+					Global.editorController.addLog(EditorController.k_EDIT_REMOVE, m_index, k_SECTOR_LAYER_01, m_sectorName, "");
 					Global.editorController.removeSector(m_index);
 					return;
 				}
 				
 				if (m_sectorName == k_SECTOR_DEFAULT_NAME) 
 				{
-					Global.editorController.addLog(EditorController.k_EDIT_ADD, m_index, k_SECTOR_MIDDLE, k_SECTOR_NAME + Global.editorController.selectSectorName, "");
-					Global.editorController.addSector( m_index, k_SECTOR_NAME + Global.editorController.selectSectorName, k_SECTOR_MIDDLE );
+					Global.editorController.addLog(EditorController.k_EDIT_ADD, m_index, k_SECTOR_LAYER_01, k_SECTOR_NAME + Global.editorController.selectSectorName, "");
+					Global.editorController.addSector( m_index, k_SECTOR_NAME + Global.editorController.selectSectorName, k_SECTOR_LAYER_01 );
 				}
 				else
 				{
-					Global.editorController.addLog(EditorController.k_EDIT_CHANGE, m_index, k_SECTOR_MIDDLE, k_SECTOR_NAME + Global.editorController.selectSectorName, m_sectorName);
-					Global.editorController.changeSector( m_index, k_SECTOR_NAME + Global.editorController.selectSectorName, k_SECTOR_MIDDLE );
+					Global.editorController.addLog(EditorController.k_EDIT_CHANGE, m_index, k_SECTOR_LAYER_01, k_SECTOR_NAME + Global.editorController.selectSectorName, m_sectorName);
+					Global.editorController.changeSector( m_index, k_SECTOR_NAME + Global.editorController.selectSectorName, k_SECTOR_LAYER_01 );
 				}
 			}
 		}
 		
 		protected function isIntersect(_x:Number, _y:Number):uint
 		{
-			if (m_boundBitmapData != null)
+			if (m_boundShape != null)
 			{
 				var mouseLocalPosition:Point = globalToLocal(new Point( _x, _y ));
-				return m_boundBitmapData.getPixel(mouseLocalPosition.x, mouseLocalPosition.y);
+				return m_boundShape.getPixel(mouseLocalPosition.x, mouseLocalPosition.y);
 			}
 			else
 			{
@@ -137,23 +134,17 @@ package game
 		{
 			switch(_sectorType)
 			{
-				case k_SECTOR_DOWN :
+				case k_SECTOR_LAYER_01 :
 				{
-					(m_bitmapList[k_SECTOR_DOWN] as Bitmap).bitmapData = null;
+					(m_bitmapList[k_SECTOR_LAYER_01] as Bitmap).bitmapData = null;
+					(m_bitmapList[k_SECTOR_LAYER_02] as Bitmap).bitmapData = null;
+					m_boundShape = null;
 				}
 				break;
 				
-				case k_SECTOR_MIDDLE :
+				case k_SECTOR_LAYER_02 :
 				{
-					(m_bitmapList[k_SECTOR_DOWN] as Bitmap).bitmapData = null;
-					(m_bitmapList[k_SECTOR_UP] as Bitmap).bitmapData = null;
-					(m_bitmapList[k_SECTOR_MIDDLE] as Bitmap).bitmapData = null;
-				}
-				break;
-				
-				case k_SECTOR_UP :
-				{
-					(m_bitmapList[k_SECTOR_UP] as Bitmap).bitmapData = null;
+					(m_bitmapList[k_SECTOR_LAYER_02] as Bitmap).bitmapData = null;
 				}
 				break;
 			}

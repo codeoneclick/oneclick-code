@@ -62,6 +62,7 @@ package editor
 			action.sectorType = _sectorType;
 			action.oldSectorName = _oldSectorName;
 			m_undoQueue.push(action);
+			m_redoQueue = new Vector.<Object>();
 		}
 		
 		public function removeLog():void
