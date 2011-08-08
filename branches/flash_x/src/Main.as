@@ -4,6 +4,7 @@ package
 	import core.Input;
 	import editor.EditorController;
 	import flash.display.Sprite;
+	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import core.Camera;
@@ -50,6 +51,7 @@ package
 			Global.sceneController = new SceneController();
 			Global.sceneController.initDefault();
 			Global.uiController = new UIController();
+			Global.uiContainer.stage.align = StageAlign.TOP_LEFT;
 			Global.input = new Input();
 			Global.camera = new Camera();		
 		}		

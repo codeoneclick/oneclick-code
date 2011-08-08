@@ -31,8 +31,15 @@ package game
 		protected function onLoadResource(_data:BitmapData):void
 		{
 			m_bitmap.bitmapData = _data;
+			Global.stage.addEventListener(Event.RESIZE, onResize);			
+			Global.stage.dispatchEvent(new Event(Event.RESIZE));			
 		}
 		
+		private function onResize(event:Event):void
+		{
+			graphics.beginBitmapFill(m_bitmap.bitmapData);
+			graphics.drawRect(0, 0, Global.stage.stageWidth, Global.stage.stageHeight);
+			graphics.endFill();
+		}
 	}
-
 }

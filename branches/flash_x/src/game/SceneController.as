@@ -28,7 +28,7 @@ package game
 		public function SceneController() 
 		{
 			m_background = new Background(Global.backContainer);
-			m_background.load("back_02");
+			m_background.load("back_03");
 		}
 		
 		public function initDefault():void

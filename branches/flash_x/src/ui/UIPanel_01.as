@@ -31,7 +31,7 @@ package ui
 			m_saveButton.y = 70;
 			m_saveButton.width = UISetting.k_PANEL_WIDTH - 20;
 			m_saveButton.addEventListener(MouseEvent.CLICK, onSaveBtnClick);
-			
+						
 			m_loadButton.label = "load";
 			m_loadButton.x = 10;
 			m_loadButton.y = 100;

@@ -40,39 +40,42 @@ package ui
 			
 			m_bookmarkList.push(new Button());
 			m_bookmarkList[0].width = UISetting.k_BOOKMARK_WIDTH;
-			m_bookmarkList[0].height = UISetting.k_BOOKMARK_HEIGHT;
-			m_bookmarkList[0].y = UISetting.k_BOOKMARK_OFFSET;
-			m_bookmarkList[0].x = Global.setting.windowWidth - UISetting.k_PANEL_WIDTH + UISetting.k_BOOKMARK_OFFSET;
+			m_bookmarkList[0].height = UISetting.k_BOOKMARK_HEIGHT;			
 			m_bookmarkList[0].label = "1";
 			
 			m_bookmarkList.push(new Button());
 			m_bookmarkList[1].width = UISetting.k_BOOKMARK_WIDTH;
-			m_bookmarkList[1].height = UISetting.k_BOOKMARK_HEIGHT;
-			m_bookmarkList[1].y = UISetting.k_BOOKMARK_OFFSET;
-			m_bookmarkList[1].x = Global.setting.windowWidth - UISetting.k_PANEL_WIDTH + UISetting.k_BOOKMARK_OFFSET * 2 + UISetting.k_BOOKMARK_WIDTH;
+			m_bookmarkList[1].height = UISetting.k_BOOKMARK_HEIGHT;			
 			m_bookmarkList[1].label = "2";
 
 			
 			m_bookmarkList.push(new Button());
 			m_bookmarkList[2].width = UISetting.k_BOOKMARK_WIDTH;
-			m_bookmarkList[2].height = UISetting.k_BOOKMARK_HEIGHT;
-			m_bookmarkList[2].y = UISetting.k_BOOKMARK_OFFSET;
-			m_bookmarkList[2].x = Global.setting.windowWidth - UISetting.k_PANEL_WIDTH + UISetting.k_BOOKMARK_OFFSET * 3 + UISetting.k_BOOKMARK_WIDTH * 2;
+			m_bookmarkList[2].height = UISetting.k_BOOKMARK_HEIGHT;			
 			m_bookmarkList[2].label = "3";
 			
 			m_bookmarkList.push(new Button());
 			m_bookmarkList[3].width = UISetting.k_BOOKMARK_WIDTH;
-			m_bookmarkList[3].height = UISetting.k_BOOKMARK_HEIGHT;
-			m_bookmarkList[3].y = UISetting.k_BOOKMARK_OFFSET;
-			m_bookmarkList[3].x = Global.setting.windowWidth - UISetting.k_PANEL_WIDTH + UISetting.k_BOOKMARK_OFFSET * 4 + UISetting.k_BOOKMARK_WIDTH * 3;
+			m_bookmarkList[3].height = UISetting.k_BOOKMARK_HEIGHT;			
 			m_bookmarkList[3].label = "4";
 
 			
 			for ( var i:int = 0; i < m_bookmarkList.length; i++ )
 			{
-				m_bookmarkList[i].addEventListener(MouseEvent.CLICK, onBookmarkClick);
+				m_bookmarkList[i].addEventListener(MouseEvent.CLICK, onBookmarkClick);								
 				Global.uiContainer.addChild(m_bookmarkList[i]);
 			}
+			Global.stage.addEventListener(Event.RESIZE, onResize);
+			Global.stage.dispatchEvent(new Event(Event.RESIZE));			
+		}
+		
+		private function onResize(event:Event):void
+		{
+			for ( var i:int = 0; i < m_bookmarkList.length; i++ )
+			{
+				m_bookmarkList[i].y = UISetting.k_BOOKMARK_OFFSET;
+				m_bookmarkList[i].x = Global.stage.stageWidth - UISetting.k_PANEL_WIDTH + UISetting.k_BOOKMARK_OFFSET * (i + 1) + UISetting.k_BOOKMARK_WIDTH * i;	
+			}			
 		}
 		
 		private function onBookmarkClick(_event:MouseEvent):void
