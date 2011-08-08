@@ -1,5 +1,6 @@
 package game 
 {
+	import adobe.utils.CustomActions;
 	import core.Global;
 	import fl.controls.Button;
 	import flash.display.Sprite;
@@ -34,7 +35,7 @@ package game
 		{
 			m_visualLayers[k_DEFAULT_LAYER] = new Sprite();
 			Global.inGameContainer.addChild(m_visualLayers[k_DEFAULT_LAYER]);
-			Global.editorController.addSector(new Point(0, 0), "sector_01", Sector.k_SECTOR_LAYER_01);
+			Global.editorController.addSector(new Point(0, 0), "sector_01", Sector.k_SECTOR_LAYER);
 		}
 		
 		public function addSector(_position:Point, _sectorName:String, _sectorType:String):Boolean
@@ -94,7 +95,7 @@ package game
 			if ( m_mapContainer[k_SECTOR_INDEX + _position.x][k_SECTOR_INDEX + _position.y] == null)
 			{
 				m_mapContainer[k_SECTOR_INDEX + _position.x][k_SECTOR_INDEX + _position.y] = new Sector(m_visualLayers[k_DEFAULT_LAYER]);
-				m_mapContainer[k_SECTOR_INDEX + _position.x][k_SECTOR_INDEX + _position.y].Load(Sector.k_SECTOR_DEFAULT_NAME, Sector.k_SECTOR_LAYER_01);
+				m_mapContainer[k_SECTOR_INDEX + _position.x][k_SECTOR_INDEX + _position.y].Load(Sector.k_SECTOR_DEFAULT_NAME, Sector.k_SECTOR_LAYER);
 				calculatePosition(new Point(_position.x , _position.y));
 				m_gameNodeContainer.push(m_mapContainer[k_SECTOR_INDEX + _position.x][k_SECTOR_INDEX + _position.y]);
 				m_mapContainer[k_SECTOR_INDEX + _position.x][k_SECTOR_INDEX + _position.y].index = new Point(_position.x,_position.y);
@@ -105,13 +106,13 @@ package game
 		{
 			if ( m_mapContainer[k_SECTOR_INDEX + _position.x] != null && m_mapContainer[k_SECTOR_INDEX + _position.x][k_SECTOR_INDEX + _position.y] != null )
 			{
-				if (_layer == Sector.k_SECTOR_LAYER_01)
+				if (_layer == Sector.k_SECTOR_LAYER)
 				{
 					changeSector(_position, Sector.k_SECTOR_DEFAULT_NAME, _layer);
 				}
-				else if (_layer == Sector.k_SECTOR_LAYER_02)
+				else if (_layer == Sector.k_DECORATION_LAYER)
 				{
-					changeSector(_position, Sector.k_DECO_DEFAULT_NAME, _layer);
+					changeSector(_position, Sector.k_DECORATION_DEFAULT_NAME, _layer);
 				}
 			}
 		}
@@ -146,7 +147,7 @@ package game
 				 m_mapContainer[k_SECTOR_INDEX + _position.x][k_SECTOR_INDEX + _position.y].sectorName == Sector.k_SECTOR_DEFAULT_NAME &&
 				 !checkSubSectors(_position))
 			{
-				m_mapContainer[k_SECTOR_INDEX + _position.x][k_SECTOR_INDEX + _position.y].unLoad(Sector.k_SECTOR_LAYER_01);
+				m_mapContainer[k_SECTOR_INDEX + _position.x][k_SECTOR_INDEX + _position.y].unLoad(Sector.k_SECTOR_LAYER);
 				m_gameNodeContainer.splice(m_gameNodeContainer.indexOf(m_mapContainer[k_SECTOR_INDEX + _position.x][k_SECTOR_INDEX + _position.y]), 1);
 				m_mapContainer[k_SECTOR_INDEX + _position.x][k_SECTOR_INDEX + _position.y] = null;
 			}
@@ -267,8 +268,8 @@ package game
 				sector = m_gameNodeContainer[i] as Sector;
 				mapData.writeInt(sector.index.x);
 				mapData.writeInt(sector.index.y);
-				mapData.writeUTF(sector.sectorName);
-				mapData.writeUTF(sector.decoName);
+				mapData.writeUTF(sector.sector);
+				mapData.writeUTF(sector.decoration);
   			}
 			
 			return mapData;
@@ -278,24 +279,24 @@ package game
 		{
 			var sectorCount:int = _data.readInt();
 			
-			for ( var i:int = 0; i < sectorCount; i++ )
+			for (var i:int = 0; i < sectorCount; i++ )
 			{
-				var index:Point = new Point();
-				index.x = _data.readInt();
-				index.y = _data.readInt();
+				var mapNode:MapStruct = new MapStruct();
+				mapNode.m_index.x = _data.readInt();
+				mapNode.m_index.y = _data.readInt();
 				
-				var sectorName:String = _data.readUTF();
-				if ( sectorName != Sector.k_SECTOR_DEFAULT_NAME )
+				mapNode.m_sector = _data.readUTF();
+				mapNode.m_decoration = _data.readUTF();
+				
+				if ( mapNode.m_sector != Sector.k_SECTOR_DEFAULT_NAME )
 				{
-					Global.editorController.addSector(new Point(index.x, index.y), sectorName, Sector.k_SECTOR_LAYER_01);
+					Global.editorController.addSector(mapNode.m_index, mapNode.m_sector, Sector.k_SECTOR_LAYER);
 				}
 				
-				var decoName:String = _data.readUTF();
-				if ( decoName != Sector.k_SECTOR_DEFAULT_NAME )
+				if ( mapNode.m_decoration != Sector.k_DECORATION_DEFAULT_NAME )
 				{
-					Global.editorController.addSector(new Point(index.x, index.y), decoName, Sector.k_SECTOR_LAYER_02);
+					Global.editorController.addSector(mapNode.m_index, mapNode.m_decoration, Sector.k_DECORATION_LAYER);
 				}
-				
 			}
 		}
 		
@@ -311,5 +312,17 @@ package game
 		}
 	
 	}
+}
+import flash.geom.Point;
 
+class MapStruct
+{
+	public var m_index:Point = new Point();
+	public var m_sector:String = "";
+	public var m_decoration:String = "";
+	
+	public function MapStruct()
+	{
+		
+	}
 }

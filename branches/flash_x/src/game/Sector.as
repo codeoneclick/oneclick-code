@@ -15,13 +15,14 @@ package game
 	 */
 	public class Sector extends GameNode
 	{
+		public static const k_SECTOR_LAYER:String = "SECTOR_LAYER_01";
+		public static const k_DECORATION_LAYER:String = "SECTOR_LAYER_02";
 		
-		public static const k_SECTOR_LAYER_01:String = "SECTOR_LAYER_01";
-		public static const k_SECTOR_LAYER_02:String = "SECTOR_LAYER_02";
 		public static const k_SECTOR_DEFAULT_NAME:String = "sector_00";
 		public static const k_SECTOR_NAME:String = "sector_0";
-		public static const k_DECO_DEFAULT_NAME:String = "deco_00";
-		public static const k_DECO_NAME:String = "deco_0";
+		
+		public static const k_DECORATION_DEFAULT_NAME:String = "deco_00";
+		public static const k_DECORATION_NAME:String = "deco_0";
 		
 		public static const k_SECTOR_WIDTH:Number = 90;
 		public static const k_SECTOR_HEIGHT:Number = 45;
@@ -30,8 +31,8 @@ package game
 		protected var m_loadQueue:Vector.<LoadQueueNode> = new Vector.<LoadQueueNode>();
 		protected var m_currentLoadInQueue:String = "";
 		
-		protected var m_sectorName:String = "sector_00";
-		protected var m_decoName:String = "deco_00";
+		protected var m_sector:String = "sector_00";
+		protected var m_decoration:String = "deco_00";
 		
 		protected var m_index:Point = new Point();
 		
@@ -41,13 +42,13 @@ package game
 		{
 			super(_container);
 			
-			m_bitmapList[k_SECTOR_LAYER_01] = new Bitmap();
-			m_bitmapList[k_SECTOR_LAYER_02] = new Bitmap();
+			m_bitmapList[k_SECTOR_LAYER] = new Bitmap();
+			m_bitmapList[k_DECORATION_LAYER] = new Bitmap();
 			
-			m_bitmapList[k_SECTOR_LAYER_02].y -= k_SECTOR_HEIGHT / 2;
+			m_bitmapList[k_DECORATION_LAYER].y -= k_SECTOR_HEIGHT / 2;
 			
-			this.addChild(m_bitmapList[k_SECTOR_LAYER_01]);
-			this.addChild(m_bitmapList[k_SECTOR_LAYER_02]);
+			this.addChild(m_bitmapList[k_SECTOR_LAYER]);
+			this.addChild(m_bitmapList[k_DECORATION_LAYER]);
 			
 			super.LoadBoundData(k_SECTOR_DEFAULT_NAME);
 		}
@@ -57,12 +58,12 @@ package game
 			
 			if (_name.search(k_SECTOR_NAME) >= 0)
 			{
-				m_sectorName = _name;
+				m_sector = _name;
 			}
 
-			if (_name.search(k_DECO_NAME) >= 0)
+			if (_name.search(k_DECORATION_NAME) >= 0)
 			{
-				m_decoName = _name;
+				m_decoration = _name;
 			}
 			
 			if (m_currentLoadInQueue.length == 0)
@@ -80,21 +81,21 @@ package game
 		{
 			switch( m_currentLoadInQueue )
 			{
-				case k_SECTOR_LAYER_01 :
+				case k_SECTOR_LAYER :
 				{
-					(m_bitmapList[k_SECTOR_LAYER_01] as Bitmap).bitmapData = _data;
+					(m_bitmapList[k_SECTOR_LAYER] as Bitmap).bitmapData = _data;
 				}
 				break;
 				
-				case k_SECTOR_LAYER_02 :
+				case k_DECORATION_LAYER :
 				{
-					if (m_decoName != k_DECO_DEFAULT_NAME)
+					if (m_decoration != k_DECORATION_DEFAULT_NAME)
 					{
-						(m_bitmapList[k_SECTOR_LAYER_02] as Bitmap).bitmapData = _data;
+						(m_bitmapList[k_DECORATION_LAYER] as Bitmap).bitmapData = _data;
 					}
 					else
 					{
-						(m_bitmapList[k_SECTOR_LAYER_02] as Bitmap).bitmapData = null;
+						(m_bitmapList[k_DECORATION_LAYER] as Bitmap).bitmapData = null;
 					}
 				}
 				break;
@@ -134,49 +135,49 @@ package game
 				if (Global.editorController.pickBookmarkName == EditorController.k_SECTOR_EDIT_MODE)
 				{
 				
-					if ( m_sectorName == k_SECTOR_NAME + Global.editorController.pickSectorName )
+					if ( m_sector == k_SECTOR_NAME + Global.editorController.pickSectorName )
 						return;
 					
 					if ( (k_SECTOR_NAME + Global.editorController.pickSectorName) == k_SECTOR_DEFAULT_NAME )
 					{
-						Global.editorController.addLog(EditorController.k_EDIT_REMOVE, m_index, k_SECTOR_LAYER_01, m_sectorName, "");
-						Global.editorController.removeSector(m_index, k_SECTOR_LAYER_01);
+						Global.editorController.addLog(EditorController.k_EDIT_REMOVE, m_index, k_SECTOR_LAYER, m_sector, "");
+						Global.editorController.removeSector(m_index, k_SECTOR_LAYER);
 						return;
 					}
 					
-					if (m_sectorName == k_SECTOR_DEFAULT_NAME) 
+					if ( m_sector == k_SECTOR_DEFAULT_NAME) 
 					{
-						Global.editorController.addLog(EditorController.k_EDIT_ADD, m_index, k_SECTOR_LAYER_01, k_SECTOR_NAME + Global.editorController.pickSectorName, "");
-						Global.editorController.addSector( m_index, k_SECTOR_NAME + Global.editorController.pickSectorName, k_SECTOR_LAYER_01 );
+						Global.editorController.addLog(EditorController.k_EDIT_ADD, m_index, k_SECTOR_LAYER, k_SECTOR_NAME + Global.editorController.pickSectorName, "");
+						Global.editorController.addSector( m_index, k_SECTOR_NAME + Global.editorController.pickSectorName, k_SECTOR_LAYER );
 					}
 					else
 					{
-						Global.editorController.addLog(EditorController.k_EDIT_CHANGE, m_index, k_SECTOR_LAYER_01, k_SECTOR_NAME + Global.editorController.pickSectorName, m_sectorName);
-						Global.editorController.changeSector( m_index, k_SECTOR_NAME + Global.editorController.pickSectorName, k_SECTOR_LAYER_01 );
+						Global.editorController.addLog(EditorController.k_EDIT_CHANGE, m_index, k_SECTOR_LAYER, k_SECTOR_NAME + Global.editorController.pickSectorName, m_sector);
+						Global.editorController.changeSector( m_index, k_SECTOR_NAME + Global.editorController.pickSectorName, k_SECTOR_LAYER );
 					}
 				}
 				
 				if (Global.editorController.pickBookmarkName == EditorController.k_DECO_EDIT_MODE)
 				{
-					if ( (m_decoName == k_DECO_NAME + Global.editorController.pickDecoName) || ( m_sectorName == k_SECTOR_DEFAULT_NAME ) )
+					if ( (m_decoration == k_DECORATION_NAME + Global.editorController.pickDecoName) || ( m_sector == k_SECTOR_DEFAULT_NAME ) )
 						return;
 					
-					if ( (k_DECO_NAME + Global.editorController.pickDecoName) == k_DECO_DEFAULT_NAME )
+					if ( ( k_DECORATION_NAME + Global.editorController.pickDecoName ) == k_DECORATION_DEFAULT_NAME )
 					{
-						Global.editorController.addLog(EditorController.k_EDIT_REMOVE, m_index, k_SECTOR_LAYER_02, m_decoName, "");
-						Global.editorController.removeSector(m_index, k_SECTOR_LAYER_02);
+						Global.editorController.addLog(EditorController.k_EDIT_REMOVE, m_index, k_DECORATION_LAYER, m_decoration, "");
+						Global.editorController.removeSector(m_index, k_DECORATION_LAYER);
 						return;
 					}
 					
-					if (m_decoName == k_DECO_DEFAULT_NAME) 
+					if ( m_decoration == k_DECORATION_DEFAULT_NAME ) 
 					{
-						Global.editorController.addLog(EditorController.k_EDIT_ADD, m_index, k_SECTOR_LAYER_02, k_DECO_NAME + Global.editorController.pickDecoName, "");
-						Global.editorController.addSector( m_index, k_DECO_NAME + Global.editorController.pickDecoName, k_SECTOR_LAYER_02 );
+						Global.editorController.addLog(EditorController.k_EDIT_ADD, m_index, k_DECORATION_LAYER, k_DECORATION_NAME + Global.editorController.pickDecoName, "");
+						Global.editorController.addSector( m_index, k_DECORATION_NAME + Global.editorController.pickDecoName, k_DECORATION_LAYER );
 					}
 					else
 					{
-						Global.editorController.addLog(EditorController.k_EDIT_CHANGE, m_index, k_SECTOR_LAYER_02, k_DECO_NAME + Global.editorController.pickDecoName, m_decoName);
-						Global.editorController.changeSector( m_index, k_DECO_NAME + Global.editorController.pickDecoName, k_SECTOR_LAYER_02 );
+						Global.editorController.addLog(EditorController.k_EDIT_CHANGE, m_index, k_DECORATION_LAYER, k_DECORATION_NAME + Global.editorController.pickDecoName, m_decoration);
+						Global.editorController.changeSector( m_index, k_DECORATION_NAME + Global.editorController.pickDecoName, k_DECORATION_LAYER );
 					}
 				}
 			}
@@ -199,17 +200,17 @@ package game
 		{
 			switch(_sectorType)
 			{
-				case k_SECTOR_LAYER_01 :
+				case k_SECTOR_LAYER :
 				{
-					(m_bitmapList[k_SECTOR_LAYER_01] as Bitmap).bitmapData = null;
-					(m_bitmapList[k_SECTOR_LAYER_02] as Bitmap).bitmapData = null;
+					(m_bitmapList[k_SECTOR_LAYER] as Bitmap).bitmapData = null;
+					(m_bitmapList[k_DECORATION_LAYER] as Bitmap).bitmapData = null;
 					m_boundShape = null;
 				}
 				break;
 				
-				case k_SECTOR_LAYER_02 :
+				case k_DECORATION_LAYER :
 				{
-					(m_bitmapList[k_SECTOR_LAYER_02] as Bitmap).bitmapData = null;
+					(m_bitmapList[k_DECORATION_LAYER] as Bitmap).bitmapData = null;
 				}
 				break;
 			}
@@ -225,24 +226,24 @@ package game
 			return m_index;
 		}
 		
-		public function get sectorName():String 
+		public function get sector():String 
 		{
-			return m_sectorName;
+			return m_sector;
 		}
 		
-		public function set sectorName(_value:String):void
+		public function set sector(_value:String):void
 		{
-			m_sectorName = _value;
+			m_sector = _value;
 		}
 		
-		public function get decoName():String 
+		public function get decoration():String 
 		{
-			return m_decoName;
+			return m_decoration;
 		}
 		
-		public function set decoName(_value:String):void
+		public function set decoration(_value:String):void
 		{
-			m_decoName = _value;
+			m_decoration = _value;
 		}
 	}
 

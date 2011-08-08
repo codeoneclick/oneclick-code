@@ -62,7 +62,7 @@ package editor
 		public function addSector(_position:Point, _sectorName:String, _sectorType:String):void
 		{
 			Global.sceneController.addSector( _position, _sectorName, _sectorType );
-			if (_sectorType == Sector.k_SECTOR_LAYER_01)
+			if (_sectorType == Sector.k_SECTOR_LAYER)
 			{
 				Global.sceneController.addSubSectors( _position );
 			}
@@ -77,7 +77,7 @@ package editor
 		public function removeSector(_position:Point, _layer:String):void
 		{
 			Global.sceneController.removeSector(_position, _layer);
-			if (_layer == Sector.k_SECTOR_LAYER_01)
+			if (_layer == Sector.k_SECTOR_LAYER)
 			{
 				Global.sceneController.removeSubSectors(_position);
 			}
