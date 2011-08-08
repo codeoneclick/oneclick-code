@@ -53,8 +53,7 @@ package core
 		{			
 			removeStaticIcon();
 						
-			m_staticIcon = icon;
-			setOffsets(0, 0);
+			m_staticIcon = icon;			
 			m_sprite.addChild(m_staticIcon);
 			m_container.addChild(m_sprite);
 		}
@@ -70,22 +69,21 @@ package core
 		
 		protected function onLoadIcon(data:BitmapData):void
 		{
-			removeStaticIcon();
+			//removeStaticIcon();
 			releaseLoadedIcon();
 			
 			if (m_loadedIcon == null) 
 			{
 				m_loadedIcon = new Bitmap();
 			}
-			m_loadedIcon.bitmapData = data;
-			setOffsets( -m_loadedIcon.width / 2, -m_loadedIcon.height / 2);
+			m_loadedIcon.bitmapData = data;			
 			m_sprite.addChild(m_loadedIcon);
 			m_container.addChild(m_sprite);
 		}
 		
-		private function releaseLoadedIcon():void
+		public function releaseLoadedIcon():void
 		{			
-			if(m_staticIcon != null)
+			if(m_loadedIcon != null)
 			{
 				m_sprite.removeChild(m_loadedIcon);
 				m_loadedIcon = null;

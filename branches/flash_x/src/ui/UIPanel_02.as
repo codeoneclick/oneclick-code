@@ -52,10 +52,12 @@ package ui
 			var tile:TileList = event.target as TileList;
 			Global.editorController.pickSectorName = tile.selectedIndex;
 			
-			var arr:Array = tile.dataProvider.getItemAt(tile.selectedIndex).source.split("/");
-			arr = (arr[1] as String).split(".");
-			var name:String = arr[0] as String;
-			Global.mouseIcon.setElementIcon(name);
+			var url:String = tile.dataProvider.getItemAt(tile.selectedIndex).source;
+			var index1:int = url.indexOf("/");
+			var index2:int = url.indexOf(".");
+			var resName:String = url.substr(index1, index2 - index1);
+						
+			Global.mouseIcon.setElementIcon(resName);
 		}		
 	}
 }
