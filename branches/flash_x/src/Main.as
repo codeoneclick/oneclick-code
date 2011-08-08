@@ -10,6 +10,7 @@ package
 	import core.Camera;
 	import flash.utils.Dictionary;
 	import game.SceneController;
+	import ui.UICameraControls;
 	import ui.UIController;
 	
 	/**
@@ -54,6 +55,7 @@ package
 			Global.uiContainer.stage.align = StageAlign.TOP_LEFT;
 			Global.input = new Input();
 			Global.camera = new Camera();		
+			Global.cameraControls = new UICameraControls();
 		}		
 	}	
 }

@@ -5,6 +5,7 @@ package core
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Stage;
 	import game.SceneController;
+	import ui.UICameraControls;
 	import ui.UIController;
 	/**
 	 * ...
@@ -30,6 +31,8 @@ package core
 		private static var m_input:Input = null;
 		
 		private static var m_camera:Camera = null;
+		
+		private static var m_cameraControls:UICameraControls = null;
 		
 		private static var m_setting:Setting = new Setting();
 		
@@ -120,6 +123,16 @@ package core
 		public static function get camera():Camera
 		{
 			return m_camera;
+		}
+		
+		public static function set cameraControls(_value:UICameraControls):void
+		{
+			m_cameraControls = _value;
+		}
+		
+		public static function get cameraControls():UICameraControls
+		{
+			return m_cameraControls;
 		}
 		
 		public static function get setting():Setting
