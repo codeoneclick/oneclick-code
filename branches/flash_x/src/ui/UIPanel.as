@@ -18,7 +18,7 @@ package ui
 			m_plane.height = Global.setting.windowHeight - UISetting.k_PANEL_OFFSET;
 			m_plane.width = UISetting.k_PANEL_WIDTH;			
 			m_plane.x = Global.setting.windowWidth - m_plane.width;
-			m_plane.y = UISetting.k_PANEL_OFFSET;
+			//m_plane.y = UISetting.k_PANEL_OFFSET;
 			
 			Global.uiContainer.addChild(m_plane);	
 			Global.stage.addEventListener(Event.RESIZE, onResize);			

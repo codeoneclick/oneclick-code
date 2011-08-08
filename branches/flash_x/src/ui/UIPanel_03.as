@@ -39,7 +39,14 @@ package ui
 			m_preview.addItem( { label:"", source:"content/deco_05.png" } );
 
 			m_preview.addEventListener(Event.CHANGE, onSelect);
+			Global.stage.addEventListener(Event.RESIZE, onResize);			
+			Global.stage.dispatchEvent(new Event(Event.RESIZE));
 			m_plane.addChild(m_preview);
+		}
+		
+		private function onResize(event:Event):void
+		{
+			m_preview.height = Global.stage.stageHeight - 80;
 		}
 		
 		private function onSelect(event:Event):void

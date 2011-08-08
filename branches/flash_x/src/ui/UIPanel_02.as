@@ -30,7 +30,7 @@ package ui
 			m_preview.columnWidth = UISetting.k_PREVIEW_WIDTH - 16;
 			m_preview.rowHeight = UISetting.k_PREVIEW_WIDTH / 2;
 			m_preview.direction = ScrollBarDirection.VERTICAL;
-			
+						
 			m_preview.addItem( { label:"", source:"content/sector_00.png" } );
 			m_preview.addItem( { label:"", source:"content/sector_01.png" } );	
 			m_preview.addItem( { label:"", source:"content/sector_02.png" } );	
@@ -43,8 +43,15 @@ package ui
 			m_preview.addItem( { label:"", source:"content/sector_09.png" } );
 			m_preview.addItem( { label:"", source:"content/sector_010.png" } );
 			
-			m_preview.addEventListener(Event.CHANGE, onSelect);			
+			m_preview.addEventListener(Event.CHANGE, onSelect);	
+			Global.stage.addEventListener(Event.RESIZE, onResize);			
+			Global.stage.dispatchEvent(new Event(Event.RESIZE));
 			m_plane.addChild(m_preview);
+		}
+		
+		private function onResize(event:Event):void
+		{
+			m_preview.height = Global.stage.stageHeight - 80;
 		}
 		
 		private function onSelect(event:Event):void
