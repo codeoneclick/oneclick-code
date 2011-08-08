@@ -81,6 +81,14 @@ package core
 			m_container.addChild(m_sprite);
 		}
 		
+		public function setVisibleLoadedIcon(flag:Boolean):void
+		{
+			if (m_loadedIcon != null)
+			{
+				m_loadedIcon.visible = flag;
+			}
+		}
+		
 		public function releaseLoadedIcon():void
 		{			
 			if(m_loadedIcon != null)

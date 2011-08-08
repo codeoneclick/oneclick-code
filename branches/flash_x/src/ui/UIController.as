@@ -1,6 +1,7 @@
 package ui 
 {
 	import adobe.utils.CustomActions;
+	import core.GameMouseIcon;
 	import core.Global;
 	import fl.containers.ScrollPane;
 	import fl.controls.Button;
@@ -63,6 +64,8 @@ package ui
 			for ( var i:int = 0; i < m_bookmarkList.length; i++ )
 			{
 				m_bookmarkList[i].addEventListener(MouseEvent.CLICK, onBookmarkClick);								
+				m_bookmarkList[i].addEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
+				m_bookmarkList[i].addEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
 				Global.uiContainer.addChild(m_bookmarkList[i]);
 			}
 			Global.stage.addEventListener(Event.RESIZE, onResize);
@@ -78,9 +81,21 @@ package ui
 			}			
 		}
 		
-		private function onBookmarkClick(_event:MouseEvent):void
+		private function onMouseOver(event:MouseEvent):void
 		{
-			var name:String = (_event.target as Button).label;
+			Global.mouseIcon.setVisibleLoadedIcon(false);
+			Global.mouseIcon.setStandardIcon(GameMouseIcon.k_ICON_HAND);
+		}
+		
+		private function onMouseOut(event:MouseEvent):void
+		{
+			Global.mouseIcon.setVisibleLoadedIcon(true);
+			Global.mouseIcon.setStandardIcon(GameMouseIcon.k_ICON_CURSOR);
+		}
+		
+		private function onBookmarkClick(event:MouseEvent):void
+		{
+			var name:String = (event.target as Button).label;
 			
 			for ( var i:int = 0; i < m_panelList.length; i++ )
 			{

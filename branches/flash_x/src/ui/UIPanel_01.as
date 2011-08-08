@@ -1,5 +1,6 @@
 package ui 
 {
+	import core.GameMouseIcon;
 	import core.Global;
 	import fl.containers.ScrollPane;
 	import fl.controls.Button;
@@ -31,15 +32,31 @@ package ui
 			m_saveButton.y = 70;
 			m_saveButton.width = UISetting.k_PANEL_WIDTH - 20;
 			m_saveButton.addEventListener(MouseEvent.CLICK, onSaveBtnClick);
-						
+			m_saveButton.addEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
+			m_saveButton.addEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
+				
 			m_loadButton.label = "load";
 			m_loadButton.x = 10;
 			m_loadButton.y = 100;
 			m_loadButton.width = UISetting.k_PANEL_WIDTH - 20;
 			m_loadButton.addEventListener(MouseEvent.CLICK, onLoadBtnClick);
+			m_loadButton.addEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
+			m_loadButton.addEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
 			
 			m_plane.addChild(m_saveButton);
 			m_plane.addChild(m_loadButton);
+		}
+		
+		private function onMouseOver(event:MouseEvent):void
+		{
+			Global.mouseIcon.setVisibleLoadedIcon(false);
+			Global.mouseIcon.setStandardIcon(GameMouseIcon.k_ICON_HAND);
+		}
+		
+		private function onMouseOut(event:MouseEvent):void
+		{
+			Global.mouseIcon.setVisibleLoadedIcon(true);
+			Global.mouseIcon.setStandardIcon(GameMouseIcon.k_ICON_CURSOR);
 		}
 		
 		private function onSaveBtnClick(_event:MouseEvent):void
