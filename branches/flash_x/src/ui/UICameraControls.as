@@ -2,6 +2,7 @@ package ui
 {
 	import core.GameMouseIcon;
 	import core.Global;	
+	import flash.display.MovieClip;
 	import flash.display.SimpleButton;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -17,11 +18,14 @@ package ui
 		[Embed(source="../../res/camera_controls.swf", symbol="root_camera_controls")]
 		private static var CameraControls:Class;
 		
-		public static const k_BUTTON_NAME_UP:String      = "button_up";
-		public static const k_BUTTON_NAME_DOWN:String	= "button_down";
-		public static const k_BUTTON_NAME_LEFT:String	= "button_left";
-		public static const k_BUTTON_NAME_RIGHT:String	= "button_right";
-		public static const k_BUTTON_NAME_CENTER:String	= "button_center";
+		public static const k_BUTTON_NAME_UP:String     		= "button_up";
+		public static const k_BUTTON_NAME_DOWN:String			= "button_down";
+		public static const k_BUTTON_NAME_LEFT:String			= "button_left";
+		public static const k_BUTTON_NAME_RIGHT:String			= "button_right";
+		public static const k_BUTTON_NAME_CENTER:String			= "button_center";
+		public static const k_BUTTON_NAME_ZOOM_OUT:String		= "button_zoom_out";
+		public static const k_BUTTON_NAME_ZOOM_IN:String		= "button_zoom_in";
+		public static const k_ZOOM_BAR_NAME:String				= "zoom_bar";
 		
 		public static const k_BUTTON_UP:int 	= 1;    
 		public static const k_BUTTON_DOWN:int 	= 2;
@@ -30,11 +34,10 @@ package ui
 				
 		public var m_state:int = 0;
 		private var m_cameraControls:Sprite;
-		
+						
 		public function UICameraControls() 
 		{
-			m_cameraControls = new CameraControls as Sprite;
-			m_cameraControls.x = m_cameraControls.width / 2;
+			m_cameraControls = new CameraControls as Sprite;			
 			Global.uiContainer.addChild(m_cameraControls);
 			Global.stage.addEventListener(Event.RESIZE, onResize);			
 			Global.stage.dispatchEvent(new Event(Event.RESIZE));
@@ -43,31 +46,41 @@ package ui
 			button = m_cameraControls.getChildByName(k_BUTTON_NAME_UP) as SimpleButton;
 			button.addEventListener(MouseEvent.MOUSE_DOWN, onClickButon);
 			button.addEventListener(MouseEvent.MOUSE_UP, onClickButon);
-			button.addEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
-			button.addEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
+			button.addEventListener(MouseEvent.MOUSE_OVER, onMouseButtonOver);
+			button.addEventListener(MouseEvent.MOUSE_OUT, onMouseButtonOut);
 			
 			button = m_cameraControls.getChildByName(k_BUTTON_NAME_DOWN) as SimpleButton;
 			button.addEventListener(MouseEvent.MOUSE_DOWN, onClickButon);
 			button.addEventListener(MouseEvent.MOUSE_UP, onClickButon);
-			button.addEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
-			button.addEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
+			button.addEventListener(MouseEvent.MOUSE_OVER, onMouseButtonOver);
+			button.addEventListener(MouseEvent.MOUSE_OUT, onMouseButtonOut);
 			
 			button = m_cameraControls.getChildByName(k_BUTTON_NAME_LEFT) as SimpleButton;
 			button.addEventListener(MouseEvent.MOUSE_DOWN, onClickButon);
 			button.addEventListener(MouseEvent.MOUSE_UP, onClickButon);
-			button.addEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
-			button.addEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
+			button.addEventListener(MouseEvent.MOUSE_OVER, onMouseButtonOver);
+			button.addEventListener(MouseEvent.MOUSE_OUT, onMouseButtonOut);
 			
 			button = m_cameraControls.getChildByName(k_BUTTON_NAME_RIGHT) as SimpleButton;
 			button.addEventListener(MouseEvent.MOUSE_DOWN, onClickButon);
 			button.addEventListener(MouseEvent.MOUSE_UP, onClickButon);
-			button.addEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
-			button.addEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
+			button.addEventListener(MouseEvent.MOUSE_OVER, onMouseButtonOver);
+			button.addEventListener(MouseEvent.MOUSE_OUT, onMouseButtonOut);
 			
 			button = m_cameraControls.getChildByName(k_BUTTON_NAME_CENTER) as SimpleButton;
 			button.addEventListener(MouseEvent.CLICK, onClickButon);			
-			button.addEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
-			button.addEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
+			button.addEventListener(MouseEvent.MOUSE_OVER, onMouseButtonOver);
+			button.addEventListener(MouseEvent.MOUSE_OUT, onMouseButtonOut);
+					
+			button = m_cameraControls.getChildByName(k_BUTTON_NAME_ZOOM_OUT) as SimpleButton;
+			button.addEventListener(MouseEvent.CLICK, onClickButon);
+			button.addEventListener(MouseEvent.MOUSE_OVER, onMouseButtonOver);
+			button.addEventListener(MouseEvent.MOUSE_OUT, onMouseButtonOut);
+			
+			button = m_cameraControls.getChildByName(k_BUTTON_NAME_ZOOM_IN) as SimpleButton;
+			button.addEventListener(MouseEvent.CLICK, onClickButon);
+			button.addEventListener(MouseEvent.MOUSE_OVER, onMouseButtonOver);
+			button.addEventListener(MouseEvent.MOUSE_OUT, onMouseButtonOut);
 			
 			m_cameraControls.addEventListener(Event.ENTER_FRAME, onUpdate);
 			
@@ -75,13 +88,13 @@ package ui
 			Global.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyDown);
 		}
 		
-		private function onMouseOver(event:MouseEvent):void
+		private function onMouseButtonOver(event:MouseEvent):void
 		{
 			Global.mouseIcon.setVisibleLoadedIcon(false);
 			Global.mouseIcon.setStandardIcon(GameMouseIcon.k_ICON_HAND);			
 		}
 		
-		private function onMouseOut(event:MouseEvent):void
+		private function onMouseButtonOut(event:MouseEvent):void
 		{
 			Global.mouseIcon.setVisibleLoadedIcon(true);
 			Global.mouseIcon.setStandardIcon(GameMouseIcon.k_ICON_CURSOR);
@@ -217,12 +230,22 @@ package ui
 					Global.camera.position = new Point(0, 0);
 					break;
 				}
+				case k_BUTTON_NAME_ZOOM_IN:
+				{
+					Global.camera.zoomIn();
+					break;
+				}
+				case k_BUTTON_NAME_ZOOM_OUT:
+				{
+					Global.camera.zoomOut();
+					break;
+				}
 			}
 		}
 		
 		private function onResize(event:Event):void
 		{
-			m_cameraControls.y = Global.stage.stageHeight - m_cameraControls.height / 2;			
+			m_cameraControls.y = Global.stage.stageHeight;
 		}
 		
 		public function get cameraControlsMC():Sprite

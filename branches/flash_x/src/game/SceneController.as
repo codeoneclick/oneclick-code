@@ -38,6 +38,11 @@ package game
 			Global.editorController.addSector(new Point(0, 0), "sector_01", Sector.k_SECTOR_LAYER);
 		}
 		
+		public function get visualLayers():Sprite
+		{
+			return m_visualLayers[k_DEFAULT_LAYER] as Sprite;
+		}
+		
 		public function addSector(_position:Point, _sectorName:String, _sectorType:String):Boolean
 		{
 			if ( m_mapContainer[k_SECTOR_INDEX + _position.x] != null && m_mapContainer[k_SECTOR_INDEX + _position.x][k_SECTOR_INDEX + _position.y] != null )
@@ -142,10 +147,14 @@ package game
 		
 		public function removeSubSector(_position:Point):void
 		{
-			if ( m_mapContainer[k_SECTOR_INDEX + _position.x] != null && 
-				 m_mapContainer[k_SECTOR_INDEX + _position.x][k_SECTOR_INDEX + _position.y] != null && 
-				 m_mapContainer[k_SECTOR_INDEX + _position.x][k_SECTOR_INDEX + _position.y].sectorName == Sector.k_SECTOR_DEFAULT_NAME &&
-				 !checkSubSectors(_position))
+			if (m_mapContainer[k_SECTOR_INDEX + _position.x] != null && 
+				m_mapContainer[k_SECTOR_INDEX + _position.x][k_SECTOR_INDEX + _position.y] != null)
+			{
+				return;
+			}
+			
+			if (m_mapContainer[k_SECTOR_INDEX + _position.x][k_SECTOR_INDEX + _position.y].sectorName == Sector.k_SECTOR_DEFAULT_NAME &&
+				!checkSubSectors(_position))
 			{
 				m_mapContainer[k_SECTOR_INDEX + _position.x][k_SECTOR_INDEX + _position.y].unLoad(Sector.k_SECTOR_LAYER);
 				m_gameNodeContainer.splice(m_gameNodeContainer.indexOf(m_mapContainer[k_SECTOR_INDEX + _position.x][k_SECTOR_INDEX + _position.y]), 1);
