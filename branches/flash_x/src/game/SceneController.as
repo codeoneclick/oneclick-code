@@ -307,6 +307,8 @@ package game
 					Global.editorController.addSector(mapNode.m_index, mapNode.m_decoration, Sector.k_DECORATION_LAYER);
 				}
 			}
+			
+			Global.camera.goToCenter();
 		}
 		
 		public function ClearMapData():void

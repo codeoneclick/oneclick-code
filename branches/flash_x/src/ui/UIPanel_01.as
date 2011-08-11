@@ -6,6 +6,7 @@ package ui
 	import fl.controls.Button;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.net.FileFilter;
 	import flash.net.FileReference;
 	/**
 	 * ...
@@ -63,7 +64,7 @@ package ui
 		{
 			m_fileReference = new FileReference();
             m_fileReference.addEventListener(Event.SELECT, onFileOutSave);
-            m_fileReference.addEventListener(Event.CANCEL, onFileOutCancel);
+            m_fileReference.addEventListener(Event.CANCEL, onFileOutCancel);			
 			m_fileReference.save(Global.sceneController.SaveMapData(), "mapdata.data");
 		}
 		
@@ -71,13 +72,14 @@ package ui
 		{
 			m_fileReference = new FileReference();
             m_fileReference.addEventListener(Event.SELECT, onFileInBrowse);
-            m_fileReference.addEventListener(Event.CANCEL, onFileInCancel);
-			m_fileReference.browse();
+            m_fileReference.addEventListener(Event.CANCEL, onFileInCancel);			
+			m_fileReference.browse([new FileFilter("Maps data","*.data")]);
+			
 		}
 		
 		private function onFileOutSave(_event:Event):void
 		{
-			
+			Global.mouseIcon.releaseLoadedIcon();
 		}
 		
 		private function onFileOutCancel(_event:Event):void
@@ -89,6 +91,7 @@ package ui
 		{
 			m_fileReference.addEventListener(Event.COMPLETE, onFileLoaded);
 			m_fileReference.load();
+			Global.mouseIcon.releaseLoadedIcon();
 		}
 		
 		private function onFileInCancel(_event:Event):void

@@ -84,8 +84,21 @@ package ui
 			
 			m_cameraControls.addEventListener(Event.ENTER_FRAME, onUpdate);
 			
+			Global.stage.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheelEvent);
 			Global.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			Global.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyDown);
+		}
+		
+		private function onMouseWheelEvent(event:MouseEvent):void
+		{			
+			if (event.delta > 0)
+			{
+				Global.camera.zoomIn();
+			}
+			else
+			{
+				Global.camera.zoomOut();
+			}
 		}
 		
 		private function onMouseButtonOver(event:MouseEvent):void
@@ -227,7 +240,7 @@ package ui
 				}
 				case k_BUTTON_NAME_CENTER:
 				{
-					Global.camera.position = new Point(0, 0);
+					Global.camera.goToCenter();
 					break;
 				}
 				case k_BUTTON_NAME_ZOOM_IN:

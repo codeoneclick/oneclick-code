@@ -53,9 +53,9 @@ package
 			Global.sceneController.initDefault();
 			Global.uiController = new UIController();
 			Global.uiContainer.stage.align = StageAlign.TOP_LEFT;
-			Global.input = new Input();
-			Global.camera = new Camera();		
+			Global.input = new Input();			
 			Global.cameraControls = new UICameraControls();
+			Global.camera = new Camera();				
 		}		
 	}	
 }
