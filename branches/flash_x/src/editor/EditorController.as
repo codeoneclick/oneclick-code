@@ -59,22 +59,22 @@ package editor
 			m_pickBookmarkName = _value;
 		}
 		
-		public function addSector(_position:Point, _sectorName:String, _sectorType:String):void
+		public function addSector(_position:Point, _name:String, _layer:int):void
 		{
-			Global.sceneController.addSector( _position, _sectorName, _sectorType );
-			if (_sectorType == Sector.k_SECTOR_LAYER)
+			Global.sceneController.addSector( _position, _name, _layer );
+			if (_layer == Sector.k_SECTOR_LAYER)
 			{
 				Global.sceneController.addSubSectors( _position );
 			}
 			Global.sceneController.zOrder();
 		}
 		
-		public function changeSector(_position:Point, _sectorName:String, _sectorType:String):void
+		public function changeSector(_position:Point, _name:String, _layer:int):void
 		{
-			Global.sceneController.changeSector(_position, _sectorName, _sectorType);
+			Global.sceneController.changeSector(_position, _name, _layer);
 		}
 		
-		public function removeSector(_position:Point, _layer:String):void
+		public function removeSector(_position:Point, _layer:int):void
 		{
 			Global.sceneController.removeSector(_position, _layer);
 			if (_layer == Sector.k_SECTOR_LAYER)
@@ -84,14 +84,14 @@ package editor
 			Global.sceneController.zOrder();
 		}
 		
-		public function addLog(_action:String, _position:Point, _sectorType:String, _sectorName:String, _oldSectorName:String):void
+		public function addLog(_action:String, _position:Point, _layer:int, _name:String, _oldName:String):void
 		{
 			var action:Object = new Object();
 			action.action = _action;
 			action.position = _position;
-			action.sectorName = _sectorName;
-			action.sectorType = _sectorType;
-			action.oldSectorName = _oldSectorName;
+			action.sectorName = _name;
+			action.sectorType = _layer;
+			action.oldSectorName = _oldName;
 			m_undoQueue.push(action);
 			m_redoQueue = new Vector.<Object>();
 		}

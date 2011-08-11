@@ -15,8 +15,8 @@ package game
 	 */
 	public class Sector extends GameNode
 	{
-		public static const k_SECTOR_LAYER:String = "SECTOR_LAYER_01";
-		public static const k_DECORATION_LAYER:String = "SECTOR_LAYER_02";
+		public static const k_SECTOR_LAYER:int = 0;
+		public static const k_DECORATION_LAYER:int = 1;
 		
 		public static const k_SECTOR_DEFAULT_NAME:String = "sector_00";
 		public static const k_SECTOR_NAME:String = "sector_0";
@@ -29,7 +29,7 @@ package game
 		
 		protected var m_bitmapList:Dictionary = new Dictionary();
 		protected var m_loadQueue:Vector.<LoadQueueNode> = new Vector.<LoadQueueNode>();
-		protected var m_currentLoadInQueue:String = "";
+		protected var m_currentLoadInQueue:int = -1;
 		
 		protected var m_sector:String = "sector_00";
 		protected var m_decoration:String = "deco_00";
@@ -53,7 +53,7 @@ package game
 			super.LoadBoundData(k_SECTOR_DEFAULT_NAME);
 		}
 		
-		override public function Load(_name:String, _sectorType:String):void 
+		override public function Load(_name:String, _layer:int):void 
 		{
 			
 			if (_name.search(k_SECTOR_NAME) >= 0)
@@ -66,14 +66,14 @@ package game
 				m_decoration = _name;
 			}
 			
-			if (m_currentLoadInQueue.length == 0)
+			if (m_currentLoadInQueue == -1)
 			{
-				m_currentLoadInQueue = _sectorType;
-				super.Load(_name, _sectorType);
+				m_currentLoadInQueue = _layer;
+				super.Load(_name, _layer);
 			}
 			else
 			{
-				m_loadQueue.push(new LoadQueueNode(_name,_sectorType));
+				m_loadQueue.push(new LoadQueueNode(_name,_layer));
 			}
 		}
 		
@@ -106,12 +106,12 @@ package game
 				}
 			}
 			
-			m_currentLoadInQueue = "";
+			m_currentLoadInQueue = -1;
 			
 			if (m_loadQueue.length > 0)
 			{
 				var node:LoadQueueNode = m_loadQueue.pop();
-				Load(node.m_name, node.m_type);	
+				Load(node.m_name, node.m_layer);	
 			}
 		}
 		
@@ -252,11 +252,11 @@ package game
 class LoadQueueNode
 {
 	public var m_name:String = "";
-	public var m_type:String = "";
+	public var m_layer:int = 0;
 	
-	public function LoadQueueNode(_name:String, _type:String)
+	public function LoadQueueNode(_name:String, _layer:int)
 	{
 		m_name = _name;
-		m_type = _type;
+		m_layer = _layer;
 	}
 }

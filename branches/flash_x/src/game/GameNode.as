@@ -36,7 +36,7 @@ package game
 			addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown, false, 0, true);
 		}
 		
-		public function Load(_name:String, _sectorType:String):void
+		public function Load(_name:String, _layer:int):void
 		{
 			Global.resourceController.loadPNG(_name, onLoadResource);
 		}

@@ -43,11 +43,11 @@ package game
 			return m_visualLayers[k_DEFAULT_LAYER] as Sprite;
 		}
 		
-		public function addSector(_position:Point, _sectorName:String, _sectorType:String):Boolean
+		public function addSector(_position:Point, _name:String, _layer:int):Boolean
 		{
 			if ( m_mapContainer[k_SECTOR_INDEX + _position.x] != null && m_mapContainer[k_SECTOR_INDEX + _position.x][k_SECTOR_INDEX + _position.y] != null )
 			{
-				changeSector(_position, _sectorName, _sectorType);
+				changeSector(_position, _name, _layer);
 				return false;
 			}
 			
@@ -58,7 +58,7 @@ package game
 			}
 			
 			m_mapContainer[k_SECTOR_INDEX + _position.x][k_SECTOR_INDEX + _position.y] = new Sector(m_visualLayers[k_DEFAULT_LAYER]);
-			m_mapContainer[k_SECTOR_INDEX + _position.x][k_SECTOR_INDEX + _position.y].Load(_sectorName, _sectorType);
+			m_mapContainer[k_SECTOR_INDEX + _position.x][k_SECTOR_INDEX + _position.y].Load(_name, _layer);
 			calculatePosition(_position);
 			m_gameNodeContainer.push(m_mapContainer[k_SECTOR_INDEX + _position.x][k_SECTOR_INDEX + _position.y]);
 			m_mapContainer[k_SECTOR_INDEX + _position.x][k_SECTOR_INDEX + _position.y].index = new Point(_position.x, _position.y);
@@ -107,7 +107,7 @@ package game
 			}
 		}
 		
-		public function removeSector(_position:Point, _layer:String):void
+		public function removeSector(_position:Point, _layer:int):void
 		{
 			if ( m_mapContainer[k_SECTOR_INDEX + _position.x] != null && m_mapContainer[k_SECTOR_INDEX + _position.x][k_SECTOR_INDEX + _position.y] != null )
 			{
@@ -234,7 +234,7 @@ package game
 			}	
 		}	
 		
-		public function changeSector(_position:Point, _sectorName:String, _sectorType:String):Boolean
+		public function changeSector(_position:Point, _name:String, _layer:int):Boolean
 		{
 			if ( m_mapContainer[k_SECTOR_INDEX + _position.x] == null )
 			{
@@ -246,7 +246,7 @@ package game
 				return false;
 			}
 			
-			m_mapContainer[k_SECTOR_INDEX + _position.x][k_SECTOR_INDEX + _position.y].Load(_sectorName, _sectorType);
+			m_mapContainer[k_SECTOR_INDEX + _position.x][k_SECTOR_INDEX + _position.y].Load(_name, _layer);
 			
 			return true;
 		}
