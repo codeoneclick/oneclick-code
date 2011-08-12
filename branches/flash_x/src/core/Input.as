@@ -16,8 +16,7 @@ package core
 		
 		private var m_isMouseDown:Boolean = false;
 		private var m_oldMousePos:Point = new Point();
-		private var m_mouseDragOffset:Point = new Point();
-		//private var m_cursor:Cursor = null;
+		private var m_mouseDragOffset:Point = new Point();		
 		public var m_mouseIcon:GameMouseIcon;
 		
 		public function Input()
@@ -32,7 +31,7 @@ package core
 			Global.inGameContainer.addEventListener(Event.ENTER_FRAME, onUpdate);
 			
 			Global.backContainer.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
-			Global.backContainer.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+			Global.stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
 			Global.backContainer.addEventListener(Event.ENTER_FRAME, onUpdate);
 			
 			Global.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
@@ -40,10 +39,6 @@ package core
 			Global.mouseIcon = new GameMouseIcon(Global.stage);			
 			Global.mouseIcon.setStandardIcon(GameMouseIcon.k_ICON_CURSOR);
 			Mouse.hide();
-			
-			//m_cursor = new Cursor(Global.inGameContainer);
-			//m_cursor.Load("cursor");
-			//m_cursor.mouseEnabled = false;
 		}
 		
 		private function onMouseDown(_event:MouseEvent):void

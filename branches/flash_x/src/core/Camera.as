@@ -7,7 +7,7 @@ package core
 	 */
 	public class Camera 
 	{
-		public static const k_ZOOM:Array = new Array(1.0, 0.75, 0.5);
+		public static const k_ZOOM:Array = new Array(1.0, 0.8, 0.6, 0.4);
 		private var m_position:Point = new Point(0, 0);
 		private var m_zoomIndex:int = 0;
 		
