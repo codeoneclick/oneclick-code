@@ -1,0 +1,5 @@
+C:\Documents and Settings\sergey.sergeev\My Documents\Visual Studio 2008\Projects\vkontakte_gifts_client\vkontakte_gifts_server\bin\Debug\vkontakte_gifts_server.exe
+C:\Documents and Settings\sergey.sergeev\My Documents\Visual Studio 2008\Projects\vkontakte_gifts_client\vkontakte_gifts_server\bin\Debug\vkontakte_gifts_server.pdb
+C:\Documents and Settings\sergey.sergeev\My Documents\Visual Studio 2008\Projects\vkontakte_gifts_client\vkontakte_gifts_server\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\sergey.sergeev\My Documents\Visual Studio 2008\Projects\vkontakte_gifts_client\vkontakte_gifts_server\obj\Debug\vkontakte_gifts_server.exe
+C:\Documents and Settings\sergey.sergeev\My Documents\Visual Studio 2008\Projects\vkontakte_gifts_client\vkontakte_gifts_server\obj\Debug\vkontakte_gifts_server.pdb

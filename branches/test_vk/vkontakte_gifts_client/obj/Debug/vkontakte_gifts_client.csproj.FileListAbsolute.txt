@@ -1,0 +1,16 @@
+C:\Documents and Settings\sergey.sergeev\Local Settings\Application Data\Temporary Projects\vkontakte_gifts\bin\Debug\vkontakte_gifts.exe
+C:\Documents and Settings\sergey.sergeev\Local Settings\Application Data\Temporary Projects\vkontakte_gifts\bin\Debug\vkontakte_gifts.pdb
+C:\Documents and Settings\sergey.sergeev\Local Settings\Application Data\Temporary Projects\vkontakte_gifts\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\sergey.sergeev\Local Settings\Application Data\Temporary Projects\vkontakte_gifts\obj\Debug\vkontakte_gifts.Form1.resources
+C:\Documents and Settings\sergey.sergeev\Local Settings\Application Data\Temporary Projects\vkontakte_gifts\obj\Debug\vkontakte_gifts.Properties.Resources.resources
+C:\Documents and Settings\sergey.sergeev\Local Settings\Application Data\Temporary Projects\vkontakte_gifts\obj\Debug\vkontakte_gifts_client.csproj.GenerateResource.Cache
+C:\Documents and Settings\sergey.sergeev\Local Settings\Application Data\Temporary Projects\vkontakte_gifts\obj\Debug\vkontakte_gifts.exe
+C:\Documents and Settings\sergey.sergeev\Local Settings\Application Data\Temporary Projects\vkontakte_gifts\obj\Debug\vkontakte_gifts.pdb
+C:\Documents and Settings\sergey.sergeev\My Documents\Visual Studio 2008\Projects\vkontakte_gifts_client\vkontakte_gifts_client\bin\Debug\vkontakte_gifts_client.exe
+C:\Documents and Settings\sergey.sergeev\My Documents\Visual Studio 2008\Projects\vkontakte_gifts_client\vkontakte_gifts_client\bin\Debug\vkontakte_gifts_client.pdb
+C:\Documents and Settings\sergey.sergeev\My Documents\Visual Studio 2008\Projects\vkontakte_gifts_client\vkontakte_gifts_client\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\sergey.sergeev\My Documents\Visual Studio 2008\Projects\vkontakte_gifts_client\vkontakte_gifts_client\obj\Debug\vkontakte_gifts.Form1.resources
+C:\Documents and Settings\sergey.sergeev\My Documents\Visual Studio 2008\Projects\vkontakte_gifts_client\vkontakte_gifts_client\obj\Debug\vkontakte_gifts.Properties.Resources.resources
+C:\Documents and Settings\sergey.sergeev\My Documents\Visual Studio 2008\Projects\vkontakte_gifts_client\vkontakte_gifts_client\obj\Debug\vkontakte_gifts_client.csproj.GenerateResource.Cache
+C:\Documents and Settings\sergey.sergeev\My Documents\Visual Studio 2008\Projects\vkontakte_gifts_client\vkontakte_gifts_client\obj\Debug\vkontakte_gifts_client.exe
+C:\Documents and Settings\sergey.sergeev\My Documents\Visual Studio 2008\Projects\vkontakte_gifts_client\vkontakte_gifts_client\obj\Debug\vkontakte_gifts_client.pdb
