@@ -68,7 +68,7 @@ namespace vkontakte_gifts
 
         public void send()
         {
-            if (m_networkStream.CanWrite && m_networkStream.CanRead)
+            if (m_networkStream != null && m_networkStream.CanWrite && m_networkStream.CanRead)
             {
                 Byte[] sendBytes = Encoding.ASCII.GetBytes(m_login);
                 m_networkStream.Write(sendBytes, 0, sendBytes.Length);
@@ -79,7 +79,7 @@ namespace vkontakte_gifts
                 m_networkStream.Close();
                 m_client.Close();
             }
-            else
+            else if(m_client != null)
             {
                 m_client.Close();
             }
