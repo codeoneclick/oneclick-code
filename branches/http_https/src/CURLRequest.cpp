@@ -1,6 +1,4 @@
 #include "CURLRequest.h"
-#include <string.h>
-#include <tchar.h>
 #pragma comment(lib,"wininet")
 
 

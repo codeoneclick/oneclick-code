@@ -208,6 +208,14 @@
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 			>
 			<File
+				RelativePath=".\CURLController.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CURLController.h"
+				>
+			</File>
+			<File
 				RelativePath=".\CURLRequest.cpp"
 				>
 			</File>

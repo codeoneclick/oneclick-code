@@ -5,6 +5,8 @@
 #include<windows.h>
 #include<Wininet.h>
 #include<stdio.h>
+#include<string.h>
+#include<tchar.h>
 
 class CURLRequest
 {
@@ -20,6 +22,7 @@ public:
 
 	bool Send();
 	char *Recv();
+	DWORD RecvSize();
 
 	void SetProtocol( E_PROTOCOL _protocol );
 	void SetMethod( E_METHOD _method );
@@ -41,7 +44,6 @@ protected:
 	void CloseRequest();
 	
 	char *Recv( char *_buffer, DWORD _size );
-	DWORD RecvSize();
 	void CreateRecvBuffer( DWORD _size );
 
 	DWORD GetError() const { return m_error; }
