@@ -47,5 +47,12 @@ CVideoController *CVideoController::Instance()
 
 void CVideoController::TakePhoto()
 {
+	 if(!capGrabFrameNoStop(m_hWndC))
+     {
 
+     }
+
+     /*if(!capFileSaveDIB(hWndC,filename))
+     {
+     }*/
 }
