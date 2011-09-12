@@ -199,6 +199,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="video"
+				>
+				<File
+					RelativePath=".\src\video\CVideoController.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\video\CVideoController.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
