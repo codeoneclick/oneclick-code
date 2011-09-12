@@ -18,14 +18,18 @@ private :
 	char* m_pExeFile;
 	void ExecuteProcess();
 	SERVICE_TABLE_ENTRY *m_lpServiceStartTable;
+	SERVICE_STATUS_HANDLE m_hServiceStatusHandle; 
+	SERVICE_STATUS m_ServiceStatus; 
 	friend void MonitorThread(void *);
+	friend void WINAPI Main(DWORD dwArgc, LPTSTR *lpszArgv);
+	friend void WINAPI Handler(DWORD fdwControl);
 public :
 	CServiceController();
 	~CServiceController();
 
 	static CServiceController* Instance();
 
-	void StartTask(SERVICE_TABLE_ENTRY *_lpServiceStartTable);
+	void StartTask();
 
 	void Install(char* _pPath, char* _pName);
 	void Uninstall(char* _pName);

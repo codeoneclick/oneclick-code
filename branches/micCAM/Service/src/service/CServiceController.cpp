@@ -1,5 +1,79 @@
 #include "CServiceController.h"
 
+void WINAPI Main(DWORD dwArgc, LPTSTR *lpszArgv)
+{
+	DWORD   status = 0; 
+    DWORD   specificError = 0xfffffff; 
+	CServiceController::Instance()->m_ServiceStatus.dwServiceType        = SERVICE_WIN32; 
+    CServiceController::Instance()->m_ServiceStatus.dwCurrentState       = SERVICE_START_PENDING; 
+    CServiceController::Instance()->m_ServiceStatus.dwControlsAccepted   = SERVICE_ACCEPT_STOP | SERVICE_ACCEPT_SHUTDOWN | SERVICE_ACCEPT_PAUSE_CONTINUE; 
+    CServiceController::Instance()->m_ServiceStatus.dwWin32ExitCode      = 0; 
+    CServiceController::Instance()->m_ServiceStatus.dwServiceSpecificExitCode = 0; 
+    CServiceController::Instance()->m_ServiceStatus.dwCheckPoint         = 0; 
+    CServiceController::Instance()->m_ServiceStatus.dwWaitHint           = 0; 
+ 
+	CServiceController::Instance()->m_hServiceStatusHandle = RegisterServiceCtrlHandler(CServiceController::Instance()->m_pServiceName, Handler); 
+    if (CServiceController::Instance()->m_hServiceStatusHandle==0) 
+    {
+		long nError = GetLastError();
+		char pTemp[121];
+		sprintf(pTemp, "RegisterServiceCtrlHandler failed, error code = %d\n", nError);
+		CLogger::Instance()->Write(CServiceController::Instance()->LogFile(), pTemp);
+        return; 
+    } 
+ 
+    CServiceController::Instance()->m_ServiceStatus.dwCurrentState       = SERVICE_RUNNING; 
+    CServiceController::Instance()->m_ServiceStatus.dwCheckPoint         = 0; 
+    CServiceController::Instance()->m_ServiceStatus.dwWaitHint           = 0;  
+    if(!SetServiceStatus(CServiceController::Instance()->m_hServiceStatusHandle, &CServiceController::Instance()->m_ServiceStatus)) 
+    { 
+		long nError = GetLastError();
+		char pTemp[121];
+		sprintf(pTemp, "SetServiceStatus failed, error code = %d\n", nError);
+		CLogger::Instance()->Write(CServiceController::Instance()->m_pLogFile, pTemp);
+    } 
+}
+
+void WINAPI Handler(DWORD fdwControl)
+{
+	switch(fdwControl) 
+	{
+		case SERVICE_CONTROL_STOP:
+		case SERVICE_CONTROL_SHUTDOWN:
+			//ProcessStarted = FALSE;
+			CServiceController::Instance()->m_ServiceStatus.dwWin32ExitCode = 0; 
+			CServiceController::Instance()->m_ServiceStatus.dwCurrentState  = SERVICE_STOPPED; 
+			CServiceController::Instance()->m_ServiceStatus.dwCheckPoint    = 0; 
+			CServiceController::Instance()->m_ServiceStatus.dwWaitHint      = 0;
+			break; 
+		case SERVICE_CONTROL_PAUSE:
+			CServiceController::Instance()->m_ServiceStatus.dwCurrentState = SERVICE_PAUSED; 
+			break;
+		case SERVICE_CONTROL_CONTINUE:
+			CServiceController::Instance()->m_ServiceStatus.dwCurrentState = SERVICE_RUNNING; 
+			break;
+		case SERVICE_CONTROL_INTERROGATE:
+			break;
+		default:
+			if(fdwControl>=128 && fdwControl<256)
+			{
+			}
+			else
+			{
+				char pTemp[121];
+				sprintf(pTemp,  "Unrecognized opcode %d\n", fdwControl);
+				CLogger::Instance()->Write(CServiceController::Instance()->m_pLogFile, pTemp);
+			}
+	};
+    if (!SetServiceStatus(CServiceController::Instance()->m_hServiceStatusHandle,  &CServiceController::Instance()->m_ServiceStatus)) 
+	{ 
+		long nError = GetLastError();
+		char pTemp[121];
+		sprintf(pTemp, "SetServiceStatus failed, error code = %d\n", nError);
+		CLogger::Instance()->Write(CServiceController::Instance()->LogFile(), pTemp);
+    } 
+}
+
 void MonitorThread(void*)
 {
 	while(true)
@@ -18,6 +92,13 @@ CServiceController::CServiceController()
 	m_lpCmdLineData = new char[m_nBufferSize + 1];
 	m_pModuleFile = new char[m_nBufferSize + 1];
 	m_pExeFile = new char[m_nBufferSize + 1];
+
+	m_lpServiceStartTable = new SERVICE_TABLE_ENTRY[2];
+	m_lpServiceStartTable[0].lpServiceName = m_pServiceName;
+	m_lpServiceStartTable[0].lpServiceProc = Main;
+
+	m_lpServiceStartTable[1].lpServiceName = NULL;
+	m_lpServiceStartTable[1].lpServiceProc = NULL;
 }
 
 CServiceController::~CServiceController()
@@ -58,9 +139,8 @@ CServiceController* CServiceController::Instance()
 }
 
 
-void CServiceController::StartTask(SERVICE_TABLE_ENTRY *_lpServiceStartTable)
+void CServiceController::StartTask()
 {
-	m_lpServiceStartTable = _lpServiceStartTable;
 	DWORD dwSize = GetModuleFileName(NULL, m_pModuleFile, m_nBufferSize);
 	m_pModuleFile[dwSize] = 0;
 	if(dwSize > 4 && m_pModuleFile[dwSize - 4] == '.')
@@ -108,20 +188,20 @@ void CServiceController::Install(char* _pPath, char* _pName)
 	{
 		SC_HANDLE schService = CreateService
 		( 
-			schSCManager,	/* SCManager database      */ 
-			_pName,			/* name of service         */ 
-			_pName,			/* service name to display */ 
-			SERVICE_ALL_ACCESS,        /* desired access          */ 
+			schSCManager,											/* SCManager database      */ 
+			_pName,													/* name of service         */ 
+			_pName,													/* service name to display */ 
+			SERVICE_ALL_ACCESS,										/* desired access          */ 
 			SERVICE_WIN32_OWN_PROCESS|SERVICE_INTERACTIVE_PROCESS , /* service type            */ 
-			SERVICE_AUTO_START,      /* start type              */ 
-			SERVICE_ERROR_NORMAL,      /* error control type      */ 
-			_pPath,			/* service's binary        */ 
-			NULL,                      /* no load ordering group  */ 
-			NULL,                      /* no tag identifier       */ 
-			NULL,                      /* no dependencies         */ 
-			NULL,                      /* LocalSystem account     */ 
+			SERVICE_AUTO_START,										/* start type              */ 
+			SERVICE_ERROR_NORMAL,									/* error control type      */ 
+			_pPath,													/* service's binary        */ 
+			NULL,													/* no load ordering group  */ 
+			NULL,													/* no tag identifier       */ 
+			NULL,													/* no dependencies         */ 
+			NULL,													/* LocalSystem account     */ 
 			NULL
-		);                     /* no password             */ 
+		);															/* no password             */ 
 		if (schService==0) 
 		{
 			long nError =  GetLastError();
@@ -184,7 +264,6 @@ void CServiceController::Uninstall(char* _pName)
 
 bool CServiceController::RunService(char* _pName) 
 { 
-	// run service with given name
 	SC_HANDLE schSCManager = OpenSCManager( NULL, NULL, SC_MANAGER_ALL_ACCESS); 
 	if (schSCManager==0) 
 	{
@@ -195,7 +274,6 @@ bool CServiceController::RunService(char* _pName)
 	}
 	else
 	{
-		// open the service
 		SC_HANDLE schService = OpenService( schSCManager, _pName, SERVICE_ALL_ACCESS);
 		if (schService==0) 
 		{
@@ -206,7 +284,6 @@ bool CServiceController::RunService(char* _pName)
 		}
 		else
 		{
-			// call StartService to run the service
 			if(StartService(schService, 0, (const char**)NULL))
 			{
 				CloseServiceHandle(schService); 
@@ -229,7 +306,6 @@ bool CServiceController::RunService(char* _pName)
 
 bool CServiceController::KillService(char* _pName) 
 { 
-	// kill service with given name
 	SC_HANDLE schSCManager = OpenSCManager( NULL, NULL, SC_MANAGER_ALL_ACCESS); 
 	if (schSCManager==0) 
 	{
@@ -240,7 +316,6 @@ bool CServiceController::KillService(char* _pName)
 	}
 	else
 	{
-		// open the service
 		SC_HANDLE schService = OpenService( schSCManager, _pName, SERVICE_ALL_ACCESS);
 		if (schService==0) 
 		{
@@ -251,7 +326,6 @@ bool CServiceController::KillService(char* _pName)
 		}
 		else
 		{
-			// call ControlService to kill the given service
 			SERVICE_STATUS status;
 			if(ControlService(schService,SERVICE_CONTROL_STOP,&status))
 			{
