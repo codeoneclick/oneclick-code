@@ -1,5 +1,13 @@
 #include "CServiceController.h"
 
+void MonitorThread(void*)
+{
+	while(true)
+	{
+
+	}
+}
+
 CServiceController* CServiceController::m_controller = NULL;
 
 CServiceController::CServiceController()
@@ -50,8 +58,9 @@ CServiceController* CServiceController::Instance()
 }
 
 
-void CServiceController::Update()
+void CServiceController::StartTask(SERVICE_TABLE_ENTRY *_lpServiceStartTable)
 {
+	m_lpServiceStartTable = _lpServiceStartTable;
 	DWORD dwSize = GetModuleFileName(NULL, m_pModuleFile, m_nBufferSize);
 	m_pModuleFile[dwSize] = 0;
 	if(dwSize > 4 && m_pModuleFile[dwSize - 4] == '.')
@@ -77,6 +86,10 @@ void CServiceController::Update()
 	else if(_stricmp("-s",m_lpCmdLineData) == 0 || _stricmp("-S",m_lpCmdLineData) == 0)
 	{
 		RunService(m_pServiceName);
+	}
+	else
+	{
+		ExecuteProcess();
 	}
 }
 
@@ -258,4 +271,22 @@ bool CServiceController::KillService(char* _pName)
 		CloseServiceHandle(schSCManager); 
 	}
 	return false;
+}
+
+void  CServiceController::ExecuteProcess()
+{
+	if(_beginthread(MonitorThread, 0, NULL) == -1)
+	{
+		long nError = GetLastError();
+		char pTemp[121];
+		sprintf(pTemp, "StartService failed, error code = %d\n", nError);
+		CLogger::Instance()->Write(m_pLogFile, pTemp);
+	}
+	if(!StartServiceCtrlDispatcher(m_lpServiceStartTable))
+	{
+		long nError = GetLastError();
+		char pTemp[121];
+		sprintf(pTemp, "StartServiceCtrlDispatcher failed, error code = %d\n", nError);
+		CLogger::Instance()->Write(m_pLogFile, pTemp);
+	}
 }

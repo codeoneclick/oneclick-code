@@ -2,6 +2,7 @@
 #define CLOGGER_H
 #pragma once
 
+#include <process.h>
 #include <iostream>
 #include <tchar.h>
 #include <stdio.h>

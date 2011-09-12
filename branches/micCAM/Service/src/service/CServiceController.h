@@ -16,13 +16,16 @@ private :
 	char* m_lpCmdLineData;
 	char* m_pModuleFile;
 	char* m_pExeFile;
+	void ExecuteProcess();
+	SERVICE_TABLE_ENTRY *m_lpServiceStartTable;
+	friend void MonitorThread(void *);
 public :
 	CServiceController();
 	~CServiceController();
 
 	static CServiceController* Instance();
 
-	void Update();
+	void StartTask(SERVICE_TABLE_ENTRY *_lpServiceStartTable);
 
 	void Install(char* _pPath, char* _pName);
 	void Uninstall(char* _pName);
