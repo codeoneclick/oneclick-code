@@ -3,6 +3,7 @@
 #pragma once
 
 #include "../logger/CLogger.h"
+#include "../CGlobal.h"
 
 #define SERVICE_NAME "MicrosoftCAM"
 
@@ -10,12 +11,6 @@ class CServiceController
 {
 private :
 	static CServiceController* m_controller;
-	int m_nBufferSize;
-	char* m_pServiceName;
-	char* m_pLogFile;
-	char* m_lpCmdLineData;
-	char* m_pModuleFile;
-	char* m_pExeFile;
 	void ExecuteProcess();
 	SERVICE_TABLE_ENTRY *m_lpServiceStartTable;
 	SERVICE_STATUS_HANDLE m_hServiceStatusHandle; 
@@ -36,10 +31,10 @@ public :
 	bool RunService(char* _pName);
 	bool KillService(char* _pName);
 
-	char* Name() { return m_pServiceName; }
+	/*char* Name() { return m_pServiceName; }
 	char* CmdLineData() { return m_lpCmdLineData; }
 	char* LogFile() { return m_pLogFile; }
-	char* ExeFile() { return m_pExeFile; }
+	char* ExeFile() { return m_pExeFile; }*/
 };
 
 #endif

@@ -19,7 +19,7 @@ public :
 	CVideoController();
 	~CVideoController();
 	static CVideoController* Instance();
-	void TakePhoto();
+	void TakeScreen();
 };
 
 #endif

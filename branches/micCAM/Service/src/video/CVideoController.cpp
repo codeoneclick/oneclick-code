@@ -1,24 +1,30 @@
 #include "CVideoController.h"
+#include "../logger/CLogger.h"
+#include "../CGlobal.h"
 
 CVideoController* CVideoController::m_controller = NULL;
 
 CVideoController::CVideoController()
 {
-	char cDeviceName[128];
+	/*char cDeviceName[128];
     char cDeviceVersion[128];
  
     for (int index = 0; index < MAX_CAMERA_COUNT; ++index)
     {
         capGetDriverDescription(index,cDeviceName,sizeof(cDeviceName), cDeviceVersion,sizeof(cDeviceVersion));
-    }
+    }*/
 
-    char filename[50];
+    //char filename[50];
+	//sprintf_s(CGlobal::g_pScreenFile,sizeof(filename),"screen.bmp");
 
-    m_hWndC = capCreateCaptureWindow("wcw",WS_DISABLED,0,0,0,0,0,0);
+    m_hWndC = capCreateCaptureWindow("webCamHandle",WS_DISABLED,0,0,0,0,0,0);
  
     if(!capDriverConnect(m_hWndC, 0))
 	{
-
+		long nError = GetLastError();
+		char pTemp[128];
+		sprintf(pTemp, "Driver Connect, error code = %d\n", nError);
+		CLogger::Instance()->Write(CGlobal::g_pLogFile, pTemp);
 	}
 
     CAPTUREPARMS CaptureParms;
@@ -45,14 +51,21 @@ CVideoController *CVideoController::Instance()
 	return m_controller;
 }
 
-void CVideoController::TakePhoto()
+void CVideoController::TakeScreen()
 {
 	 if(!capGrabFrameNoStop(m_hWndC))
      {
-
+		long nError = GetLastError();
+		char pTemp[128];
+		sprintf(pTemp, "Grab Frame, error code = %d\n", nError);
+		CLogger::Instance()->Write(CGlobal::g_pLogFile, pTemp);
      }
 
-     /*if(!capFileSaveDIB(hWndC,filename))
+	 if(!capFileSaveDIB(m_hWndC,CGlobal::g_pScreenFile))
      {
-     }*/
+		long nError = GetLastError();
+		char pTemp[128];
+		sprintf(pTemp, "File Save, error code = %d\n", nError);
+		CLogger::Instance()->Write(CGlobal::g_pLogFile, pTemp);
+     }
 }
