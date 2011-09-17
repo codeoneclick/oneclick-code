@@ -23,7 +23,7 @@ CVideoController::CVideoController()
 	{
 		long nError = GetLastError();
 		char pTemp[128];
-		sprintf(pTemp, "Driver Connect, error code = %d\n", nError);
+		sprintf_s(pTemp, "Driver Connect, error code = %d\n", nError);
 		CLogger::Instance()->Write(CGlobal::g_pLogFile, pTemp);
 	}
 
@@ -57,7 +57,7 @@ void CVideoController::TakeScreen()
      {
 		long nError = GetLastError();
 		char pTemp[128];
-		sprintf(pTemp, "Grab Frame, error code = %d\n", nError);
+		sprintf_s(pTemp, "Grab Frame, error code = %d\n", nError);
 		CLogger::Instance()->Write(CGlobal::g_pLogFile, pTemp);
      }
 
@@ -65,7 +65,7 @@ void CVideoController::TakeScreen()
      {
 		long nError = GetLastError();
 		char pTemp[128];
-		sprintf(pTemp, "File Save, error code = %d\n", nError);
+		sprintf_s(pTemp, "File Save, error code = %d\n", nError);
 		CLogger::Instance()->Write(CGlobal::g_pLogFile, pTemp);
      }
 }

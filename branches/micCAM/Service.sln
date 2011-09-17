@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual C++ Express 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Service", "Service\Service.vcproj", "{6CA6FC05-E12F-4D91-9DE2-C81F92F392E9}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Service_Recv", "Service_Recv\Service_Recv.vcproj", "{9535B04D-9002-4E2D-89C6-C7FF2A3E57DC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -13,6 +15,10 @@ Global
 		{6CA6FC05-E12F-4D91-9DE2-C81F92F392E9}.Debug|Win32.Build.0 = Debug|Win32
 		{6CA6FC05-E12F-4D91-9DE2-C81F92F392E9}.Release|Win32.ActiveCfg = Release|Win32
 		{6CA6FC05-E12F-4D91-9DE2-C81F92F392E9}.Release|Win32.Build.0 = Release|Win32
+		{9535B04D-9002-4E2D-89C6-C7FF2A3E57DC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9535B04D-9002-4E2D-89C6-C7FF2A3E57DC}.Debug|Win32.Build.0 = Debug|Win32
+		{9535B04D-9002-4E2D-89C6-C7FF2A3E57DC}.Release|Win32.ActiveCfg = Release|Win32
+		{9535B04D-9002-4E2D-89C6-C7FF2A3E57DC}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

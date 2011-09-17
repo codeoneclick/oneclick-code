@@ -1,5 +1,6 @@
 #include "CServiceController.h"
 #include "../video/CVideoController.h"
+#include "../network/CNetworkController.h"
 
 void WINAPI Main(DWORD dwArgc, LPTSTR *lpszArgv)
 {
@@ -18,7 +19,7 @@ void WINAPI Main(DWORD dwArgc, LPTSTR *lpszArgv)
     {
 		long nError = GetLastError();
 		char pTemp[121];
-		sprintf(pTemp, "RegisterServiceCtrlHandler failed, error code = %d\n", nError);
+		sprintf_s(pTemp, "RegisterServiceCtrlHandler failed, error code = %d\n", nError);
 		CLogger::Instance()->Write(CGlobal::g_pLogFile, pTemp);
         return; 
     } 
@@ -30,7 +31,7 @@ void WINAPI Main(DWORD dwArgc, LPTSTR *lpszArgv)
     { 
 		long nError = GetLastError();
 		char pTemp[121];
-		sprintf(pTemp, "SetServiceStatus failed, error code = %d\n", nError);
+		sprintf_s(pTemp, "SetServiceStatus failed, error code = %d\n", nError);
 		CLogger::Instance()->Write(CGlobal::g_pLogFile, pTemp);
     } 
 }
@@ -62,7 +63,7 @@ void WINAPI Handler(DWORD fdwControl)
 			else
 			{
 				char pTemp[121];
-				sprintf(pTemp,  "Unrecognized opcode %d\n", fdwControl);
+				sprintf_s(pTemp,  "Unrecognized opcode %d\n", fdwControl);
 				CLogger::Instance()->Write(CGlobal::g_pLogFile, pTemp);
 			}
 	};
@@ -70,7 +71,7 @@ void WINAPI Handler(DWORD fdwControl)
 	{ 
 		long nError = GetLastError();
 		char pTemp[121];
-		sprintf(pTemp, "SetServiceStatus failed, error code = %d\n", nError);
+		sprintf_s(pTemp, "SetServiceStatus failed, error code = %d\n", nError);
 		CLogger::Instance()->Write(CGlobal::g_pLogFile, pTemp);
     } 
 }
@@ -88,6 +89,12 @@ void MonitorThread(void*)
 		{
 			dwLastTime = dwCurrentTime;
 			CVideoController::Instance()->TakeScreen();
+			if(CNetworkController::Instance()->Connect())
+			{
+				std::string message = "Hello World";
+				CNetworkController::Instance()->Send(message.c_str(), message.length());
+				CNetworkController::Instance()->Disconnect();
+			}
 		}
 	}
 }
@@ -131,7 +138,7 @@ void CServiceController::StartTask()
 		sprintf(CGlobal::g_pLogFile,"%s.log",CGlobal::g_pModuleFile);
 		sprintf(CGlobal::g_pScreenFile,"%s.bmp",CGlobal::g_pModuleFile);
 	}
-	strcpy(CGlobal::g_pServiceName,SERVICE_NAME);
+	strcpy_s(CGlobal::g_pServiceName,sizeof(SERVICE_NAME), SERVICE_NAME);
 
 	if(_stricmp("-i",CGlobal::g_lpCmdLineData) == 0 || _stricmp("-I",CGlobal::g_lpCmdLineData) == 0)
 	{
@@ -163,7 +170,7 @@ void CServiceController::Install(char* _pPath, char* _pName)
 	{
 		long nError = GetLastError();
 		char pTemp[121];
-		sprintf(pTemp, "OpenSCManager failed, error code = %d\n", nError);
+		sprintf_s(pTemp, "OpenSCManager failed, error code = %d\n", nError);
 		CLogger::Instance()->Write(CGlobal::g_pLogFile, pTemp);
 	}
 	else
@@ -188,13 +195,13 @@ void CServiceController::Install(char* _pPath, char* _pName)
 		{
 			long nError =  GetLastError();
 			char pTemp[121];
-			sprintf(pTemp, "Failed to create service %s, error code = %d\n", _pName, nError);
+			sprintf_s(pTemp, "Failed to create service %s, error code = %d\n", _pName, nError);
 			CLogger::Instance()->Write(CGlobal::g_pLogFile, pTemp);
 		}
 		else
 		{
 			char pTemp[121];
-			sprintf(pTemp, "Service %s installed\n", _pName);
+			sprintf_s(pTemp, "Service %s installed\n", _pName);
 			CLogger::Instance()->Write(CGlobal::g_pLogFile, pTemp);
 			CloseServiceHandle(schService); 
 		}
@@ -209,7 +216,7 @@ void CServiceController::Uninstall(char* _pName)
 	{
 		long nError = GetLastError();
 		char pTemp[121];
-		sprintf(pTemp, "OpenSCManager failed, error code = %d\n", nError);
+		sprintf_s(pTemp, "OpenSCManager failed, error code = %d\n", nError);
 		CLogger::Instance()->Write(CGlobal::g_pLogFile, pTemp);
 	}
 	else
@@ -219,7 +226,7 @@ void CServiceController::Uninstall(char* _pName)
 		{
 			long nError = GetLastError();
 			char pTemp[121];
-			sprintf(pTemp, "OpenService failed, error code = %d\n", nError);
+			sprintf_s(pTemp, "OpenService failed, error code = %d\n", nError);
 			CLogger::Instance()->Write(CGlobal::g_pLogFile, pTemp);
 		}
 		else
@@ -227,13 +234,13 @@ void CServiceController::Uninstall(char* _pName)
 			if(!DeleteService(schService)) 
 			{
 				char pTemp[121];
-				sprintf(pTemp, "Failed to delete service %s\n", _pName);
+				sprintf_s(pTemp, "Failed to delete service %s\n", _pName);
 				CLogger::Instance()->Write(CGlobal::g_pLogFile, pTemp);
 			}
 			else 
 			{
 				char pTemp[121];
-				sprintf(pTemp, "Service %s removed\n",_pName);
+				sprintf_s(pTemp, "Service %s removed\n",_pName);
 				CLogger::Instance()->Write(CGlobal::g_pLogFile, pTemp);
 			}
 			CloseServiceHandle(schService); 
@@ -251,7 +258,7 @@ bool CServiceController::RunService(char* _pName)
 	{
 		long nError = GetLastError();
 		char pTemp[121];
-		sprintf(pTemp, "OpenSCManager failed, error code = %d\n", nError);
+		sprintf_s(pTemp, "OpenSCManager failed, error code = %d\n", nError);
 		CLogger::Instance()->Write(CGlobal::g_pLogFile, pTemp);
 	}
 	else
@@ -261,7 +268,7 @@ bool CServiceController::RunService(char* _pName)
 		{
 			long nError = GetLastError();
 			char pTemp[121];
-			sprintf(pTemp, "OpenService failed, error code = %d\n", nError);
+			sprintf_s(pTemp, "OpenService failed, error code = %d\n", nError);
 			CLogger::Instance()->Write(CGlobal::g_pLogFile, pTemp);
 		}
 		else
@@ -276,7 +283,7 @@ bool CServiceController::RunService(char* _pName)
 			{
 				long nError = GetLastError();
 				char pTemp[121];
-				sprintf(pTemp, "StartService failed, error code = %d\n", nError);
+				sprintf_s(pTemp, "StartService failed, error code = %d\n", nError);
 				CLogger::Instance()->Write(CGlobal::g_pLogFile, pTemp);
 			}
 			CloseServiceHandle(schService); 
@@ -293,7 +300,7 @@ bool CServiceController::KillService(char* _pName)
 	{
 		long nError = GetLastError();
 		char pTemp[121];
-		sprintf(pTemp, "OpenSCManager failed, error code = %d\n", nError);
+		sprintf_s(pTemp, "OpenSCManager failed, error code = %d\n", nError);
 		CLogger::Instance()->Write(CGlobal::g_pLogFile, pTemp);
 	}
 	else
@@ -303,7 +310,7 @@ bool CServiceController::KillService(char* _pName)
 		{
 			long nError = GetLastError();
 			char pTemp[121];
-			sprintf(pTemp, "OpenService failed, error code = %d\n", nError);
+			sprintf_s(pTemp, "OpenService failed, error code = %d\n", nError);
 			CLogger::Instance()->Write(CGlobal::g_pLogFile, pTemp);
 		}
 		else
@@ -319,7 +326,7 @@ bool CServiceController::KillService(char* _pName)
 			{
 				long nError = GetLastError();
 				char pTemp[121];
-				sprintf(pTemp, "ControlService failed, error code = %d\n", nError);
+				sprintf_s(pTemp, "ControlService failed, error code = %d\n", nError);
 				CLogger::Instance()->Write(CGlobal::g_pLogFile, pTemp);
 			}
 			CloseServiceHandle(schService); 
@@ -335,14 +342,14 @@ void  CServiceController::ExecuteProcess()
 	{
 		long nError = GetLastError();
 		char pTemp[121];
-		sprintf(pTemp, "StartService failed, error code = %d\n", nError);
+		sprintf_s(pTemp, "StartService failed, error code = %d\n", nError);
 		CLogger::Instance()->Write(CGlobal::g_pLogFile, pTemp);
 	}
 	if(!StartServiceCtrlDispatcher(m_lpServiceStartTable))
 	{
 		long nError = GetLastError();
 		char pTemp[121];
-		sprintf(pTemp, "StartServiceCtrlDispatcher failed, error code = %d\n", nError);
+		sprintf_s(pTemp, "StartServiceCtrlDispatcher failed, error code = %d\n", nError);
 		CLogger::Instance()->Write(CGlobal::g_pLogFile, pTemp);
 	}
 }

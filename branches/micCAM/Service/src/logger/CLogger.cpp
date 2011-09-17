@@ -29,7 +29,8 @@ void CLogger::Write(char *_pFile, char *_pMsg)
 	{
 		SYSTEMTIME systemTime;
 		::GetLocalTime(&systemTime);
-		FILE* pLog = fopen(_pFile,"a");
+		FILE* pLog;
+		fopen_s(&pLog, _pFile,"a");
 		fprintf(pLog,"%02d/%02d/%04d, %02d:%02d:%02d\n    %s",systemTime.wMonth,systemTime.wDay,systemTime.wYear,systemTime.wHour,systemTime.wMinute,systemTime.wSecond,_pMsg); 
 		fclose(pLog);
 	} 

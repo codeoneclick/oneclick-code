@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="Service"
-	ProjectGUID="{6CA6FC05-E12F-4D91-9DE2-C81F92F392E9}"
-	RootNamespace="Service"
+	Name="Service_Recv"
+	ProjectGUID="{9535B04D-9002-4E2D-89C6-C7FF2A3E57DC}"
+	RootNamespace="Service_Recv"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
@@ -21,7 +21,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
-			CharacterSet="2"
+			CharacterSet="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -172,53 +172,9 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\src\CGlobal.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\CGlobal.h"
-				>
-			</File>
-			<File
 				RelativePath=".\main.cpp"
 				>
 			</File>
-			<Filter
-				Name="service"
-				>
-				<File
-					RelativePath=".\src\service\CServiceController.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\service\CServiceController.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="logger"
-				>
-				<File
-					RelativePath=".\src\logger\CLogger.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\logger\CLogger.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="video"
-				>
-				<File
-					RelativePath=".\src\video\CVideoController.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\video\CVideoController.h"
-					>
-				</File>
-			</Filter>
 			<Filter
 				Name="network"
 				>
