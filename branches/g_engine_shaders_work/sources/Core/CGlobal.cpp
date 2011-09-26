@@ -7,6 +7,8 @@ CGlobal::RENDER_DEVICE CGlobal::m_RenderDevice = CGlobal::D3D;
 
 IDevice *CGlobal::m_Device = NULL;
 
+std::map<std::string, PTR_EVENT_FUN> CGlobal::m_callbacks;
+
 IDevice *CGlobal::GetDevice()
 {	
 	if(m_Device == NULL)
@@ -22,4 +24,14 @@ IDevice *CGlobal::GetDevice()
 		}
 	}
 	return m_Device;
+}
+
+void CGlobal::addEventListener()
+{
+	void (CBase::*pfun)(void)= &CBase::onUpdate;
+	m_callbacks["one"] = pfun;
+
+	CBaseSecond obj;
+
+	(obj.*pfun)();
 }

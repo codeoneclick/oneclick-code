@@ -11,7 +11,7 @@ namespace Enviroment
 		struct SVertex
 		{
 			math::Vector3d m_vPosition;
-			math::Vector2d m_vTexCoord;
+			math::Vector2d<float> m_vTexCoord;
 		};
 
 		CLight* m_LightRef;

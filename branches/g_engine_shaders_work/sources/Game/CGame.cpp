@@ -1,58 +1,49 @@
-#include "Game.h"
+#include "CGame.h"
 #include "Controller/RenderController.h"
 #include "../Core/CGlobal.h"
 
-Enviroment::EnviromentController* Game::_enviromentController = NULL;
-
-Game::Game()
-{
-
-}
-
-bool Game::Create()
+CGame::CGame()
 {
 	_CreateWindow(800,600,32);
 	Core::CGlobal::GetDevice();
 	Video::CRenderController::Init();
-	_enviromentController = new Enviroment::EnviromentController();
-	_enviromentController->Load();
-	gameRun = true;
-	return true;
+	m_enviromentController = new Enviroment::EnviromentController();
+	m_enviromentController->Load();
+	m_isGameRun = true;
 }
 
-void Game::Update(DWORD time)
+void CGame::update()
 {
-	if(PeekMessage(&_sysMessage,NULL,0,0,PM_REMOVE))
+	if(PeekMessage(&m_systemMessage,NULL,0,0,PM_REMOVE))
 	{
-		if (_sysMessage.message == WM_QUIT)				
+		if (m_systemMessage.message == WM_QUIT)				
 		{
-			gameRun = false;	
+			m_isGameRun = false;	
 		}
 		else									
 		{
-			TranslateMessage(&_sysMessage);				
-			DispatchMessage(&_sysMessage);				
+			TranslateMessage(&m_systemMessage);				
+			DispatchMessage(&m_systemMessage);				
 		}
 	}
 	else
 	{
 		if (core::Input::keys[VK_ESCAPE])				
 		{
-			gameRun = false;						
+			m_isGameRun = false;						
 		}
 	}
 }
 
-void Game::Render()
+void CGame::render()
 {
 	Video::CRenderController::Render2Texture(Video::CRenderController::REFLECTION_TEXTURE);
 	Video::CRenderController::Render2Texture(Video::CRenderController::REFRACTION_TEXTURE);
 	Video::CRenderController::Render(Video::CRenderController::SCREEN_TEXTURE);
+
 	static DWORD framesPerSecond = 0;       
     static DWORD lastTime = 0;   
 	DWORD fps = 0;
-
-	Core::CGlobal::addEventListener();
         
     DWORD currentTime = GetTickCount();
     ++framesPerSecond;

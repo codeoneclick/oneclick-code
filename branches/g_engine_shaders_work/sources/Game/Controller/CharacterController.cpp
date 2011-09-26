@@ -100,7 +100,7 @@ void CharacterController::Update(DWORD _time)
 	EditorUpdate();
 	math::Vector3d intersectPoint = Game::GetEnviromentControllerInstance()->GetIntersectControllerInstance()->m_intersectPoint;
 	m_cEditController->SetWorkingPosition(intersectPoint);
-	((CBrush*)m_cEditController->GetBrush())->Set2DPosition(math::Vector2d(intersectPoint.x,intersectPoint.z));
+	((CBrush*)m_cEditController->GetBrush())->Set2DPosition(math::Vector2d<float>(intersectPoint.x,intersectPoint.z));
 	
 	m_cEditController->SetWorkingArea(16.0f);
 	m_cEditController->Update();

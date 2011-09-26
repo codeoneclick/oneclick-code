@@ -23,6 +23,38 @@ void EnviromentController::Load()
 
 	m_intersectController = new CIntersectController();
 
+	int *mass = new int[8];
+	mass[0] = 7;
+	mass[1] = 8;
+	mass[2] = 1;
+	mass[3] = 3;
+	mass[4] = 5;
+	mass[5] = 0;
+	mass[6] = 15;
+	mass[7] = 2;
+
+	int c = 4;
+	int b = 4;
+	int a = c << b;
+	const int aaa = 0136;
+
+
+	for ( int i = 0; i < 8; i++ )
+	{
+		int val = mass[i];
+		int index = i;
+		for ( int j = i + 1; j < 8; j++ )
+		{
+			if ( mass[j] < val )
+			{
+				val = mass[j];
+				index = j;
+			}
+		}
+		mass[index] = mass[i];
+		mass[i] = val;
+	}
+
 	std::vector<SResource> landscapeResourceContainer;
 	SResource landscapeResource;
 	landscapeResource.m_ResouceFile = "Content\\maps\\Kbsd_Heightmap_Example.raw";

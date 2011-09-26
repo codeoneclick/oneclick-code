@@ -14,7 +14,7 @@ class COcean : public CDummy
 	struct SVertex
 	{
 		math::Vector3d vPosition;
-		math::Vector2d vTexCoord;
+		math::Vector2d<float> vTexCoord;
 	};
 	private :
 		unsigned int   m_Width;

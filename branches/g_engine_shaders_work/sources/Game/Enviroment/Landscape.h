@@ -10,7 +10,7 @@ namespace Enviroment
 		struct SVertexStreamMesh
 		{
 			math::Vector3d m_vPosition;
-			math::Vector2d m_vTexCoord;
+			math::Vector2d<float> m_vTexCoord;
 			math::Vector3d m_vNormal;
 			math::Vector3d m_vTangent;
 		};
@@ -29,7 +29,7 @@ namespace Enviroment
 
 		struct SChunk
 		{
-			math::Vector2d m_Index;
+			math::Vector2d<float> m_Index;
 			bool m_bVisible;
 		};
 

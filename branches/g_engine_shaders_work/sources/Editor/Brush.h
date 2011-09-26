@@ -11,7 +11,7 @@ namespace Enviroment
 		struct SVertex
 		{
 			math::Vector3d m_vPosition;
-			math::Vector2d m_vExtValue;
+			math::Vector2d<float> m_vExtValue;
 		};
 
 	private :
@@ -20,14 +20,14 @@ namespace Enviroment
 		std::string    m_Name;
 		CLandscape*    m_Landscape;
 		float		   m_heightOffset;
-		math::Vector2d m_brush2DPosition;
+		math::Vector2d<float> m_brush2DPosition;
 		float		   m_workingRadius;
 	public :
 		CBrush(CLandscape* _landscape);
 		virtual void Load(std::vector<SResource> _resource);
 		virtual void Update();
 		virtual void Render();
-		inline  void Set2DPosition(math::Vector2d _position) { m_brush2DPosition = _position; };
+		inline  void Set2DPosition(math::Vector2d<float> _position) { m_brush2DPosition = _position; };
 		inline  void SetWorkingRadius(float _value) { m_workingRadius = _value; };
 	};
 };

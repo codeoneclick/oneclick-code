@@ -30,18 +30,18 @@ namespace Math
 			 {
 				 math::Vector3d *p1 = new math::Vector3d();
 				 memcpy(p1,v_data + _i_data[i] * _vertex_size,sizeof(math::Vector3d));
-				 math::Vector2d *vUV1 = new math::Vector2d();
-				 memcpy(vUV1,v_data + _i_data[i] * _vertex_size + sizeof(math::Vector3d),sizeof(math::Vector2d));
+				 math::Vector2d<float> *vUV1 = new math::Vector2d<float>();
+				 memcpy(vUV1,v_data + _i_data[i] * _vertex_size + sizeof(math::Vector3d),sizeof(math::Vector2d<float>));
 
 				 math::Vector3d *p2 = new math::Vector3d();
 				 memcpy(p2,v_data + _i_data[i + 1] * _vertex_size, sizeof(math::Vector3d));
-				 math::Vector2d *vUV2 = new math::Vector2d();
-				 memcpy(vUV2,v_data + _i_data[i + 1] * _vertex_size + sizeof(math::Vector3d),sizeof(math::Vector2d));
+				 math::Vector2d<float> *vUV2 = new math::Vector2d<float>();
+				 memcpy(vUV2,v_data + _i_data[i + 1] * _vertex_size + sizeof(math::Vector3d),sizeof(math::Vector2d<float>));
 				
 				 math::Vector3d *p3 = new math::Vector3d();
 				 memcpy(p3,v_data + _i_data[i + 2] * _vertex_size, sizeof(math::Vector3d));
-				 math::Vector2d *vUV3 = new math::Vector2d();
-				 memcpy(vUV3,v_data + _i_data[i + 2] * _vertex_size + sizeof(math::Vector3d),sizeof(math::Vector2d));
+				 math::Vector2d<float> *vUV3 = new math::Vector2d<float>();
+				 memcpy(vUV3,v_data + _i_data[i + 2] * _vertex_size + sizeof(math::Vector3d),sizeof(math::Vector2d<float>));
 
 				 math::Vector3d v1 = (*p2) - (*p1);
 				 math::Vector3d v2 = (*p3) - (*p1);

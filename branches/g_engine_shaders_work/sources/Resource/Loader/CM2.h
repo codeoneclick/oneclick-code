@@ -156,7 +156,7 @@ public :
 			math::Vector3d *position;
 			math::Vector3d *normal;
 			math::Vector3d *tangent;
-			math::Vector2d *texcoord;
+			math::Vector2d<float> *texcoord;
 			
 			unsigned int *indeces;
 
@@ -167,7 +167,7 @@ public :
 		struct SM3Vertex
 		{
 			math::Vector3d vPosition;
-			math::Vector2d vTexCoord;
+			math::Vector2d<float> vTexCoord;
 			math::Vector3d vNormal;
 			math::Vector3d vTangent;
 			math::Vector3d vBinormal;

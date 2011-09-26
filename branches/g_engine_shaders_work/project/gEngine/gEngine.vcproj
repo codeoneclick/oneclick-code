@@ -192,6 +192,22 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\sources\Core\CBase.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\sources\Core\CBase.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\sources\Core\CBaseSecond.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\sources\Core\CBaseSecond.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\sources\Core\CDeviceD3D.cpp"
 					>
 				</File>

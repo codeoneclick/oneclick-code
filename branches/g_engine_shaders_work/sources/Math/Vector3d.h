@@ -5,7 +5,24 @@
 namespace math
 {
 
+template< class T >
 class Vector2d
+{
+public:
+	union {
+		struct {
+			T x, y;
+		};
+		T v[2];
+	};
+
+	Vector2d() : x(T(0)), y(T(0)) {}
+	Vector2d( const T& v ) : x(v.x), y(v.y) {}
+	Vector2d( T _x, T _y ) : x(_x), y(_y) {}
+	inline T length( void ) const { return (T)sqrt(x * x + y * y); }
+};
+
+/*class Vector2d
 {
 	public:
 	union {
@@ -19,7 +36,7 @@ class Vector2d
 	Vector2d( const Vector2d& v ) : x(v.x), y(v.y) {}
 	Vector2d( float _x, float _y ) : x(_x), y(_y) {}
 	inline float length( void ) const { return (float)sqrt(x * x + y * y); }
-};
+};*/
 
 class Vector4d
 {

@@ -24,13 +24,13 @@ void COcean::Load(std::vector<SResource> _resource)
 	
 	SVertex* vertexData = (SVertex*)m_MeshList[m_Name]->m_VertexBuffer->Load(4, sizeof(SVertex),0);
 	vertexData[0].vPosition = math::Vector3d(0.0f, 0.0f, 0.0f);
-	vertexData[0].vTexCoord = math::Vector2d(0.0f, 0.0f);
+	vertexData[0].vTexCoord = math::Vector2d<float>(0.0f, 0.0f);
 	vertexData[1].vPosition = math::Vector3d(0.0f, 0.0f, m_Height);
-	vertexData[1].vTexCoord = math::Vector2d(0.0f, 1.0f);
+	vertexData[1].vTexCoord = math::Vector2d<float>(0.0f, 1.0f);
 	vertexData[2].vPosition = math::Vector3d(m_Width, 0.0f, 0.0f);
-	vertexData[2].vTexCoord = math::Vector2d(1.0f, 0.0f);
+	vertexData[2].vTexCoord = math::Vector2d<float>(1.0f, 0.0f);
 	vertexData[3].vPosition = math::Vector3d(m_Width, 0.0f, m_Height);
-	vertexData[3].vTexCoord = math::Vector2d(1.0f, 1.0f);
+	vertexData[3].vTexCoord = math::Vector2d<float>(1.0f, 1.0f);
 	m_MeshList[m_Name]->m_VertexBuffer->CommitToVRAM(0);
 
 	unsigned int *indexData = m_MeshList[m_Name]->m_IndexBuffer->Load(6);

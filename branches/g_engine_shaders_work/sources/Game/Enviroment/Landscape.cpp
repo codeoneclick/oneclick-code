@@ -106,7 +106,7 @@ void CLandscape::Load(std::vector<SResource> _resource)
         for(unsigned int j = 0; j < m_Height;++j)
 		{
 			v_data[index].m_vPosition = math::Vector3d(i*m_MapScaleFactor,m_MapData[i][j] * m_MapHeightFactor,j*m_MapScaleFactor);
-			v_data[index].m_vTexCoord = math::Vector2d(static_cast<float>(i) / m_TextureScaleFactor,static_cast<float>(j) / m_TextureScaleFactor);
+			v_data[index].m_vTexCoord = math::Vector2d<float>(static_cast<float>(i) / m_TextureScaleFactor,static_cast<float>(j) / m_TextureScaleFactor);
 			m_intersectBlock->vertexData[index] = v_data[index].m_vPosition;
 			++index;
 		}

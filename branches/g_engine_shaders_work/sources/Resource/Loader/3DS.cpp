@@ -87,7 +87,7 @@ C3DS::S3DSFile* C3DS::ReadData(std::string value)
 			case 0x4140:
 				unsigned short nTexCoord;
 			    filePosition += 2 * fread(&nTexCoord,2,1,file);
-				(*(readData.end() - 1))->vTexCoord = new math::Vector2d[nTexCoord];
+				(*(readData.end() - 1))->vTexCoord = new math::Vector2d<float>[nTexCoord];
 				for(int i = 0; i < nTexCoord; ++i)
 				{
 					filePosition += 4*fread(&(*(readData.end() - 1))->vTexCoord[i],8,1,file);

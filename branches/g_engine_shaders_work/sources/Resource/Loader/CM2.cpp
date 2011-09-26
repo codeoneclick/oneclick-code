@@ -78,7 +78,7 @@ CM2::SMeshBuffer* CM2::ReadData(std::string value)
 	meshBuffer->position = new math::Vector3d[meshBuffer->nVerteces];
 	meshBuffer->normal = new math::Vector3d[meshBuffer->nVerteces];
 	meshBuffer->tangent = new math::Vector3d[meshBuffer->nVerteces];
-	meshBuffer->texcoord = new math::Vector2d[meshBuffer->nVerteces];
+	meshBuffer->texcoord = new math::Vector2d<float>[meshBuffer->nVerteces];
 
 	float wNormal = 0.0f; 
 
@@ -100,7 +100,7 @@ CM2::SMeshBuffer* CM2::ReadData(std::string value)
 					meshBuffer->normal[i].z /= wNormal;
 				}
 				
-				meshBuffer->texcoord[i] = math::Vector2d( (float) vertexBlock_v01[i].uv[0] / 2048.0f, 
+				meshBuffer->texcoord[i] = math::Vector2d<float>( (float) vertexBlock_v01[i].uv[0] / 2048.0f, 
 														  (float) vertexBlock_v01[i].uv[1] / 2048.0f );
 			break;
 
@@ -117,7 +117,7 @@ CM2::SMeshBuffer* CM2::ReadData(std::string value)
 					meshBuffer->normal[i].z /= wNormal;
 				}
 				
-				meshBuffer->texcoord[i] = math::Vector2d( (float) vertexBlock_v02[i].uv[0] / 2048.0f, 
+				meshBuffer->texcoord[i] = math::Vector2d<float>( (float) vertexBlock_v02[i].uv[0] / 2048.0f, 
 														  (float) vertexBlock_v02[i].uv[1] / 2048.0f );
 
 			break;
@@ -135,7 +135,7 @@ CM2::SMeshBuffer* CM2::ReadData(std::string value)
 					meshBuffer->normal[i].z /= wNormal;
 				}
 				
-				meshBuffer->texcoord[i] = math::Vector2d( (float) vertexBlock_v03[i].uv[0] / 2048.0f, 
+				meshBuffer->texcoord[i] = math::Vector2d<float>( (float) vertexBlock_v03[i].uv[0] / 2048.0f, 
 														  (float) vertexBlock_v03[i].uv[1] / 2048.0f );
 			break;
 		}

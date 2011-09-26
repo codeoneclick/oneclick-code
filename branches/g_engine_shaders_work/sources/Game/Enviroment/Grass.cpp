@@ -84,29 +84,29 @@ void CGrass::Load(std::vector<SResource> _resource)
 	{
 		float offsetY = Math::Util::Random(2,6);
 		v_data[index].m_vPosition = math::Vector3d(grassPoints[i].x + offsetX, grassPoints[i].y, grassPoints[i].z);
-		v_data[index].m_vTexCoord = math::Vector2d(0.0f,1.0f);
+		v_data[index].m_vTexCoord = math::Vector2d<float>(0.0f,1.0f);
 		index++;
 		v_data[index].m_vPosition = math::Vector3d(grassPoints[i].x + offsetX, grassPoints[i].y + offsetY, grassPoints[i].z);
-		v_data[index].m_vTexCoord = math::Vector2d(0.0f,0.0f);
+		v_data[index].m_vTexCoord = math::Vector2d<float>(0.0f,0.0f);
 		index++;
 		v_data[index].m_vPosition = math::Vector3d(grassPoints[i].x - offsetX, grassPoints[i].y, grassPoints[i].z);
-		v_data[index].m_vTexCoord = math::Vector2d(1.0f,1.0f);
+		v_data[index].m_vTexCoord = math::Vector2d<float>(1.0f,1.0f);
 		index++;
 		v_data[index].m_vPosition = math::Vector3d(grassPoints[i].x - offsetX, grassPoints[i].y + offsetY, grassPoints[i].z);
-		v_data[index].m_vTexCoord = math::Vector2d(1.0f,0.0f);
+		v_data[index].m_vTexCoord = math::Vector2d<float>(1.0f,0.0f);
 		index++;
 
 		v_data[index].m_vPosition = math::Vector3d(grassPoints[i].x, grassPoints[i].y, grassPoints[i].z + offsetZ);
-		v_data[index].m_vTexCoord = math::Vector2d(0.0f,1.0f);
+		v_data[index].m_vTexCoord = math::Vector2d<float>(0.0f,1.0f);
 		index++;
 		v_data[index].m_vPosition = math::Vector3d(grassPoints[i].x, grassPoints[i].y + offsetY, grassPoints[i].z - offsetZ);
-		v_data[index].m_vTexCoord = math::Vector2d(0.0f,0.0f);
+		v_data[index].m_vTexCoord = math::Vector2d<float>(0.0f,0.0f);
 		index++;
 		v_data[index].m_vPosition = math::Vector3d(grassPoints[i].x, grassPoints[i].y, grassPoints[i].z - offsetZ);
-		v_data[index].m_vTexCoord = math::Vector2d(1.0f,1.0f);
+		v_data[index].m_vTexCoord = math::Vector2d<float>(1.0f,1.0f);
 		index++;
 		v_data[index].m_vPosition = math::Vector3d(grassPoints[i].x, grassPoints[i].y + offsetY, grassPoints[i].z - offsetZ);
-		v_data[index].m_vTexCoord = math::Vector2d(1.0f,0.0f);
+		v_data[index].m_vTexCoord = math::Vector2d<float>(1.0f,0.0f);
 		index++;
 	}
 

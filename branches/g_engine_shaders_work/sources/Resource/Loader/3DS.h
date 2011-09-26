@@ -19,7 +19,7 @@ private :
 		unsigned int nIndeces;
 
 		math::Vector3d *vPosition;
-		math::Vector2d *vTexCoord;
+		math::Vector2d<float> *vTexCoord;
 		unsigned int           *indexData;
 	};
 
@@ -27,7 +27,7 @@ public :
 	struct S3DSVertex
 	{
 		math::Vector3d vPosition;
-		math::Vector2d vTexCoord;
+		math::Vector2d<float> vTexCoord;
 		math::Vector3d vNormal;
 		math::Vector3d vTangent;
 		math::Vector3d vBinormal;

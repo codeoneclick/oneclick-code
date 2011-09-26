@@ -10,12 +10,12 @@ namespace Enviroment
 		struct SVertex
 		{
 			math::Vector3d m_vPosition;
-			math::Vector2d m_vTexCoord;
+			math::Vector2d<float> m_vTexCoord;
 		};
 
 		struct SChunk
 		{
-			math::Vector2d m_Index;
+			math::Vector2d<float> m_Index;
 			bool m_bVisible;
 		};
 

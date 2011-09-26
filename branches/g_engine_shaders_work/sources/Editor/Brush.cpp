@@ -31,7 +31,7 @@ void CBrush::Load(std::vector<SResource> _resource)
         for(unsigned int j = 0; j < m_Height;++j)
 		{
 			vertexData[index].m_vPosition = math::Vector3d(i * m_Landscape->GetScaleFactor() ,m_Landscape->GetHeightData()[i][j] * m_Landscape->GetHeightFactor() + m_heightOffset,j * m_Landscape->GetScaleFactor());
-			vertexData[index].m_vExtValue = math::Vector2d(1.0f,1.0f);
+			vertexData[index].m_vExtValue = math::Vector2d<float>(1.0f,1.0f);
 			++index;
 		}
 	}
@@ -98,17 +98,17 @@ void CBrush::Update()
 				int posX = (int)m_brush2DPosition.x + i - m_Width / 2;
 				int posZ = (int)m_brush2DPosition.y + j - m_Height / 2;
 
-				vertexData[index].m_vExtValue = math::Vector2d(0.0f,0.0f);
+				vertexData[index].m_vExtValue = math::Vector2d<float>(0.0f,0.0f);
 				if(posX <= 0 || posZ <= 0 || posX >= m_Landscape->GetWidth() || posZ >= m_Landscape->GetHeight())
 				{
 					vertexData[index].m_vPosition = math::Vector3d(posX * m_Landscape->GetScaleFactor() ,0.0f,posZ * m_Landscape->GetScaleFactor());
-					vertexData[index].m_vExtValue = math::Vector2d(0.0f,0.0f);
+					vertexData[index].m_vExtValue = math::Vector2d<float>(0.0f,0.0f);
 					++index;
 					continue;
 				}
 
 				vertexData[index].m_vPosition = math::Vector3d(posX * m_Landscape->GetScaleFactor() ,m_Landscape->GetHeightData()[posX][posZ] * m_Landscape->GetHeightFactor() + m_heightOffset,posZ * m_Landscape->GetScaleFactor());
-				vertexData[index].m_vExtValue = math::Vector2d(0.2f,0.2f);
+				vertexData[index].m_vExtValue = math::Vector2d<float>(0.2f,0.2f);
 				++index;
 			}
 		}
