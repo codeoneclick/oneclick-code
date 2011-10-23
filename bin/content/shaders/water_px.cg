@@ -1,0 +1,71 @@
+struct fragment
+{
+	float4   vPosition       : POSITION;
+	float4   vTexCoordProj   : TEXCOORD0;
+	float2   vTexCoord       : TEXCOORD1;
+	float3x3 mTangentSpace   : TEXCOORD2;
+	float3   vCamera         : TEXCOORD5;
+	float3   vLight	         : TEXCOORD6;
+	float    fExtValue       : TEXCOORD7;
+};
+
+struct pixel
+{
+	float4 color : COLOR;
+};
+
+uniform sampler2D Texture_01;
+uniform sampler2D Texture_02;
+uniform sampler2D Texture_03;
+
+uniform sampler2D Texture_04;
+uniform sampler2D Texture_05;
+uniform sampler2D Texture_06;
+
+uniform float fTimer;
+
+pixel main(fragment IN)
+{
+	pixel OUT;
+	
+	float fTile = 4.0f;
+	
+	IN.vTexCoord *= fTile;
+	 
+	IN.vLight = normalize(IN.vLight);
+	IN.vCamera = normalize(IN.vCamera);
+	
+	float2 vTexCoord_01 = float2(IN.vTexCoord.x + sin(fTimer)*0.05f,
+								 IN.vTexCoord.y + cos(fTimer)*0.07f);
+	
+	float2 vTexCoord_02 = float2(IN.vTexCoord.x - sin(fTimer)*0.07f,
+								 IN.vTexCoord.y - cos(fTimer)*0.05f);
+
+    float3 vNormalColor = (tex2D( Texture_02, vTexCoord_01 ) * 2.0f - 1.0f) + 
+						  (tex2D( Texture_02, vTexCoord_02 ) * 2.0f - 1.0f);
+    
+    vNormalColor = normalize(mul(IN.mTangentSpace, vNormalColor));
+
+	float2 vTexCoordReflectionProj = IN.vTexCoordProj.xy;
+	vTexCoordReflectionProj += vNormalColor*1.5f;
+	vTexCoordReflectionProj.x = 0.5f + 0.5f * vTexCoordReflectionProj.x/IN.vTexCoordProj.w;
+	vTexCoordReflectionProj.y = 0.5f - 0.5f * vTexCoordReflectionProj.y/IN.vTexCoordProj.w;
+	vTexCoordReflectionProj = clamp(vTexCoordReflectionProj, 0.001, 0.999); 
+	float4 vReflectionColor = tex2D(Texture_01,vTexCoordReflectionProj);
+	
+	float2 vTexCoordRefractionProj = IN.vTexCoordProj.xy;
+	vTexCoordRefractionProj -= vNormalColor * ( 0.7f - IN.fExtValue );
+	vTexCoordRefractionProj.x = 0.5f + 0.5f * vTexCoordRefractionProj.x/IN.vTexCoordProj.w;
+	vTexCoordRefractionProj.y = 0.5f + 0.5f * vTexCoordRefractionProj.y/IN.vTexCoordProj.w;
+	vTexCoordRefractionProj = clamp(vTexCoordRefractionProj, 0.001, 0.999); 
+	float4 vRefractionColor = tex2D(Texture_03,vTexCoordRefractionProj);
+	
+	IN.vLight = float3(0.0f,1.0f,0.0f);
+	float3 vLightReflection = normalize( reflect(IN.vLight, vNormalColor) );	
+	float3 vSpecularColor = float4(pow(max(0.0, dot(vLightReflection, IN.vCamera) ), 128.0f));
+	
+	OUT.color.rgb = vReflectionColor.rgb * ( 1.0f - IN.fExtValue )+ vSpecularColor + vRefractionColor *  ( IN.fExtValue );
+
+	OUT.color.a = 1.0f;
+	return OUT;
+}

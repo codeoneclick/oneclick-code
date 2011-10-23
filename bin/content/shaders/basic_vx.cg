@@ -1,0 +1,26 @@
+struct vertex
+{
+    float3 position    : ATTR0;
+    float2 texcoord    : ATTR1;
+};
+
+struct fragment
+{
+	float4 position    : POSITION;
+	float3 normal      : TEXCOORD1;
+	float2 texcoord_01 : TEXCOORD0;
+};
+
+uniform float4x4  mWorldViewProjection;
+uniform float4x4  mWorldViewInverse;
+
+uniform float4    vCameraEye;
+uniform float4    vLightDirection;
+
+fragment main( vertex IN )
+{
+	fragment OUT;
+	OUT.position    = mul( mWorldViewProjection, float4(IN.position,1.0f) );
+	OUT.texcoord_01 = IN.texcoord;
+	return OUT;
+}

@@ -1,0 +1,39 @@
+struct fragment
+{
+	float4 position    : POSITION;
+	float2 texcoord_01 : TEXCOORD0;
+};
+
+struct pixel
+{
+	float4 color : COLOR;
+};
+
+uniform sampler2D Texture_01;
+
+uniform float fTimer;
+
+pixel main( fragment IN)
+{
+	float BlurDistance = 0.01f;
+    pixel OUT;
+	
+	if(fTimer < 0.0f)
+	{
+		OUT.color  = tex2D( Texture_01, float2(IN.texcoord_01.x+BlurDistance, IN.texcoord_01.y+BlurDistance));
+		OUT.color += tex2D( Texture_01, float2(IN.texcoord_01.x-BlurDistance, IN.texcoord_01.y-BlurDistance));
+		OUT.color += tex2D( Texture_01, float2(IN.texcoord_01.x+BlurDistance, IN.texcoord_01.y-BlurDistance));
+		OUT.color += tex2D( Texture_01, float2(IN.texcoord_01.x-BlurDistance, IN.texcoord_01.y+BlurDistance));
+		OUT.color /= 4.0f;
+		OUT.color *= float4(0.35f, 0.60f, 0.77f, 1.0f);
+	}
+	else
+		OUT.color =  tex2D( Texture_01, IN.texcoord_01); 
+    
+	//float3 luminance_weights = float3(0.27f, 0.67f, 0.06f);
+
+	//float luminance = dot(luminance_weights,OUT.color);
+	//OUT.color = float4(luminance,luminance,luminance,1.0);
+    
+    return OUT;
+}
