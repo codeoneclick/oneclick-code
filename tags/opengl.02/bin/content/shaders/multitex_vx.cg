@@ -1,0 +1,46 @@
+struct vertex
+{
+    float3 vPosition          : ATTR0;
+    float2 vTexCoord          : ATTR1;
+    float3 vNormal            : ATTR2;
+	float3 vTangent           : ATTR3;
+	float3 vBinormal          : ATTR4;
+	float4 vMultiTexBlend     : ATTR5;
+};
+
+struct fragment
+{
+	float4 vPosition        : POSITION;
+	float2 vTexCoord        : TEXCOORD0;
+	float3 vLight           : TEXCOORD1;
+	float3 vCamera          : TEXCOORD2;
+	float2 fClipValue       : TEXCOORD3;
+	float4 vMultiTexBlend   : TEXCOORD4;
+};
+
+uniform float4x4  mWorldViewProjection;
+uniform float4x4  mWorldViewInverse;
+uniform float4x4  mWorldView;
+uniform float4x4  mWorld;
+
+uniform float4    vCameraEye;
+uniform float4    vLightDirection;
+
+fragment main(vertex IN)
+{
+	fragment OUT;
+
+	OUT.vPosition  = mul(mWorldViewProjection, float4(IN.vPosition,1.0f) );
+	float3x3 TangentSpace = float3x3(IN.vTangent,IN.vBinormal,IN.vNormal);
+   
+    OUT.vLight = mul(TangentSpace,vLightDirection.xyz);
+    
+    OUT.vCamera = mul(TangentSpace,vCameraEye.xyz - IN.vPosition);
+	
+	OUT.vTexCoord = IN.vTexCoord;
+	OUT.vMultiTexBlend = IN.vMultiTexBlend;
+	
+	OUT.fClipValue.x = IN.vPosition.y;
+	OUT.fClipValue.y = length(float3(vCameraEye.xyz - IN.vPosition));
+	return OUT;
+}

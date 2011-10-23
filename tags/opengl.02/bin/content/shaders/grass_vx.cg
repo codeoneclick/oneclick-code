@@ -1,0 +1,36 @@
+struct vertex
+{
+    float3 position    : ATTR0;
+    float2 texcoord    : ATTR1;
+    float4 vExtValue   : ATTR5;
+};
+
+struct fragment
+{
+	float4 position    : POSITION;
+	float3 normal      : TEXCOORD1;
+	float2 texcoord_01 : TEXCOORD0;
+	float  vExtValue   : TEXCOORD2;
+};
+
+uniform float4x4  mWorldViewProjection;
+uniform float4x4  mWorldViewInverse;
+
+uniform float4    vCameraEye;
+uniform float4    vLightDirection;
+
+uniform float fTimer;
+
+fragment main( vertex IN )
+{
+	fragment OUT;
+	if( IN.texcoord.y == 0.0f )  
+	{
+		IN.position.x += sin(fTimer*(IN.position.x + IN.position.y) * 0.01f)*0.1f;
+		IN.position.z += cos(fTimer*(IN.position.z + IN.position.x) * 0.01f)*0.3f;
+	}
+	OUT.position    = mul( mWorldViewProjection, float4(IN.position,1.0f) );
+	OUT.texcoord_01 = IN.texcoord;
+	OUT.vExtValue = IN.vExtValue.x;
+	return OUT;
+}

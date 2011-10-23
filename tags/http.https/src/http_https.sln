@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "http_https", "http_https.vcproj", "{DBCC0427-6D33-4EBC-8BB2-F0558052FF64}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DBCC0427-6D33-4EBC-8BB2-F0558052FF64}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DBCC0427-6D33-4EBC-8BB2-F0558052FF64}.Debug|Win32.Build.0 = Debug|Win32
+		{DBCC0427-6D33-4EBC-8BB2-F0558052FF64}.Release|Win32.ActiveCfg = Release|Win32
+		{DBCC0427-6D33-4EBC-8BB2-F0558052FF64}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
