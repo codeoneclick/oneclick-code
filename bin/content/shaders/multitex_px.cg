@@ -1,0 +1,46 @@
+struct fragment
+{
+	float4 position    : POSITION;
+	float2 texcoord_01 : TEXCOORD0;
+	float3 normal      : TEXCOORD1;
+	float4 texcoord_02 : COLOR0;
+};
+
+struct pixel
+{
+	float4 color : COLOR;
+};
+
+uniform sampler2D Texture_01;
+uniform sampler2D Texture_02;
+uniform float4x4  mWorldViewProjection;
+uniform float4x4  mWorldViewInverse;
+uniform float4    vCameraEye;
+uniform float4    vLightDirection;
+
+pixel main(fragment IN)
+{
+	float _tileSize = 2.0f;
+	pixel OUT;
+	float4 normal = normalize(float4(IN.normal,1.0f));
+
+    float4 light = normalize(vLightDirection);
+
+    float4 eye = vCameraEye;
+    float4 half = normalize( light + eye );
+    
+    float diffuse = dot( normal, light );
+
+    float specular = max( dot( normal, half ), 0 );
+    specular = pow( specular, 256.0f );
+	
+	float4 mainColor =  tex2D( Texture_01, IN.texcoord_01*_tileSize )*IN.texcoord_02.x + tex2D( Texture_02, IN.texcoord_01*_tileSize )*IN.texcoord_02.y;
+	
+	float4 ambientColor = mainColor/2.0f;
+
+    float4 specularColor = float4( 1.0, 1.0, 1.0, 1.0 );
+	
+	//OUT.color = diffuse * mainColor + specular * specularColor;
+	OUT.color = mainColor;
+	return OUT;
+}
