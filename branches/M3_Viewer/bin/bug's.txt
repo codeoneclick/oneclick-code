@@ -1,8 +1,0 @@
-Button blick color.
-Rotation of the model.
-Rotation and GUI click parallel enabled.
-Background white color.
-Export to obj - Info Window.
-Zoom Inverted.
-Object Name.
-Application Icon.
