@@ -1,5 +1,7 @@
 #import "GLView.h"
 #import <OpenGLES/ES2/gl.h> // <-- for GL_RENDERBUFFER only
+#include "CSceneEngine.h"
+#include "CCamera.h"
 
 const bool ForceES1 = false;
 
@@ -31,17 +33,18 @@ const bool ForceES1 = false;
 
         if (api == kEAGLRenderingAPIOpenGLES1) {
             NSLog(@"Using OpenGL ES 1.1");
-            m_renderingEngine = CreateRenderer1();
+            //m_renderingEngine = CreateRenderer1();
         } else {
             NSLog(@"Using OpenGL ES 2.0");
-            m_renderingEngine = CreateRenderer2();
+            m_render = new CRenderEngine(CGRectGetWidth(frame), CGRectGetHeight(frame));
+            //m_renderingEngine = CreateRenderer2();
         }
 
         [m_context
             renderbufferStorage:GL_RENDERBUFFER
             fromDrawable: eaglLayer];
         
-        m_renderingEngine->Initialize(CGRectGetWidth(frame), CGRectGetHeight(frame));
+       // m_renderingEngine->Initialize(CGRectGetWidth(frame), CGRectGetHeight(frame));
         
         [self drawView: nil];
         m_timestamp = CACurrentMediaTime();
@@ -60,6 +63,8 @@ const bool ForceES1 = false;
             selector:@selector(didRotate:)
             name:UIDeviceOrientationDidChangeNotification
             object:nil];
+        CCamera::Instance()->Init(320, 480);
+        CSceneEngine::Instance()->AddNode("node",64.0f,64.0f);
     }
     return self;
 }
@@ -67,7 +72,7 @@ const bool ForceES1 = false;
 - (void) didRotate: (NSNotification*) notification
 {
     UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-    m_renderingEngine->OnRotate((DeviceOrientation) orientation);
+    //m_renderingEngine->OnRotate((DeviceOrientation) orientation);
     [self drawView: nil];
 }
 
@@ -76,10 +81,11 @@ const bool ForceES1 = false;
     if (displayLink != nil) {
         float elapsedSeconds = displayLink.timestamp - m_timestamp;
         m_timestamp = displayLink.timestamp;
-        m_renderingEngine->UpdateAnimation(elapsedSeconds);
+        m_render->Update(elapsedSeconds);
+        //m_renderingEngine->UpdateAnimation(elapsedSeconds);
     }
-
-    m_renderingEngine->Render();
+    m_render->Render();
+    //m_renderingEngine->Render();
     [m_context presentRenderbuffer:GL_RENDERBUFFER];
 }
 

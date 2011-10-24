@@ -1,11 +1,12 @@
-#import "IRenderingEngine.hpp"
+//#import "IRenderingEngine.hpp"
 #import <QuartzCore/QuartzCore.h>
 #import "CRenderEngine.h"
 
 @interface GLView : UIView {
 @private
     EAGLContext* m_context;
-    IRenderingEngine* m_renderingEngine;
+    //IRenderingEngine* m_renderingEngine;
+    CRenderEngine* m_render;
     float m_timestamp;
 }
 

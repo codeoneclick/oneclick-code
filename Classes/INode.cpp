@@ -13,6 +13,10 @@ INode::INode()
 {
     m_mProjection = &CCamera::Instance()->m_mProjection;
     m_mView = &CCamera::Instance()->m_mView;
+    
+    m_vScale = Vector2d(1.0f,1.0f);
+    m_fRotation = 0.0f;
+    m_vPosition = Vector3d(0.0f, 0.0f, 0.0f);
 }
 
 INode::~INode()

@@ -1,4 +1,4 @@
-const char* SimpleFragmentShader = STRINGIFY(
+const char* BasicFragmentShader = STRINGIFY(
 
 varying lowp vec4 DestinationColor;
 

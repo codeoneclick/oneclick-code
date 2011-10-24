@@ -13,6 +13,7 @@
 #include "CShader.h"
 #include "CVertexBuffer.h"
 #include "CCamera.h"
+#include "CResourceController.h"
 
 class INode
 {
@@ -34,10 +35,10 @@ public:
     virtual void Update(float _fTime);
     virtual void Render() = 0;
 public:
-    Vector4d m_vColor;
-    Vector2d m_vScale;
-    Vector2d m_vPosition;
-    float    m_fRotation;
+    Vector4d     m_vColor;
+    Vector2d     m_vScale;
+    Vector3d     m_vPosition;
+    float        m_fRotation;
 };
 
 

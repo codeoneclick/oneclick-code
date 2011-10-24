@@ -9,6 +9,10 @@
 #include <iostream>
 #include "CSprite.h"
 
+#define STRINGIFY(A)  #A
+#include "../Shaders/Basic.vert"
+#include "../Shaders/Basic.frag"
+
 CSprite::CSprite()
 {
     
@@ -26,10 +30,10 @@ void CSprite::Load(std::string _name, float _width, float _height)
     
     m_vb = new CVertexBuffer(4, sizeof(CVertexBuffer::SVertexVC), CVertexBuffer::VBD_V2FC4F);
     CVertexBuffer::SVertexVC *data = static_cast<CVertexBuffer::SVertexVC*>(m_vb->Source());    
-    data[0].s_position = Vector2d(0.0f,     0.0f);
-    data[1].s_position = Vector2d(0.0f,     m_fHeight);
-    data[2].s_position = Vector2d(m_fWidth, m_fHeight);
-    data[3].s_position = Vector2d(m_fWidth, 0.0f);
+    data[0].s_position = Vector3d(0.0f,     0.0f, 0.0f);
+    data[1].s_position = Vector3d(0.0f,     m_fHeight,0.0f);
+    data[2].s_position = Vector3d(m_fWidth, m_fHeight,0.0f);
+    data[3].s_position = Vector3d(m_fWidth, 0.0f,0.0f);
     
     data[0].s_color = Vector4d(0.0f,1.0f,0.0f,1.0f);
     data[1].s_color = Vector4d(0.0f,1.0f,0.0f,1.0f);
@@ -43,6 +47,8 @@ void CSprite::Load(std::string _name, float _width, float _height)
     m_ib[3] = 2;
     m_ib[4] = 3;
     m_ib[5] = 0;
+    
+    m_shader = new CShader(BasicVertexShader,BasicFragmentShader);
 }
 
 void CSprite::Update(float _fTime)
@@ -52,6 +58,7 @@ void CSprite::Update(float _fTime)
 
 void CSprite::Render()
 {
+    glUseProgram(m_shader->Handle());
     m_vb->Enable(m_shader->Handle());
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, (void*) m_ib);
     m_vb->Disable(m_shader->Handle());

@@ -6,9 +6,9 @@
 #include "INode.h"
 #include "CMTV.h"
 
-#define STRINGIFY(A)  #A
-#include "../Shaders/Simple.vert"
-#include "../Shaders/Simple.frag"
+//#define STRINGIFY(A)  #A
+//#include "../Shaders/Simple.vert"
+//#include "../Shaders/Simple.frag"
 
 static const float RevolutionsPerSecond = 1;
 
@@ -69,11 +69,11 @@ void RenderingEngine2::Initialize(int width, int height)
     
     glViewport(0, 0, width, height);
     
-    CShader *shader = new CShader(SimpleVertexShader,SimpleFragmentShader);
+    //CShader *shader = new CShader(SimpleVertexShader,SimpleFragmentShader);
     
-    m_simpleProgram = shader->Handle();//BuildProgram(SimpleVertexShader, SimpleFragmentShader);
-
-    glUseProgram(m_simpleProgram);
+    //m_simpleProgram = shader->Handle();//BuildProgram(SimpleVertexShader, SimpleFragmentShader);
+//
+   //glUseProgram(m_simpleProgram);
     
     // Initialize the projection matrix.
     ApplyOrtho(4, 6);
@@ -105,7 +105,7 @@ void RenderingEngine2::ApplyOrtho(float maxX, float maxY) const
 void RenderingEngine2::ApplyRotation(float degrees) const
 {
     Matrix4x4 mRotation = Rotation(degrees);
-    Matrix4x4 mTranslation = Translation(Vector2d(-1.0f, -1.0f));
+    Matrix4x4 mTranslation = Translation(Vector3d(-1.0f, -1.0f, -1.0f));
     Matrix4x4 mScale = Scale(Vector2d(1.0f, 0.5f));
     Matrix4x4 mResult = mScale * mRotation * mTranslation;
     GLint modelviewUniform = glGetUniformLocation(m_simpleProgram, "Modelview");
@@ -126,10 +126,10 @@ void RenderingEngine2::Render() const
     
     CVertexBuffer *vb = new CVertexBuffer(4, sizeof(CVertexBuffer::SVertexVC), CVertexBuffer::VBD_V2FC4F);
     CVertexBuffer::SVertexVC *v_data = static_cast<CVertexBuffer::SVertexVC*>(vb->Source());    
-    v_data[0].s_position = Vector2d(0.0f, 0.0f);
-    v_data[1].s_position = Vector2d(0.0f, 32.0f);
-    v_data[2].s_position = Vector2d(32.0f, 32.0f);
-    v_data[3].s_position = Vector2d(32.0f, 0.0f);
+    v_data[0].s_position = Vector3d(0.0f, 0.0f,10.0f);
+    v_data[1].s_position = Vector3d(0.0f, 32.0f,10.0f);
+    v_data[2].s_position = Vector3d(32.0f, 32.0f,10.0f);
+    v_data[3].s_position = Vector3d(32.0f, 0.0f,10.0f);
     
     v_data[0].s_color = Vector4d(0.0f,1.0f,0.0f,1.0f);
     v_data[1].s_color = Vector4d(0.0f,1.0f,0.0f,1.0f);

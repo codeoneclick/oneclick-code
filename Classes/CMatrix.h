@@ -69,10 +69,10 @@ inline Matrix4x4 Scale(const Vector2d& _vValue)
     return mValue;
 }
 
-inline Matrix4x4 Translation(const Vector2d& _vValue)
+inline Matrix4x4 Translation(const Vector3d& _vValue)
 {
     Matrix4x4 mValue(Matrix4x4::M_ONE);
-    mValue.m[12] = _vValue.x; mValue.m[13] = _vValue.y;
+    mValue.m[12] = _vValue.x; mValue.m[13] = _vValue.y;  mValue.m[14] = _vValue.z;
     return mValue;
 }
 

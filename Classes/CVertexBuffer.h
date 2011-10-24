@@ -22,7 +22,7 @@ public:
     
     struct SVertexVC
     {
-        Vector2d s_position;
+        Vector3d s_position;
         Vector4d s_color;
     };
     
