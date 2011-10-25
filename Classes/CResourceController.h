@@ -29,7 +29,7 @@ public:
     };
     CResourceController();
     ~CResourceController();
-    CResourceController* Instance();
+    static CResourceController* Instance();
     inline CTextureController* TextureController() { return m_textureController; }
     inline CShaderController* ShaderController() { return m_shaderController; }
 };

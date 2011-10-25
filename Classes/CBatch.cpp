@@ -18,3 +18,13 @@ CBatch::~CBatch()
 {
     
 }
+
+void CBatch::Update(float _fTime)
+{
+
+}
+
+void CBatch::Render()
+{
+    
+}

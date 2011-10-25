@@ -9,11 +9,21 @@
 #ifndef gEngine_CTextureController_h
 #define gEngine_CTextureController_h
 
+#include "PVRTTexture.h"
+#include "stdlib.h"
+#include <string>
+#include <map>
+#include "CTexture.h"
+
 class CTextureController
 {
+private:
+    std::map<std::string, CTexture*> m_container;
 public:
     CTextureController();
     ~CTextureController();
+    
+    CTexture *Texture(std::string _sName);
 };
 
 
