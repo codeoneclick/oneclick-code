@@ -43,13 +43,14 @@ public:
     static const std::string k_TEXCOORD_SLOT;
     static const std::string k_COLOR_SLOT;
 private:
-    void *m_pSource;
+    void *m_pData;
     VB_DECLARATION m_declaration;
 public:
     CVertexBuffer(unsigned int _vertexCount,unsigned char _elementSize, VB_DECLARATION _declaration);
     ~CVertexBuffer();
     
-    void *Source() { return m_pSource; }
+    inline VB_DECLARATION Declaration() { return m_declaration; }
+    inline void *Data() { return m_pData; }
     void Enable(GLuint _handle);
     void Disable(GLuint _handle);
 };

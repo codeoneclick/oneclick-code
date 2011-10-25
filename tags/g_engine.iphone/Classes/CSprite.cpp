@@ -29,11 +29,11 @@ void CSprite::Load(CResourceController::SResource &_resource)
     m_fHeight = _resource.vSize.y;
     
     m_vb = new CVertexBuffer(4, sizeof(CVertexBuffer::SVertexVC), CVertexBuffer::VBD_V2FC4F);
-    CVertexBuffer::SVertexVC *data = static_cast<CVertexBuffer::SVertexVC*>(m_vb->Source());    
-    data[0].s_position = Vector3d(0.0f,     0.0f, 0.0f);
-    data[1].s_position = Vector3d(0.0f,     m_fHeight,0.0f);
-    data[2].s_position = Vector3d(m_fWidth, m_fHeight,0.0f);
-    data[3].s_position = Vector3d(m_fWidth, 0.0f,0.0f);
+    CVertexBuffer::SVertexVC *data = static_cast<CVertexBuffer::SVertexVC*>(m_vb->Data());    
+    data[0].s_position = Vector3d(0.0f,     0.0f,      0.0f);
+    data[1].s_position = Vector3d(0.0f,     m_fHeight, 0.0f);
+    data[2].s_position = Vector3d(m_fWidth, m_fHeight, 0.0f);
+    data[3].s_position = Vector3d(m_fWidth, 0.0f,      0.0f);
     
     data[0].s_color = _resource.vColor;
     data[1].s_color = _resource.vColor;
