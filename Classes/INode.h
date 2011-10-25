@@ -34,8 +34,9 @@ public:
     ~INode();
     virtual void Update(float _fTime);
     virtual void Render() = 0;
+    inline CVertexBuffer* Get_VB() { return m_vb; }
+    inline GLubyte* Get_IB() { return m_ib; }
 public:
-    Vector4d     m_vColor;
     Vector2d     m_vScale;
     Vector3d     m_vPosition;
     float        m_fRotation;

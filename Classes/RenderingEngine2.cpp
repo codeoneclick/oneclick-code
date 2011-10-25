@@ -125,7 +125,7 @@ void RenderingEngine2::Render() const
     //GLuint colorSlot = glGetAttribLocation(m_simpleProgram, "SourceColor");
     
     CVertexBuffer *vb = new CVertexBuffer(4, sizeof(CVertexBuffer::SVertexVC), CVertexBuffer::VBD_V2FC4F);
-    CVertexBuffer::SVertexVC *v_data = static_cast<CVertexBuffer::SVertexVC*>(vb->Source());    
+    CVertexBuffer::SVertexVC *v_data = static_cast<CVertexBuffer::SVertexVC*>(vb->Data());    
     v_data[0].s_position = Vector3d(0.0f, 0.0f,10.0f);
     v_data[1].s_position = Vector3d(0.0f, 32.0f,10.0f);
     v_data[2].s_position = Vector3d(32.0f, 32.0f,10.0f);

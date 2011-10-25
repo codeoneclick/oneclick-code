@@ -15,23 +15,24 @@ const std::string CVertexBuffer::k_COLOR_SLOT = "color_slot";
 
 CVertexBuffer::CVertexBuffer(unsigned int _vertexCount,unsigned char _elementSize, VB_DECLARATION _declaration)
 {
-    m_pSource = new char[_vertexCount * _elementSize];
+    m_pData = new char[_vertexCount * _elementSize];
     m_declaration = _declaration;
 }
 
 CVertexBuffer::~CVertexBuffer()
 {
-    char *pSource = static_cast<char*>(m_pSource);
-    if(pSource != NULL)
+    char *pData = static_cast<char*>(m_pData);
+    if(pData != NULL)
     {
-        delete[] pSource;
-        m_pSource = NULL;
+        delete[] pData;
+        m_pData = NULL;
     }
 }
 
 void CVertexBuffer::Enable(GLuint _handle)
 {
     glUseProgram(_handle);
+    
     switch (m_declaration)
     {
         case VBD_V2FC4F:
@@ -39,10 +40,10 @@ void CVertexBuffer::Enable(GLuint _handle)
             GLuint hPositionSlot = glGetAttribLocation(_handle, k_VERTEX_SLOT.c_str());
             GLuint hColorSlot = glGetAttribLocation(_handle, k_COLOR_SLOT.c_str());
             
-            SVertexVC *pSource = static_cast<SVertexVC*>(m_pSource);  
+            SVertexVC *pData = static_cast<SVertexVC*>(m_pData);  
             
-            const GLvoid *pPositionSource = &pSource[0].s_position.v[0];
-            const GLvoid *pColorSource = &pSource[0].s_color.v[0];
+            const GLvoid *pPositionSource = &pData[0].s_position.v[0];
+            const GLvoid *pColorSource = &pData[0].s_color.v[0];
             
             GLsizei stride = sizeof(SVertexVC);
             
@@ -59,10 +60,10 @@ void CVertexBuffer::Enable(GLuint _handle)
             GLuint hPositionSlot = glGetAttribLocation(_handle, k_VERTEX_SLOT.c_str());
             GLuint hTexcoordSlot = glGetAttribLocation(_handle, k_TEXCOORD_SLOT.c_str());
             
-            SVertexVT *pSource = static_cast<SVertexVT*>(m_pSource);  
+            SVertexVT *pData = static_cast<SVertexVT*>(m_pData);  
             
-            const GLvoid *pPositionSource = &pSource[0].s_position.v[0];
-            const GLvoid *pTexcoordSource = &pSource[0].s_texcoord.v[0];
+            const GLvoid *pPositionSource = &pData[0].s_position.v[0];
+            const GLvoid *pTexcoordSource = &pData[0].s_texcoord.v[0];
             
             GLsizei stride = sizeof(SVertexVT);
             
@@ -80,11 +81,11 @@ void CVertexBuffer::Enable(GLuint _handle)
             GLuint hTexcoordSlot = glGetAttribLocation(_handle,k_TEXCOORD_SLOT.c_str());
             GLuint hColorSlot = glGetAttribLocation(_handle, k_COLOR_SLOT.c_str());
             
-            SVertexVTC *pSource = static_cast<SVertexVTC*>(m_pSource);  
+            SVertexVTC *pData = static_cast<SVertexVTC*>(m_pData);  
             
-            const GLvoid *pPositionSource = &pSource[0].s_position.v[0];
-            const GLvoid *pTexcoordSource = &pSource[0].s_texcoord.v[0];
-            const GLvoid *pColorSource = &pSource[0].s_color.v[0];
+            const GLvoid *pPositionSource = &pData[0].s_position.v[0];
+            const GLvoid *pTexcoordSource = &pData[0].s_texcoord.v[0];
+            const GLvoid *pColorSource = &pData[0].s_color.v[0];
             
             GLsizei stride = sizeof(SVertexVTC);
             
