@@ -31,6 +31,7 @@ CVertexBuffer::~CVertexBuffer()
 
 void CVertexBuffer::Enable(GLuint _handle)
 {
+    glUseProgram(_handle);
     switch (m_declaration)
     {
         case VBD_V2FC4F:

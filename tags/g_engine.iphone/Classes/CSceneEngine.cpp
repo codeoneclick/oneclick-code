@@ -31,17 +31,17 @@ CSceneEngine::~CSceneEngine()
     
 }
 
-INode* CSceneEngine::AddNode(std::string _sName, float _fWidth, float _fHeight)
+INode* CSceneEngine::AddNode(CResourceController::SResource &_resource)
 {
     CSprite *sprite = new CSprite();
-    sprite->Load(_sName, _fWidth, _fHeight);
-    m_source[_sName] = sprite;
+    sprite->Load(_resource);
+    m_source[_resource.sName] = sprite;
     return sprite;
 }
 
-INode* CSceneEngine::AddNode(std::string _sName, INode *_node)
+INode* CSceneEngine::AddNode(CResourceController::SResource &_resource, INode *_node)
 {
-    m_source[_sName] = _node;
+    m_source[_resource.sName] = _node;
     return _node;
 }
 

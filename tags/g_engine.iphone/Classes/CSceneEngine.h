@@ -25,8 +25,8 @@ public:
     static CSceneEngine* Instance();
     void Update(float _fTime);
     void Render();
-    INode *AddNode(std::string _sName, float _fWidth, float _fHeight);
-    INode  *AddNode(std::string _sName, INode *_node);
+    INode *AddNode(CResourceController::SResource &_resource);
+    INode *AddNode(CResourceController::SResource &_resource, INode *_node);
 };
 
 
