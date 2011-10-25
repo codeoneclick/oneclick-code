@@ -64,7 +64,20 @@ const bool ForceES1 = false;
             name:UIDeviceOrientationDidChangeNotification
             object:nil];
         CCamera::Instance()->Init(320, 480);
-        CSceneEngine::Instance()->AddNode("node",64.0f,64.0f);
+        CResourceController::SResource resource;
+        resource.sName = "node_01";
+        resource.vSize = Vector2d(64.0f, 64.0f);
+        resource.vColor = Vector4d(1.0f,0.0f,0.0f,1.0f);
+        INode* node_01 = CSceneEngine::Instance()->AddNode(resource);
+        node_01->m_vPosition.x = 0;
+        node_01->m_vPosition.y = 0;
+        
+        resource.sName = "node_02";
+        resource.vSize = Vector2d(64.0f, 64.0f);
+        resource.vColor = Vector4d(0.0f,1.0f,0.0f,1.0f);
+        INode* node_02 = CSceneEngine::Instance()->AddNode(resource);
+        node_02->m_vPosition.x = -40;
+        node_02->m_vPosition.y = -40;
     }
     return self;
 }

@@ -30,6 +30,4 @@ void INode::Update(float _fTime)
     m_mTranslation = Translation(m_vPosition);
     m_mScale = Scale(m_vScale);
     m_mWorld = m_mScale * m_mRotation * m_mTranslation;
-    m_shader->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD);
-    m_shader->SetMatrix((*m_mProjection), CShader::k_MATRIX_PROJECTION);
 }

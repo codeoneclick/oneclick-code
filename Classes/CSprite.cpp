@@ -23,10 +23,10 @@ CSprite::~CSprite()
     
 }
 
-void CSprite::Load(std::string _name, float _width, float _height)
+void CSprite::Load(CResourceController::SResource &_resource)
 {
-    m_fWidth  = _width; 
-    m_fHeight = _height;
+    m_fWidth  = _resource.vSize.x; 
+    m_fHeight = _resource.vSize.y;
     
     m_vb = new CVertexBuffer(4, sizeof(CVertexBuffer::SVertexVC), CVertexBuffer::VBD_V2FC4F);
     CVertexBuffer::SVertexVC *data = static_cast<CVertexBuffer::SVertexVC*>(m_vb->Source());    
@@ -35,10 +35,10 @@ void CSprite::Load(std::string _name, float _width, float _height)
     data[2].s_position = Vector3d(m_fWidth, m_fHeight,0.0f);
     data[3].s_position = Vector3d(m_fWidth, 0.0f,0.0f);
     
-    data[0].s_color = Vector4d(0.0f,1.0f,0.0f,1.0f);
-    data[1].s_color = Vector4d(0.0f,1.0f,0.0f,1.0f);
-    data[2].s_color = Vector4d(0.0f,1.0f,0.0f,1.0f);
-    data[3].s_color = Vector4d(0.0f,1.0f,0.0f,1.0f);
+    data[0].s_color = _resource.vColor;
+    data[1].s_color = _resource.vColor;
+    data[2].s_color = _resource.vColor;
+    data[3].s_color = _resource.vColor;
     
     m_ib = new GLubyte[6];
     m_ib[0] = 0;
@@ -58,7 +58,8 @@ void CSprite::Update(float _fTime)
 
 void CSprite::Render()
 {
-    glUseProgram(m_shader->Handle());
+    m_shader->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD);
+    m_shader->SetMatrix((*m_mProjection), CShader::k_MATRIX_PROJECTION);
     m_vb->Enable(m_shader->Handle());
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, (void*) m_ib);
     m_vb->Disable(m_shader->Handle());

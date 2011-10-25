@@ -19,6 +19,14 @@ private:
     CTextureController* m_textureController;
     CShaderController* m_shaderController;
 public:
+    struct SResource
+    {
+        std::string sName;
+        std::string sTexture;
+        std::string sShader;
+        Vector4d    vColor;
+        Vector2d    vSize;
+    };
     CResourceController();
     ~CResourceController();
     CResourceController* Instance();
