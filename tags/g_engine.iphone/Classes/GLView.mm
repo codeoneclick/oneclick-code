@@ -78,6 +78,8 @@ const bool ForceES1 = false;
         INode* node_02 = CSceneEngine::Instance()->AddNode(resource);
         node_02->m_vPosition.x = -40;
         node_02->m_vPosition.y = -40;
+        
+        CResourceController::Instance()->TextureController()->Texture("Test.pvr");
     }
     return self;
 }

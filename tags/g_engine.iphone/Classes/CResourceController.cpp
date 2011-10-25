@@ -7,3 +7,26 @@
 //
 
 #include <iostream>
+#include "CResourceController.h"
+
+CResourceController* CResourceController::m_resourceController = NULL;
+
+CResourceController* CResourceController::Instance()
+{
+    if(m_resourceController == NULL)
+    {
+        m_resourceController = new CResourceController();
+    }
+    return m_resourceController;
+}
+
+CResourceController::CResourceController()
+{
+    m_textureController = new CTextureController();
+    m_shaderController = new CShaderController();
+}
+
+CResourceController::~CResourceController()
+{
+    
+}
