@@ -28,11 +28,18 @@ CTextureController::~CTextureController()
 
 CTexture* CTextureController::Texture(std::string _sName)
 {
-    CTexture* pTexture = new CTexture();
-    Load(_sName, pTexture);
-    Commit(pTexture);
-    m_container[_sName] = pTexture;
-    return pTexture;
+    if( m_container.find(_sName) != m_container.end())
+    {
+        return m_container[_sName];
+    }
+    else
+    {
+        CTexture* pTexture = new CTexture();
+        Load(_sName, pTexture);
+        Commit(pTexture);
+        m_container[_sName] = pTexture;
+        return pTexture;
+    }
 }
 
 void CTextureController::Load(std::string _sName, CTexture* pTexture)

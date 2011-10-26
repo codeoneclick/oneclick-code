@@ -40,5 +40,4 @@ void CMTV::Run()
     int status = 0;
     status = pthread_create(&m_thread_01, NULL, f_pthread_01, (void*)this);
     status = pthread_create(&m_thread_02, NULL, f_pthread_02, (void*)this);
-    
 }
