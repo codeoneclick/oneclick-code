@@ -22,6 +22,8 @@ public:
     ~CCamera();
     static CCamera *Instance();
     void Init(float _width, float _height);
+    inline float Get_Width() { return m_fWidth; }
+    inline float Get_Height() { return m_fHeight; }
 public:
     Matrix4x4 m_mProjection;
     Matrix4x4 m_mView;

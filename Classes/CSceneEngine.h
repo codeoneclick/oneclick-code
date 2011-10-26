@@ -13,12 +13,14 @@
 #include "stdlib.h"
 #include <string.h>
 #include <map>
+#include <Box2D/Box2D.h>
 
 class CSceneEngine
 {
 private:
     static CSceneEngine *m_engine;
     std::map<std::string, INode*> m_source;
+    b2World* m_pPhysicWorldController;
 public:
     CSceneEngine();
     ~CSceneEngine();
