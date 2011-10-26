@@ -24,8 +24,8 @@ CSceneEngine* CSceneEngine::Instance()
 
 CSceneEngine::CSceneEngine()
 {
-    float fWidth = CCamera::Instance()->Get_Width();
-    float fHeight = CCamera::Instance()->Get_Height();
+    float fWidth = CCamera::Instance()->Get_Height() / 2;
+    float fHeight = CCamera::Instance()->Get_Width() / 2;
 	b2Vec2 gravity;
 	gravity.Set(0.0f, -9.8f);
     
@@ -73,6 +73,32 @@ INode* CSceneEngine::AddNode(CResourceController::SResource &_resource)
     CSprite *sprite = new CSprite();
     sprite->Load(_resource);
     m_source[_resource.sName] = sprite;
+    
+    b2BodyDef bodyDef;
+	bodyDef.type = b2_dynamicBody;
+    
+	bodyDef.position.Set(0.0f, 0.0f);
+	bodyDef.userData = sprite;
+    
+	// Tell the physics world to create the body
+	b2Body *body = m_pPhysicWorldController->CreateBody(&bodyDef);
+    
+	// Define another box shape for our dynamic body.
+	b2PolygonShape dynamicBox;
+    
+	dynamicBox.SetAsBox(_resource.vSize.x, _resource.vSize.y);
+    
+	// Define the dynamic body fixture.
+	b2FixtureDef fixtureDef;
+	fixtureDef.shape = &dynamicBox;
+	fixtureDef.density = 3.0f;
+	fixtureDef.friction = 0.3f;
+	fixtureDef.restitution = 0.5f; // 0 is a lead ball, 1 is a super bouncy ball
+	body->CreateFixture(&fixtureDef);
+    
+	// a dynamic body reacts to forces right away
+	body->SetType(b2_dynamicBody);
+    
     return sprite;
 }
 
@@ -84,6 +110,25 @@ INode* CSceneEngine::AddNode(CResourceController::SResource &_resource, INode *_
 
 void CSceneEngine::Update(float _fTime)
 {
+    
+    int32 velocityIterations = 8;
+	int32 positionIterations = 1;
+    
+	// Instruct the world to perform a single step of simulation. It is
+	// generally best to keep the time step and iterations fixed.
+	m_pPhysicWorldController->Step(1.0f/60.0f, velocityIterations, positionIterations);
+    
+	//Iterate over the bodies in the physics world
+	for (b2Body* b = m_pPhysicWorldController->GetBodyList(); b; b = b->GetNext())
+	{
+		if (b->GetUserData() != NULL)
+		{
+			CSprite *sprite = (CSprite *)b->GetUserData();
+            
+            sprite->m_vPosition.x = b->GetPosition().x;
+            sprite->m_vPosition.y = b->GetPosition().y;
+		}
+	}
     std::map<std::string, INode*>::iterator beginNodeIterator = m_source.begin();
     std::map<std::string, INode*>::iterator endNodeIterator = m_source.end();
     while( beginNodeIterator != endNodeIterator)
