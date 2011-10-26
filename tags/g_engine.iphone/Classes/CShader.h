@@ -28,6 +28,7 @@ public:
     GLuint Handle() { return m_pHandle; }
     
     void SetMatrix(const Matrix4x4 &_mValue, const std::string &_sName);
+    void SetTexture(GLuint _handle, const std::string &_sName);
     
 public:
     static const std::string k_MATRIX_WORLD;

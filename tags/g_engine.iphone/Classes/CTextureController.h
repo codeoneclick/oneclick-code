@@ -19,6 +19,8 @@ class CTextureController
 {
 private:
     std::map<std::string, CTexture*> m_container;
+    void Load(std::string _sName, CTexture* pTexture);
+    void Commit(CTexture* pTexture);
 public:
     CTextureController();
     ~CTextureController();

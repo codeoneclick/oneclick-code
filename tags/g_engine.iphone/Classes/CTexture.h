@@ -10,6 +10,9 @@
 #define gEngine_CTexture_h
 
 #include "CVector.h"
+#include <OpenGLES/ES2/gl.h>
+#include <OpenGLES/ES2/glext.h>
+#include "PVRTTexture.h"
 
 class CTexture
 {
@@ -36,13 +39,22 @@ public:
         int s_mip;
     };
     
-private:
-    
+protected:
+    char* m_data;
+    SDescription m_description;
+    GLuint m_id;
+    PVR_Texture_Header* m_header;
 public:
     CTexture();
     ~CTexture();
-    char* m_data;
-    SDescription m_description;
+    inline char* Get_Data() { return m_data; }
+    inline void  Set_Data(char* _data) { m_data = _data; }
+    inline SDescription Get_Description() { return m_description; }
+    inline void  Set_Description(SDescription _description) { m_description = _description; }
+    inline PVR_Texture_Header* Get_Header() { return m_header; }
+    inline void  Set_Header(PVR_Texture_Header* _header) { m_header = _header; }
+    inline GLuint Get_Handle() { return m_id; }
+    inline void   Set_Handle(GLuint _handle) { m_id = _handle; }
 };
 
 #endif

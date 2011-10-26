@@ -27,6 +27,7 @@ protected:
     Matrix4x4 *m_mView;
     
     CShader       *m_shader;
+    CTexture      *m_texture;
     CVertexBuffer *m_vb;
     GLubyte       *m_ib;
 public:
