@@ -79,7 +79,7 @@ const bool ForceES1 = false;
         node_02->m_vPosition.x = -40;
         node_02->m_vPosition.y = -40;
         
-        CResourceController::Instance()->TextureController()->Texture("Test.pvr");
+        //CResourceController::Instance()->TextureController()->Texture("Test.pvr");
     }
     return self;
 }
