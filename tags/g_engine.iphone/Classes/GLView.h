@@ -1,13 +1,11 @@
 //#import "IRenderingEngine.hpp"
 #import <QuartzCore/QuartzCore.h>
-#import "CRenderEngine.h"
+#include "CGame.h"
 
 @interface GLView : UIView {
 @private
     EAGLContext* m_context;
-    //IRenderingEngine* m_renderingEngine;
-    CRenderEngine* m_render;
-    float m_timestamp;
+    float m_fTime;
 }
 
 - (void) drawView: (CADisplayLink*) displayLink;

@@ -11,14 +11,12 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
-		4D27E3B30F9ACD8200447247 /* RenderingEngine2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D27E3B20F9ACD8200447247 /* RenderingEngine2.cpp */; };
 		4D27E4840F9AD71900447247 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D27E4830F9AD71900447247 /* OpenGLES.framework */; };
 		4D27E4B50F9AD7D600447247 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D27E4B40F9AD7D600447247 /* QuartzCore.framework */; };
 		4D3135ED0F9A6649001FFC34 /* GLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D3135EC0F9A6649001FFC34 /* GLView.mm */; };
 		4D77F28F10793BEB002D74C3 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D77F28E10793BEB002D74C3 /* Default.png */; };
 		4D8FB2C30F9EB4740055EDDB /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D8FB2C20F9EB4740055EDDB /* Icon.png */; };
 		4D8FB3730F9EC1010055EDDB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D8FB3720F9EC1010055EDDB /* main.m */; };
-		4DFA4F820FFAFA13000826CD /* RenderingEngine1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DFA4F810FFAFA13000826CD /* RenderingEngine1.cpp */; };
 		935A809B14570F7C00DE658A /* CBatch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 935A809A14570F7B00DE658A /* CBatch.cpp */; };
 		937367C9144ECE150051ED8D /* CShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937367C8144ECE140051ED8D /* CShader.cpp */; };
 		937367CC144EE2B40051ED8D /* CVertexBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937367CB144EE2B30051ED8D /* CVertexBuffer.cpp */; };
@@ -28,6 +26,7 @@
 		93736800145589AA0051ED8D /* CSceneEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937367FF145589A60051ED8D /* CSceneEngine.cpp */; };
 		9373680314558CD80051ED8D /* CSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9373680214558CD50051ED8D /* CSprite.cpp */; };
 		9373680614559D540051ED8D /* CCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9373680514559D4F0051ED8D /* CCamera.cpp */; };
+		CE8DFA9314587B0C00AE7288 /* CGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE8DFA9214587B0C00AE7288 /* CGame.cpp */; };
 		CE914ED41455DA3200AA2000 /* CShaderController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE914ED31455DA3200AA2000 /* CShaderController.cpp */; };
 		CE914ED71455DA5700AA2000 /* CTextureController.mm in Sources */ = {isa = PBXBuildFile; fileRef = CE914ED61455DA5700AA2000 /* CTextureController.mm */; };
 		CE914EDA1455DA7800AA2000 /* CResourceController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE914ED91455DA7800AA2000 /* CResourceController.cpp */; };
@@ -43,8 +42,6 @@
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		32CA4F630368D1EE00C91783 /* gEngine_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gEngine_Prefix.pch; sourceTree = "<group>"; };
-		4D27E3B10F9ACD8200447247 /* IRenderingEngine.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IRenderingEngine.hpp; sourceTree = "<group>"; };
-		4D27E3B20F9ACD8200447247 /* RenderingEngine2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderingEngine2.cpp; sourceTree = "<group>"; };
 		4D27E4830F9AD71900447247 /* OpenGLES.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		4D27E4B40F9AD7D600447247 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		4D3135EB0F9A6649001FFC34 /* GLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLView.h; sourceTree = "<group>"; };
@@ -54,7 +51,6 @@
 		4D77F28E10793BEB002D74C3 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		4D8FB2C20F9EB4740055EDDB /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		4D8FB3720F9EC1010055EDDB /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		4DFA4F810FFAFA13000826CD /* RenderingEngine1.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderingEngine1.cpp; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		935A809814570F6200DE658A /* CBatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBatch.h; sourceTree = "<group>"; };
 		935A809A14570F7B00DE658A /* CBatch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CBatch.cpp; sourceTree = "<group>"; };
@@ -76,6 +72,8 @@
 		9373680214558CD50051ED8D /* CSprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CSprite.cpp; sourceTree = "<group>"; };
 		9373680414559D3D0051ED8D /* CCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCamera.h; sourceTree = "<group>"; };
 		9373680514559D4F0051ED8D /* CCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCamera.cpp; sourceTree = "<group>"; };
+		CE8DFA9114587AFD00AE7288 /* CGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGame.h; sourceTree = "<group>"; };
+		CE8DFA9214587B0C00AE7288 /* CGame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGame.cpp; sourceTree = "<group>"; };
 		CE914ED11455D7E900AA2000 /* CShaderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CShaderController.h; sourceTree = "<group>"; };
 		CE914ED31455DA3200AA2000 /* CShaderController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CShaderController.cpp; sourceTree = "<group>"; };
 		CE914ED51455DA4400AA2000 /* CTextureController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTextureController.h; sourceTree = "<group>"; };
@@ -108,15 +106,10 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				CE8DFA9014587A9400AE7288 /* iPhone */,
+				CE8DFA8E14587A8200AE7288 /* Game */,
 				937367CD144EE3830051ED8D /* Math */,
 				937367C5144ECDC20051ED8D /* Core */,
-				4DFA4F810FFAFA13000826CD /* RenderingEngine1.cpp */,
-				4D27E3B10F9ACD8200447247 /* IRenderingEngine.hpp */,
-				4D27E3B20F9ACD8200447247 /* RenderingEngine2.cpp */,
-				1D3623240D0F684500981E51 /* MainAppDelegate.h */,
-				1D3623250D0F684500981E51 /* MainAppDelegate.mm */,
-				4D3135EB0F9A6649001FFC34 /* GLView.h */,
-				4D3135EC0F9A6649001FFC34 /* GLView.mm */,
 				937367E914515F150051ED8D /* CMTV.h */,
 				937367EB14515F270051ED8D /* CMTV.cpp */,
 			);
@@ -226,6 +219,26 @@
 			name = Math;
 			sourceTree = "<group>";
 		};
+		CE8DFA8E14587A8200AE7288 /* Game */ = {
+			isa = PBXGroup;
+			children = (
+				CE8DFA9114587AFD00AE7288 /* CGame.h */,
+				CE8DFA9214587B0C00AE7288 /* CGame.cpp */,
+			);
+			name = Game;
+			sourceTree = "<group>";
+		};
+		CE8DFA9014587A9400AE7288 /* iPhone */ = {
+			isa = PBXGroup;
+			children = (
+				4D3135EC0F9A6649001FFC34 /* GLView.mm */,
+				4D3135EB0F9A6649001FFC34 /* GLView.h */,
+				1D3623250D0F684500981E51 /* MainAppDelegate.mm */,
+				1D3623240D0F684500981E51 /* MainAppDelegate.h */,
+			);
+			name = iPhone;
+			sourceTree = "<group>";
+		};
 		CE91920D145735A10021A0DC /* Library */ = {
 			isa = PBXGroup;
 			children = (
@@ -315,9 +328,7 @@
 			files = (
 				1D3623260D0F684500981E51 /* MainAppDelegate.mm in Sources */,
 				4D3135ED0F9A6649001FFC34 /* GLView.mm in Sources */,
-				4D27E3B30F9ACD8200447247 /* RenderingEngine2.cpp in Sources */,
 				4D8FB3730F9EC1010055EDDB /* main.m in Sources */,
-				4DFA4F820FFAFA13000826CD /* RenderingEngine1.cpp in Sources */,
 				937367C9144ECE150051ED8D /* CShader.cpp in Sources */,
 				937367CC144EE2B40051ED8D /* CVertexBuffer.cpp in Sources */,
 				937367EC14515F280051ED8D /* CMTV.cpp in Sources */,
@@ -331,6 +342,7 @@
 				CE914EDA1455DA7800AA2000 /* CResourceController.cpp in Sources */,
 				935A809B14570F7C00DE658A /* CBatch.cpp in Sources */,
 				CE919218145736FD0021A0DC /* CTexture.cpp in Sources */,
+				CE8DFA9314587B0C00AE7288 /* CGame.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
