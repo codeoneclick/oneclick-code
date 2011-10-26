@@ -1,7 +1,5 @@
 #import "GLView.h"
 #import <OpenGLES/ES2/gl.h> // <-- for GL_RENDERBUFFER only
-#include "CSceneEngine.h"
-#include "CCamera.h"
 
 const bool ForceES1 = false;
 
@@ -33,21 +31,18 @@ const bool ForceES1 = false;
 
         if (api == kEAGLRenderingAPIOpenGLES1) {
             NSLog(@"Using OpenGL ES 1.1");
-            //m_renderingEngine = CreateRenderer1();
-        } else {
+        } 
+        else 
+        {
             NSLog(@"Using OpenGL ES 2.0");
-            m_render = new CRenderEngine(CGRectGetWidth(frame), CGRectGetHeight(frame));
-            //m_renderingEngine = CreateRenderer2();
+            CGame::Instance()->Load(CGRectGetWidth(frame), CGRectGetHeight(frame));
         }
 
-        [m_context
-            renderbufferStorage:GL_RENDERBUFFER
-            fromDrawable: eaglLayer];
+        [m_context renderbufferStorage:GL_RENDERBUFFER fromDrawable: eaglLayer];
         
-       // m_renderingEngine->Initialize(CGRectGetWidth(frame), CGRectGetHeight(frame));
         
         [self drawView: nil];
-        m_timestamp = CACurrentMediaTime();
+        m_fTime = CACurrentMediaTime();
 
         CADisplayLink* displayLink;
         displayLink = [CADisplayLink displayLinkWithTarget:self
@@ -63,44 +58,23 @@ const bool ForceES1 = false;
             selector:@selector(didRotate:)
             name:UIDeviceOrientationDidChangeNotification
             object:nil];
-        CCamera::Instance()->Init(320, 480);
-        CResourceController::SResource resource;
-        resource.sName = "node_01";
-        resource.vSize = Vector2d(64.0f, 64.0f);
-        resource.vColor = Vector4d(1.0f,0.0f,0.0f,1.0f);
-        INode* node_01 = CSceneEngine::Instance()->AddNode(resource);
-        node_01->m_vPosition.x = 0;
-        node_01->m_vPosition.y = 0;
-        
-        resource.sName = "node_02";
-        resource.vSize = Vector2d(64.0f, 64.0f);
-        resource.vColor = Vector4d(0.0f,1.0f,0.0f,1.0f);
-        INode* node_02 = CSceneEngine::Instance()->AddNode(resource);
-        node_02->m_vPosition.x = -40;
-        node_02->m_vPosition.y = -40;
-        
-        //CResourceController::Instance()->TextureController()->Texture("Test.pvr");
     }
     return self;
 }
 
 - (void) didRotate: (NSNotification*) notification
-{
-    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-    //m_renderingEngine->OnRotate((DeviceOrientation) orientation);
+{ 
     [self drawView: nil];
 }
 
 - (void) drawView: (CADisplayLink*) displayLink
 {
     if (displayLink != nil) {
-        float elapsedSeconds = displayLink.timestamp - m_timestamp;
-        m_timestamp = displayLink.timestamp;
-        m_render->Update(elapsedSeconds);
-        //m_renderingEngine->UpdateAnimation(elapsedSeconds);
+        float elapsedSeconds = displayLink.timestamp - m_fTime;
+        m_fTime = displayLink.timestamp;
+        CGame::Instance()->Update(elapsedSeconds);
     }
-    m_render->Render();
-    //m_renderingEngine->Render();
+    CGame::Instance()->Render();
     [m_context presentRenderbuffer:GL_RENDERBUFFER];
 }
 
