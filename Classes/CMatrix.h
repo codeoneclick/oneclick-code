@@ -54,7 +54,7 @@ inline Matrix4x4 operator* (const Matrix4x4& _mValue_01, const Matrix4x4& _mValu
 
 inline Matrix4x4 Rotation(float _fDegrees)
 {
-    float fRadians = _fDegrees * MATH_PI / MATH_DEGREES;
+    float fRadians = DegToRad(_fDegrees);
     float fSin = sinf(fRadians);
     float fCos = cosf(fRadians);
     Matrix4x4 mValue(Matrix4x4::M_ONE);

@@ -21,11 +21,14 @@ private:
 public:
     struct SResource
     {
-        std::string sName;
-        std::string sTexture;
-        std::string sShader;
-        Vector4d    vColor;
-        Vector2d    vSize;
+        enum T_NODE { SPRITE = 0, DSPRITE };
+        std::string s_sName;
+        std::string s_sTexture;
+        std::string s_sShader;
+        Vector4d    s_vColor;
+        Vector2d    s_vSize;
+        Vector3d    s_vPosition;
+        T_NODE      s_tNode;
     };
     CResourceController();
     ~CResourceController();

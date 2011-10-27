@@ -102,5 +102,18 @@ inline Vector3d cross( const Vector3d& v1,const Vector3d& v2 )
                     v1.x * v2.y - v1.y * v2.x );
 }
 
+#define MATH_PI 3.14159f
+#define MATH_DEGREES 180.0f
+
+inline float DegToRad(float _value)
+{
+    return _value * MATH_DEGREES / MATH_PI;
+}
+
+inline float RadToDeg(float _value)
+{
+    return _value * MATH_PI / MATH_DEGREES;
+}
+
 
 #endif

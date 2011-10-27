@@ -25,25 +25,27 @@ CSprite::~CSprite()
 
 void CSprite::Load(CResourceController::SResource &_resource)
 {
-    m_fWidth  = _resource.vSize.x; 
-    m_fHeight = _resource.vSize.y;
+    m_fWidth  = _resource.s_vSize.x; 
+    m_fHeight = _resource.s_vSize.y;
+    
+    m_vPosition = _resource.s_vPosition;
     
     m_vb = new CVertexBuffer(4, sizeof(CVertexBuffer::SVertexVTC), CVertexBuffer::VBD_V2FT2FC4F);
     CVertexBuffer::SVertexVTC *data = static_cast<CVertexBuffer::SVertexVTC*>(m_vb->Data());    
-    data[0].s_position = Vector2d(0.0f,     0.0f);
-    data[1].s_position = Vector2d(0.0f,     m_fHeight);
-    data[2].s_position = Vector2d(m_fWidth, m_fHeight);
-    data[3].s_position = Vector2d(m_fWidth, 0.0f);
+    data[0].s_position = Vector2d(-m_fWidth / 2, -m_fHeight / 2);
+    data[1].s_position = Vector2d(-m_fWidth / 2, m_fHeight  / 2);
+    data[2].s_position = Vector2d(m_fWidth  / 2, m_fHeight  / 2);
+    data[3].s_position = Vector2d(m_fWidth  / 2, -m_fHeight / 2);
     
     data[0].s_texcoord = Vector2d(0.0f, 0.0f);
     data[1].s_texcoord = Vector2d(0.0f, 1.0f);
     data[2].s_texcoord = Vector2d(1.0f, 1.0f);
     data[3].s_texcoord = Vector2d(1.0f, 0.0f);
     
-    data[0].s_color = _resource.vColor;
-    data[1].s_color = _resource.vColor;
-    data[2].s_color = _resource.vColor;
-    data[3].s_color = _resource.vColor;
+    data[0].s_color = _resource.s_vColor;
+    data[1].s_color = _resource.s_vColor;
+    data[2].s_color = _resource.s_vColor;
+    data[3].s_color = _resource.s_vColor;
     
     m_ib = new GLubyte[6];
     m_ib[0] = 0;
