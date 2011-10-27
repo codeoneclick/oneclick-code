@@ -31,14 +31,16 @@ protected:
     CTexture*      m_texture;
     CVertexBuffer* m_vb;
     GLubyte*       m_ib;
-    b2BodyDef      m_physicBody;
+    
+    b2BodyDef      m_pBodyDef;
+    b2Body*        m_pBody;
     
     Vector2d     m_vScale;
     Vector3d     m_vPosition;
     float        m_fRotation;
 public:
     INode();
-    ~INode();
+    virtual ~INode();
     virtual void Update(float _fTime);
     virtual void Render() = 0;
     inline CVertexBuffer* Get_VB() { return m_vb; }

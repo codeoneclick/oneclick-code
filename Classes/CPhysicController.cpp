@@ -64,7 +64,6 @@ void CPhysicController::Update(float _fTime)
     
 	m_pWorld->Step(1.0f/60.0f, velocityIterations, positionIterations);
     
-	//Iterate over the bodies in the physics world
 	for (b2Body* b = m_pWorld->GetBodyList(); b; b = b->GetNext())
 	{
 		if (b->GetUserData() != NULL)
