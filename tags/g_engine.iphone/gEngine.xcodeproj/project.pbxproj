@@ -26,6 +26,8 @@
 		93736800145589AA0051ED8D /* CSceneEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937367FF145589A60051ED8D /* CSceneEngine.cpp */; };
 		9373680314558CD80051ED8D /* CSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9373680214558CD50051ED8D /* CSprite.cpp */; };
 		9373680614559D540051ED8D /* CCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9373680514559D4F0051ED8D /* CCamera.cpp */; };
+		938FAA3C1459635300D3AE3D /* CPhysicController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 938FAA3B1459635200D3AE3D /* CPhysicController.cpp */; };
+		938FAA3F145967B800D3AE3D /* CDSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 938FAA3E145967B700D3AE3D /* CDSprite.cpp */; };
 		CE8DFA9314587B0C00AE7288 /* CGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE8DFA9214587B0C00AE7288 /* CGame.cpp */; };
 		CE8DFAF81458842900AE7288 /* b2BroadPhase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE8DFA981458842800AE7288 /* b2BroadPhase.cpp */; };
 		CE8DFAF91458842900AE7288 /* b2CollideCircle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE8DFA9A1458842800AE7288 /* b2CollideCircle.cpp */; };
@@ -117,6 +119,10 @@
 		9373680214558CD50051ED8D /* CSprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CSprite.cpp; sourceTree = "<group>"; };
 		9373680414559D3D0051ED8D /* CCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCamera.h; sourceTree = "<group>"; };
 		9373680514559D4F0051ED8D /* CCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCamera.cpp; sourceTree = "<group>"; };
+		938FAA391459634000D3AE3D /* CPhysicController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPhysicController.h; sourceTree = "<group>"; };
+		938FAA3B1459635200D3AE3D /* CPhysicController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPhysicController.cpp; sourceTree = "<group>"; };
+		938FAA3D145967A900D3AE3D /* CDSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDSprite.h; sourceTree = "<group>"; };
+		938FAA3E145967B700D3AE3D /* CDSprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CDSprite.cpp; sourceTree = "<group>"; };
 		CE8DFA9114587AFD00AE7288 /* CGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGame.h; sourceTree = "<group>"; };
 		CE8DFA9214587B0C00AE7288 /* CGame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGame.cpp; sourceTree = "<group>"; };
 		CE8DFA961458842800AE7288 /* Box2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2D.h; sourceTree = "<group>"; };
@@ -342,6 +348,10 @@
 				935A809A14570F7B00DE658A /* CBatch.cpp */,
 				CE919216145736D70021A0DC /* CTexture.h */,
 				CE919217145736FD0021A0DC /* CTexture.cpp */,
+				938FAA391459634000D3AE3D /* CPhysicController.h */,
+				938FAA3B1459635200D3AE3D /* CPhysicController.cpp */,
+				938FAA3D145967A900D3AE3D /* CDSprite.h */,
+				938FAA3E145967B700D3AE3D /* CDSprite.cpp */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -680,6 +690,8 @@
 				CE8DFB221458842A00AE7288 /* b2WeldJoint.cpp in Sources */,
 				CE8DFB231458842A00AE7288 /* b2WheelJoint.cpp in Sources */,
 				CE8DFB241458842A00AE7288 /* b2Rope.cpp in Sources */,
+				938FAA3C1459635300D3AE3D /* CPhysicController.cpp in Sources */,
+				938FAA3F145967B800D3AE3D /* CDSprite.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

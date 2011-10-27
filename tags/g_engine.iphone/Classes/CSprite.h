@@ -19,6 +19,7 @@ public:
     virtual void Update(float _fTime);
     virtual void Render();
     virtual void Load(CResourceController::SResource &_resource);
+    
 public:
     float m_fWidth;
     float m_fHeight;

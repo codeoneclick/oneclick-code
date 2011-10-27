@@ -14,6 +14,7 @@
 #include "CVertexBuffer.h"
 #include "CCamera.h"
 #include "CResourceController.h"
+#include <Box2D/Box2D.h>
 
 class INode
 {
@@ -23,13 +24,18 @@ protected:
     Matrix4x4 m_mTranslation;
     Matrix4x4 m_mWorld;
     
-    Matrix4x4 *m_mProjection;
-    Matrix4x4 *m_mView;
+    Matrix4x4* m_mProjection;
+    Matrix4x4* m_mView;
     
-    CShader       *m_shader;
-    CTexture      *m_texture;
-    CVertexBuffer *m_vb;
-    GLubyte       *m_ib;
+    CShader*       m_shader;
+    CTexture*      m_texture;
+    CVertexBuffer* m_vb;
+    GLubyte*       m_ib;
+    b2BodyDef      m_physicBody;
+    
+    Vector2d     m_vScale;
+    Vector3d     m_vPosition;
+    float        m_fRotation;
 public:
     INode();
     ~INode();
@@ -37,10 +43,12 @@ public:
     virtual void Render() = 0;
     inline CVertexBuffer* Get_VB() { return m_vb; }
     inline GLubyte* Get_IB() { return m_ib; }
-public:
-    Vector2d     m_vScale;
-    Vector3d     m_vPosition;
-    float        m_fRotation;
+    Vector3d Get_Position() { return m_vPosition; }
+    virtual void Set_Position(Vector3d &_vPosition) { m_vPosition = _vPosition; }
+    float Get_Rotation() { return m_fRotation; }
+    virtual void Set_Rotation(float _fRotation) { m_fRotation = _fRotation; }
+    Vector2d Get_Scale() { return m_vScale; }
+    virtual void Set_Scale(Vector2d &_vScale) { m_vScale = _vScale; }
 };
 
 
