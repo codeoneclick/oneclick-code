@@ -29,7 +29,6 @@ CGame* CGame::Instance()
     {
         m_game = new CGame();
     }
-    
     return m_game;
 }
 
@@ -55,6 +54,8 @@ void CGame::Load(float _fWidth, float _fHeight)
     resource.s_tNode = CResourceController::SResource::DSPRITE;
     resource.s_vPosition = Vector3d(-32.0f,128.0f,0.0f);
     INode* node_03 = CSceneEngine::Instance()->AddNode(resource);
+    
+    //CSceneEngine::Instance()->RemoveNode(node_03);
 }
 
 void CGame::Update(float _fTime)

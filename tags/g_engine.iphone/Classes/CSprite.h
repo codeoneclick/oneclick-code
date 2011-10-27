@@ -15,7 +15,7 @@ class CSprite : public INode
 {
 public:
     CSprite();
-    ~CSprite();
+    virtual ~CSprite();
     virtual void Update(float _fTime);
     virtual void Render();
     virtual void Load(CResourceController::SResource &_resource);

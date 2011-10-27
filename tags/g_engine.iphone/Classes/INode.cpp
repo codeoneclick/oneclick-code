@@ -11,8 +11,8 @@
 
 INode::INode()
 {
-    m_mProjection = &CCamera::Instance()->m_mProjection;
-    m_mView = &CCamera::Instance()->m_mView;
+    m_mProjection = CCamera::Instance()->Projection();
+    m_mView = CCamera::Instance()->View();
     
     m_vScale = Vector2d(1.0f,1.0f);
     m_fRotation = 0.0f;
@@ -21,7 +21,7 @@ INode::INode()
 
 INode::~INode()
 {
-    
+    std::cout<<"[INode] destructor().";
 }
 
 void INode::Update(float _fTime)

@@ -28,13 +28,13 @@ public:
     
     struct SVertexVT
     {
-        Vector2d s_position;
+        Vector3d s_position;
         Vector2d s_texcoord;
     };
     
     struct SVertexVTC
     {
-        Vector2d s_position;
+        Vector3d s_position;
         Vector2d s_texcoord;
         Vector4d s_color;
     };
@@ -45,6 +45,10 @@ public:
 private:
     void *m_pData;
     VB_DECLARATION m_declaration;
+    GLuint m_handle;
+    unsigned int m_count;
+    unsigned int m_stride;
+    bool m_vram;
 public:
     CVertexBuffer(unsigned int _vertexCount,unsigned char _elementSize, VB_DECLARATION _declaration);
     ~CVertexBuffer();
@@ -53,6 +57,8 @@ public:
     inline void *Data() { return m_pData; }
     void Enable(GLuint _handle);
     void Disable(GLuint _handle);
+    void Commit();
+    inline bool Vram() { return m_vram; }
 };
 
 #endif

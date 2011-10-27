@@ -15,12 +15,23 @@
 
 CSprite::CSprite()
 {
-    
+    m_vb = NULL;
+    m_ib = NULL;
 }
 
 CSprite::~CSprite()
 {
-    
+    if(m_vb != NULL)
+    {
+        delete m_vb;
+        m_vb = NULL;
+    }
+    if(m_ib != NULL)
+    {
+        delete m_ib;
+        m_ib = NULL;
+    }
+    std::cout<<"[CSprite] destructor().";
 }
 
 void CSprite::Load(CResourceController::SResource &_resource)
@@ -32,10 +43,10 @@ void CSprite::Load(CResourceController::SResource &_resource)
     
     m_vb = new CVertexBuffer(4, sizeof(CVertexBuffer::SVertexVTC), CVertexBuffer::VBD_V2FT2FC4F);
     CVertexBuffer::SVertexVTC *data = static_cast<CVertexBuffer::SVertexVTC*>(m_vb->Data());    
-    data[0].s_position = Vector2d(-m_fWidth / 2, -m_fHeight / 2);
-    data[1].s_position = Vector2d(-m_fWidth / 2, m_fHeight  / 2);
-    data[2].s_position = Vector2d(m_fWidth  / 2, m_fHeight  / 2);
-    data[3].s_position = Vector2d(m_fWidth  / 2, -m_fHeight / 2);
+    data[0].s_position = Vector3d(-m_fWidth / 2, -m_fHeight / 2, 0.0f);
+    data[1].s_position = Vector3d(-m_fWidth / 2, m_fHeight  / 2, 0.0f);
+    data[2].s_position = Vector3d(m_fWidth  / 2, m_fHeight  / 2, 0.0f);
+    data[3].s_position = Vector3d(m_fWidth  / 2, -m_fHeight / 2, 0.0f);
     
     data[0].s_texcoord = Vector2d(0.0f, 0.0f);
     data[1].s_texcoord = Vector2d(0.0f, 1.0f);
@@ -69,6 +80,7 @@ void CSprite::Render()
     glEnable(GL_TEXTURE_2D);
     m_shader->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD);
     m_shader->SetMatrix((*m_mProjection), CShader::k_MATRIX_PROJECTION);
+    m_shader->SetMatrix((*m_mView), CShader::k_MATRIX_VIEW);
     m_shader->SetTexture(m_texture->Get_Handle(), "Texture");
     m_vb->Enable(m_shader->Handle());
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, (void*) m_ib);

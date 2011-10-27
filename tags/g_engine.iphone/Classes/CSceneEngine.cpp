@@ -66,8 +66,41 @@ INode* CSceneEngine::AddNode(CResourceController::SResource &_resource, INode *_
     return _node;
 }
 
+void CSceneEngine::RemoveNode(INode *_node)
+{
+    std::map<std::string, INode*>::iterator beginNodeIterator = m_source.begin();
+    std::map<std::string, INode*>::iterator endNodeIterator = m_source.end();
+    while( beginNodeIterator != endNodeIterator)
+    {
+        if((*beginNodeIterator).second == _node)
+        {
+            m_source.erase(beginNodeIterator);
+            delete _node;
+            _node = NULL;
+            return;
+        }
+        ++beginNodeIterator;
+    }
+    std::cout<<"[CSceneController] Node not found.";
+}
+
+void CSceneEngine::RemoveNode(std::string _sName)
+{
+    std::map<std::string, INode*>::iterator nodeIterator = m_source.find(_sName);
+    if(nodeIterator != m_source.end())
+    {
+        INode *node = (*nodeIterator).second;
+        m_source.erase(nodeIterator);
+        delete node;
+        node = NULL;
+        return;
+    }
+    std::cout<<"[CSceneController] Node not found.";
+}
+
 void CSceneEngine::Update(float _fTime)
 {
+    CCamera::Instance()->Update(_fTime);
     CPhysicController::Instance()->Update(_fTime);
     std::map<std::string, INode*>::iterator beginNodeIterator = m_source.begin();
     std::map<std::string, INode*>::iterator endNodeIterator = m_source.end();
