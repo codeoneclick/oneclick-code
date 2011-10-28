@@ -67,7 +67,8 @@ void CSprite::Load(CResourceController::SResource &_resource)
     m_ib[5] = 0;
     
     m_shader = new CShader(BasicVertexShader,BasicFragmentShader);
-    m_texture = CResourceController::Instance()->TextureController()->Texture("Test.pvr");
+    m_texture = CResourceController::Instance()->TextureController()->Texture("Untitled_default.pvr");
+    CDataController::SSpriteData *sdata = CResourceController::Instance()->DataController()->SpriteData("Untitled_default.xml");
 }
 
 void CSprite::Update(float _fTime)
