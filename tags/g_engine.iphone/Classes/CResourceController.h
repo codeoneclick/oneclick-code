@@ -11,6 +11,7 @@
 
 #include "CShaderController.h"
 #include "CTextureController.h"
+#include "CDataController.h"
 
 class CResourceController
 {
@@ -18,6 +19,7 @@ private:
     static CResourceController* m_resourceController;
     CTextureController* m_textureController;
     CShaderController* m_shaderController;
+    CDataController* m_dataController;
 public:
     struct SResource
     {
@@ -35,6 +37,7 @@ public:
     static CResourceController* Instance();
     inline CTextureController* TextureController() { return m_textureController; }
     inline CShaderController* ShaderController() { return m_shaderController; }
+    inline CDataController* DataController() { return m_dataController; }
 };
 
 #endif

@@ -24,6 +24,7 @@ CResourceController::CResourceController()
 {
     m_textureController = new CTextureController();
     m_shaderController = new CShaderController();
+    m_dataController = new CDataController();
 }
 
 CResourceController::~CResourceController()

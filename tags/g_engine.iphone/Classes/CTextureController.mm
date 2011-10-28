@@ -78,7 +78,7 @@ void CTextureController::Load(std::string _sName, CTexture* pTexture)
     }
     description.s_size.x = header->dwWidth;
     description.s_size.y = header->dwHeight;
-    description.s_mip = header->dwMipMapCount;
+    description.s_mip = header->dwMipMapCount ? header->dwMipMapCount : 1;
     
     char* data = (char*) [source bytes];
     unsigned int offset = header->dwHeaderSize;
@@ -147,7 +147,7 @@ void CTextureController::Commit(CTexture *pTexture)
             glWidth >>= 1; glHeight >>= 1;
         }
     } 
-    else 
+    else
     {
         GLenum glType;
         switch (description.s_format) 
@@ -178,6 +178,7 @@ void CTextureController::Commit(CTexture *pTexture)
             }
                 break;
         }
+              
         for (int level = 0; level < description.s_mip; ++level)
         {
             GLsizei size = glWidth * glHeight * description.s_bpp / 8;
@@ -186,7 +187,6 @@ void CTextureController::Commit(CTexture *pTexture)
             glWidth >>= 1; glHeight >>= 1;
         }
     }
-    
     pTexture->Set_Handle(textureId);
 }
 
