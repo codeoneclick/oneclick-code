@@ -9,13 +9,13 @@
 #ifndef gEngine_CGame_h
 #define gEngine_CGame_h
 
-#import "CRenderEngine.h"
+#import "CRenderController.h"
 
 class CGame
 {
 private:
     static CGame* m_game;
-    CRenderEngine* m_pRenderController;
+    CRenderController* m_pRenderController;
 public:
     CGame();
     ~CGame();

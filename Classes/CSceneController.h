@@ -1,13 +1,13 @@
 //
-//  CSceneEngine.h
+//  CSceneController.h
 //  gEngine
 //
 //  Created by sergey.sergeev on 10/24/11.
 //  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
 //
 
-#ifndef gEngine_CSceneEngine_h
-#define gEngine_CSceneEngine_h
+#ifndef gEngine_CSceneController_h
+#define gEngine_CSceneController_h
 
 #include "CSprite.h"
 #include "CDSprite.h"
@@ -15,15 +15,15 @@
 #include <string.h>
 #include <map>
 
-class CSceneEngine
+class CSceneController
 {
 private:
-    static CSceneEngine *m_engine;
+    static CSceneController *m_instance;
     std::map<std::string, INode*> m_source;
 public:
-    CSceneEngine();
-    ~CSceneEngine();
-    static CSceneEngine* Instance();
+    CSceneController();
+    ~CSceneController();
+    static CSceneController* Instance();
     void Update(float _fTime);
     void Render();
     INode* AddNode(CResourceController::SResource &_resource);

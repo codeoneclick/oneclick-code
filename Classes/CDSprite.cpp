@@ -41,7 +41,7 @@ void CDSprite::Set_Scale(Vector2d &_vScale)
 void CDSprite::Load(CResourceController::SResource &_resource)
 {
     CSprite::Load(_resource);
-    m_vb->Commit();
+    //m_vb->Commit();
     m_pBodyDef.type = b2_dynamicBody;
     
 	m_pBodyDef.position.Set(m_vPosition.x, m_vPosition.y);

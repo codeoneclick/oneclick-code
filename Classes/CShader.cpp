@@ -13,49 +13,14 @@ const std::string CShader::k_MATRIX_WORLD       = "mWorld";
 const std::string CShader::k_MATRIX_VIEW        = "mView";
 const std::string CShader::k_MATRIX_PROJECTION  = "mProjection";
 
-CShader::CShader(const char *_vSource, const char *_fSource)
+CShader::CShader()
 {
-    m_vHandle = Build(_vSource, GL_VERTEX_SHADER);
-    m_fHandle = Build(_fSource, GL_FRAGMENT_SHADER);
-    
-    m_pHandle = glCreateProgram();
-    glAttachShader(m_pHandle, m_vHandle);
-    glAttachShader(m_pHandle, m_fHandle);
-    glLinkProgram(m_pHandle);
-    
-    GLint success;
-    glGetProgramiv(m_pHandle, GL_LINK_STATUS, &success);
-    if (success == GL_FALSE) 
-    {
-        GLchar messages[256];
-        glGetProgramInfoLog(m_pHandle, sizeof(messages), 0, &messages[0]);
-        std::cout << messages;
-    }
+    m_bDone = false;
 }
 
 CShader::~CShader()
 {
     
-}
-
-GLuint CShader::Build(const char *_source, GLenum _shader)
-{
-    GLuint handle = glCreateShader(_shader);
-    glShaderSource(handle, 1, &_source, 0);
-    glCompileShader(handle);
-    
-    GLint success;
-    glGetShaderiv(handle, GL_COMPILE_STATUS, &success);
-    
-    if (success == GL_FALSE) 
-    {
-        GLchar messages[256];
-        glGetShaderInfoLog(handle, sizeof(messages), 0, &messages[0]);
-        std::cout << messages;
-        handle = 0;
-    }
-   
-    return handle;
 }
 
 void CShader::SetMatrix(const Matrix4x4 &_mValue,const std::string &_sName)

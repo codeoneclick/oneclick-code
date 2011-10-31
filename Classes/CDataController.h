@@ -8,33 +8,17 @@
 
 #ifndef gEngine_CDataController_h
 #define gEngine_CDataController_h
-
-#include "stdlib.h"
-#include <string>
-#include <map>
-#include <vector>
-#include "CVector.h"
+#include "CFXMLLoader.h"
+#include "CSequence.h"
 
 class CDataController
 {
-public:
-    struct SSpriteData
-    {
-        struct SAnimation
-        {
-            Vector2d s_vPosition;
-            Vector2d s_vSize;
-        };
-        std::vector<SAnimation> s_sequence;
-    };
 private:    
-    std::map<std::string, SSpriteData*> m_spriteDataContainer;
-    void Load(std::string _sName, SSpriteData* _pSprite);
+    std::map<std::string, std::vector<CFXMLLoader::SFrame*> > m_container;
 public:
     CDataController();
     ~CDataController();
-    SSpriteData* SpriteData(std::string _sName);
+    void Get_Sequence(std::string _sName, CSequence* _pSequence);
 };
-
 
 #endif
