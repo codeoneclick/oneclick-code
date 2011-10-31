@@ -14,6 +14,7 @@ CSprite::CSprite()
     m_vb = NULL;
     m_ib = NULL;
     m_iCurrentFrame = 0;
+    m_bStop = false;
 }
 
 CSprite::~CSprite()
@@ -77,6 +78,26 @@ void CSprite::Load(CResourceController::SResource &_resource)
     m_ib[5] = 0;
 }
 
+void CSprite::GotoAndStop(unsigned int _frame)
+{
+    if((_frame < m_iTotalFrames))
+    {
+        m_iCurrentFrame = _frame;
+    }
+    m_bStop = true;
+    NextFrame();
+}
+
+void CSprite::GotoAndPlay(unsigned int _frame)
+{
+    if((_frame < m_iTotalFrames))
+    {
+        m_iCurrentFrame = _frame;
+    }
+    m_bStop = false;
+    NextFrame();
+}
+
 void CSprite::NextFrame()
 {
     if(m_iTotalFrames == 0)
@@ -136,7 +157,10 @@ void CSprite::NextFrame()
 void CSprite::Update(float _fTime)
 {
     INode::Update(_fTime);
-    NextFrame();
+    if(!m_bStop)
+    {
+        NextFrame();
+    }
 }
 
 void CSprite::Render()
