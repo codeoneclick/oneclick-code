@@ -11,7 +11,7 @@
 
 CTexture::CTexture()
 {
-    
+    m_bDone = false;
 }
 
 CTexture::~CTexture()

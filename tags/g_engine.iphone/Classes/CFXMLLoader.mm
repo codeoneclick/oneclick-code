@@ -1,40 +1,38 @@
 //
-//  CDataController.cpp
+//  CFXMLLoader.cpp
 //  gEngine
 //
-//  Created by sergey.sergeev on 10/28/11.
+//  Created by sergey.sergeev on 10/31/11.
 //  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
 //
 
 #include <iostream>
-#include "CDataController.h"
+#include "CFXMLLoader.h"
 
-CDataController::CDataController()
+CFXMLLoader::CFXMLLoader()
 {
     
 }
 
-CDataController::~CDataController()
+CFXMLLoader::~CFXMLLoader()
 {
     
 }
 
-CDataController::SSpriteData* CDataController::SpriteData(std::string _sName)
+std::vector<CFXMLLoader::SFrame*> CFXMLLoader::Load(std::string _sName)
 {
-    CDataController::SSpriteData *data = new CDataController::SSpriteData();
-    Load(_sName, data);
-    return data;
-}
-
-
-void CDataController::Load(std::string _sName, SSpriteData* _pSprite)
-{
+    std::vector<CFXMLLoader::SFrame*> sequence;
     NSError *error = nil;
     NSString* sName = [NSString stringWithUTF8String:_sName.c_str()];
     NSString* sPath = [[NSBundle mainBundle] resourcePath];
     sPath = [sPath stringByAppendingPathComponent:sName];
     NSLog(@"[Data controller] Data load :%@",sPath);
     NSString *string = [NSString stringWithContentsOfFile:sPath encoding:NSUTF8StringEncoding error:&error];
+    if(string == nil)
+    {
+        return sequence;
+    }
+    
     string = [string stringByReplacingOccurrencesOfString:@"\"" withString:@"|"];
     string = [string stringByReplacingOccurrencesOfString:@" " withString:@""];
     NSArray *array = [string componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
@@ -59,8 +57,22 @@ void CDataController::Load(std::string _sName, SSpriteData* _pSprite)
         std::string sDataRegExpWidth = std::string(cData + sPositionRegExpWidth + k_REG_EXP_WIDTH.length());
         std::string sDataRegExpHeight = std::string(cData + sPositionRegExpHeight + k_REG_EXP_HEIGHT.length());
         
-        sDataRegExpX = sDataRegExpX.substr(sPositionRegExpX, sDataRegExpX.find("|") - sPositionRegExpX);
-        int value = atoi(sDataRegExpX.c_str());
+        sDataRegExpX = sDataRegExpX.substr(0, sDataRegExpX.find("|"));
+        int iValueX = atoi(sDataRegExpX.c_str());
         
+        sDataRegExpY = sDataRegExpY.substr(0, sDataRegExpY.find("|"));
+        int iValueY = atoi(sDataRegExpY.c_str());
+        
+        sDataRegExpWidth = sDataRegExpWidth.substr(0, sDataRegExpWidth.find("|"));
+        int iValueWidth = atoi(sDataRegExpWidth.c_str());
+        
+        sDataRegExpHeight = sDataRegExpHeight.substr(0, sDataRegExpHeight.find("|"));
+        int iValueHeight = atoi(sDataRegExpHeight.c_str());
+        
+        CFXMLLoader::SFrame* frame = new CFXMLLoader::SFrame();
+        frame->s_vPosition = Vector2d(static_cast<float>(iValueX), static_cast<float>(iValueY));
+        frame->s_vSize = Vector2d(static_cast<float>(iValueHeight), static_cast<float>(iValueWidth));
+        sequence.push_back(frame);
     }
+    return sequence;
 }

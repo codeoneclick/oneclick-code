@@ -9,11 +9,20 @@
 #ifndef gEngine_CShaderController_h
 #define gEngine_CShaderController_h
 
+#include "stdlib.h"
+#include <string>
+#include <map>
+#include "CShader.h"
+#include "CGLSLLoader.h"
+
 class CShaderController
 {
+protected:
+    std::map<std::string, CGLSLLoader::SGLSLData> m_container;
 public:
     CShaderController();
     ~CShaderController();
+    void Get_Shader(std::string _sName, CShader* _pShader);
 };
 
 #endif

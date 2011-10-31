@@ -9,23 +9,20 @@
 #ifndef gEngine_CTextureController_h
 #define gEngine_CTextureController_h
 
-#include "PVRTTexture.h"
 #include "stdlib.h"
 #include <string>
 #include <map>
 #include "CTexture.h"
+#include "CPVRLoader.h"
 
 class CTextureController
 {
 private:
-    std::map<std::string, CTexture*> m_container;
-    void Load(std::string _sName, CTexture* pTexture);
-    void Commit(CTexture* pTexture);
+    std::map<std::string, CPVRLoader::SPVR> m_container;
 public:
     CTextureController();
     ~CTextureController();
-    
-    CTexture *Texture(std::string _sName);
+    void Get_Texture(std::string _sName, CTexture* _pTexture);
 };
 
 

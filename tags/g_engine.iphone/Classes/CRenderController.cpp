@@ -1,5 +1,5 @@
 //
-//  CRenderEngine.cpp
+//  CRenderController.cpp
 //  gEngine
 //
 //  Created by sergey.sergeev on 10/24/11.
@@ -7,10 +7,9 @@
 //
 
 #include <iostream>
-#include "CRenderEngine.h"
-#include "CSceneEngine.h"
+#include "CRenderController.h"
 
-CRenderEngine::CRenderEngine(unsigned int _width, unsigned int _height)
+CRenderController::CRenderController(unsigned int _width, unsigned int _height)
 {
     glGenRenderbuffers(1, &m_renderbuffer);
     glBindRenderbuffer(GL_RENDERBUFFER, m_renderbuffer);
@@ -20,19 +19,19 @@ CRenderEngine::CRenderEngine(unsigned int _width, unsigned int _height)
     glViewport(0, 0, _width, _height);
 }
 
-CRenderEngine::~CRenderEngine()
+CRenderController::~CRenderController()
 {
     
 }
 
-void CRenderEngine::Update(float _fTime)
-{
-    CSceneEngine::Instance()->Update(_fTime);
-}
 
-void CRenderEngine::Render()
+void CRenderController::BeginScene()
 {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-    CSceneEngine::Instance()->Render();
+}
+
+void CRenderController::EndScene()
+{
+    
 }

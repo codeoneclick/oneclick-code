@@ -15,46 +15,23 @@
 #include "PVRTTexture.h"
 
 class CTexture
-{
-public:
-    enum TextureFormat 
-    {
-        TextureFormatGray,
-        TextureFormatGrayAlpha,
-        TextureFormatRgb,
-        TextureFormatRgba,
-        TextureFormatPvrtcRgb2,
-        TextureFormatPvrtcRgba2,
-        TextureFormatPvrtcRgb4,
-        TextureFormatPvrtcRgba4,
-        TextureFormat565,
-        TextureFormat5551,
-    };
-    
-    struct SDescription
-    {
-        TextureFormat s_format;
-        int s_bpp;
-        Vector2d s_size;
-        int s_mip;
-    };
-    
+{   
 protected:
-    char* m_data;
-    SDescription m_description;
-    GLuint m_id;
-    PVR_Texture_Header* m_header;
+    GLuint m_handle;
+    unsigned int m_uiWidth;
+    unsigned int m_uiHeight;
+    bool   m_bDone;
 public:
     CTexture();
     ~CTexture();
-    inline char* Get_Data() { return m_data; }
-    inline void  Set_Data(char* _data) { m_data = _data; }
-    inline SDescription Get_Description() { return m_description; }
-    inline void  Set_Description(SDescription _description) { m_description = _description; }
-    inline PVR_Texture_Header* Get_Header() { return m_header; }
-    inline void  Set_Header(PVR_Texture_Header* _header) { m_header = _header; }
-    inline GLuint Get_Handle() { return m_id; }
-    inline void   Set_Handle(GLuint _handle) { m_id = _handle; }
+    inline GLuint Get_Handle() { return m_handle; }
+    inline void   Set_Handle(GLuint _handle) { m_handle = _handle; }
+    inline bool   Get_Done() { return m_bDone;}
+    inline void   Set_Done(bool _value) { m_bDone = _value; }
+    inline unsigned int Get_Width() { return m_uiWidth; }
+    inline void Set_Width(unsigned int _uiWidth) { m_uiWidth = _uiWidth; }
+    inline unsigned int Get_Height() { return m_uiHeight; }
+    inline void Set_Height(unsigned int _uiHeight) { m_uiHeight = _uiHeight; }
 };
 
 #endif

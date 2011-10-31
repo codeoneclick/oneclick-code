@@ -21,11 +21,16 @@ private:
     GLuint m_pHandle;
     GLuint m_vHandle;
     GLuint m_fHandle;
-    GLuint Build(const char* _source, GLenum _shader);
+    bool   m_bDone;
 public:
-    CShader(const char *_vSource, const char*_fSource);
+    CShader();
     ~CShader();
-    GLuint Handle() { return m_pHandle; }
+    inline GLuint Get_pHandle() { return m_pHandle; }
+    inline void   Set_pHandle(GLuint _handle) { m_pHandle = _handle; }
+    inline void   Set_vHandle(GLuint _handle) { m_vHandle = _handle; }
+    inline void   Set_fHandle(GLuint _handle) { m_fHandle = _handle; }
+    inline bool   Get_Done() { return m_bDone;}
+    inline void   Set_Done(bool _value) { m_bDone = _value; }
     
     void SetMatrix(const Matrix4x4 &_mValue, const std::string &_sName);
     void SetTexture(GLuint _handle, const std::string &_sName);
