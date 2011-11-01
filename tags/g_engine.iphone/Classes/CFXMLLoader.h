@@ -14,19 +14,14 @@
 #include <map>
 #include <vector>
 #include "CVector.h"
+#include "CSequence.h"
 
 class CFXMLLoader
 {
 public:
-    struct SFrame
-    {
-        Vector2d s_vPosition;
-        Vector2d s_vSize;
-    };
-public:
     CFXMLLoader();
     ~CFXMLLoader();
-    std::vector<SFrame*> Load(std::string _sName);
+    CSequence* Load(std::string _sName);
 };
 
 

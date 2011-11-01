@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include "CCamera.h"
+#include "CWindow.h"
 
 CCamera* CCamera::m_camera = NULL;
 
@@ -20,8 +21,13 @@ CCamera::CCamera()
     m_fRotation = 0.0f;
     m_vScale = Vector2d(1.0f, 1.0f);
     
+    m_fWidth = CWindow::Instance()->Get_Width();
+    m_fHeight = CWindow::Instance()->Get_Height();
+    
     m_mProjection = new Matrix4x4();
     m_mView = new Matrix4x4();
+    
+    (*m_mProjection) = Orthographic(m_fWidth, m_fHeight, -1.0f, 1.0f);
 }
 
 CCamera::~CCamera()
@@ -36,14 +42,6 @@ CCamera* CCamera::Instance()
         m_camera = new CCamera();
     }
     return m_camera;
-}
-
-void CCamera::Init(float _width, float _height)
-{
-    m_fWidth = _width;
-    m_fHeight = _height;
-    
-    (*m_mProjection) = Orthographic(m_fWidth, m_fHeight, -1.0f, 1.0f);
 }
 
 void CCamera::Update(float _fTime)

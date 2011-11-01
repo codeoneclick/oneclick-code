@@ -9,16 +9,16 @@
 #ifndef gEngine_CDataController_h
 #define gEngine_CDataController_h
 #include "CFXMLLoader.h"
-#include "CSequence.h"
 
 class CDataController
 {
 private:    
-    std::map<std::string, std::vector<CFXMLLoader::SFrame*> > m_container;
+    std::map<std::string, CSequence*> m_container;
 public:
     CDataController();
     ~CDataController();
-    void Get_Sequence(std::string _sName, CSequence* _pSequence);
+    CSequence* Get_Sequence(std::string _sName);
+    void Unload_Sequence(std::string _sName);
 };
 
 #endif

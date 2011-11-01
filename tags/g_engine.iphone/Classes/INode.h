@@ -27,10 +27,10 @@ protected:
     Matrix4x4* m_mProjection;
     Matrix4x4* m_mView;
     
-    CShader*       m_shader;
-    CTexture*      m_texture;
-    CVertexBuffer* m_vb;
-    GLubyte*       m_ib;
+    CShader*       m_pShader;
+    CTexture*      m_pTexture;
+    CVertexBuffer* m_pVb;
+    GLubyte*       m_pIb;
     
     b2BodyDef      m_pBodyDef;
     b2Body*        m_pBody;
@@ -38,13 +38,16 @@ protected:
     Vector2d     m_vScale;
     Vector3d     m_vPosition;
     float        m_fRotation;
+    
+    std::string  m_strResTexture;
+    std::string  m_strResShader;
 public:
     INode();
     virtual ~INode();
     virtual void Update(float _fTime);
     virtual void Render() = 0;
-    inline CVertexBuffer* Get_VB() { return m_vb; }
-    inline GLubyte* Get_IB() { return m_ib; }
+    inline CVertexBuffer* Get_VB() { return m_pVb; }
+    inline GLubyte* Get_IB() { return m_pIb; }
     Vector3d Get_Position() { return m_vPosition; }
     virtual void Set_Position(Vector3d &_vPosition) { m_vPosition = _vPosition; }
     float Get_Rotation() { return m_fRotation; }

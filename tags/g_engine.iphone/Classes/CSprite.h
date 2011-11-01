@@ -20,6 +20,7 @@ protected:
     unsigned int m_iTotalFrames; 
     Vector2d m_vFrameTexcoord[2];
     bool     m_bStop;
+    std::string m_strResSequence;
 public:
     CSprite();
     virtual ~CSprite();

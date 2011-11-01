@@ -21,6 +21,7 @@ protected:
     unsigned int m_uiWidth;
     unsigned int m_uiHeight;
     bool   m_bDone;
+    unsigned int m_uiRefCount;
 public:
     CTexture();
     ~CTexture();
@@ -32,6 +33,9 @@ public:
     inline void Set_Width(unsigned int _uiWidth) { m_uiWidth = _uiWidth; }
     inline unsigned int Get_Height() { return m_uiHeight; }
     inline void Set_Height(unsigned int _uiHeight) { m_uiHeight = _uiHeight; }
+    inline void IncRefCount() { m_uiRefCount++; }
+    inline void DecRefCount() { m_uiRefCount--; }
+    inline unsigned int Get_RefCount() { return m_uiRefCount; }
 };
 
 #endif

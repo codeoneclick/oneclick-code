@@ -13,6 +13,7 @@
 #include <OpenGLES/ES2/glext.h>
 #include "PVRTTexture.h"
 #include "CVector.h"
+#include "CTexture.h"
 
 class CPVRLoader
 {
@@ -43,22 +44,15 @@ protected:
     {
         char* s_data;
         SDescription s_description;
-        GLuint s_id;
+        GLuint s_hanlde;
         PVR_Texture_Header* s_header;
-    };
-public:
-    struct SPVR
-    {
-        GLuint s_handle;
-        unsigned int s_uiWidth;
-        unsigned int s_uiHeight;
     };
 private:
     void Commit(SPVRData* _data);
 public:
     CPVRLoader();
     ~CPVRLoader();
-    CPVRLoader::SPVR Load(const char* _sName);
+    CTexture* Load(const char* _sName);
 };
 
 #endif

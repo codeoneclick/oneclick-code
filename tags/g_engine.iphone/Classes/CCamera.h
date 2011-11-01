@@ -33,7 +33,6 @@ public:
     CCamera();
     ~CCamera();
     static CCamera *Instance();
-    void Init(float _width, float _height);
     void Update(float _fTime);
     inline float Get_Width() { return m_fWidth; }
     inline float Get_Height() { return m_fHeight; }

@@ -11,44 +11,35 @@
 
 CSprite::CSprite()
 {
-    m_vb = NULL;
-    m_ib = NULL;
     m_iCurrentFrame = 0;
     m_bStop = false;
+    m_pSequence = NULL;
 }
 
 CSprite::~CSprite()
 {
-    if(m_vb != NULL)
-    {
-        delete m_vb;
-        m_vb = NULL;
-    }
-    if(m_ib != NULL)
-    {
-        delete m_ib;
-        m_ib = NULL;
-    }
+    CResourceController::Instance()->DataController()->Unload_Sequence(m_strResSequence);
     std::cout<<"[CSprite] destructor().";
 }
 
 void CSprite::Load(CResourceController::SResource &_resource)
 {
+    m_strResTexture = "Untitled_default.pvr";
+    m_strResSequence = "Untitled_default.xml";
+    
     m_fWidth  = _resource.s_vSize.x; 
     m_fHeight = _resource.s_vSize.y;
     
     m_vPosition = _resource.s_vPosition;
     
-    m_shader = new CShader();
-    CResourceController::Instance()->ShaderController()->Get_Shader("basic", m_shader);
-    m_texture = new CTexture();
-    CResourceController::Instance()->TextureController()->Get_Texture("Untitled_default.pvr", m_texture);
-    m_pSequence = new CSequence();
-    CResourceController::Instance()->DataController()->Get_Sequence("Untitled_default.xml", m_pSequence);
+    m_pShader = new CShader();
+    CResourceController::Instance()->ShaderController()->Get_Shader("basic", m_pShader);
+    m_pTexture = CResourceController::Instance()->TextureController()->Get_Texture(m_strResTexture);
+    m_pSequence = CResourceController::Instance()->DataController()->Get_Sequence(m_strResSequence);
     m_iTotalFrames = m_pSequence->Get_Sequence().size();
     
-    m_vb = new CVertexBuffer(4, sizeof(CVertexBuffer::SVertexVTC), CVertexBuffer::VBD_V2FT2FC4F);
-    CVertexBuffer::SVertexVTC *data = static_cast<CVertexBuffer::SVertexVTC*>(m_vb->Data());  
+    m_pVb = new CVertexBuffer(4, sizeof(CVertexBuffer::SVertexVTC), CVertexBuffer::VBD_V2FT2FC4F);
+    CVertexBuffer::SVertexVTC *data = static_cast<CVertexBuffer::SVertexVTC*>(m_pVb->Data());  
     data[0].s_position = Vector3d(-m_fWidth / 2, -m_fHeight / 2, 0.0f);
     data[1].s_position = Vector3d(-m_fWidth / 2, m_fHeight  / 2, 0.0f);
     data[2].s_position = Vector3d(m_fWidth  / 2, m_fHeight  / 2, 0.0f);
@@ -69,13 +60,13 @@ void CSprite::Load(CResourceController::SResource &_resource)
     
     NextFrame();
     
-    m_ib = new GLubyte[6];
-    m_ib[0] = 0;
-    m_ib[1] = 1;
-    m_ib[2] = 2;
-    m_ib[3] = 2;
-    m_ib[4] = 3;
-    m_ib[5] = 0;
+    m_pIb = new GLubyte[6];
+    m_pIb[0] = 0;
+    m_pIb[1] = 1;
+    m_pIb[2] = 2;
+    m_pIb[3] = 2;
+    m_pIb[4] = 3;
+    m_pIb[5] = 0;
 }
 
 void CSprite::GotoAndStop(unsigned int _frame)
@@ -107,7 +98,7 @@ void CSprite::NextFrame()
     
     if (m_pSequence->Get_Sequence()[m_iCurrentFrame]->s_vPosition.x != 0)
     {
-        m_vFrameTexcoord[0].x = m_pSequence->Get_Sequence()[m_iCurrentFrame]->s_vPosition.x / m_texture->Get_Width();
+        m_vFrameTexcoord[0].x = m_pSequence->Get_Sequence()[m_iCurrentFrame]->s_vPosition.x / m_pTexture->Get_Width();
     }
     else
     {
@@ -116,7 +107,7 @@ void CSprite::NextFrame()
     
     if(m_pSequence->Get_Sequence()[m_iCurrentFrame]->s_vPosition.y != 0)
     {
-        m_vFrameTexcoord[0].y = m_pSequence->Get_Sequence()[m_iCurrentFrame]->s_vPosition.y / m_texture->Get_Height();
+        m_vFrameTexcoord[0].y = m_pSequence->Get_Sequence()[m_iCurrentFrame]->s_vPosition.y / m_pTexture->Get_Height();
     }
     else
     {
@@ -125,7 +116,7 @@ void CSprite::NextFrame()
     
     if ((m_pSequence->Get_Sequence()[m_iCurrentFrame]->s_vPosition.x + m_pSequence->Get_Sequence()[m_iCurrentFrame]->s_vSize.x) != 0)
     {
-        m_vFrameTexcoord[1].x = (m_pSequence->Get_Sequence()[m_iCurrentFrame]->s_vPosition.x + m_pSequence->Get_Sequence()[m_iCurrentFrame]->s_vSize.x) / m_texture->Get_Width();
+        m_vFrameTexcoord[1].x = (m_pSequence->Get_Sequence()[m_iCurrentFrame]->s_vPosition.x + m_pSequence->Get_Sequence()[m_iCurrentFrame]->s_vSize.x) / m_pTexture->Get_Width();
     }
     else
     {
@@ -134,14 +125,14 @@ void CSprite::NextFrame()
     
     if((m_pSequence->Get_Sequence()[m_iCurrentFrame]->s_vPosition.y + m_pSequence->Get_Sequence()[m_iCurrentFrame]->s_vSize.y) != 0)
     {
-        m_vFrameTexcoord[1].y = (m_pSequence->Get_Sequence()[m_iCurrentFrame]->s_vPosition.y + m_pSequence->Get_Sequence()[m_iCurrentFrame]->s_vSize.y) / m_texture->Get_Height();
+        m_vFrameTexcoord[1].y = (m_pSequence->Get_Sequence()[m_iCurrentFrame]->s_vPosition.y + m_pSequence->Get_Sequence()[m_iCurrentFrame]->s_vSize.y) / m_pTexture->Get_Height();
     }
     else
     {
         m_vFrameTexcoord[1].y = 0.0f;
     }
     
-    CVertexBuffer::SVertexVTC *data = static_cast<CVertexBuffer::SVertexVTC*>(m_vb->Data());    
+    CVertexBuffer::SVertexVTC *data = static_cast<CVertexBuffer::SVertexVTC*>(m_pVb->Data());    
     data[0].s_texcoord = Vector2d(m_vFrameTexcoord[0].x, m_vFrameTexcoord[0].y);
     data[1].s_texcoord = Vector2d(m_vFrameTexcoord[0].x, m_vFrameTexcoord[1].y);
     data[2].s_texcoord = Vector2d(m_vFrameTexcoord[1].x, m_vFrameTexcoord[1].y);
@@ -166,11 +157,11 @@ void CSprite::Update(float _fTime)
 void CSprite::Render()
 {
     glEnable(GL_TEXTURE_2D);
-    m_shader->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD);
-    m_shader->SetMatrix((*m_mProjection), CShader::k_MATRIX_PROJECTION);
-    m_shader->SetMatrix((*m_mView), CShader::k_MATRIX_VIEW);
-    m_shader->SetTexture(m_texture->Get_Handle(), "Texture");
-    m_vb->Enable(m_shader->Get_pHandle());
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, (void*) m_ib);
-    m_vb->Disable(m_shader->Get_pHandle());
+    m_pShader->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD);
+    m_pShader->SetMatrix((*m_mProjection), CShader::k_MATRIX_PROJECTION);
+    m_pShader->SetMatrix((*m_mView), CShader::k_MATRIX_VIEW);
+    m_pShader->SetTexture(m_pTexture->Get_Handle(), "Texture");
+    m_pVb->Enable(m_pShader->Get_pHandle());
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, (void*) m_pIb);
+    m_pVb->Disable(m_pShader->Get_pHandle());
 }
