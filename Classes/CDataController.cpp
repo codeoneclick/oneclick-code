@@ -19,23 +19,41 @@ CDataController::~CDataController()
     
 }
 
-void CDataController::Get_Sequence(std::string _sName, CSequence* _pSequence)
+CSequence* CDataController::Get_Sequence(std::string _sName)
 {
+    CSequence* pSequence = NULL;
     if( m_container.find(_sName) != m_container.end())
     {
-        _pSequence->Set_Sequence(m_container[_sName]);
-        return;
+        pSequence = m_container[_sName];
+        pSequence->IncRefCount();
     }
     else
     {
         CFXMLLoader* pLoader = new CFXMLLoader();
-        m_container[_sName] = pLoader->Load(_sName.c_str()); 
-        _pSequence->Set_Sequence(m_container[_sName]);
+        pSequence = pLoader->Load(_sName.c_str());
+        m_container[_sName] = pSequence;
+        pSequence->IncRefCount();
+        pSequence->Set_Done(true);
         delete pLoader;
-        return;
     }
+    return pSequence;
 }
 
+void CDataController::Unload_Sequence(std::string _sName)
+{
+    CSequence* pSequence = NULL;
+    if( m_container.find(_sName) != m_container.end())
+    {
+        pSequence = m_container[_sName];
+        pSequence->DecRefCount();
+        if(pSequence->Get_RefCount() == 0)
+        {
+            delete pSequence;
+            std::map<std::string, CSequence*>::iterator pIterator = m_container.find(_sName);
+            m_container.erase(pIterator);
+        }
+    }
+}
 
 
 

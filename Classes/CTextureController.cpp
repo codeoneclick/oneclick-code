@@ -22,25 +22,39 @@ CTextureController::~CTextureController()
     
 }
 
-void CTextureController::Get_Texture(std::string _sName, CTexture* _pTexture)
+CTexture* CTextureController::Get_Texture(std::string _sName)
 {
+    CTexture* pTexture = NULL;
     if( m_container.find(_sName) != m_container.end())
     {
-        _pTexture->Set_Handle(m_container[_sName].s_handle);
-        _pTexture->Set_Width(m_container[_sName].s_uiWidth);
-        _pTexture->Set_Height(m_container[_sName].s_uiHeight);
-        _pTexture->Set_Done(true);
-        return;
+        pTexture = m_container[_sName];
+        pTexture->IncRefCount();
     }
     else
     {
         CPVRLoader* pLoader = new CPVRLoader();
-        m_container[_sName] = pLoader->Load(_sName.c_str());
-        _pTexture->Set_Handle(m_container[_sName].s_handle);
-        _pTexture->Set_Width(m_container[_sName].s_uiWidth);
-        _pTexture->Set_Height(m_container[_sName].s_uiHeight);       
-        _pTexture->Set_Done(true);
+        pTexture = pLoader->Load(_sName.c_str());
+        m_container[_sName] = pTexture;
+        pTexture->IncRefCount();
+        pTexture->Set_Done(true);
         delete pLoader;
-        return;
+    }
+    return pTexture;
+}
+
+void CTextureController::Unload_Texture(std::string _sName)
+{
+    CTexture* pTexture = NULL;
+    if( m_container.find(_sName) != m_container.end())
+    {
+        pTexture = m_container[_sName];
+        pTexture->DecRefCount();
+        
+        if(pTexture->Get_RefCount() == 0)
+        {
+            delete pTexture;
+            std::map<std::string, CTexture*>::iterator pIterator = m_container.find(_sName);
+            m_container.erase(pIterator);
+        }
     }
 }

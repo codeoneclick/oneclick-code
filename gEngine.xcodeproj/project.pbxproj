@@ -14,7 +14,6 @@
 		4D27E4840F9AD71900447247 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D27E4830F9AD71900447247 /* OpenGLES.framework */; };
 		4D27E4B50F9AD7D600447247 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D27E4B40F9AD7D600447247 /* QuartzCore.framework */; };
 		4D3135ED0F9A6649001FFC34 /* GLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D3135EC0F9A6649001FFC34 /* GLView.mm */; };
-		4D77F28F10793BEB002D74C3 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D77F28E10793BEB002D74C3 /* Default.png */; };
 		4D8FB2C30F9EB4740055EDDB /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D8FB2C20F9EB4740055EDDB /* Icon.png */; };
 		4D8FB3730F9EC1010055EDDB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D8FB3720F9EC1010055EDDB /* main.m */; };
 		9320598F145E964E00DEBCCB /* CGLSLLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9320598E145E964E00DEBCCB /* CGLSLLoader.cpp */; };
@@ -104,7 +103,6 @@
 		4D3135EC0F9A6649001FFC34 /* GLView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GLView.mm; sourceTree = "<group>"; };
 		4D508D32102600410065571B /* Basic.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = Basic.frag; path = Shaders/Basic.frag; sourceTree = "<group>"; };
 		4D508D33102600410065571B /* Basic.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = Basic.vert; path = Shaders/Basic.vert; sourceTree = "<group>"; };
-		4D77F28E10793BEB002D74C3 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		4D8FB2C20F9EB4740055EDDB /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		4D8FB3720F9EC1010055EDDB /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -320,7 +318,6 @@
 				CE91921914573F630021A0DC /* Textures */,
 				4D8FB2C20F9EB4740055EDDB /* Icon.png */,
 				8D1107310486CEB800E47090 /* Info.plist */,
-				4D77F28E10793BEB002D74C3 /* Default.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -673,7 +670,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4D8FB2C30F9EB4740055EDDB /* Icon.png in Resources */,
-				4D77F28F10793BEB002D74C3 /* Default.png in Resources */,
 				CE91921B14573F7F0021A0DC /* Test.pvr in Resources */,
 				938FAA42145A8A9B00D3AE3D /* Untitled_default.pvr in Resources */,
 				938FAA43145A8A9B00D3AE3D /* Untitled_default.xml in Resources */,

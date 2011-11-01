@@ -11,10 +11,19 @@
 
 CSequence::CSequence()
 {
-    
+    m_uiRefCount = 0;
+    m_bDone = false;
 }
 
 CSequence::~CSequence()
 {
-    
+    std::vector<SFrame*>::iterator pBeginIterator = m_sequence.begin();
+    std::vector<SFrame*>::iterator pEndIterator = m_sequence.end();
+    while (pBeginIterator != pEndIterator) 
+    {
+        SFrame* pFrame = (*pBeginIterator);
+        delete pFrame;
+        ++pBeginIterator;
+    }
+    m_sequence.clear();
 }

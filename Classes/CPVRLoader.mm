@@ -19,7 +19,7 @@ CPVRLoader::~CPVRLoader()
     
 }
 
-CPVRLoader::SPVR CPVRLoader::Load(const char* _sName)
+CTexture* CPVRLoader::Load(const char* _sName)
 {
     NSString* sName = [NSString stringWithUTF8String:_sName];
     NSString* sPath = [[NSBundle mainBundle] resourcePath];
@@ -64,15 +64,15 @@ CPVRLoader::SPVR CPVRLoader::Load(const char* _sName)
     
     Commit(pvrData);
     
-    CPVRLoader::SPVR result;
-    result.s_handle = pvrData->s_id;
-    result.s_uiWidth = pvrData->s_description.s_size.x;
-    result.s_uiHeight = pvrData->s_description.s_size.y;
-    
     delete (char*)[source bytes];
     pvrData->s_data = NULL;
+
+    CTexture* pTexture = new CTexture();
+    pTexture->Set_Handle(pvrData->s_hanlde);
+    pTexture->Set_Width(pvrData->s_description.s_size.x);
+    pTexture->Set_Height(pvrData->s_description.s_size.y);
     
-    return result;
+    return pTexture;
 }
 
 void CPVRLoader::Commit(CPVRLoader::SPVRData *_data)
@@ -171,7 +171,7 @@ void CPVRLoader::Commit(CPVRLoader::SPVRData *_data)
             glWidth >>= 1; glHeight >>= 1;
         }
     }
-    _data->s_id = handle;
+    _data->s_hanlde = handle;
 }
 
 

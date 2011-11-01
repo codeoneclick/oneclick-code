@@ -19,19 +19,15 @@ CFXMLLoader::~CFXMLLoader()
     
 }
 
-std::vector<CFXMLLoader::SFrame*> CFXMLLoader::Load(std::string _sName)
+CSequence* CFXMLLoader::Load(std::string _sName)
 {
-    std::vector<CFXMLLoader::SFrame*> sequence;
+    std::vector<CSequence::SFrame*> sequence;
     NSError *error = nil;
     NSString* sName = [NSString stringWithUTF8String:_sName.c_str()];
     NSString* sPath = [[NSBundle mainBundle] resourcePath];
     sPath = [sPath stringByAppendingPathComponent:sName];
     NSLog(@"[Data controller] Data load :%@",sPath);
     NSString *string = [NSString stringWithContentsOfFile:sPath encoding:NSUTF8StringEncoding error:&error];
-    if(string == nil)
-    {
-        return sequence;
-    }
     
     string = [string stringByReplacingOccurrencesOfString:@"\"" withString:@"|"];
     string = [string stringByReplacingOccurrencesOfString:@" " withString:@""];
@@ -69,10 +65,21 @@ std::vector<CFXMLLoader::SFrame*> CFXMLLoader::Load(std::string _sName)
         sDataRegExpHeight = sDataRegExpHeight.substr(0, sDataRegExpHeight.find("|"));
         int iValueHeight = atoi(sDataRegExpHeight.c_str());
         
-        CFXMLLoader::SFrame* frame = new CFXMLLoader::SFrame();
+        CSequence::SFrame* frame = new CSequence::SFrame();
         frame->s_vPosition = Vector2d(static_cast<float>(iValueX), static_cast<float>(iValueY));
         frame->s_vSize = Vector2d(static_cast<float>(iValueHeight), static_cast<float>(iValueWidth));
         sequence.push_back(frame);
+        delete cData;
     }
-    return sequence;
+    CSequence* pSequence = new CSequence();
+    pSequence->Set_SequenceLine(sequence);
+    return pSequence;
 }
+
+
+
+
+
+
+
+

@@ -12,17 +12,17 @@
 #include "stdlib.h"
 #include <string>
 #include <map>
-#include "CTexture.h"
 #include "CPVRLoader.h"
 
 class CTextureController
 {
 private:
-    std::map<std::string, CPVRLoader::SPVR> m_container;
+    std::map<std::string, CTexture*> m_container;
 public:
     CTextureController();
     ~CTextureController();
-    void Get_Texture(std::string _sName, CTexture* _pTexture);
+    CTexture* Get_Texture(std::string _sName);
+    void Unload_Texture(std::string _sName);
 };
 
 

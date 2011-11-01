@@ -12,9 +12,10 @@
 CTexture::CTexture()
 {
     m_bDone = false;
+    m_uiRefCount = 0;
 }
 
 CTexture::~CTexture()
 {
-    
+    glDeleteTextures(1, &m_handle);
 }

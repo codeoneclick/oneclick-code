@@ -9,6 +9,14 @@
 #ifndef gEngine_CInput_h
 #define gEngine_CInput_h
 
-
+class CInput
+{
+private:
+    static CInput* m_instance;
+public:
+    CInput();
+    ~CInput();
+    static CInput* Instance();
+};
 
 #endif
