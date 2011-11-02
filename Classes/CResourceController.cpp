@@ -9,25 +9,43 @@
 #include <iostream>
 #include "CResourceController.h"
 
-CResourceController* CResourceController::m_resourceController = NULL;
+void* UpdateThread(void *_pParam)
+{
+    CResourceController* pController = (CResourceController*)_pParam;
+    while (true)
+    {
+        pController->TextureController()->UpdateThread();
+    }
+}
+
+CResourceController* CResourceController::m_pInstance = NULL;
 
 CResourceController* CResourceController::Instance()
 {
-    if(m_resourceController == NULL)
+    if(m_pInstance == NULL)
     {
-        m_resourceController = new CResourceController();
+        m_pInstance = new CResourceController();
     }
-    return m_resourceController;
+    return m_pInstance;
 }
 
 CResourceController::CResourceController()
 {
-    m_textureController = new CTextureController();
-    m_shaderController = new CShaderController();
-    m_dataController = new CDataController();
+    m_pTextureController = new CTextureController();
+    m_pShaderController = new CShaderController();
+    m_pDataController = new CDataController();
+    pthread_create(&m_thread, NULL, UpdateThread, (void*)this);
 }
 
 CResourceController::~CResourceController()
 {
     
 }
+
+
+void CResourceController::Update()
+{
+    m_pTextureController->Update();
+}
+
+

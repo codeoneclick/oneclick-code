@@ -18,7 +18,7 @@
 class CPVRLoader
 {
 protected:
-    enum TextureFormat 
+    enum E_TEXTURE_FORMAT 
     {
         TextureFormatGray,
         TextureFormatGrayAlpha,
@@ -34,25 +34,41 @@ protected:
     
     struct SDescription
     {
-        TextureFormat s_format;
-        int s_bpp;
-        Vector2d s_size;
-        int s_mip;
+        E_TEXTURE_FORMAT m_eFormat;
+        GLenum m_glFormat;
+        GLenum m_glType;
+        int m_uiBPP;
+        Vector2d m_vSize;
+        unsigned int m_uiMIP;
+        bool m_bCompressed;
+    };
+public:
+    struct SPVRSource
+    {
+        char* m_pData;
+        SDescription* m_pDescription;
+        GLuint m_uiHanlde;
+        PVR_Texture_Header* m_pHeader;
     };
     
-    struct SPVRData
+    enum E_STATUS
     {
-        char* s_data;
-        SDescription s_description;
-        GLuint s_hanlde;
-        PVR_Texture_Header* s_header;
+        E_STATUS_NONE,
+        E_STATUS_START,
+        E_STATUS_ERROR,
+        E_STATUS_DONE,
     };
+    
 private:
-    void Commit(SPVRData* _data);
+    SPVRSource* m_pSource;
+    E_STATUS m_eStatus;
 public:
     CPVRLoader();
     ~CPVRLoader();
-    CTexture* Load(const char* _sName);
+    inline E_STATUS Get_Status() { return m_eStatus; }
+    inline SPVRSource* Get_Source() { return m_pSource; }
+    void Load(const char* _sName);
+    void CommitVRAM();
 };
 
 #endif
