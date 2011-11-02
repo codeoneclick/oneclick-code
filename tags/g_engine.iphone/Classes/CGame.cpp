@@ -56,7 +56,7 @@ void CGame::Load(float _fWidth, float _fHeight)
     resource.s_vPosition = Vector3d(-32.0f,128.0f,0.0f);
     INode* node_03 = CSceneController::Instance()->AddNode(resource);
     
-    CSceneController::Instance()->RemoveNode(node_03);
+    /*CSceneController::Instance()->RemoveNode(node_03);
     CSceneController::Instance()->RemoveNode(node_02);
     CSceneController::Instance()->RemoveNode(node_01);
     
@@ -70,12 +70,13 @@ void CGame::Load(float _fWidth, float _fHeight)
     resource.s_vColor = Vector4d(0.0f,0.0f,1.0f,1.0f);
     resource.s_tNode = CResourceController::SResource::DSPRITE;
     resource.s_vPosition = Vector3d(-64.0f,128.0f,0.0f);
-    node_03 = CSceneController::Instance()->AddNode(resource);
+    node_03 = CSceneController::Instance()->AddNode(resource);*/
     
 }
 
 void CGame::Update(float _fTime)
 {
+    CResourceController::Instance()->Update();
     CSceneController::Instance()->Update(_fTime);
 }
 

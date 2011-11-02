@@ -34,7 +34,7 @@ void CSprite::Load(CResourceController::SResource &_resource)
     
     m_pShader = new CShader();
     CResourceController::Instance()->ShaderController()->Get_Shader("basic", m_pShader);
-    m_pTexture = CResourceController::Instance()->TextureController()->Get_Texture(m_strResTexture);
+    m_pTexture = CResourceController::Instance()->TextureController()->Get_Texture(m_strResTexture, CTextureController::E_THREAD_BACKGROUND);
     m_pSequence = CResourceController::Instance()->DataController()->Get_Sequence(m_strResSequence);
     m_iTotalFrames = m_pSequence->Get_Sequence().size();
     

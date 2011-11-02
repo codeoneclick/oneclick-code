@@ -16,11 +16,12 @@
 class CResourceController
 {
 private:
-    static CResourceController* m_resourceController;
-    CTextureController* m_textureController;
-    CShaderController* m_shaderController;
-    CDataController* m_dataController;
-public:
+    static CResourceController* m_pInstance;
+    CTextureController* m_pTextureController;
+    CShaderController* m_pShaderController;
+    CDataController* m_pDataController;
+    pthread_t m_thread;
+public:   
     struct SResource
     {
         enum T_NODE { SPRITE = 0, DSPRITE };
@@ -35,9 +36,10 @@ public:
     CResourceController();
     ~CResourceController();
     static CResourceController* Instance();
-    inline CTextureController* TextureController() { return m_textureController; }
-    inline CShaderController* ShaderController() { return m_shaderController; }
-    inline CDataController* DataController() { return m_dataController; }
+    inline CTextureController* TextureController() { return m_pTextureController; }
+    inline CShaderController* ShaderController() { return m_pShaderController; }
+    inline CDataController* DataController() { return m_pDataController; }
+    void Update();
 };
 
 #endif
