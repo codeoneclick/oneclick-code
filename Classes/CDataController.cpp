@@ -37,13 +37,14 @@ CSequence* CDataController::Get_Sequence(std::string _sName, E_LOAD_THREAD _eThr
         {
             pSequence = new CSequence();
             pSequence->Set_Frames(m_pStub);
-            CFXMLLoader* pLoader = new CFXMLLoader();
-            pLoader->Load(_sName.c_str());
-            if(pLoader->Get_Status() != CFXMLLoader::E_STATUS_ERROR)
+            CFXMLLoader* pLoader = NULL; 
+            void* ppLoader = new typeof(pLoader);
+            ((CFXMLLoader*)ppLoader)->Load(_sName.c_str());
+            if(((CFXMLLoader*)pLoader)->Get_Status() != CFXMLLoader::E_STATUS_ERROR)
             {
-                pSequence->Set_Frames(pLoader->Get_Frames());
+                pSequence->Set_Frames(((CFXMLLoader*)ppLoader)->Get_Frames());
             }
-            delete pLoader;
+            delete ((CFXMLLoader*)ppLoader);
         }
     }
     else if(_eThread == E_THREAD_BACKGROUND)
@@ -66,25 +67,6 @@ CSequence* CDataController::Get_Sequence(std::string _sName, E_LOAD_THREAD _eThr
     }
     
     return pSequence;
-    
-    
-    
-    /*CSequence* pSequence = NULL;
-    if( m_lContainer.find(_sName) != m_lContainer.end())
-    {
-        pSequence = m_lContainer[_sName];
-        pSequence->IncRefCount();
-    }
-    else
-    {
-        CFXMLLoader* pLoader = new CFXMLLoader();
-        pSequence = pLoader->Load(_sName.c_str());
-        m_lContainer[_sName] = pSequence;
-        pSequence->IncRefCount();
-        pSequence->Set_Done(true);
-        delete pLoader;
-    }
-    return pSequence;*/
 }
 
 void CDataController::Unload_Sequence(std::string _sName)
