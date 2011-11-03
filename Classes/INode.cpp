@@ -36,7 +36,7 @@ INode::~INode()
         m_pIb = NULL;
     }
     
-    CResourceController::Instance()->TextureController()->Unload_Texture(m_strResTexture);
+    m_pTexture->Release();
     m_pTexture = NULL;
     std::cout<<"[INode] destructor().";
 }
@@ -48,3 +48,5 @@ void INode::Update(float _fTime)
     m_mScale = Scale(m_vScale);
     m_mWorld = m_mScale * m_mRotation * m_mTranslation;
 }
+
+

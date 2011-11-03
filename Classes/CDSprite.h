@@ -15,7 +15,7 @@ class CDSprite : public CSprite
 public:
     CDSprite();
     virtual ~CDSprite();
-    virtual void Load(CResourceController::SResource &_resource);
+    virtual void Load(CResource::SResource &_resource);
     virtual void Set_Position(Vector3d &_vPosition);
     virtual void Set_Rotation(float _fRotation);
     virtual void Set_Scale(Vector2d &_vScale);

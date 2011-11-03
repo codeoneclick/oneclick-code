@@ -18,25 +18,23 @@ CSprite::CSprite()
 
 CSprite::~CSprite()
 {
-    CResourceController::Instance()->DataController()->Unload_Sequence(m_strResSequence);
+    m_pSequence->Release();
+    m_pSequence = NULL;
     std::cout<<"[CSprite] destructor().";
 }
 
-void CSprite::Load(CResourceController::SResource &_resource)
+void CSprite::Load(CResource::SResource &_resource)
 {
-    m_strResTexture = "Untitled_default.pvr";
-    m_strResSequence = "Untitled_default.xml";
-    
     m_fWidth  = _resource.s_vSize.x; 
     m_fHeight = _resource.s_vSize.y;
     
     m_vPosition = _resource.s_vPosition;
     
     m_pShader = new CShader();
-    CResourceController::Instance()->ShaderController()->Get_Shader("basic", m_pShader);
-    m_pTexture = CResourceController::Instance()->TextureController()->Get_Texture(m_strResTexture, CTextureController::E_THREAD_BACKGROUND);
-    m_pSequence = CResourceController::Instance()->DataController()->Get_Sequence(m_strResSequence);
-    m_iTotalFrames = m_pSequence->Get_Sequence().size();
+    CResource::Instance()->Get_Shader("basic", m_pShader);
+    m_pTexture = CResource::Instance()->Get_Texture("Untitled_default.pvr", CTextureController::E_THREAD_BACKGROUND);
+    m_pSequence = CResource::Instance()->Get_Sequence("Untitled_default.xml", CDataController::E_THREAD_BACKGROUND);
+    m_iTotalFrames = m_pSequence->Get_Frames().size();
     
     m_pVb = new CVertexBuffer(4, sizeof(CVertexBuffer::SVertexVTC), CVertexBuffer::VBD_V2FT2FC4F);
     CVertexBuffer::SVertexVTC *data = static_cast<CVertexBuffer::SVertexVTC*>(m_pVb->Data());  
@@ -96,36 +94,36 @@ void CSprite::NextFrame()
         return;
     }
     
-    if (m_pSequence->Get_Sequence()[m_iCurrentFrame]->s_vPosition.x != 0)
+    if (m_pSequence->Get_Frames()[m_iCurrentFrame]->s_vPosition.x != 0)
     {
-        m_vFrameTexcoord[0].x = m_pSequence->Get_Sequence()[m_iCurrentFrame]->s_vPosition.x / m_pTexture->Get_Width();
+        m_vFrameTexcoord[0].x = m_pSequence->Get_Frames()[m_iCurrentFrame]->s_vPosition.x / m_pTexture->Get_Width();
     }
     else
     {
         m_vFrameTexcoord[0].x = 0.0f;
     }
     
-    if(m_pSequence->Get_Sequence()[m_iCurrentFrame]->s_vPosition.y != 0)
+    if(m_pSequence->Get_Frames()[m_iCurrentFrame]->s_vPosition.y != 0)
     {
-        m_vFrameTexcoord[0].y = m_pSequence->Get_Sequence()[m_iCurrentFrame]->s_vPosition.y / m_pTexture->Get_Height();
+        m_vFrameTexcoord[0].y = m_pSequence->Get_Frames()[m_iCurrentFrame]->s_vPosition.y / m_pTexture->Get_Height();
     }
     else
     {
         m_vFrameTexcoord[0].y = 0.0f;
     }
     
-    if ((m_pSequence->Get_Sequence()[m_iCurrentFrame]->s_vPosition.x + m_pSequence->Get_Sequence()[m_iCurrentFrame]->s_vSize.x) != 0)
+    if ((m_pSequence->Get_Frames()[m_iCurrentFrame]->s_vPosition.x + m_pSequence->Get_Frames()[m_iCurrentFrame]->s_vSize.x) != 0)
     {
-        m_vFrameTexcoord[1].x = (m_pSequence->Get_Sequence()[m_iCurrentFrame]->s_vPosition.x + m_pSequence->Get_Sequence()[m_iCurrentFrame]->s_vSize.x) / m_pTexture->Get_Width();
+        m_vFrameTexcoord[1].x = (m_pSequence->Get_Frames()[m_iCurrentFrame]->s_vPosition.x + m_pSequence->Get_Frames()[m_iCurrentFrame]->s_vSize.x) / m_pTexture->Get_Width();
     }
     else
     {
         m_vFrameTexcoord[1].x = 0.0f;
     }
     
-    if((m_pSequence->Get_Sequence()[m_iCurrentFrame]->s_vPosition.y + m_pSequence->Get_Sequence()[m_iCurrentFrame]->s_vSize.y) != 0)
+    if((m_pSequence->Get_Frames()[m_iCurrentFrame]->s_vPosition.y + m_pSequence->Get_Frames()[m_iCurrentFrame]->s_vSize.y) != 0)
     {
-        m_vFrameTexcoord[1].y = (m_pSequence->Get_Sequence()[m_iCurrentFrame]->s_vPosition.y + m_pSequence->Get_Sequence()[m_iCurrentFrame]->s_vSize.y) / m_pTexture->Get_Height();
+        m_vFrameTexcoord[1].y = (m_pSequence->Get_Frames()[m_iCurrentFrame]->s_vPosition.y + m_pSequence->Get_Frames()[m_iCurrentFrame]->s_vSize.y) / m_pTexture->Get_Height();
     }
     else
     {

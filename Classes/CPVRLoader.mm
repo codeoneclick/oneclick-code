@@ -154,25 +154,4 @@ void CPVRLoader::CommitVRAM()
     }
 }
 
-/*CTexture* CPVRLoader::Load(const char* _sName)
-{
-    /*if(Read(_sName))
-    {
-        Commit();
-    }
-    else
-    {
-        NSLog(@"...");
-    }
-    
-    CTexture* pTexture = new CTexture();
-    pTexture->Set_Handle(m_pSource->m_uiHanlde);
-    pTexture->Set_Width(m_pSource->m_pDescription->m_vSize.x);
-    pTexture->Set_Height(m_pSource->m_pDescription->m_vSize.y);
-    return pTexture;*/
-//}
-
-
-
-
 

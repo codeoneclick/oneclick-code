@@ -13,10 +13,12 @@
 #include "CTextureController.h"
 #include "CDataController.h"
 
-class CResourceController
+class CResource
 {
+public:
+    friend void* UpdateThread(void *_pParam);
 private:
-    static CResourceController* m_pInstance;
+    static CResource* m_pInstance;
     CTextureController* m_pTextureController;
     CShaderController* m_pShaderController;
     CDataController* m_pDataController;
@@ -33,13 +35,20 @@ public:
         Vector3d    s_vPosition;
         T_NODE      s_tNode;
     };
-    CResourceController();
-    ~CResourceController();
-    static CResourceController* Instance();
-    inline CTextureController* TextureController() { return m_pTextureController; }
-    inline CShaderController* ShaderController() { return m_pShaderController; }
-    inline CDataController* DataController() { return m_pDataController; }
-    void Update();
+    CResource();
+    ~CResource();
+    static CResource* Instance();
+     void Update();
+    
+    CTexture* Get_Texture(std::string _sName, CTextureController::E_LOAD_THREAD _eThread);
+    void Unload_Texture(std::string _sName);
+    
+    CSequence* Get_Sequence(std::string _sName, CDataController::E_LOAD_THREAD _eThread);
+    void Unload_Sequence(std::string _sName);
+    
+    void Get_Shader(std::string _sName, CShader* _pShader);
+    
+   
 };
 
 #endif

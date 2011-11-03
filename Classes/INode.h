@@ -13,7 +13,7 @@
 #include "CShader.h"
 #include "CVertexBuffer.h"
 #include "CCamera.h"
-#include "CResourceController.h"
+#include "CResource.h"
 #include <Box2D/Box2D.h>
 
 class INode
@@ -38,9 +38,6 @@ protected:
     Vector2d     m_vScale;
     Vector3d     m_vPosition;
     float        m_fRotation;
-    
-    std::string  m_strResTexture;
-    std::string  m_strResShader;
 public:
     INode();
     virtual ~INode();

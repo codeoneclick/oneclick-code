@@ -38,7 +38,7 @@ void CDSprite::Set_Scale(Vector2d &_vScale)
     m_vScale = _vScale;
 }
 
-void CDSprite::Load(CResourceController::SResource &_resource)
+void CDSprite::Load(CResource::SResource &_resource)
 {
     CSprite::Load(_resource);
     //m_vb->Commit();

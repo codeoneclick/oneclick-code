@@ -20,13 +20,12 @@ protected:
     unsigned int m_iTotalFrames; 
     Vector2d m_vFrameTexcoord[2];
     bool     m_bStop;
-    std::string m_strResSequence;
 public:
     CSprite();
     virtual ~CSprite();
     virtual void Update(float _fTime);
     virtual void Render();
-    virtual void Load(CResourceController::SResource &_resource);
+    virtual void Load(CResource::SResource &_resource);
     void NextFrame();
     void GotoAndStop(unsigned int _frame);
     void GotoAndPlay(unsigned int _frame);
