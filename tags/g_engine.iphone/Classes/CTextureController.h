@@ -24,8 +24,8 @@ public:
         E_THREAD_BACKGROUND,
     };
 private:
-    std::map<std::string, CTexture*>   m_container;
-    std::map<std::string, CPVRLoader*> m_requestQueue;
+    std::map<std::string, CTexture*>   m_lContainer;
+    std::map<std::string, CPVRLoader*> m_lTaskPool;
     CPVRLoader::SPVRSource* m_pStub;
     pthread_mutex_t m_mutex;
 public:

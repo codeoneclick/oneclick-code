@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include "CTexture.h"
+#include "CResource.h"
 
 CTexture::CTexture()
 {
@@ -18,4 +19,9 @@ CTexture::CTexture()
 CTexture::~CTexture()
 {
     glDeleteTextures(1, &m_handle);
+}
+
+void CTexture::Release()
+{
+    CResource::Instance()->Unload_Texture(m_sName);
 }

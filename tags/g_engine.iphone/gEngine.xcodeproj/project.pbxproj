@@ -84,7 +84,7 @@
 		CE8DFB241458842A00AE7288 /* b2Rope.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE8DFAF61458842900AE7288 /* b2Rope.cpp */; };
 		CE914ED41455DA3200AA2000 /* CShaderController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE914ED31455DA3200AA2000 /* CShaderController.cpp */; };
 		CE914ED71455DA5700AA2000 /* CTextureController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE914ED61455DA5700AA2000 /* CTextureController.cpp */; };
-		CE914EDA1455DA7800AA2000 /* CResourceController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE914ED91455DA7800AA2000 /* CResourceController.cpp */; };
+		CE914EDA1455DA7800AA2000 /* CResource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE914ED91455DA7800AA2000 /* CResource.cpp */; };
 		CE919218145736FD0021A0DC /* CTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE919217145736FD0021A0DC /* CTexture.cpp */; };
 		CE91921B14573F7F0021A0DC /* Test.pvr in Resources */ = {isa = PBXBuildFile; fileRef = CE91921A14573F7F0021A0DC /* Test.pvr */; };
 /* End PBXBuildFile section */
@@ -243,8 +243,8 @@
 		CE914ED31455DA3200AA2000 /* CShaderController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CShaderController.cpp; sourceTree = "<group>"; };
 		CE914ED51455DA4400AA2000 /* CTextureController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTextureController.h; sourceTree = "<group>"; };
 		CE914ED61455DA5700AA2000 /* CTextureController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CTextureController.cpp; sourceTree = "<group>"; };
-		CE914ED81455DA6800AA2000 /* CResourceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CResourceController.h; sourceTree = "<group>"; };
-		CE914ED91455DA7800AA2000 /* CResourceController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CResourceController.cpp; sourceTree = "<group>"; };
+		CE914ED81455DA6800AA2000 /* CResource.h */ = {isa = PBXFileReference; fileEncoding = 4; path = CResource.h; sourceTree = "<group>"; };
+		CE914ED91455DA7800AA2000 /* CResource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; path = CResource.cpp; sourceTree = "<group>"; };
 		CE919214145735E20021A0DC /* PVRTGlobal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PVRTGlobal.h; path = Library/PowerVR/PVRTGlobal.h; sourceTree = "<group>"; };
 		CE919215145735E20021A0DC /* PVRTTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PVRTTexture.h; path = Library/PowerVR/PVRTTexture.h; sourceTree = "<group>"; };
 		CE919216145736D70021A0DC /* CTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTexture.h; sourceTree = "<group>"; };
@@ -350,8 +350,8 @@
 				938FAA44145A903100D3AE3D /* CDataController.h */,
 				938FAA3B1459635200D3AE3D /* CPhysicController.cpp */,
 				938FAA391459634000D3AE3D /* CPhysicController.h */,
-				CE914ED91455DA7800AA2000 /* CResourceController.cpp */,
-				CE914ED81455DA6800AA2000 /* CResourceController.h */,
+				CE914ED91455DA7800AA2000 /* CResource.cpp */,
+				CE914ED81455DA6800AA2000 /* CResource.h */,
 				CE914ED61455DA5700AA2000 /* CTextureController.cpp */,
 				CE914ED51455DA4400AA2000 /* CTextureController.h */,
 				CE914ED31455DA3200AA2000 /* CShaderController.cpp */,
@@ -696,7 +696,7 @@
 				9373680614559D540051ED8D /* CCamera.cpp in Sources */,
 				CE914ED41455DA3200AA2000 /* CShaderController.cpp in Sources */,
 				CE914ED71455DA5700AA2000 /* CTextureController.cpp in Sources */,
-				CE914EDA1455DA7800AA2000 /* CResourceController.cpp in Sources */,
+				CE914EDA1455DA7800AA2000 /* CResource.cpp in Sources */,
 				935A809B14570F7C00DE658A /* CBatch.cpp in Sources */,
 				CE919218145736FD0021A0DC /* CTexture.cpp in Sources */,
 				CE8DFA9314587B0C00AE7288 /* CGame.cpp in Sources */,

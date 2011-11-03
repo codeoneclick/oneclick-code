@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include "CSequence.h"
+#include "CResource.h"
 
 CSequence::CSequence()
 {
@@ -17,13 +18,18 @@ CSequence::CSequence()
 
 CSequence::~CSequence()
 {
-    std::vector<SFrame*>::iterator pBeginIterator = m_sequence.begin();
-    std::vector<SFrame*>::iterator pEndIterator = m_sequence.end();
+    std::vector<SFrame*>::iterator pBeginIterator = m_lFrames.begin();
+    std::vector<SFrame*>::iterator pEndIterator = m_lFrames.end();
     while (pBeginIterator != pEndIterator) 
     {
         SFrame* pFrame = (*pBeginIterator);
         delete pFrame;
         ++pBeginIterator;
     }
-    m_sequence.clear();
+    m_lFrames.clear();
+}
+
+void CSequence::Release()
+{
+    CResource::Instance()->Unload_Sequence(m_sName);
 }

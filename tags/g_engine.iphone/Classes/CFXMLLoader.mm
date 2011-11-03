@@ -11,7 +11,7 @@
 
 CFXMLLoader::CFXMLLoader()
 {
-    
+    m_eStatus = E_STATUS_NONE;
 }
 
 CFXMLLoader::~CFXMLLoader()
@@ -19,9 +19,9 @@ CFXMLLoader::~CFXMLLoader()
     
 }
 
-CSequence* CFXMLLoader::Load(std::string _sName)
+void CFXMLLoader::Load(std::string _sName)
 {
-    std::vector<CSequence::SFrame*> sequence;
+    m_eStatus = E_STATUS_START; 
     NSError *error = nil;
     NSString* sName = [NSString stringWithUTF8String:_sName.c_str()];
     NSString* sPath = [[NSBundle mainBundle] resourcePath];
@@ -68,12 +68,10 @@ CSequence* CFXMLLoader::Load(std::string _sName)
         CSequence::SFrame* frame = new CSequence::SFrame();
         frame->s_vPosition = Vector2d(static_cast<float>(iValueX), static_cast<float>(iValueY));
         frame->s_vSize = Vector2d(static_cast<float>(iValueHeight), static_cast<float>(iValueWidth));
-        sequence.push_back(frame);
+        m_lFrames.push_back(frame);
         delete cData;
     }
-    CSequence* pSequence = new CSequence();
-    pSequence->Set_SequenceLine(sequence);
-    return pSequence;
+    m_eStatus = E_STATUS_DONE;
 }
 
 

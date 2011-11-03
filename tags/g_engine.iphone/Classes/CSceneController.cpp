@@ -33,18 +33,18 @@ CSceneController::~CSceneController()
     
 }
 
-INode* CSceneController::AddNode(CResourceController::SResource &_resource)
+INode* CSceneController::AddNode(CResource::SResource &_resource)
 {
     INode* node = NULL;
     switch (_resource.s_tNode)
     {
-        case CResourceController::SResource::SPRITE:
+        case CResource::SResource::SPRITE:
         {
             node = new CSprite();
             ((CSprite*)node)->Load(_resource);
         }
             break;
-        case CResourceController::SResource::DSPRITE:
+        case CResource::SResource::DSPRITE:
         {
             node = new CDSprite();
             ((CDSprite*)node)->Load(_resource);
@@ -60,7 +60,7 @@ INode* CSceneController::AddNode(CResourceController::SResource &_resource)
     return node;
 }
 
-INode* CSceneController::AddNode(CResourceController::SResource &_resource, INode *_node)
+INode* CSceneController::AddNode(CResource::SResource &_resource, INode *_node)
 {
     m_source[_resource.s_sName] = _node;
     return _node;

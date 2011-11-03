@@ -13,6 +13,8 @@
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
 #include "PVRTTexture.h"
+#include "stdlib.h"
+#include "string.h"
 
 class CTexture
 {   
@@ -22,9 +24,11 @@ protected:
     unsigned int m_uiHeight;
     bool   m_bDone;
     unsigned int m_uiRefCount;
+    std::string m_sName;
 public:
     CTexture();
     ~CTexture();
+    void Release();
     inline GLuint Get_Handle() { return m_handle; }
     inline void   Set_Handle(GLuint _handle) { m_handle = _handle; }
     inline bool   Get_Done() { return m_bDone;}
@@ -36,6 +40,7 @@ public:
     inline void IncRefCount() { m_uiRefCount++; }
     inline void DecRefCount() { m_uiRefCount--; }
     inline unsigned int Get_RefCount() { return m_uiRefCount; }
+    inline void Set_Name(std::string _sName) { m_sName = _sName; }
 };
 
 #endif

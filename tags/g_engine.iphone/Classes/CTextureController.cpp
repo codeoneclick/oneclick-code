@@ -32,9 +32,9 @@ CTexture* CTextureController::Get_Texture(std::string _sName, E_LOAD_THREAD _eTh
     
     if(_eThread == E_THREAD_MAIN)
     {
-        if( m_container.find(_sName) != m_container.end())
+        if( m_lContainer.find(_sName) != m_lContainer.end())
         {
-            pTexture = m_container[_sName];
+            pTexture = m_lContainer[_sName];
             pTexture->IncRefCount();
         }
         else
@@ -58,22 +58,22 @@ CTexture* CTextureController::Get_Texture(std::string _sName, E_LOAD_THREAD _eTh
     }
     else if(_eThread == E_THREAD_BACKGROUND)
     {
-        if( m_container.find(_sName) != m_container.end())
+        if( m_lContainer.find(_sName) != m_lContainer.end())
         {
-            pTexture = m_container[_sName];
+            pTexture = m_lContainer[_sName];
             pTexture->IncRefCount();
         }
         else
         {
-            if(m_requestQueue.find(_sName) == m_requestQueue.end())
+            if(m_lTaskPool.find(_sName) == m_lTaskPool.end())
             {
-                m_requestQueue[_sName] = new CPVRLoader();
+                m_lTaskPool[_sName] = new CPVRLoader();
             }
             pTexture = new CTexture();
             pTexture->Set_Handle(m_pStub->m_uiHanlde);
             pTexture->Set_Width(m_pStub->m_pDescription->m_vSize.x);
             pTexture->Set_Height(m_pStub->m_pDescription->m_vSize.y);
-            m_container[_sName] = pTexture;
+            m_lContainer[_sName] = pTexture;
         }
     }
 
@@ -83,39 +83,39 @@ CTexture* CTextureController::Get_Texture(std::string _sName, E_LOAD_THREAD _eTh
 void CTextureController::Unload_Texture(std::string _sName)
 {
     CTexture* pTexture = NULL;
-    if( m_container.find(_sName) != m_container.end())
+    if( m_lContainer.find(_sName) != m_lContainer.end())
     {
-        pTexture = m_container[_sName];
+        pTexture = m_lContainer[_sName];
         pTexture->DecRefCount();
         
         if(pTexture->Get_RefCount() == 0 && pTexture->Get_Handle() != m_pStub->m_uiHanlde)
         {
             delete pTexture;
-            std::map<std::string, CTexture*>::iterator pIterator = m_container.find(_sName);
-            m_container.erase(pIterator);
+            std::map<std::string, CTexture*>::iterator pIterator = m_lContainer.find(_sName);
+            m_lContainer.erase(pIterator);
         }
     }
 }
 
 void CTextureController::Update()
 {
-    std::map<std::string, CPVRLoader*>::iterator pBeginRequestNodeIterator = m_requestQueue.begin();
-    std::map<std::string, CPVRLoader*>::iterator pEndRequestNodeIterator = m_requestQueue.end();
-    while( pBeginRequestNodeIterator != pEndRequestNodeIterator)
+    std::map<std::string, CPVRLoader*>::iterator pBTask = m_lTaskPool.begin();
+    std::map<std::string, CPVRLoader*>::iterator pETask = m_lTaskPool.end();
+    while( pBTask != pETask)
     {
-        CPVRLoader* pLoader = pBeginRequestNodeIterator->second;
+        CPVRLoader* pLoader = pBTask->second;
         if(pLoader->Get_Status() == CPVRLoader::E_STATUS_DONE)
         {
             pLoader->CommitVRAM();
             CPVRLoader::SPVRSource* pSource = pLoader->Get_Source();
-            std::string sRequestName = pBeginRequestNodeIterator->first;
-            if(m_container.find(pBeginRequestNodeIterator->first) != m_container.end())
+            std::string sRequestName = pBTask->first;
+            if(m_lContainer.find(pBTask->first) != m_lContainer.end())
             {
-                CTexture* pTexture = m_container[pBeginRequestNodeIterator->first];
+                CTexture* pTexture = m_lContainer[pBTask->first];
                 pTexture->Set_Handle(pSource->m_uiHanlde);
                 pTexture->Set_Width(pSource->m_pDescription->m_vSize.x);
                 pTexture->Set_Height(pSource->m_pDescription->m_vSize.y);
-                m_requestQueue.erase(pBeginRequestNodeIterator);
+                m_lTaskPool.erase(pBTask);
                 delete pLoader;
                 return;
             }
@@ -124,31 +124,31 @@ void CTextureController::Update()
         {
             if(pLoader->Get_Status() == CPVRLoader::E_STATUS_ERROR)
             {
-                m_requestQueue.erase(pBeginRequestNodeIterator);
+                m_lTaskPool.erase(pBTask);
                 delete pLoader;
                 return;
             }
         }
-        ++pBeginRequestNodeIterator;
+        ++pBTask;
     }
 }
 
 void CTextureController::UpdateThread()
 {
     pthread_mutex_lock( &m_mutex );
-    std::map<std::string, CPVRLoader*>::iterator pBeginRequestNodeIterator = m_requestQueue.begin();
-    std::map<std::string, CPVRLoader*>::iterator pEndRequestNodeIterator = m_requestQueue.end();
-    while( pBeginRequestNodeIterator != pEndRequestNodeIterator)
+    std::map<std::string, CPVRLoader*>::iterator pBTask = m_lTaskPool.begin();
+    std::map<std::string, CPVRLoader*>::iterator pETask = m_lTaskPool.end();
+    while( pBTask != pETask)
     {
-        CPVRLoader* pLoader = pBeginRequestNodeIterator->second;
-                if(pLoader->Get_Status() == CPVRLoader::E_STATUS_NONE)
+        CPVRLoader* pLoader = pBTask->second;
+        if(pLoader->Get_Status() == CPVRLoader::E_STATUS_NONE)
         {
-            pLoader->Load(pBeginRequestNodeIterator->first.c_str());
+            pLoader->Load(pBTask->first.c_str());
         }
-        ++pBeginRequestNodeIterator;
+        ++pBTask;
     }
     pthread_mutex_unlock( &m_mutex );
-    sleep(10);
+    sleep(1);
 }
 
 
