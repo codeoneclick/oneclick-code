@@ -15,6 +15,7 @@
 #include "CCamera.h"
 #include "CResource.h"
 #include <Box2D/Box2D.h>
+#include <vector>
 
 class INode
 {
@@ -38,6 +39,8 @@ protected:
     Vector2d     m_vScale;
     Vector3d     m_vPosition;
     float        m_fRotation;
+    INode*       m_pParent;
+    std::vector<INode*> m_lChilds;
 public:
     INode();
     virtual ~INode();

@@ -85,16 +85,16 @@ void CGame::Update(float _fTime)
         resource.s_sName = pBuffer;
         resource.s_vSize = Vector2d(32.0f, 32.0f);
         resource.s_vColor = Vector4d(1.0f,0.0f,0.0f,1.0f);
-        resource.s_tNode = CResource::SResource::DSPRITE;
+        resource.s_tNode = CResource::SResource::E_DYNAMIC;
         resource.s_vPosition = Vector3d(CInput::Instance()->Get_Coord().x,CInput::Instance()->Get_Coord().y,0.0f);
         CSceneController::Instance()->AddNode(resource);
         index++;
     }
     
-    static float angle = 0.0f;
+    /*static float angle = 0.0f;
     angle += 0.05f;
     Vector3d vCameraPosition = Vector3d(sinf(angle) * 64.0f, cosf(angle) * 64.0f, 0.0f); 
-    CCamera::Instance()->Set_Position(vCameraPosition);
+    CCamera::Instance()->Set_Position(vCameraPosition);*/
     
     CResource::Instance()->Update();
     CSceneController::Instance()->Update(_fTime);

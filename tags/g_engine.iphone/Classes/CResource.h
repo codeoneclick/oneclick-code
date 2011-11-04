@@ -26,14 +26,14 @@ private:
 public:   
     struct SResource
     {
-        enum T_NODE { SPRITE = 0, DSPRITE };
+        enum E_NODE { E_STATIC = 0, E_DYNAMIC };
         std::string s_sName;
         std::string s_sTexture;
         std::string s_sShader;
         Vector4d    s_vColor;
         Vector2d    s_vSize;
         Vector3d    s_vPosition;
-        T_NODE      s_tNode;
+        E_NODE      s_tNode;
     };
     CResource();
     ~CResource();

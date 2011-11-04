@@ -38,13 +38,13 @@ INode* CSceneController::AddNode(CResource::SResource &_resource)
     INode* node = NULL;
     switch (_resource.s_tNode)
     {
-        case CResource::SResource::SPRITE:
+        case CResource::SResource::E_STATIC:
         {
             node = new CSprite();
             ((CSprite*)node)->Load(_resource);
         }
             break;
-        case CResource::SResource::DSPRITE:
+        case CResource::SResource::E_DYNAMIC:
         {
             node = new CDSprite();
             ((CDSprite*)node)->Load(_resource);
