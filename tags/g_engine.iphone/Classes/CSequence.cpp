@@ -8,12 +8,10 @@
 
 #include <iostream>
 #include "CSequence.h"
-#include "CResource.h"
 
 CSequence::CSequence()
 {
-    m_uiRefCount = 0;
-    m_bDone = false;
+    m_eParser = E_FXML;
 }
 
 CSequence::~CSequence()
@@ -29,7 +27,9 @@ CSequence::~CSequence()
     m_lFrames.clear();
 }
 
-void CSequence::Release()
+void CSequence::Set_Source(void *_pSource)
 {
-    CResource::Instance()->Unload_Sequence(m_sName);
+    SSource* pSource = static_cast<SSource*>(_pSource);
+    m_lFrames = pSource->m_lFrames;
 }
+

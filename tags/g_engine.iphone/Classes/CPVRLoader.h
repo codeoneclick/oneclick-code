@@ -14,8 +14,9 @@
 #include "PVRTTexture.h"
 #include "CVector.h"
 #include "CTexture.h"
+#include "ILoader.h"
 
-class CPVRLoader
+class CPVRLoader : public ILoader
 {
 protected:
     enum E_TEXTURE_FORMAT 
@@ -42,33 +43,18 @@ protected:
         unsigned int m_uiMIP;
         bool m_bCompressed;
     };
-public:
-    struct SPVRSource
-    {
-        char* m_pData;
-        SDescription* m_pDescription;
-        GLuint m_uiHanlde;
-        PVR_Texture_Header* m_pHeader;
-    };
-    
-    enum E_STATUS
-    {
-        E_STATUS_NONE,
-        E_STATUS_START,
-        E_STATUS_ERROR,
-        E_STATUS_DONE,
-    };
     
 private:
-    SPVRSource* m_pSource;
-    E_STATUS m_eStatus;
+    CTexture::SSource* m_pSource;
+    char* m_pData;
+    SDescription* m_pDescription;
+    PVR_Texture_Header* m_pHeader;
 public:
     CPVRLoader();
-    ~CPVRLoader();
-    inline E_STATUS Get_Status() { return m_eStatus; }
-    inline SPVRSource* Get_Source() { return m_pSource; }
-    void Load(const char* _sName);
-    void CommitVRAM();
+    virtual ~CPVRLoader();
+    virtual void* Get_Source() { return m_pSource; }
+    virtual void Load(const char* _sName);
+    virtual void Commit();
 };
 
 #endif

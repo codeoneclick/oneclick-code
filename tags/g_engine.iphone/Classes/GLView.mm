@@ -1,5 +1,6 @@
 #import "GLView.h"
 #import <OpenGLES/ES2/gl.h> // <-- for GL_RENDERBUFFER only
+#include "CInput.h"
 
 const bool ForceES1 = false;
 
@@ -76,6 +77,41 @@ const bool ForceES1 = false;
     }
     CGame::Instance()->Render();
     [m_context presentRenderbuffer:GL_RENDERBUFFER];
+}
+
+- (void)touchesBegan:(NSSet*)touches withEvent:(UIEvent*)event 
+{
+    NSLog(@"touchesBegan");
+    for (UITouch*touch in touches)
+    {
+        CGPoint TouchLocation = [touch locationInView:self];
+        CInput::Instance()->Set_State(CInput::E_TOUCH);
+        CInput::Instance()->Set_Coord(TouchLocation.x, TouchLocation.y);
+        NSLog(@"position : %f, %f", TouchLocation.x, TouchLocation.y);
+    }
+}
+- (void)touchesMoved:(NSSet*)touches withEvent:(UIEvent*)event
+{
+    NSLog(@"touchesMoved");
+    for (UITouch*touch in touches)
+    {
+        CGPoint TouchLocation = [touch locationInView:self];
+        CInput::Instance()->Set_Coord(TouchLocation.x, TouchLocation.y);
+    }
+}
+- (void)touchesEnded:(NSSet*)touches withEvent:(UIEvent*)event 
+{
+    NSLog(@"touchesEnded");
+    for (UITouch*touch in touches)
+    {
+        CGPoint TouchLocation = [touch locationInView:self];
+        CInput::Instance()->Set_State(CInput::E_UNTOUCH);
+        CInput::Instance()->Set_Coord(TouchLocation.x, TouchLocation.y);
+    }
+}
+- (void)touchesCancelled:(NSSet*)touches withEvent:(UIEvent*)event 
+{
+    NSLog(@"touchesCancelled");
 }
 
 @end

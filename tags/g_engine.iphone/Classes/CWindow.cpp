@@ -31,7 +31,7 @@ CWindow* CWindow::Instance()
     return m_instance;
 }
 
-void CWindow::Init(unsigned int _uiWidth, unsigned int _uiHeight)
+void CWindow::Init(int _uiWidth, int _uiHeight)
 {
     m_uiWidth = _uiWidth;
     m_uiHeight = _uiHeight;

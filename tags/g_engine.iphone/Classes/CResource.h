@@ -40,15 +40,16 @@ public:
     static CResource* Instance();
      void Update();
     
-    CTexture* Get_Texture(std::string _sName, CTextureController::E_LOAD_THREAD _eThread);
+    /*CTexture* Get_Texture(std::string _sName, CTextureController::E_LOAD_THREAD _eThread);
     void Unload_Texture(std::string _sName);
     
     CSequence* Get_Sequence(std::string _sName, CDataController::E_LOAD_THREAD _eThread);
-    void Unload_Sequence(std::string _sName);
+    void Unload_Sequence(std::string _sName);*/
     
     void Get_Shader(std::string _sName, CShader* _pShader);
     
-   
+    IResource* Load(std::string _sName, IResource::E_PARSER _eParser, IResource::E_LOAD_THREAD _eThread);
+    void Unload(IResource* _pResource);
 };
 
 #endif

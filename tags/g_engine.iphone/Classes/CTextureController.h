@@ -13,28 +13,19 @@
 #include <string>
 #include <map>
 #include "CPVRLoader.h"
-#include <pthread.h>
+#include "IResourceController.h"
 
-class CTextureController
+
+class CTextureController : public IResourceController
 {
-public:
-    enum E_LOAD_THREAD
-    {
-        E_THREAD_MAIN,
-        E_THREAD_BACKGROUND,
-    };
 private:
-    std::map<std::string, CTexture*>   m_lContainer;
-    std::map<std::string, CPVRLoader*> m_lTaskPool;
-    CPVRLoader::SPVRSource* m_pStub;
-    pthread_mutex_t m_mutex;
+    CTexture::SSource* m_pStub;
 public:
     CTextureController();
     ~CTextureController();
-    void Update();
-    void UpdateThread();
-    CTexture* Get_Texture(std::string _sName, E_LOAD_THREAD _eThread);
-    void Unload_Texture(std::string _sName);
+    
+    virtual IResource* Load(std::string _sName, IResource::E_LOAD_THREAD _eThread);
+    virtual void Unload(std::string _sName);
 };
 
 

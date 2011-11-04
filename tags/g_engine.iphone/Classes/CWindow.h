@@ -12,16 +12,16 @@
 class CWindow
 {
 private:
-    unsigned int m_uiWidth;
-    unsigned int m_uiHeight;
+    int m_uiWidth;
+    int m_uiHeight;
     static CWindow* m_instance;
 public:
     CWindow();
     ~CWindow();
     static CWindow* Instance();
-    void Init(unsigned int _uiWidth, unsigned int _uiHeight);
-    inline unsigned int Get_Width() { return m_uiWidth; }
-    inline unsigned int Get_Height() { return m_uiHeight; }
+    void Init(int _uiWidth, int _uiHeight);
+    inline int Get_Width() { return m_uiWidth; }
+    inline int Get_Height() { return m_uiHeight; }
 };
 
 #endif
