@@ -36,6 +36,9 @@
 		938FAA46145A904B00D3AE3D /* CDataController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 938FAA45145A904700D3AE3D /* CDataController.cpp */; };
 		93CFC05B145EF13D00720766 /* CWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CFC05A145EF13D00720766 /* CWindow.cpp */; };
 		93CFC05E145EF15300720766 /* CInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CFC05D145EF15300720766 /* CInput.cpp */; };
+		93CFC0931463E61800720766 /* ILoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CFC0921463E61800720766 /* ILoader.cpp */; };
+		93CFC0961463EC0D00720766 /* IResource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CFC0951463EC0700720766 /* IResource.cpp */; };
+		93CFC0991463FA2C00720766 /* IResourceController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CFC0981463FA2800720766 /* IResourceController.cpp */; };
 		CE8DFA9314587B0C00AE7288 /* CGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE8DFA9214587B0C00AE7288 /* CGame.cpp */; };
 		CE8DFAF81458842900AE7288 /* b2BroadPhase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE8DFA981458842800AE7288 /* b2BroadPhase.cpp */; };
 		CE8DFAF91458842900AE7288 /* b2CollideCircle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE8DFA9A1458842800AE7288 /* b2CollideCircle.cpp */; };
@@ -146,6 +149,12 @@
 		93CFC05A145EF13D00720766 /* CWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CWindow.cpp; sourceTree = "<group>"; };
 		93CFC05C145EF14800720766 /* CInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CInput.h; sourceTree = "<group>"; };
 		93CFC05D145EF15300720766 /* CInput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CInput.cpp; sourceTree = "<group>"; };
+		93CFC0901463E60C00720766 /* ILoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILoader.h; sourceTree = "<group>"; };
+		93CFC0921463E61800720766 /* ILoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ILoader.cpp; sourceTree = "<group>"; };
+		93CFC0941463EBF500720766 /* IResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IResource.h; sourceTree = "<group>"; };
+		93CFC0951463EC0700720766 /* IResource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IResource.cpp; sourceTree = "<group>"; };
+		93CFC0971463F6BD00720766 /* IResourceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IResourceController.h; sourceTree = "<group>"; };
+		93CFC0981463FA2800720766 /* IResourceController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IResourceController.cpp; sourceTree = "<group>"; };
 		CE8DFA9114587AFD00AE7288 /* CGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGame.h; sourceTree = "<group>"; };
 		CE8DFA9214587B0C00AE7288 /* CGame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGame.cpp; sourceTree = "<group>"; };
 		CE8DFA961458842800AE7288 /* Box2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2D.h; sourceTree = "<group>"; };
@@ -243,8 +252,8 @@
 		CE914ED31455DA3200AA2000 /* CShaderController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CShaderController.cpp; sourceTree = "<group>"; };
 		CE914ED51455DA4400AA2000 /* CTextureController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTextureController.h; sourceTree = "<group>"; };
 		CE914ED61455DA5700AA2000 /* CTextureController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CTextureController.cpp; sourceTree = "<group>"; };
-		CE914ED81455DA6800AA2000 /* CResource.h */ = {isa = PBXFileReference; fileEncoding = 4; path = CResource.h; sourceTree = "<group>"; };
-		CE914ED91455DA7800AA2000 /* CResource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; path = CResource.cpp; sourceTree = "<group>"; };
+		CE914ED81455DA6800AA2000 /* CResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CResource.h; sourceTree = "<group>"; };
+		CE914ED91455DA7800AA2000 /* CResource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CResource.cpp; sourceTree = "<group>"; };
 		CE919214145735E20021A0DC /* PVRTGlobal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PVRTGlobal.h; path = Library/PowerVR/PVRTGlobal.h; sourceTree = "<group>"; };
 		CE919215145735E20021A0DC /* PVRTTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PVRTTexture.h; path = Library/PowerVR/PVRTTexture.h; sourceTree = "<group>"; };
 		CE919216145736D70021A0DC /* CTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTexture.h; sourceTree = "<group>"; };
@@ -360,6 +369,8 @@
 				937367FE145589900051ED8D /* CSceneController.h */,
 				937367FC145587030051ED8D /* CRenderController.cpp */,
 				937367FB145586EF0051ED8D /* CRenderController.h */,
+				93CFC0971463F6BD00720766 /* IResourceController.h */,
+				93CFC0981463FA2800720766 /* IResourceController.cpp */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -373,6 +384,8 @@
 				93205995145EA7D800DEBCCB /* CPVRLoader.mm */,
 				932059A8145EC30800DEBCCB /* CFXMLLoader.h */,
 				932059A9145EC31D00DEBCCB /* CFXMLLoader.mm */,
+				93CFC0901463E60C00720766 /* ILoader.h */,
+				93CFC0921463E61800720766 /* ILoader.cpp */,
 			);
 			name = Loaders;
 			sourceTree = "<group>";
@@ -404,6 +417,8 @@
 				93CFC05A145EF13D00720766 /* CWindow.cpp */,
 				93CFC05C145EF14800720766 /* CInput.h */,
 				93CFC05D145EF15300720766 /* CInput.cpp */,
+				93CFC0941463EBF500720766 /* IResource.h */,
+				93CFC0951463EC0700720766 /* IResource.cpp */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -754,6 +769,9 @@
 				932059B2145EDB3500DEBCCB /* CSequence.cpp in Sources */,
 				93CFC05B145EF13D00720766 /* CWindow.cpp in Sources */,
 				93CFC05E145EF15300720766 /* CInput.cpp in Sources */,
+				93CFC0931463E61800720766 /* ILoader.cpp in Sources */,
+				93CFC0961463EC0D00720766 /* IResource.cpp in Sources */,
+				93CFC0991463FA2C00720766 /* IResourceController.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

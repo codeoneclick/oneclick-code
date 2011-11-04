@@ -9,32 +9,23 @@
 #ifndef gEngine_CFXMLLoader_h
 #define gEngine_CFXMLLoader_h
 
-#include "stdlib.h"
-#include <string>
 #include <map>
 #include <vector>
 #include "CVector.h"
 #include "CSequence.h"
+#include "ILoader.h"
 
-class CFXMLLoader
+class CFXMLLoader : public ILoader
 {
-public:
-    enum E_STATUS
-    {
-        E_STATUS_NONE,
-        E_STATUS_START,
-        E_STATUS_ERROR,
-        E_STATUS_DONE,
-    };
 private:
-    std::vector<CSequence::SFrame*> m_lFrames;
-    E_STATUS m_eStatus;
+    CSequence::SSource* m_pSource;
+    char* m_pData;
 public:
     CFXMLLoader();
     ~CFXMLLoader();
-    void Load(std::string _sName);
-    inline E_STATUS Get_Status() { return m_eStatus; }
-    inline std::vector<CSequence::SFrame*> Get_Frames() { return m_lFrames; }
+    virtual void Load(const char* _sName);
+    virtual void* Get_Source() { return m_pSource; }
+    virtual void Commit() { };
 };
 
 

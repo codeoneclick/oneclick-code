@@ -32,8 +32,8 @@ void CSprite::Load(CResource::SResource &_resource)
     
     m_pShader = new CShader();
     CResource::Instance()->Get_Shader("basic", m_pShader);
-    m_pTexture = CResource::Instance()->Get_Texture("Untitled_default.pvr", CTextureController::E_THREAD_BACKGROUND);
-    m_pSequence = CResource::Instance()->Get_Sequence("Untitled_default.xml", CDataController::E_THREAD_BACKGROUND);
+    m_pTexture = static_cast<CTexture*>(CResource::Instance()->Load("Untitled_default.pvr", IResource::E_PVR, IResource::E_THREAD_BACKGROUND));
+    m_pSequence = static_cast<CSequence*>(CResource::Instance()->Load("Untitled_default.xml",IResource::E_FXML, IResource::E_THREAD_BACKGROUND));
     m_iTotalFrames = m_pSequence->Get_Frames().size();
     
     m_pVb = new CVertexBuffer(4, sizeof(CVertexBuffer::SVertexVTC), CVertexBuffer::VBD_V2FT2FC4F);

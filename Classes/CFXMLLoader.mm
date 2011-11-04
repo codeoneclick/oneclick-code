@@ -11,23 +11,30 @@
 
 CFXMLLoader::CFXMLLoader()
 {
-    m_eStatus = E_STATUS_NONE;
+    m_pSource = NULL;
+    m_pData = NULL;
 }
 
 CFXMLLoader::~CFXMLLoader()
 {
-    
+    if(m_pData != NULL)
+    {
+        delete m_pData;
+        m_pData = NULL;
+    }
 }
 
-void CFXMLLoader::Load(std::string _sName)
+void CFXMLLoader::Load(const char* _sName)
 {
     m_eStatus = E_STATUS_START; 
     NSError *error = nil;
-    NSString* sName = [NSString stringWithUTF8String:_sName.c_str()];
+    NSString* sName = [NSString stringWithUTF8String:_sName];
     NSString* sPath = [[NSBundle mainBundle] resourcePath];
     sPath = [sPath stringByAppendingPathComponent:sName];
     NSLog(@"[Data controller] Data load :%@",sPath);
     NSString *string = [NSString stringWithContentsOfFile:sPath encoding:NSUTF8StringEncoding error:&error];
+    
+    m_pData = (char*)[string UTF8String];
     
     string = [string stringByReplacingOccurrencesOfString:@"\"" withString:@"|"];
     string = [string stringByReplacingOccurrencesOfString:@" " withString:@""];
@@ -38,6 +45,8 @@ void CFXMLLoader::Load(std::string _sName)
     std::string k_REG_EXP_Y = "y=|";
     std::string k_REG_EXP_WIDTH = "width=|";
     std::string k_REG_EXP_HEIGHT = "height=|";
+    
+    m_pSource = new CSequence::SSource();
     
     for(unsigned int index = 0; index < [array count]; index++)
     {
@@ -68,7 +77,7 @@ void CFXMLLoader::Load(std::string _sName)
         CSequence::SFrame* frame = new CSequence::SFrame();
         frame->s_vPosition = Vector2d(static_cast<float>(iValueX), static_cast<float>(iValueY));
         frame->s_vSize = Vector2d(static_cast<float>(iValueHeight), static_cast<float>(iValueWidth));
-        m_lFrames.push_back(frame);
+        m_pSource->m_lFrames.push_back(frame);
         delete cData;
     }
     m_eStatus = E_STATUS_DONE;

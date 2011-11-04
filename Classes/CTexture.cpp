@@ -8,20 +8,21 @@
 
 #include <iostream>
 #include "CTexture.h"
-#include "CResource.h"
 
 CTexture::CTexture()
 {
-    m_bDone = false;
-    m_uiRefCount = 0;
+    m_eParser = E_PVR;
 }
 
 CTexture::~CTexture()
 {
-    glDeleteTextures(1, &m_handle);
+    glDeleteTextures(1, &m_uiHandle);
 }
 
-void CTexture::Release()
+void CTexture::Set_Source(void *_pSource)
 {
-    CResource::Instance()->Unload_Texture(m_sName);
+    SSource* pSource = static_cast<SSource*>(_pSource);
+    m_uiHandle = pSource->m_uiHanlde;
+    m_uiWidth  = pSource->m_uiWidth;
+    m_uiHeight = pSource->m_uiHeight;
 }
