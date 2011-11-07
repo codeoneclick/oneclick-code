@@ -30,8 +30,8 @@ void CMatch3::Load()
     param.m_vSize.y = CWindow::Instance()->Get_Height();
     m_pGameContainer->Load(param);
     
-    m_pLevel = new CLevel();
-    ((CLevel*)m_pLevel)->Load(8,8);
+    m_pLevel = new CMatch3Level();
+    ((CMatch3Level*)m_pLevel)->Load(8,8);
     Vector3d vLevelPosition = Vector3d(-(7 * 26) / 2, -(7 * 26) / 2, 0.0f);
     m_pLevel->Set_Position(vLevelPosition);
     m_pGameContainer->AddChild(m_pLevel);

@@ -1,5 +1,5 @@
 //
-//  CLevel.h
+//  CMatch3Level.h
 //  gEngine
 //
 //  Created by sergey.sergeev on 11/7/11.
@@ -10,15 +10,17 @@
 #define gEngine_CLevel_h
 #include "INode.h"
 #include "CShape.h"
+#include "CMatch3MapParser.h"
 
-class CLevel : public INode
+class CMatch3Level : public INode
 {
 private:
     unsigned int m_uiCellCount;
     unsigned int m_uiRowCount;
+    CMatch3MapParser* m_pParser;
 public:
-    CLevel();
-    ~CLevel();
+    CMatch3Level();
+    ~CMatch3Level();
     void Load(unsigned int _uiCellCount, unsigned int _uiRowCount);
     virtual void Render();
 };

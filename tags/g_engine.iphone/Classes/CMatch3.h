@@ -11,7 +11,7 @@
 
 #include "CRenderController.h"
 #include "INode.h"
-#include "CLevel.h"
+#include "CMatch3Level.h"
 
 class CMatch3
 {
