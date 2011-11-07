@@ -1,25 +1,25 @@
 //
-//  CSprite.h
+//  CShape.h
 //  gEngine
 //
-//  Created by sergey.sergeev on 10/24/11.
+//  Created by sergey.sergeev on 11/7/11.
 //  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
 //
 
-#ifndef gEngine_CSprite_h
-#define gEngine_CSprite_h
+#ifndef gEngine_CShape_h
+#define gEngine_CShape_h
 
 #include "INode.h"
-#include "CSequence.h"
 
-class CSprite : public INode
+class CShape : public INode
 {
 public:
-    CSprite();
-    virtual ~CSprite();
+    CShape();
+    virtual ~CShape();
     virtual void Update(float _fTime);
     virtual void Render();
     virtual void Load(INode::SResourceParam &_param);
 };
+
 
 #endif

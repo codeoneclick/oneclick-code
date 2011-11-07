@@ -17,12 +17,14 @@
 
 class CShaderController
 {
+public:
+    enum E_SHADER { E_COLOR = 0, E_TEXTURE };
 protected:
-    std::map<std::string, CGLSLLoader::SGLSLData> m_container;
+    std::map<E_SHADER, CGLSLLoader::SGLSLData> m_container;
 public:
     CShaderController();
     ~CShaderController();
-    void Get_Shader(std::string _sName, CShader* _pShader);
+    CShader* Get_Shader(E_SHADER _eShader);
 };
 
 #endif

@@ -5,7 +5,7 @@
 //  Created by sergey.sergeev on 10/27/11.
 //  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
 //
-
+/*
 #include <iostream>
 #include "CDSprite.h"
 #include "CPhysicController.h"
@@ -50,7 +50,7 @@ void CDSprite::Load(CResource::SResource &_resource)
 	m_pBody = CPhysicController::Instance()->World()->CreateBody(&m_pBodyDef);
 	b2PolygonShape dynamicBox;
     
-	dynamicBox.SetAsBox(m_fWidth / 2,m_fHeight / 2);
+	dynamicBox.SetAsBox(m_vSize.x / 2,m_vSize.y / 2);
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicBox;
 	fixtureDef.density = 2.0f;
@@ -59,4 +59,4 @@ void CDSprite::Load(CResource::SResource &_resource)
 	m_pBody->CreateFixture(&fixtureDef);
 	m_pBody->SetType(b2_dynamicBody);
 }
-
+*/

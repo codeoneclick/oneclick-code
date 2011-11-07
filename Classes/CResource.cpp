@@ -101,9 +101,9 @@ void CResource::Unload_Sequence(std::string _sName)
     m_pDataController->Unload_Sequence(_sName);
 }*/
 
-void CResource::Get_Shader(std::string _sName, CShader *_pShader)
+CShader* CResource::Get_Shader(CShaderController::E_SHADER _eShader)
 {
-    m_pShaderController->Get_Shader( _sName, _pShader);
+    return m_pShaderController->Get_Shader(_eShader);
 }
 
 

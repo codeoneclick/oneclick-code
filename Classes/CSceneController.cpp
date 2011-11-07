@@ -33,53 +33,98 @@ CSceneController::~CSceneController()
     
 }
 
-INode* CSceneController::AddNode(CResource::SResource &_resource)
+INode* CSceneController::AddNode(INode::SResourceParam &_param)
 {
     INode* node = NULL;
-    switch (_resource.s_tNode)
+    switch (_param.m_eNode)
     {
-        case CResource::SResource::E_STATIC:
+        case INode::E_SHAPE:
         {
-            node = new CSprite();
-            ((CSprite*)node)->Load(_resource);
+            node = new CShape();
+            ((CShape*)node)->Load(_param);
         }
             break;
-        case CResource::SResource::E_DYNAMIC:
+        case INode::E_SPRITE:
         {
-            node = new CDSprite();
-            ((CDSprite*)node)->Load(_resource);
+            node = new CSprite();
+            ((CSprite*)node)->Load(_param);
         }
+            break;
+        case INode::E_MOVIECLIP:
+        {
+            node = new CMovieClip();
+            ((CMovieClip*)node)->Load(_param);
+        }
+            break;
         default:
         {
             
         }
             break;
     }
-    m_source[_resource.s_sName] = node;
+    m_source[_param.m_sName] = node;
        
     return node;
 }
 
-INode* CSceneController::AddNode(CResource::SResource &_resource, INode *_node)
+INode* CSceneController::AddNode(INode::SResourceParam &_param, INode *_node)
 {
-    m_source[_resource.s_sName] = _node;
+    INode* node = NULL;
+    switch (_param.m_eNode)
+    {
+        case INode::E_SHAPE:
+        {
+            node = new CShape();
+            ((CShape*)node)->Load(_param);
+        }
+            break;
+        case INode::E_SPRITE:
+        {
+            node = new CSprite();
+            ((CSprite*)node)->Load(_param);
+        }
+            break;
+        case INode::E_MOVIECLIP:
+        {
+            node = new CMovieClip();
+            ((CMovieClip*)node)->Load(_param);
+        }
+            break;
+        default:
+        {
+            
+        }
+            break;
+    }
+    m_source[_param.m_sName] = node;
+    _node->AddChild(node);
     return _node;
 }
 
 void CSceneController::RemoveNode(INode *_node)
 {
-    std::map<std::string, INode*>::iterator beginNodeIterator = m_source.begin();
-    std::map<std::string, INode*>::iterator endNodeIterator = m_source.end();
-    while( beginNodeIterator != endNodeIterator)
+    std::map<std::string, INode*>::iterator pBNode = m_source.begin();
+    std::map<std::string, INode*>::iterator pENode = m_source.end();
+    while( pBNode != pENode)
     {
-        if((*beginNodeIterator).second == _node)
+        if((*pBNode).second == _node)
         {
-            m_source.erase(beginNodeIterator);
+            m_source.erase(pBNode);
+            std::vector<INode*> lChilds = _node->Get_Childs();
+            std::vector<INode*>::iterator pBNodeChild = lChilds.begin();
+            std::vector<INode*>::iterator pENodeChild = lChilds.end();
+            
+            while (pBNodeChild != pENodeChild)
+            {
+                this->RemoveNode((*pBNodeChild));
+                ++pBNodeChild;
+            }
+
             delete _node;
             _node = NULL;
             return;
         }
-        ++beginNodeIterator;
+        ++pBNode;
     }
     std::cout<<"[CSceneController] Node not found.";
 }
@@ -91,6 +136,16 @@ void CSceneController::RemoveNode(std::string _sName)
     {
         INode *node = (*nodeIterator).second;
         m_source.erase(nodeIterator);
+        std::vector<INode*> lChilds = node->Get_Childs();
+        std::vector<INode*>::iterator pBNodeChild = lChilds.begin();
+        std::vector<INode*>::iterator pENodeChild = lChilds.end();
+        
+        while (pBNodeChild != pENodeChild)
+        {
+            this->RemoveNode((*pBNodeChild));
+            ++pBNodeChild;
+        }
+
         delete node;
         node = NULL;
         return;

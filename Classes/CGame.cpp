@@ -37,13 +37,17 @@ void CGame::Load(float _fWidth, float _fHeight)
 {
     m_pRenderController = new CRenderController(_fWidth, _fHeight);
     CWindow::Instance()->Init(_fWidth, _fHeight);
+    
+    m_pGame_01 = new CMatch3();
+    m_pGame_01->Load();
+    
     /*CResource::SResource resource;
     resource.s_sName = "node_01";
     resource.s_vSize = Vector2d(32.0f, 32.0f);
     resource.s_vColor = Vector4d(1.0f,0.0f,0.0f,1.0f);
-    resource.s_tNode = CResource::SResource::SPRITE;
-    resource.s_vPosition = Vector3d(-160.0f,100.0f,0.0f);
-    INode* node_01 = CSceneController::Instance()->AddNode(resource);*/
+    resource.s_tNode = CResource::SResource::E_DYNAMIC;
+    resource.s_vPosition = Vector3d(-100.0f,100.0f,0.0f);
+    node_01 = CSceneController::Instance()->AddNode(resource);*/
     
     /*resource.s_sName = "node_02";
     resource.s_vColor = Vector4d(0.0f,1.0f,0.0f,1.0f);
@@ -76,34 +80,36 @@ void CGame::Load(float _fWidth, float _fHeight)
 
 void CGame::Update(float _fTime)
 {
-    static int index = 0;
+    /*static int index = 2;
     if(CInput::Instance()->Get_State() == CInput::E_TOUCH)
     {
-        CResource::SResource resource;
+        INode::SResourceParam param;
         char pBuffer[16];
         sprintf (pBuffer, "node_%d",index);
-        resource.s_sName = pBuffer;
-        resource.s_vSize = Vector2d(32.0f, 32.0f);
-        resource.s_vColor = Vector4d(1.0f,0.0f,0.0f,1.0f);
-        resource.s_tNode = CResource::SResource::E_DYNAMIC;
-        resource.s_vPosition = Vector3d(CInput::Instance()->Get_Coord().x,CInput::Instance()->Get_Coord().y,0.0f);
-        CSceneController::Instance()->AddNode(resource);
+        param.m_sName = pBuffer;
+        param.m_vSize = Vector2d(32.0f, 32.0f);
+        param.m_vColor = Vector4d(1.0f,0.0f,0.0f,1.0f);
+        param.m_eNode = INode::E_MOVIECLIP;
+        param.m_vPosition = Vector3d(CInput::Instance()->Get_Coord().x,CInput::Instance()->Get_Coord().y,0.0f);
+        CSceneController::Instance()->AddNode(param);
         index++;
-    }
+    }*/
     
     /*static float angle = 0.0f;
     angle += 0.05f;
     Vector3d vCameraPosition = Vector3d(sinf(angle) * 64.0f, cosf(angle) * 64.0f, 0.0f); 
     CCamera::Instance()->Set_Position(vCameraPosition);*/
-    
     CResource::Instance()->Update();
-    CSceneController::Instance()->Update(_fTime);
+    CCamera::Instance()->Update(_fTime);
+    m_pGame_01->Update(_fTime);
+    //CSceneController::Instance()->Update(_fTime);
 }
 
 void CGame::Render()
 {
     m_pRenderController->BeginScene();
-    CSceneController::Instance()->Render();
+    m_pGame_01->Render();
+    //CSceneController::Instance()->Render();
     m_pRenderController->EndScene();
 }
 

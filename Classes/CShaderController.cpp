@@ -10,12 +10,20 @@
 #include "CShaderController.h"
 
 #define STRINGIFY(A)  #A
-#include "../Shaders/Basic.vert"
-#include "../Shaders/Basic.frag"
+#include "../Shaders/ShaderTexture.vert"
+#include "../Shaders/ShaderTexture.frag"
+
+#include "../Shaders/ShaderColor.vert"
+#include "../Shaders/ShaderColor.frag"
 
 CShaderController::CShaderController()
 {
-    
+    CGLSLLoader *pLoader = new CGLSLLoader(); 
+    CGLSLLoader::SGLSLData pData = pLoader->Load(ShaderTextureV, ShaderTextureF);
+    m_container[E_TEXTURE] = pData;
+
+    pData = pLoader->Load(ShaderColorV, ShaderColorF);
+    m_container[E_COLOR] = pData;
 }
 
 CShaderController::~CShaderController()
@@ -23,26 +31,19 @@ CShaderController::~CShaderController()
     
 }
 
-void CShaderController::Get_Shader(std::string _sName, CShader* _pShader)
+CShader* CShaderController::Get_Shader(E_SHADER _eShader)
 {
-    if( m_container.find(_sName) != m_container.end())
+    CShader* pShader = NULL;
+    if( m_container.find(_eShader) != m_container.end())
     {
-        _pShader->Set_pHandle(m_container[_sName].s_pHandle);
-        _pShader->Set_vHandle(m_container[_sName].s_vHandle);
-        _pShader->Set_fHandle(m_container[_sName].s_fHandle);
-        _pShader->Set_Done(true);
-        return;
+        pShader = new CShader();
+        pShader->Set_pHandle(m_container[_eShader].s_pHandle);
+        pShader->Set_vHandle(m_container[_eShader].s_vHandle);
+        pShader->Set_fHandle(m_container[_eShader].s_fHandle);
+        return pShader;
     }
     else
     {
-        CGLSLLoader *pLoader = new CGLSLLoader(); 
-        CGLSLLoader::SGLSLData data = pLoader->Load(BasicVertexShader,BasicFragmentShader);
-        _pShader->Set_pHandle(data.s_pHandle);
-        _pShader->Set_vHandle(data.s_vHandle);
-        _pShader->Set_fHandle(data.s_fHandle);
-        _pShader->Set_Done(true);
-        m_container[_sName] = data;
-        delete pLoader;
-        return;
+        return NULL;
     }
 }
