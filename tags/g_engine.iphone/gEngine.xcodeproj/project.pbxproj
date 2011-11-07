@@ -39,6 +39,13 @@
 		93CFC0931463E61800720766 /* ILoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CFC0921463E61800720766 /* ILoader.cpp */; };
 		93CFC0961463EC0D00720766 /* IResource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CFC0951463EC0700720766 /* IResource.cpp */; };
 		93CFC0991463FA2C00720766 /* IResourceController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CFC0981463FA2800720766 /* IResourceController.cpp */; };
+		93CFC0A41467EFEC00720766 /* CShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CFC0A31467EFDE00720766 /* CShape.cpp */; };
+		93CFC0AD1467F7D600720766 /* CMovieClip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CFC0AC1467F7D300720766 /* CMovieClip.cpp */; };
+		93CFC0B0146809E400720766 /* ShaderColor.frag in Sources */ = {isa = PBXBuildFile; fileRef = 93CFC0AE146809E400720766 /* ShaderColor.frag */; };
+		93CFC0B1146809E400720766 /* ShaderColor.vert in Sources */ = {isa = PBXBuildFile; fileRef = 93CFC0AF146809E400720766 /* ShaderColor.vert */; };
+		93CFC0B6146814D100720766 /* CMatch3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CFC0B5146814D100720766 /* CMatch3.cpp */; };
+		93CFC0B914681AB200720766 /* CLevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CFC0B814681AB000720766 /* CLevel.cpp */; };
+		93CFC0BC1468275D00720766 /* CMatch3Cell.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CFC0BB1468275900720766 /* CMatch3Cell.cpp */; };
 		CE8DFA9314587B0C00AE7288 /* CGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE8DFA9214587B0C00AE7288 /* CGame.cpp */; };
 		CE8DFAF81458842900AE7288 /* b2BroadPhase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE8DFA981458842800AE7288 /* b2BroadPhase.cpp */; };
 		CE8DFAF91458842900AE7288 /* b2CollideCircle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE8DFA9A1458842800AE7288 /* b2CollideCircle.cpp */; };
@@ -104,8 +111,8 @@
 		4D27E4B40F9AD7D600447247 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		4D3135EB0F9A6649001FFC34 /* GLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLView.h; sourceTree = "<group>"; };
 		4D3135EC0F9A6649001FFC34 /* GLView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GLView.mm; sourceTree = "<group>"; };
-		4D508D32102600410065571B /* Basic.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = Basic.frag; path = Shaders/Basic.frag; sourceTree = "<group>"; };
-		4D508D33102600410065571B /* Basic.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = Basic.vert; path = Shaders/Basic.vert; sourceTree = "<group>"; };
+		4D508D32102600410065571B /* ShaderTexture.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderTexture.frag; path = Shaders/ShaderTexture.frag; sourceTree = "<group>"; };
+		4D508D33102600410065571B /* ShaderTexture.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderTexture.vert; path = Shaders/ShaderTexture.vert; sourceTree = "<group>"; };
 		4D8FB2C20F9EB4740055EDDB /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		4D8FB3720F9EC1010055EDDB /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -155,6 +162,18 @@
 		93CFC0951463EC0700720766 /* IResource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IResource.cpp; sourceTree = "<group>"; };
 		93CFC0971463F6BD00720766 /* IResourceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IResourceController.h; sourceTree = "<group>"; };
 		93CFC0981463FA2800720766 /* IResourceController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IResourceController.cpp; sourceTree = "<group>"; };
+		93CFC0A21467EFCA00720766 /* CShape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CShape.h; sourceTree = "<group>"; };
+		93CFC0A31467EFDE00720766 /* CShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CShape.cpp; sourceTree = "<group>"; };
+		93CFC0AA1467F7BD00720766 /* CMovieClip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMovieClip.h; sourceTree = "<group>"; };
+		93CFC0AC1467F7D300720766 /* CMovieClip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMovieClip.cpp; sourceTree = "<group>"; };
+		93CFC0AE146809E400720766 /* ShaderColor.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderColor.frag; path = Shaders/ShaderColor.frag; sourceTree = "<group>"; };
+		93CFC0AF146809E400720766 /* ShaderColor.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderColor.vert; path = Shaders/ShaderColor.vert; sourceTree = "<group>"; };
+		93CFC0B4146814C200720766 /* CMatch3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMatch3.h; sourceTree = "<group>"; };
+		93CFC0B5146814D100720766 /* CMatch3.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMatch3.cpp; sourceTree = "<group>"; };
+		93CFC0B714681AA300720766 /* CLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLevel.h; sourceTree = "<group>"; };
+		93CFC0B814681AB000720766 /* CLevel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CLevel.cpp; sourceTree = "<group>"; };
+		93CFC0BA1468274700720766 /* CMatch3Cell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMatch3Cell.h; sourceTree = "<group>"; };
+		93CFC0BB1468275900720766 /* CMatch3Cell.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMatch3Cell.cpp; sourceTree = "<group>"; };
 		CE8DFA9114587AFD00AE7288 /* CGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGame.h; sourceTree = "<group>"; };
 		CE8DFA9214587B0C00AE7288 /* CGame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGame.cpp; sourceTree = "<group>"; };
 		CE8DFA961458842800AE7288 /* Box2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2D.h; sourceTree = "<group>"; };
@@ -346,8 +365,10 @@
 		4A89D5250FEF3FC100F039C8 /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
-				4D508D32102600410065571B /* Basic.frag */,
-				4D508D33102600410065571B /* Basic.vert */,
+				93CFC0AE146809E400720766 /* ShaderColor.frag */,
+				93CFC0AF146809E400720766 /* ShaderColor.vert */,
+				4D508D32102600410065571B /* ShaderTexture.frag */,
+				4D508D33102600410065571B /* ShaderTexture.vert */,
 			);
 			name = Shaders;
 			sourceTree = "<group>";
@@ -393,24 +414,19 @@
 		937367C5144ECDC20051ED8D /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				93CFC0A51467F32E00720766 /* Nodes */,
 				93205988145E8C6D00DEBCCB /* Loaders */,
 				93205986145E890600DEBCCB /* Controllers */,
 				937367C7144ECE030051ED8D /* CShader.h */,
 				937367C8144ECE140051ED8D /* CShader.cpp */,
 				937367CA144EE2A70051ED8D /* CVertexBuffer.h */,
 				937367CB144EE2B30051ED8D /* CVertexBuffer.cpp */,
-				937367ED145190AD0051ED8D /* INode.h */,
-				937367EE145190B90051ED8D /* INode.cpp */,
-				9373680114558CC60051ED8D /* CSprite.h */,
-				9373680214558CD50051ED8D /* CSprite.cpp */,
 				9373680414559D3D0051ED8D /* CCamera.h */,
 				9373680514559D4F0051ED8D /* CCamera.cpp */,
 				935A809814570F6200DE658A /* CBatch.h */,
 				935A809A14570F7B00DE658A /* CBatch.cpp */,
 				CE919216145736D70021A0DC /* CTexture.h */,
 				CE919217145736FD0021A0DC /* CTexture.cpp */,
-				938FAA3D145967A900D3AE3D /* CDSprite.h */,
-				938FAA3E145967B700D3AE3D /* CDSprite.cpp */,
 				932059B0145EDB2100DEBCCB /* CSequence.h */,
 				932059B1145EDB3200DEBCCB /* CSequence.cpp */,
 				93CFC058145EF12F00720766 /* CWindow.h */,
@@ -432,9 +448,48 @@
 			name = Math;
 			sourceTree = "<group>";
 		};
+		93CFC0A51467F32E00720766 /* Nodes */ = {
+			isa = PBXGroup;
+			children = (
+				93CFC0A31467EFDE00720766 /* CShape.cpp */,
+				93CFC0A21467EFCA00720766 /* CShape.h */,
+				938FAA3E145967B700D3AE3D /* CDSprite.cpp */,
+				938FAA3D145967A900D3AE3D /* CDSprite.h */,
+				9373680214558CD50051ED8D /* CSprite.cpp */,
+				9373680114558CC60051ED8D /* CSprite.h */,
+				937367EE145190B90051ED8D /* INode.cpp */,
+				937367ED145190AD0051ED8D /* INode.h */,
+				93CFC0AA1467F7BD00720766 /* CMovieClip.h */,
+				93CFC0AC1467F7D300720766 /* CMovieClip.cpp */,
+			);
+			name = Nodes;
+			sourceTree = "<group>";
+		};
+		93CFC0B21468149C00720766 /* Digger */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Digger;
+			sourceTree = "<group>";
+		};
+		93CFC0B3146814AB00720766 /* Match3 */ = {
+			isa = PBXGroup;
+			children = (
+				93CFC0B4146814C200720766 /* CMatch3.h */,
+				93CFC0B5146814D100720766 /* CMatch3.cpp */,
+				93CFC0B714681AA300720766 /* CLevel.h */,
+				93CFC0B814681AB000720766 /* CLevel.cpp */,
+				93CFC0BA1468274700720766 /* CMatch3Cell.h */,
+				93CFC0BB1468275900720766 /* CMatch3Cell.cpp */,
+			);
+			name = Match3;
+			sourceTree = "<group>";
+		};
 		CE8DFA8E14587A8200AE7288 /* Game */ = {
 			isa = PBXGroup;
 			children = (
+				93CFC0B3146814AB00720766 /* Match3 */,
+				93CFC0B21468149C00720766 /* Digger */,
 				CE8DFA9114587AFD00AE7288 /* CGame.h */,
 				CE8DFA9214587B0C00AE7288 /* CGame.cpp */,
 			);
@@ -772,6 +827,13 @@
 				93CFC0931463E61800720766 /* ILoader.cpp in Sources */,
 				93CFC0961463EC0D00720766 /* IResource.cpp in Sources */,
 				93CFC0991463FA2C00720766 /* IResourceController.cpp in Sources */,
+				93CFC0A41467EFEC00720766 /* CShape.cpp in Sources */,
+				93CFC0AD1467F7D600720766 /* CMovieClip.cpp in Sources */,
+				93CFC0B0146809E400720766 /* ShaderColor.frag in Sources */,
+				93CFC0B1146809E400720766 /* ShaderColor.vert in Sources */,
+				93CFC0B6146814D100720766 /* CMatch3.cpp in Sources */,
+				93CFC0B914681AB200720766 /* CLevel.cpp in Sources */,
+				93CFC0BC1468275D00720766 /* CMatch3Cell.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -782,6 +844,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -790,6 +853,7 @@
 				HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}\"/**";
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = gEngine;
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -797,12 +861,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = gEngine_Prefix.pch;
 				HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}\"/**";
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = gEngine;
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

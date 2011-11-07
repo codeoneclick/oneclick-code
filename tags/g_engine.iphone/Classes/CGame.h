@@ -10,12 +10,15 @@
 #define gEngine_CGame_h
 
 #import "CRenderController.h"
+#include "INode.h"
+#include "CMatch3.h"
 
 class CGame
 {
 private:
     static CGame* m_game;
     CRenderController* m_pRenderController;
+    CMatch3* m_pGame_01;
 public:
     CGame();
     ~CGame();

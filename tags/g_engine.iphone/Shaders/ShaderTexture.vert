@@ -1,4 +1,4 @@
-const char* BasicVertexShader = STRINGIFY(
+const char* ShaderTextureV = STRINGIFY(
 
 attribute vec3 vertex_slot;
 attribute vec2 texcoord_slot;                                          

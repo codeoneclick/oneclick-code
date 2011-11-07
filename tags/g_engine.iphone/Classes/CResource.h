@@ -46,7 +46,7 @@ public:
     CSequence* Get_Sequence(std::string _sName, CDataController::E_LOAD_THREAD _eThread);
     void Unload_Sequence(std::string _sName);*/
     
-    void Get_Shader(std::string _sName, CShader* _pShader);
+    CShader* Get_Shader(CShaderController::E_SHADER _eShader);
     
     IResource* Load(std::string _sName, IResource::E_PARSER _eParser, IResource::E_LOAD_THREAD _eThread);
     void Unload(IResource* _pResource);

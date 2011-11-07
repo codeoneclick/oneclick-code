@@ -10,7 +10,8 @@
 #define gEngine_CSceneController_h
 
 #include "CSprite.h"
-#include "CDSprite.h"
+#include "CShape.h"
+#include "CMovieClip.h"
 #include "stdlib.h"
 #include <string.h>
 #include <map>
@@ -26,8 +27,8 @@ public:
     static CSceneController* Instance();
     void Update(float _fTime);
     void Render();
-    INode* AddNode(CResource::SResource &_resource);
-    INode* AddNode(CResource::SResource &_resource, INode* _node);
+    INode* AddNode(INode::SResourceParam &_param);
+    INode* AddNode(INode::SResourceParam &_param, INode* _node);
     void   RemoveNode(INode* _node);
     void   RemoveNode(std::string _sName);
 };

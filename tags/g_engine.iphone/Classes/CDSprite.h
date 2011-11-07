@@ -5,7 +5,7 @@
 //  Created by sergey.sergeev on 10/27/11.
 //  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
 //
-
+/*
 #ifndef gEngine_CDSprite_h
 #define gEngine_CDSprite_h
 #include "CSprite.h"
@@ -23,3 +23,4 @@ public:
 
 
 #endif
+*/
