@@ -10,6 +10,7 @@
 #include "CMatch3.h"
 #include "CShape.h"
 #include "CWindow.h"
+#include "CMatch3LogicController.h"
 
 CMatch3::CMatch3()
 {
@@ -40,6 +41,7 @@ void CMatch3::Load()
 void CMatch3::Update(float _fTime)
 {
     m_pGameContainer->Update(_fTime);
+    CMatch3LogicController::Instnace()->Update(_fTime);
 }
 
 void CMatch3::Render()
