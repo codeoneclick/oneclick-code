@@ -140,6 +140,19 @@ void INode::Set_Color(Vector4d &_vColor)
     data[3].s_color = _vColor;
 }
 
+Vector3d INode::Get_GlobalPosition()
+{
+    Vector3d vGlobalPosition = m_vPosition;
+    INode* pParent = m_pParent;
+    while(pParent != NULL)
+    {
+        vGlobalPosition += pParent->Get_Position();
+        pParent = pParent->Get_Parent();
+    }
+    
+    return vGlobalPosition;
+}
+
 void INode::Update(float _fTime)
 {
     m_mRotation = Rotation(m_fRotation);

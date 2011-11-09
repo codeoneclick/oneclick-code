@@ -82,6 +82,7 @@ public:
     virtual void RemoveChildAt(unsigned int _index);
     void RemoveChilds();
     inline Matrix4x4 Get_WorldMatrix() { return m_mWorld; }
+    Vector3d Get_GlobalPosition();
 };
 
 

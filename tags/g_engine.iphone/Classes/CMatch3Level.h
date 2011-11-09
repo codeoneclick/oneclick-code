@@ -21,8 +21,11 @@ private:
 public:
     CMatch3Level();
     ~CMatch3Level();
+    unsigned int Get_CellCount() { return m_uiCellCount; }
+    unsigned int Get_RowCount() { return m_uiRowCount; }
     void Load(unsigned int _uiCellCount, unsigned int _uiRowCount);
     virtual void Render();
+    virtual void Update(float _fTime);
 };
 
 #endif
