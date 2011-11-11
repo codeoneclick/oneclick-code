@@ -7,15 +7,15 @@
 //
 
 #include <iostream>
-#include "CFXMLLoader.h"
+#include "CParser_SEQ.h"
 
-CFXMLLoader::CFXMLLoader()
+CParser_SEQ::CParser_SEQ()
 {
     m_pSource = NULL;
     m_pData = NULL;
 }
 
-CFXMLLoader::~CFXMLLoader()
+CParser_SEQ::~CParser_SEQ()
 {
     if(m_pData != NULL)
     {
@@ -24,9 +24,9 @@ CFXMLLoader::~CFXMLLoader()
     }
 }
 
-void CFXMLLoader::Load(const char* _sName)
+void CParser_SEQ::Load(const char* _sName)
 {
-    m_eStatus = E_STATUS_START; 
+    m_eStatus = E_START_STATUS; 
     NSError *error = nil;
     NSString* sName = [NSString stringWithUTF8String:_sName];
     NSString* sPath = [[NSBundle mainBundle] resourcePath];
@@ -80,7 +80,7 @@ void CFXMLLoader::Load(const char* _sName)
         m_pSource->m_lFrames.push_back(frame);
         delete cData;
     }
-    m_eStatus = E_STATUS_DONE;
+    m_eStatus = E_DONE_STATUS;
 }
 
 

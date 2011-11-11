@@ -65,6 +65,7 @@ bool CMatch3Cell::Intersection()
            vTouchPosition.y > (vGlobal2dPosition.y - m_vSize.y / 2))
         {
             bIntersect = true;
+            CMatch3LogicController::Instnace()->Interserction(this);
         }
         
         if(bIntersect)

@@ -1,22 +1,22 @@
 //
-//  CPVRLoader.h
+//  CParser_PVR.h
 //  gEngine
 //
 //  Created by sergey.sergeev on 10/31/11.
 //  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
 //
 
-#ifndef gEngine_CPVRLoader_h
-#define gEngine_CPVRLoader_h
+#ifndef gEngine_CParser_PVR_h
+#define gEngine_CParser_PVR_h
 
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
 #include "PVRTTexture.h"
 #include "CVector.h"
 #include "CTexture.h"
-#include "ILoader.h"
+#include "IParser.h"
 
-class CPVRLoader : public ILoader
+class CParser_PVR : public IParser
 {
 protected:
     enum E_TEXTURE_FORMAT 
@@ -50,8 +50,8 @@ private:
     SDescription* m_pDescription;
     PVR_Texture_Header* m_pHeader;
 public:
-    CPVRLoader();
-    virtual ~CPVRLoader();
+    CParser_PVR();
+    virtual ~CParser_PVR();
     virtual void* Get_Source() { return m_pSource; }
     virtual void Load(const char* _sName);
     virtual void Commit();

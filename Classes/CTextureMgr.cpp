@@ -7,29 +7,29 @@
 //
 
 #include <iostream>
-#include "CTextureController.h"
+#include "CTextureMgr.h"
 #include <cmath>
 #include "stdlib.h"
 #include <algorithm>
 
-CTextureController::CTextureController()
+CTextureMgr::CTextureMgr()
 {
-    CPVRLoader* pLoader = new CPVRLoader();
-    pLoader->Load("Untitled_default.pvr");
-    pLoader->Commit();
-    m_pStub = static_cast<CTexture::SSource*>(pLoader->Get_Source());
+    CParser_PVR* pParser = new CParser_PVR();
+    pParser->Load("Untitled_default.pvr");
+    pParser->Commit();
+    m_pStub = static_cast<CTexture::SSource*>(pParser->Get_Source());
 }
 
-CTextureController::~CTextureController()
+CTextureMgr::~CTextureMgr()
 {
     
 }
 
-IResource* CTextureController::Load(std::string _sName, IResource::E_LOAD_THREAD _eThread)
+IResource* CTextureMgr::Load(std::string _sName, IResourceMgr::E_THREAD _eThread)
 {
     CTexture* pTexture = NULL;
     
-    if(_eThread == IResource::E_THREAD_MAIN)
+    if(_eThread == IResourceMgr::E_MAIN_THREAD)
     {
         if( m_lContainer.find(_sName) != m_lContainer.end())
         {
@@ -40,17 +40,17 @@ IResource* CTextureController::Load(std::string _sName, IResource::E_LOAD_THREAD
         {
             pTexture = new CTexture();
             pTexture->Set_Source(m_pStub);
-            CPVRLoader* pLoader = new CPVRLoader();
-            pLoader->Load(_sName.c_str());
-            if(pLoader->Get_Status() != ILoader::E_STATUS_ERROR)
+            CParser_PVR* pParser = new CParser_PVR();
+            pParser->Load(_sName.c_str());
+            if(pParser->Get_Status() != IParser::E_ERROR_STATUS)
             {
-                pLoader->Commit();
-                pTexture->Set_Source(pLoader->Get_Source());
+                pParser->Commit();
+                pTexture->Set_Source(pParser->Get_Source());
             }
-            delete pLoader;
+            delete pParser;
         }
     }
-    else if(_eThread == IResource::E_THREAD_BACKGROUND)
+    else if(_eThread == IResourceMgr::E_BACKGROUND_THREAD)
     {
         if( m_lContainer.find(_sName) != m_lContainer.end())
         {
@@ -61,7 +61,7 @@ IResource* CTextureController::Load(std::string _sName, IResource::E_LOAD_THREAD
         {
             if(m_lTaskPool.find(_sName) == m_lTaskPool.end())
             {
-                m_lTaskPool[_sName] = new CPVRLoader();
+                m_lTaskPool[_sName] = new CParser_PVR();
             }
             pTexture = new CTexture();
             pTexture->Set_Source(m_pStub);
@@ -72,7 +72,7 @@ IResource* CTextureController::Load(std::string _sName, IResource::E_LOAD_THREAD
     return pTexture;
 }
 
-void CTextureController::Unload(std::string _sName)
+void CTextureMgr::Unload(std::string _sName)
 {
     CTexture* pTexture = NULL;
     if( m_lContainer.find(_sName) != m_lContainer.end())

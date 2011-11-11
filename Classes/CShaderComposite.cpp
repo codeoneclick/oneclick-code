@@ -1,5 +1,5 @@
 //
-//  CShaderController.cpp
+//  CShaderComposite.cpp
 //  gEngine
 //
 //  Created by Snow Leopard User on 24/10/2011.
@@ -7,7 +7,7 @@
 //
 
 #include <iostream>
-#include "CShaderController.h"
+#include "CShaderComposite.h"
 
 #define STRINGIFY(A)  #A
 #include "../Shaders/ShaderTexture.vert"
@@ -16,22 +16,33 @@
 #include "../Shaders/ShaderColor.vert"
 #include "../Shaders/ShaderColor.frag"
 
-CShaderController::CShaderController()
+CShaderComposite* CShaderComposite::m_pInstance = NULL;
+
+CShaderComposite::CShaderComposite()
 {
-    CGLSLLoader *pLoader = new CGLSLLoader(); 
-    CGLSLLoader::SGLSLData pData = pLoader->Load(ShaderTextureV, ShaderTextureF);
+    CParser_GLSL *pParser = new CParser_GLSL(); 
+    CParser_GLSL::SGLSLData pData = pParser->Load(ShaderTextureV, ShaderTextureF);
     m_container[E_TEXTURE] = pData;
 
-    pData = pLoader->Load(ShaderColorV, ShaderColorF);
+    pData = pParser->Load(ShaderColorV, ShaderColorF);
     m_container[E_COLOR] = pData;
 }
 
-CShaderController::~CShaderController()
+CShaderComposite::~CShaderComposite()
 {
     
 }
 
-CShader* CShaderController::Get_Shader(E_SHADER _eShader)
+CShaderComposite* CShaderComposite::Instance()
+{
+    if(m_pInstance == NULL)
+    {
+        m_pInstance = new CShaderComposite();
+    }
+    return m_pInstance;
+}
+
+CShader* CShaderComposite::Get_Shader(E_SHADER _eShader)
 {
     CShader* pShader = NULL;
     if( m_container.find(_eShader) != m_container.end())
