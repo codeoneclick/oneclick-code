@@ -16,10 +16,6 @@
 
 class IResourceMgr
 {
-public:
-    enum E_MGR { E_TEXTURE_MGR, E_SEQUENCE_MGR };
-    enum E_PARSER { E_PVR_PARSER, E_SEQ_PARSER };
-    enum E_THREAD { E_MAIN_THREAD, E_BACKGROUND_THREAD };
 protected:
     pthread_mutex_t m_mutex;
     std::map<std::string, IParser*> m_lTaskPool;
@@ -30,7 +26,7 @@ public:
     
     virtual void Update();
     virtual void Thread();
-    virtual IResource* Load(std::string _sName, IResourceMgr::E_THREAD _eThread) = 0;
+    virtual IResource* Load(std::string _sName, IResource::E_THREAD _eThread) = 0;
     virtual void Unload(std::string _sName) = 0;
 };
 

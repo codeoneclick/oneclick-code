@@ -14,16 +14,9 @@
 class IResource
 {
 public:
-    enum E_PARSER 
-    { 
-        E_PVR = 0, 
-        E_FXML 
-    }; 
-    enum E_LOAD_THREAD
-    {
-        E_THREAD_MAIN = 0,
-        E_THREAD_BACKGROUND,
-    };
+    enum E_MGR { E_TEXTURE_MGR, E_SEQUENCE_MGR };
+    enum E_PARSER { E_PVR_PARSER, E_SEQ_PARSER };
+    enum E_THREAD { E_MAIN_THREAD, E_BACKGROUND_THREAD };
 protected:
     E_PARSER m_eParser;
     unsigned int m_uiRefCount;

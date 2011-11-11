@@ -11,7 +11,7 @@
 
 CTexture::CTexture()
 {
-    m_eParser = E_PVR;
+    m_eParser = IResource::E_PVR_PARSER;
 }
 
 CTexture::~CTexture()

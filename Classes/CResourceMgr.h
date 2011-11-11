@@ -19,7 +19,7 @@ class CResourceMgr
 {
 public:
     friend void* UpdateThread(void *_pParam);
-    std::map<IResourceMgr::E_MGR,IResourceMgr*> m_lMgr;
+    std::map<IResource::E_MGR,IResourceMgr*> m_lMgr;
 private:
     static CResourceMgr* m_pInstance;
     pthread_t m_thread;
@@ -28,7 +28,7 @@ public:
     ~CResourceMgr();
     static CResourceMgr* Instance();
     void Update();
-    IResource* Load(const std::string& _sName,IResourceMgr::E_MGR _eMgr, IResourceMgr::E_PARSER _eParser, IResourceMgr::E_THREAD _eThread);
+    IResource* Load(const std::string& _sName,IResource::E_MGR _eMgr, IResource::E_PARSER _eParser, IResource::E_THREAD _eThread);
     void Unload(IResource* _pResource);
 };
 
