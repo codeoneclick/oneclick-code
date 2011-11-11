@@ -19,9 +19,17 @@ private:
     INode* m_pStartIntersectedNode;
     INode* m_pEndInterserctedNode;
     CMatch3Level* m_pLevel;
-    int** m_pMapCells;
+    int m_iStartIndex[2]; 
+    int m_iEndIndex[2];     
+    unsigned int m_uiLevelCells;
+    unsigned int m_uiLevelRows;
+
+    int** m_pMapSource;
+    int** m_pMapWave;
+    std::vector<Vector2d> m_lPath;
     bool m_bLocked;
     bool FindPath();
+    void SetupCellPathValue(int _i, int _j, int _index);
     void Move();
 public:
     CMatch3LogicController();

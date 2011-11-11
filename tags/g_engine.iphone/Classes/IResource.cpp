@@ -8,7 +8,7 @@
 
 #include <iostream>
 #include "IResource.h"
-#include "CResource.h"
+#include "CResourceMgr.h"
 
 IResource::IResource()
 {
@@ -22,5 +22,5 @@ IResource::~IResource()
 
 void IResource::Release()
 {
-    CResource::Instance()->Unload(this);
+    CResourceMgr::Instance()->Unload(this);
 }

@@ -22,7 +22,7 @@ CShape::~CShape()
 void CShape::Load(INode::SResourceParam &_param)
 {
     INode::Load(_param);
-    m_pShader = CResource::Instance()->Get_Shader(CShaderController::E_COLOR);
+    m_pShader = CShaderComposite::Instance()->Get_Shader(CShaderComposite::E_COLOR);
 }
 
 void CShape::Update(float _fTime)

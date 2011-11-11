@@ -1,36 +1,34 @@
 //
-//  ILoader.h
+//  IParser.h
 //  gEngine
 //
 //  Created by sergey.sergeev on 11/4/11.
 //  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
 //
 
-#ifndef gEngine_ILoader_h
-#define gEngine_ILoader_h
+#ifndef gEngine_IParser_h
+#define gEngine_IParser_h
 
 #include "stdlib.h"
-#include "string.h"
 
-
-class ILoader
+class IParser
 {
 public:
     enum E_STATUS
     {
-        E_STATUS_NONE,
-        E_STATUS_START,
-        E_STATUS_ERROR,
-        E_STATUS_DONE,
+        E_NONE_STATUS,
+        E_START_STATUS,
+        E_ERROR_STATUS,
+        E_DONE_STATUS,
     };
 protected:
     E_STATUS m_eStatus;
 public:
-    ILoader();
-    virtual ~ILoader();
-    virtual void Load(const char* _sName) = 0;
+    IParser();
+    virtual ~IParser();
+    virtual void  Load(const char* _sName) = 0;
     virtual void* Get_Source() = 0;
-    virtual void Commit() = 0;
+    virtual void  Commit() = 0;
     inline E_STATUS Get_Status() { return m_eStatus; }
 };
 

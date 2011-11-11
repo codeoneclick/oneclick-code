@@ -1,5 +1,5 @@
 //
-//  CGLSLLoader.cpp
+//  CParser_GLSL.cpp
 //  gEngine
 //
 //  Created by sergey.sergeev on 10/31/11.
@@ -7,19 +7,19 @@
 //
 
 #include <iostream>
-#include "CGLSLLoader.h"
+#include "CParser_GLSL.h"
 
-CGLSLLoader::CGLSLLoader()
+CParser_GLSL::CParser_GLSL()
 {
     
 }
 
-CGLSLLoader::~CGLSLLoader()
+CParser_GLSL::~CParser_GLSL()
 {
     
 }
 
-CGLSLLoader::SGLSLData CGLSLLoader::Load(const char *_vSource, const char *_fSource)
+CParser_GLSL::SGLSLData CParser_GLSL::Load(const char *_vSource, const char *_fSource)
 {
     SGLSLData data;
     data.s_vHandle = Build(_vSource, GL_VERTEX_SHADER);
@@ -41,7 +41,7 @@ CGLSLLoader::SGLSLData CGLSLLoader::Load(const char *_vSource, const char *_fSou
     return data;
 }
 
-GLuint CGLSLLoader::Build(const char *_pSource, GLenum _eShader) 
+GLuint CParser_GLSL::Build(const char *_pSource, GLenum _eShader) 
 {
     GLuint handle = glCreateShader(_eShader);
     glShaderSource(handle, 1, &_pSource, 0);

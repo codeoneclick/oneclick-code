@@ -7,25 +7,25 @@
 //
 
 #include <iostream>
-#include "CDataController.h"
+#include "CSequenceMgr.h"
 
-CDataController::CDataController()
+CSequenceMgr::CSequenceMgr()
 {
-    CFXMLLoader* pLoader = new CFXMLLoader();
-    pLoader->Load("Untitled_default.xml");
-    m_pStub = static_cast<CSequence::SSource*>(pLoader->Get_Source());
+    CParser_SEQ* pParser = new CParser_SEQ();
+    pParser->Load("Untitled_default.xml");
+    m_pStub = static_cast<CSequence::SSource*>(pParser->Get_Source());
 }
 
-CDataController::~CDataController()
+CSequenceMgr::~CSequenceMgr()
 {
     
 }
 
-IResource* CDataController::Load(std::string _sName, IResource::E_LOAD_THREAD _eThread)
+IResource* CSequenceMgr::Load(std::string _sName, IResourceMgr::E_THREAD _eThread)
 {
     CSequence* pSequence = NULL;
     
-    if(_eThread == IResource::E_THREAD_MAIN)
+    if(_eThread == IResourceMgr::E_MAIN_THREAD)
     {
         if( m_lContainer.find(_sName) != m_lContainer.end())
         {
@@ -36,16 +36,16 @@ IResource* CDataController::Load(std::string _sName, IResource::E_LOAD_THREAD _e
         {
             pSequence = new CSequence();
             pSequence->Set_Source(m_pStub);
-            CFXMLLoader* pLoader = new CFXMLLoader(); 
-            pLoader->Load(_sName.c_str());
-            if(pLoader->Get_Status() != ILoader::E_STATUS_ERROR)
+            CParser_SEQ* pParser = new CParser_SEQ(); 
+            pParser->Load(_sName.c_str());
+            if(pParser->Get_Status() != IParser::E_ERROR_STATUS)
             {
-                pSequence->Set_Source(pLoader->Get_Source());
+                pSequence->Set_Source(pParser->Get_Source());
             }
-            delete pLoader;
+            delete pParser;
         }
     }
-    else if(_eThread == IResource::E_THREAD_BACKGROUND)
+    else if(_eThread == IResourceMgr::E_BACKGROUND_THREAD)
     {
         if( m_lContainer.find(_sName) != m_lContainer.end())
         {
@@ -56,7 +56,7 @@ IResource* CDataController::Load(std::string _sName, IResource::E_LOAD_THREAD _e
         {
             if(m_lTaskPool.find(_sName) == m_lTaskPool.end())
             {
-                m_lTaskPool[_sName] = new CFXMLLoader();
+                m_lTaskPool[_sName] = new CParser_SEQ();
             }
             pSequence = new CSequence();
             pSequence->Set_Source(m_pStub);
@@ -67,7 +67,7 @@ IResource* CDataController::Load(std::string _sName, IResource::E_LOAD_THREAD _e
     return pSequence;
 }
 
-void CDataController::Unload(std::string _sName)
+void CSequenceMgr::Unload(std::string _sName)
 {
     CSequence* pSequence = NULL;
     if( m_lContainer.find(_sName) != m_lContainer.end())

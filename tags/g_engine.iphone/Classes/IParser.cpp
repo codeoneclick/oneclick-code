@@ -1,5 +1,5 @@
 //
-//  ILoader.cpp
+//  IParser.cpp
 //  gEngine
 //
 //  Created by sergey.sergeev on 11/4/11.
@@ -7,14 +7,14 @@
 //
 
 #include <iostream>
-#include "ILoader.h"
+#include "IParser.h"
 
-ILoader::ILoader()
+IParser::IParser()
 {
-    m_eStatus = E_STATUS_NONE;
+    m_eStatus = E_NONE_STATUS;
 }
 
-ILoader::~ILoader()
+IParser::~IParser()
 {
     
 }

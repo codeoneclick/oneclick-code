@@ -99,7 +99,7 @@ void CGame::Update(float _fTime)
     angle += 0.05f;
     Vector3d vCameraPosition = Vector3d(sinf(angle) * 64.0f, cosf(angle) * 64.0f, 0.0f); 
     CCamera::Instance()->Set_Position(vCameraPosition);*/
-    CResource::Instance()->Update();
+    CResourceMgr::Instance()->Update();
     CCamera::Instance()->Update(_fTime);
     m_pGame_01->Update(_fTime);
     //CSceneController::Instance()->Update(_fTime);

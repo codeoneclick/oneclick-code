@@ -26,9 +26,9 @@ CMovieClip::~CMovieClip()
 void CMovieClip::Load(INode::SResourceParam &_param)
 {
     INode::Load(_param);
-    m_pShader = CResource::Instance()->Get_Shader(CShaderController::E_TEXTURE);
-    m_pTexture = static_cast<CTexture*>(CResource::Instance()->Load("Untitled_default.pvr", IResource::E_PVR, IResource::E_THREAD_BACKGROUND));
-    m_pSequence = static_cast<CSequence*>(CResource::Instance()->Load("Untitled_default.xml",IResource::E_FXML, IResource::E_THREAD_BACKGROUND));
+    m_pShader = CShaderComposite::Instance()->Get_Shader(CShaderComposite::E_TEXTURE);
+    m_pTexture = static_cast<CTexture*>(CResourceMgr::Instance()->Load("Untitled_default.pvr", IResourceMgr::E_TEXTURE_MGR, IResourceMgr::E_PVR_PARSER, IResourceMgr::E_BACKGROUND_THREAD));
+    m_pSequence = static_cast<CSequence*>(CResourceMgr::Instance()->Load("Untitled_default.xml", IResourceMgr::E_SEQUENCE_MGR, IResourceMgr::E_SEQ_PARSER, IResourceMgr::E_BACKGROUND_THREAD));
     m_iTotalFrames = m_pSequence->Get_Frames().size();
     NextFrame();
 }

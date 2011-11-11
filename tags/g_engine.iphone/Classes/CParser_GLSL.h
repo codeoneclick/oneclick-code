@@ -1,20 +1,20 @@
 //
-//  CGLSLLoader.h
+//  CParser_GLSL.h
 //  gEngine
 //
 //  Created by sergey.sergeev on 10/31/11.
 //  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
 //
 
-#ifndef gEngine_CGLSLLoader_h
-#define gEngine_CGLSLLoaderr_h
+#ifndef gEngine_CParser_GLSL_h
+#define gEngine_CParser_GLSL_h
 
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
 #include "stdlib.h"
 #include <string>
 
-class CGLSLLoader
+class CParser_GLSL
 {
 public:
     struct SGLSLData
@@ -26,8 +26,8 @@ public:
 private:
     GLuint Build(const char* _pSource, GLenum _eShader);
 public:
-    CGLSLLoader();
-    ~CGLSLLoader();
+    CParser_GLSL();
+    ~CParser_GLSL();
     SGLSLData Load(const char *_vSource, const char*_fSource);
 };
 

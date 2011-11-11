@@ -7,15 +7,15 @@
 //
 
 #include <iostream>
-#include "CPVRLoader.h"
+#include "CParser_PVR.h"
 
-CPVRLoader::CPVRLoader()
+CParser_PVR::CParser_PVR()
 {
     m_pSource = NULL;
     m_pData = NULL;
 }
 
-CPVRLoader::~CPVRLoader()
+CParser_PVR::~CParser_PVR()
 {
     if(m_pData != NULL)
     {
@@ -24,9 +24,9 @@ CPVRLoader::~CPVRLoader()
     }
 }
 
-void CPVRLoader::Load(const char *_sName)
+void CParser_PVR::Load(const char *_sName)
 {
-    m_eStatus = E_STATUS_START;
+    m_eStatus = E_START_STATUS;
     NSString* sName = [NSString stringWithUTF8String:_sName];
     NSString* sPath = [[NSBundle mainBundle] resourcePath];
     sPath = [sPath stringByAppendingPathComponent:sName];
@@ -35,7 +35,7 @@ void CPVRLoader::Load(const char *_sName)
     if(pData == nil)
     {
         NSLog(@"[Texture controller] Texture does not load :%@",sPath);
-        m_eStatus = E_STATUS_ERROR;
+        m_eStatus = E_ERROR_STATUS;
         return;
     }
     
@@ -49,24 +49,24 @@ void CPVRLoader::Load(const char *_sName)
     switch (m_pHeader->dwpfFlags & PVRTEX_PIXELTYPE) 
     {
         case OGL_RGB_565:
-            m_pDescription->m_eFormat = CPVRLoader::TextureFormat565;
+            m_pDescription->m_eFormat = TextureFormat565;
             break;
         case OGL_RGBA_5551:
-            m_pDescription->m_eFormat = CPVRLoader::TextureFormat5551;
+            m_pDescription->m_eFormat = TextureFormat5551;
             break;
         case OGL_RGBA_4444:
-            m_pDescription->m_eFormat = CPVRLoader::TextureFormatRgba;
+            m_pDescription->m_eFormat = TextureFormatRgba;
             m_pDescription->m_uiBPP = 4;
             break;
         case OGL_PVRTC2:    
-            m_pDescription->m_eFormat = m_pHeader->dwAlphaBitMask ? CPVRLoader::TextureFormatPvrtcRgba2 : CPVRLoader::TextureFormatPvrtcRgb2;
+            m_pDescription->m_eFormat = m_pHeader->dwAlphaBitMask ? TextureFormatPvrtcRgba2 : TextureFormatPvrtcRgb2;
             break;
         case OGL_PVRTC4:
-            m_pDescription->m_eFormat = m_pHeader->dwAlphaBitMask ? CPVRLoader::TextureFormatPvrtcRgba4 : CPVRLoader::TextureFormatPvrtcRgb4;
+            m_pDescription->m_eFormat = m_pHeader->dwAlphaBitMask ? TextureFormatPvrtcRgba4 : TextureFormatPvrtcRgb4;
             break;
         default:
             NSLog(@"[Texture controller] Unsupported format :%@",sPath);
-            m_eStatus = E_STATUS_ERROR;
+            m_eStatus = E_ERROR_STATUS;
             return;
             break;
     }
@@ -78,19 +78,19 @@ void CPVRLoader::Load(const char *_sName)
     
     switch (m_pDescription->m_eFormat) 
     {
-        case CPVRLoader::TextureFormatPvrtcRgba2:
+        case TextureFormatPvrtcRgba2:
             m_pDescription->m_uiBPP = 2;
             m_pDescription->m_glFormat = GL_COMPRESSED_RGBA_PVRTC_2BPPV1_IMG;
             break;
-        case CPVRLoader::TextureFormatPvrtcRgb2:
+        case TextureFormatPvrtcRgb2:
             m_pDescription->m_uiBPP = 2;
             m_pDescription->m_glFormat = GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG;
             break;
-        case CPVRLoader::TextureFormatPvrtcRgba4:
+        case TextureFormatPvrtcRgba4:
             m_pDescription->m_uiBPP = 4;
             m_pDescription->m_glFormat = GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG;
             break;
-        case CPVRLoader::TextureFormatPvrtcRgb4:
+        case TextureFormatPvrtcRgb4:
             m_pDescription->m_uiBPP = 4;
             m_pDescription->m_glFormat = GL_COMPRESSED_RGB_PVRTC_4BPPV1_IMG;
             break;
@@ -103,17 +103,17 @@ void CPVRLoader::Load(const char *_sName)
     {
         switch (m_pDescription->m_eFormat) 
         {
-            case CPVRLoader::TextureFormatRgba: 
+            case TextureFormatRgba: 
                 m_pDescription->m_glFormat = GL_RGBA;
                 m_pDescription->m_glType = GL_UNSIGNED_SHORT_4_4_4_4;
                 m_pDescription->m_uiBPP = 16;
                 break;
-            case CPVRLoader::TextureFormat565:
+            case TextureFormat565:
                 m_pDescription->m_glFormat = GL_RGB;
                 m_pDescription->m_glType = GL_UNSIGNED_SHORT_5_6_5;
                 m_pDescription->m_uiBPP = 16;
                 break;
-            case CPVRLoader::TextureFormat5551:
+            case TextureFormat5551:
                 m_pDescription->m_glFormat = GL_RGBA;
                 m_pDescription->m_glType = GL_UNSIGNED_SHORT_5_5_5_1;
                 m_pDescription->m_uiBPP = 16;
@@ -122,10 +122,10 @@ void CPVRLoader::Load(const char *_sName)
                 break;
         }
     }
-    m_eStatus = E_STATUS_DONE;
+    m_eStatus = E_DONE_STATUS;
 }
 
-void CPVRLoader::Commit()
+void CParser_PVR::Commit()
 {
     int uiWidth  = m_pDescription->m_vSize.x;
     int uiHeight = m_pDescription->m_vSize.y;

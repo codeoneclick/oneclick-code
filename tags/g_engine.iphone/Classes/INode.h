@@ -13,9 +13,10 @@
 #include "CShader.h"
 #include "CVertexBuffer.h"
 #include "CCamera.h"
-#include "CResource.h"
+#include "CResourceMgr.h"
 #include <Box2D/Box2D.h>
 #include <vector>
+#include "CShaderComposite.h"
 
 class INode
 {
