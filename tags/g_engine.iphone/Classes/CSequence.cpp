@@ -11,7 +11,7 @@
 
 CSequence::CSequence()
 {
-    m_eParser = E_FXML;
+    m_eParser = IResource::E_SEQ_PARSER;
 }
 
 CSequence::~CSequence()

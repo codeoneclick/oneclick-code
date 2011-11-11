@@ -21,11 +21,11 @@ CSequenceMgr::~CSequenceMgr()
     
 }
 
-IResource* CSequenceMgr::Load(std::string _sName, IResourceMgr::E_THREAD _eThread)
+IResource* CSequenceMgr::Load(std::string _sName, IResource::E_THREAD _eThread)
 {
     CSequence* pSequence = NULL;
     
-    if(_eThread == IResourceMgr::E_MAIN_THREAD)
+    if(_eThread == IResource::E_MAIN_THREAD)
     {
         if( m_lContainer.find(_sName) != m_lContainer.end())
         {
@@ -45,7 +45,7 @@ IResource* CSequenceMgr::Load(std::string _sName, IResourceMgr::E_THREAD _eThrea
             delete pParser;
         }
     }
-    else if(_eThread == IResourceMgr::E_BACKGROUND_THREAD)
+    else if(_eThread == IResource::E_BACKGROUND_THREAD)
     {
         if( m_lContainer.find(_sName) != m_lContainer.end())
         {

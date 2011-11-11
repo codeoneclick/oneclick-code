@@ -29,6 +29,7 @@ private:
     std::vector<Vector2d> m_lPath;
     bool m_bLocked;
     bool FindPath();
+    void DoWave();
     void SetupCellPathValue(int _i, int _j, int _index);
     void Move();
 public:

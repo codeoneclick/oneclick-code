@@ -19,7 +19,7 @@ public:
     CSequenceMgr();
     ~CSequenceMgr();
    
-    virtual IResource* Load(std::string _sName, IResourceMgr::E_THREAD _eThread);
+    virtual IResource* Load(std::string _sName, IResource::E_THREAD _eThread);
     virtual void Unload(std::string _sName);
 };
 

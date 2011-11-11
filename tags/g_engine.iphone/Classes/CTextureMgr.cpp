@@ -25,11 +25,11 @@ CTextureMgr::~CTextureMgr()
     
 }
 
-IResource* CTextureMgr::Load(std::string _sName, IResourceMgr::E_THREAD _eThread)
+IResource* CTextureMgr::Load(std::string _sName, IResource::E_THREAD _eThread)
 {
     CTexture* pTexture = NULL;
     
-    if(_eThread == IResourceMgr::E_MAIN_THREAD)
+    if(_eThread == IResource::E_MAIN_THREAD)
     {
         if( m_lContainer.find(_sName) != m_lContainer.end())
         {
@@ -50,7 +50,7 @@ IResource* CTextureMgr::Load(std::string _sName, IResourceMgr::E_THREAD _eThread
             delete pParser;
         }
     }
-    else if(_eThread == IResourceMgr::E_BACKGROUND_THREAD)
+    else if(_eThread == IResource::E_BACKGROUND_THREAD)
     {
         if( m_lContainer.find(_sName) != m_lContainer.end())
         {

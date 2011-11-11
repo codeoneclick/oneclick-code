@@ -23,7 +23,7 @@ void CSprite::Load(INode::SResourceParam &_param)
 {
     INode::Load(_param);
     m_pShader = CShaderComposite::Instance()->Get_Shader(CShaderComposite::E_TEXTURE);
-    m_pTexture = static_cast<CTexture*>(CResourceMgr::Instance()->Load("Untitled_default.pvr", IResourceMgr::E_TEXTURE_MGR, IResourceMgr::E_PVR_PARSER, IResourceMgr::E_BACKGROUND_THREAD));
+    m_pTexture = static_cast<CTexture*>(CResourceMgr::Instance()->Load("Untitled_default.pvr", IResource::E_TEXTURE_MGR, IResource::E_PVR_PARSER, IResource::E_BACKGROUND_THREAD));
 }
 
 void CSprite::Update(float _fTime)
