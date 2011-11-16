@@ -9,8 +9,8 @@
 #include <iostream>
 #include "CVertexBuffer.h"
 
-const std::string CVertexBuffer::k_VERTEX_SLOT = "vertex_slot";
-const std::string CVertexBuffer::k_TEXCOORD_SLOT = "texcoord_slot";
+const std::string CVertexBuffer::k_VERTEX_SLOT = "u_in_slot_vertex";
+const std::string CVertexBuffer::k_TEXCOORD_SLOT = "u_in_slot_textcoord";
 const std::string CVertexBuffer::k_COLOR_SLOT = "color_slot";
 
 CVertexBuffer::CVertexBuffer(unsigned int _vertexCount,unsigned char _elementSize, VB_DECLARATION _declaration)

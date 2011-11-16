@@ -9,6 +9,7 @@
 #include <iostream>
 #include "CMatch3LogicController.h"
 #include "CMatch3Cell.h"
+#include "CMatch3PathFind.h"
 
 CMatch3LogicController* CMatch3LogicController::m_pInsatnce = NULL;
 
@@ -17,12 +18,12 @@ CMatch3LogicController::CMatch3LogicController()
     m_pStartIntersectedNode = NULL;
     m_pEndInterserctedNode = NULL;
     m_bLocked = false;
+    m_bFind = false;
     
     m_pMapSource = NULL;
-    m_pMapWave = NULL;
     
-    m_uiLevelCells = 0;
-    m_uiLevelRows = 0;
+    m_iMapCells = 0;
+    m_iMapRows = 0;
 }
 
 CMatch3LogicController::~CMatch3LogicController()
@@ -64,32 +65,102 @@ void CMatch3LogicController::Interserction(INode* _pNode)
 void CMatch3LogicController::Set_Level(CMatch3Level *_pLevel)
 {
     m_pLevel = _pLevel;
-    m_uiLevelCells = m_pLevel->Get_CellCount();
-    m_uiLevelRows = m_pLevel->Get_RowCount();
-    m_pMapSource = new int*[m_uiLevelCells + 2];
-    m_pMapWave = new int*[m_uiLevelCells + 2];
+    m_iMapCells = m_pLevel->Get_CellCount();
+    m_iMapRows = m_pLevel->Get_RowCount();
+    m_pMapSource = new int*[m_iMapCells];
     
-    for(unsigned int i = 0; i < (m_uiLevelCells + 2); i++)
+    for(unsigned int i = 0; i < m_iMapCells; i++)
     {
-        m_pMapSource[i] = new int[m_uiLevelRows + 2];
-        m_pMapWave[i] = new int[m_uiLevelRows + 2];
-        for(unsigned int j = 0; j < (m_uiLevelCells + 2); j++)
+        m_pMapSource[i] = new int[m_iMapRows];
+        for(unsigned int j = 0; j < m_iMapRows; j++)
         {
             m_pMapSource[i][j] = 0;
-            m_pMapWave[i][j] = 0;
         }
     }
+    Refresh();
+}
 
-    //memset(m_pMapSource, 0x0, (m_uiLevelCells + 2) * (m_uiLevelCells + 2) * sizeof(int));
-    //memset(m_pMapWave, 0x0, (m_uiLevelCells + 2) * (m_uiLevelCells + 2) * sizeof(int));
-    
-    unsigned int index = 0;
-    for(unsigned int i = 1; i <= m_uiLevelCells; i++)
+void CMatch3LogicController::Update(float _fTime)
+{
+    if(m_pStartIntersectedNode != NULL && m_pEndInterserctedNode != NULL && !m_bFind)
     {
-        for(unsigned int j = 1; j <= m_uiLevelRows; j++)
+        CMatch3Cell* pStartNode = static_cast<CMatch3Cell*>(m_pStartIntersectedNode);
+        CMatch3Cell* pEndNode = static_cast<CMatch3Cell*>(m_pEndInterserctedNode);
+
+        m_bFind = CMatch3PathFind::Instance()->FindPath(m_pMapSource, m_iMapCells, m_iMapRows, pStartNode->Get_Index(), pEndNode->Get_Index()); //FindPath();
+        if(m_bFind)
         {
-            m_pMapWave[i][j] = 0;
+            m_lPath = CMatch3PathFind::Instance()->Get_Path();
+            StartMove();
+        }
+        else
+        {
+            m_pEndInterserctedNode = NULL;
+        }
+    }
+    Move();
+}
+
+void CMatch3LogicController::StartMove()
+{
+    m_bLocked = true;
+    int pCurrentNode[2]; 
+    m_iMoveIndex = m_lPath.size() - 1;
+    pCurrentNode[0] = m_lPath[m_iMoveIndex].x;
+    pCurrentNode[1] = m_lPath[m_iMoveIndex].y;
+    m_pCurrentMoveNode = m_pLevel->GetChildAt(pCurrentNode[0] * m_pLevel->Get_CellCount() + pCurrentNode[1]);
+}
+
+void CMatch3LogicController::EndMove()
+{
+    m_bLocked = false;
+    m_bFind = false;
+    static_cast<CMatch3Cell*>(m_pStartIntersectedNode)->Set_State(static_cast<CMatch3Cell*>(m_pEndInterserctedNode)->Get_State());
+    m_pStartIntersectedNode = NULL;
+    m_pEndInterserctedNode = NULL;
+}
+
+           
+void CMatch3LogicController::Move()
+{
+    if(m_bFind)
+    {
+        CMatch3Cell *pNode = static_cast<CMatch3Cell*>(m_pCurrentMoveNode);
+        std::cout<<pNode->Get_Index().x<<":::"<<pNode->Get_Index().y<<"\n";
+        
+        if(pNode->Get_MoveState() == CMatch3Cell::E_STAY)
+        {
+            pNode->Set_MoveState(CMatch3Cell::E_START_MOVE);
+            pNode->Set_State(CMatch3Cell::E_CELL_01);
+        }
+        
+        if(pNode->Get_MoveState() == CMatch3Cell::E_END_MOVE)
+        {
+            pNode->Set_State(CMatch3Cell::E_NONE); 
+            m_iMoveIndex--;
+            if(m_iMoveIndex < 0)
+            {
+                EndMove();
+                return;
+            }
+            
+            int pCurrentNode[2]; 
+            pCurrentNode[0] = m_lPath[m_iMoveIndex].x;
+            pCurrentNode[1] = m_lPath[m_iMoveIndex].y;
+            m_pCurrentMoveNode = m_pLevel->GetChildAt(pCurrentNode[0] * m_pLevel->Get_CellCount() + pCurrentNode[1]);
+        }
+    }
+}
+
+void CMatch3LogicController::Refresh()
+{
+    unsigned int index = 0;
+    for(unsigned int i = 0; i < m_iMapCells; i++)
+    {
+        for(unsigned int j = 0; j < m_iMapRows; j++)
+        {
             CMatch3Cell* pNode = static_cast<CMatch3Cell*>(m_pLevel->GetChildAt(index));
+            pNode->Set_MoveState(CMatch3Cell::E_STAY);
             switch (pNode->Get_State()) 
             {
                 case CMatch3Cell::E_NONE :
@@ -104,146 +175,9 @@ void CMatch3LogicController::Set_Level(CMatch3Level *_pLevel)
     }
 }
 
-void CMatch3LogicController::Update(float _fTime)
+void CMatch3LogicController::Generate()
 {
-    if(m_pStartIntersectedNode != NULL && m_pEndInterserctedNode != NULL)
-    {
-        if(FindPath())
-        {
-            Move();
-        }
-        else
-        {
-            m_pEndInterserctedNode = NULL;
-        }
-    }
-}
-
-bool CMatch3LogicController::FindPath()
-{
-    CMatch3Cell* pNode = static_cast<CMatch3Cell*>(m_pStartIntersectedNode);
-    m_iStartIndex[0] = static_cast<int>(pNode->Get_Index().x);
-    m_iStartIndex[1]= static_cast<int>(pNode->Get_Index().y);
-    pNode = static_cast<CMatch3Cell*>(m_pEndInterserctedNode);
-    m_iEndIndex[0] = static_cast<int>(pNode->Get_Index().x);
-    m_iEndIndex[1] = static_cast<int>(pNode->Get_Index().y);
     
-    m_pMapSource[m_iStartIndex[0]][m_iStartIndex[1]] = 1;
-    m_pMapSource[m_iEndIndex[0]][m_iEndIndex[1]] = 2;
-    
-    
-    //SetupCellPathValue(m_iStartIndex[0], m_iStartIndex[1], 1);
-    
-    DoWave();
-    
-    
-    std::cout<<"[m_pMapSource] :\n";
-    for(unsigned int i = 1; i <= m_uiLevelCells; i++)
-    {
-        for(unsigned int j = 1; j <= m_uiLevelRows; j++)
-        {
-            std::cout<<m_pMapSource[i][j];
-        }
-        std::cout<<"\n";
-    }
-    
-    std::cout<<"[m_pMapWave] :\n";
-    for(unsigned int i = 1; i <= m_uiLevelCells; i++)
-    {
-        for(unsigned int j = 1; j <= m_uiLevelRows; j++)
-        {
-            std::cout<<m_pMapWave[i][j]<<",";
-        }
-        std::cout<<"\n";
-    }
-
-    return false;
-}
-
-void CMatch3LogicController::DoWave()
-{
-    int index = 1;
-    m_pMapWave[m_iStartIndex[0]][m_iStartIndex[1]] = index;
-    while (index < m_uiLevelCells * m_uiLevelRows) 
-    {
-        for(int i = 1; i <= m_uiLevelCells; i++)
-        {
-            for(int j = 1; j <= m_uiLevelRows; j++)
-            {
-                if(m_pMapWave[i][j] == index && m_pMapSource[i][j] == 2)
-                {
-                    m_pMapWave[i][j] = index + 1;
-                    return;
-                }
-                
-                if(m_pMapWave[i][j] == index)
-                {
-                    if( m_pMapWave[i + 1][j] == 0 && m_pMapSource[i + 1][j] == 0)
-                    {
-                        m_pMapWave[i + 1][j] = index + 1;
-                    }
-                    
-                    if( m_pMapWave[i - 1][j] == 0 && m_pMapSource[i - 1][j] == 0)
-                    {
-                        m_pMapWave[i - 1][j] = index + 1;
-                    }
-                    
-                    if( m_pMapWave[i][j + 1] == 0 && m_pMapSource[i][j + 1] == 0)
-                    {
-                        m_pMapWave[i][j + 1] = index + 1;
-                    }
-                    
-                    if( m_pMapWave[i][j - 1] == 0 && m_pMapSource[i][j - 1] == 0)
-                    {
-                        m_pMapWave[i][j - 1] = index + 1;
-                    }
-                }
-            }
-        }
-        index++;
-    }
-}
-
-void CMatch3LogicController::SetupCellPathValue(int _i, int _j, int _index)
-{
-    /*m_pMapWave[_i][_j] = _index;
-    _index++;
-
-    
-    
-    for(int i = (_i - 1); i <= (_i + 1); i++)
-    {
-        for(int j = (_j - 1); j <= (_j + 1); j++)
-        {
-            if( i >= 0 && j >= 0 && i < m_uiLevelCells && j < m_uiLevelRows)
-            {
-                if( m_pMapWave[i][j] == 0 && m_pMapSource[i][j] == 0)
-                {
-                    m_pMapWave[i][j] = _index;
-                }
-            }
-        }
-    }
-
-    
-    for(int i = (_i - 1); i <= (_i + 1); i++)
-    {
-        for(int j = (_j - 1); j <= (_j + 1); j++)
-        {
-            if( i >= 0 && j >= 0 && i < m_uiLevelCells && j < m_uiLevelRows)
-            {
-                if( m_pMapWave[i][j] == _index && m_pMapSource[i][j] == 0)
-                {
-                    SetupCellPathValue(i, j, _index);
-                }
-            }
-        }
-    }*/
-}
-           
-void CMatch3LogicController::Move()
-{
-               
 }
 
 

@@ -34,11 +34,16 @@ public:
     
     void SetMatrix(const Matrix4x4 &_mValue, const std::string &_sName);
     void SetTexture(GLuint _handle, const std::string &_sName);
-    
+    void SetColor(const Vector4d &_vValue);
 public:
     static const std::string k_MATRIX_WORLD;
     static const std::string k_MATRIX_VIEW;
     static const std::string k_MATRIX_PROJECTION;
+    static const std::string k_COLOR;
+    static const std::string k_TEXTURE_01;
+    static const std::string k_TEXTURE_02;
+    static const std::string k_TEXTURE_03;
+    static const std::string k_TEXTURE_04;
 };
 
 
