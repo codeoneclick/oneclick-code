@@ -1,18 +1,15 @@
 const char* ShaderColorV = STRINGIFY(
 
-attribute vec3 vertex_slot;
-attribute vec2 texcoord_slot;                                          
-attribute vec4 color_slot;
-varying vec4 DestinationColor;
-varying vec2 texcoord_slot_out;                                          
-uniform mat4 mProjection;
-uniform mat4 mView;                                          
-uniform mat4 mWorld;
+attribute vec3 u_in_slot_vertex;
+attribute vec2 u_in_slot_textcoord;                                          
+varying vec2   u_out_slot_textcoord;                                          
+uniform mat4   u_m_projection;
+uniform mat4   u_m_view;                                          
+uniform mat4   u_m_world;
                                           
 void main(void)
 {
-    DestinationColor = color_slot;
-    gl_Position = mProjection * mView * mWorld * vec4(vertex_slot, 1.0);
-    texcoord_slot_out = texcoord_slot;
+    gl_Position = u_m_projection * u_m_view * u_m_world * vec4(u_in_slot_vertex, 1.0);
+    u_out_slot_textcoord = u_in_slot_textcoord;
 }
 );
