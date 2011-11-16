@@ -1,10 +1,10 @@
 const char* ShaderColorF = STRINGIFY(
 
-varying lowp vec4 DestinationColor;
-varying mediump vec2 texcoord_slot_out;
-
+varying mediump vec2 u_out_slot_textcoord;
+uniform lowp vec4 u_v_color;
+                                     
 void main(void)
 {
-   gl_FragColor = DestinationColor;
+   gl_FragColor = u_v_color;
 }
 );
