@@ -55,6 +55,7 @@ protected:
     Vector3d     m_vPosition;
     float        m_fRotation;
     Vector2d     m_vSize;
+    Vector4d     m_vColor;
     
     INode*       m_pParent;
     std::vector<INode*> m_lChilds;

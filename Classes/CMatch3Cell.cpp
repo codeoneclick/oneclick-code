@@ -10,10 +10,14 @@
 #include "CMatch3Cell.h"
 #include "CInput.h"
 #include "CMatch3LogicController.h"
+#include <sys/time.h>
 
 CMatch3Cell::CMatch3Cell()
 {
     m_eState = E_NONE;
+    kMoveTimeDelay = 1000;
+    m_eMoveState = E_STAY;
+    m_iStartMoveTimeStamp = 0;
 }
 
 CMatch3Cell::~CMatch3Cell()
@@ -41,15 +45,43 @@ void CMatch3Cell::Set_State(CMatch3Cell::E_STATE _eState)
             vColor = Vector4d(1.0f,1.0f,1.0f,1.0f);
             Set_Color(vColor);
             break;
+        case E_CELL_01:
+            vColor = Vector4d(1.0f,0.0f,0.0f,1.0f);
+            Set_Color(vColor);
+            break;
         default:
             break;
+    }
+}
+
+void CMatch3Cell::Set_MoveState(E_MOVE_STATE _eMoveState)
+{
+    m_eMoveState = _eMoveState; 
+    if( m_eMoveState == E_START_MOVE ) 
+    {
+        timeval pTime;
+        gettimeofday(&pTime, NULL);
+        m_iStartMoveTimeStamp = (pTime.tv_sec * 1000) + (pTime.tv_usec / 1000);
     }
 }
 
 void CMatch3Cell::Update(float _fTime)
 {
     CShape::Update(_fTime);
-    Intersection();
+    
+    if( CMatch3LogicController::Instnace()->Get_Lock() == false)
+    {
+        Intersection();
+    }
+    
+    timeval pTime;
+    gettimeofday(&pTime, NULL);
+    
+    long iCurrentTime = (pTime.tv_sec * 1000) + (pTime.tv_usec / 1000);
+    if(m_eMoveState == E_START_MOVE && (iCurrentTime - m_iStartMoveTimeStamp) > kMoveTimeDelay)
+    {
+        m_eMoveState = E_END_MOVE;
+    }
 }
 
 bool CMatch3Cell::Intersection()

@@ -35,6 +35,7 @@ void CShape::Render()
     m_pShader->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD);
     m_pShader->SetMatrix((*m_mProjection), CShader::k_MATRIX_PROJECTION);
     m_pShader->SetMatrix((*m_mView), CShader::k_MATRIX_VIEW);
+    m_pShader->SetColor(m_vColor);
     m_pVb->Enable(m_pShader->Get_pHandle());
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, (void*) m_pIb);
     m_pVb->Disable(m_pShader->Get_pHandle());

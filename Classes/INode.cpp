@@ -138,6 +138,8 @@ void INode::Set_Color(Vector4d &_vColor)
     data[1].s_color = _vColor;
     data[2].s_color = _vColor;
     data[3].s_color = _vColor;
+    
+    m_vColor = _vColor;
 }
 
 Vector3d INode::Get_GlobalPosition()
