@@ -60,19 +60,19 @@ INode* CSceneMgr::AddNode(IResource::SResource _pResource)
     
     if(_pResource.m_eIntersector != IResource::E_INTERSECTOR_NONE)
     {
-        if(m_tStorePickerId.r < 255)
+        if(m_tStoreIntersectorID.r < 255)
         {
-            m_tStorePickerId.r++;
+            m_tStoreIntersectorID.r++;
         }
-        else if(m_tStorePickerId.g < 255)
+        else if(m_tStoreIntersectorID.g < 255)
         {
-            m_tStorePickerId.g++;
+            m_tStoreIntersectorID.g++;
         }
-        else if(m_tStorePickerId.b < 255)
+        else if(m_tStoreIntersectorID.b < 255)
         {
-            m_tStorePickerId.b++;
+            m_tStoreIntersectorID.b++;
         }
-        pNode->Set_PickerId(m_tStorePickerId);
+        pNode->Set_IntersectorID(m_tStoreIntersectorID);
     }
        
     m_lContainer.push_back(pNode);
@@ -119,9 +119,9 @@ void CSceneMgr::Update(E_RENDER_STATE _eState, float _fTime)
             while (pBIterator != pEIterator)
             {
                 INode* pNode =  (*pBIterator);
-                INode::SPickerId tPickerId = pNode->Get_PickerId();
+                INode::SIntersectorID tIntersectorID = pNode->Get_IntersectorID();
                 //pNode->Intersect(false);
-                if((tPickerId.r == m_tCurretPickerId.r) && (tPickerId.g == m_tCurretPickerId.g) && (tPickerId.b == m_tCurretPickerId.b))
+                if((tIntersectorID.r == m_tCurretIntersectorID.r) && (tIntersectorID.g == m_tCurretIntersectorID.g) && (tIntersectorID.b == m_tCurretIntersectorID.b))
                 {
                     m_pPicker = pNode;
                     m_pPicker->Intersect(true);
