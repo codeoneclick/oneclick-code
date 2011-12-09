@@ -78,10 +78,10 @@ void CRenderMgr::End(CSceneMgr::E_RENDER_STATE _eState)
         {
             if(CInput::Instance()->Get_Click())
             {
-                INode::SPickerId tPickerId;
+                INode::SIntersectorID tIntersectorID;
                 Vector2d vMousePosition = CInput::Instance()->Get_Coord();
-                glReadPixels(static_cast<int>(vMousePosition.x), static_cast<int>(vMousePosition.y), 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &tPickerId); 
-                CSceneMgr::Instance()->Set_PickerId(tPickerId);
+                glReadPixels(static_cast<int>(vMousePosition.x), static_cast<int>(vMousePosition.y), 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &tIntersectorID); 
+                CSceneMgr::Instance()->Set_IntersectorID(tIntersectorID);
             }
             glFlush();
         }
