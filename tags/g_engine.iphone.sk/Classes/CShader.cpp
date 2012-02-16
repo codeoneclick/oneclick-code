@@ -21,18 +21,9 @@ const std::string CShader::k_TEXTURE_04         = "EXT_TEXTURE_04";
 const std::string CShader::k_VECTOR_VIEW        = "EXT_View";
 const std::string CShader::k_VECTOR_LIGHT       = "EXT_Light"; 
 
-CShader::CShader()
+CShader::CShader(GLuint _hProgramHandle)
 {
-    m_hProgramHandle = 0;
-}
-
-CShader::~CShader()
-{
-    
-}
-
-void CShader::Commit()
-{
+    m_hProgramHandle = _hProgramHandle;
     m_lUniformHandle[k_MATRIX_WORLD]      = glGetUniformLocation(m_hProgramHandle, k_MATRIX_WORLD.c_str());
     m_lUniformHandle[k_MATRIX_VIEW]       = glGetUniformLocation(m_hProgramHandle, k_MATRIX_VIEW.c_str());
     m_lUniformHandle[k_MATRIX_PROJECTION] = glGetUniformLocation(m_hProgramHandle, k_MATRIX_PROJECTION.c_str());
@@ -42,6 +33,17 @@ void CShader::Commit()
     m_lUniformHandle[k_TEXTURE_04]        = glGetUniformLocation(m_hProgramHandle, k_TEXTURE_04.c_str());
     m_lUniformHandle[k_VECTOR_VIEW]       = glGetUniformLocation(m_hProgramHandle, k_VECTOR_VIEW.c_str());
     m_lUniformHandle[k_VECTOR_LIGHT]      = glGetUniformLocation(m_hProgramHandle, k_VECTOR_LIGHT.c_str());
+}
+
+CShader::~CShader()
+{
+    
+}
+
+void CShader::SetVector(const CVector3d& _vValue, const std::string& _sName)
+{
+    GLint hHandle = m_lUniformHandle[_sName];
+    glUniform3fv(hHandle, 1, &_vValue.v[0]);
 }
 
 void CShader::SetMatrix(const CMatrix4x4& _mValue,const std::string& _sName)
@@ -81,13 +83,6 @@ void CShader::SetTexture(GLuint _hTextureHandle, const std::string& _sName)
         glUniform1i(m_lUniformHandle[_sName], 3);
         return;
     }
-
-}
-
-void CShader::SetVector(const CVector3d& _vValue, const std::string& _sName)
-{
-    GLint hHandle = m_lUniformHandle[_sName];
-    glUniform3fv(hHandle, 1, &_vValue.v[0]);
 }
 
 void CShader::Enable()

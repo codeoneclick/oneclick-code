@@ -136,8 +136,8 @@ void CParser_PVR::Commit()
     
     glGenTextures( 1, &m_pSource->m_hTextureHanlde );
     glBindTexture( GL_TEXTURE_2D, m_pSource->m_hTextureHanlde );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
     
     if (m_pDescription->m_bCompressed) 
     {

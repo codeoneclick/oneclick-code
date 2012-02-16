@@ -17,7 +17,7 @@ public:
     CModel(void);
     virtual ~CModel();
     virtual void Load(IResource::SResource _tResource);
-    virtual void OnMouseTouchEvent(void);
+    virtual void OnTouchEvent(void);
     virtual void Update(void);
     virtual void Render(void);
 };

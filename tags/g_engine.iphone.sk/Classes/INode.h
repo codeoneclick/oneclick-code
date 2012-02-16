@@ -84,7 +84,7 @@ public:
     
     void Set_Light(ILight* _pLight)  { m_pLight = _pLight; }
     
-    virtual void OnMouseTouchEvent(void) = 0; 
+    virtual void OnTouchEvent(void) = 0; 
 };
 
 #endif

@@ -18,8 +18,8 @@ CVertexBuffer::CVertexBuffer(unsigned int _iNumVertexes,unsigned char _iVertexSi
 {
     m_pData = new char[_iNumVertexes * _iVertexSize];
     m_iNumVertexes = _iNumVertexes;
-    m_iStride = _iVertexSize;
-    m_bVRAM = false;
+    m_iSize = _iVertexSize;
+    m_bIsInVRAM = false;
     m_eMode = _eMode;
 }
 
@@ -31,40 +31,45 @@ CVertexBuffer::~CVertexBuffer()
         m_pData = NULL;
     }
     
-    glDeleteBuffers(1, &m_hVBHandle);
+    glDeleteBuffers(1, &m_iHandle);
 }
 
-void CVertexBuffer::Enable(GLuint _hShaderHandle)
+void CVertexBuffer::Set_ShaderRef(GLuint _iShaderHandler)
+{
+    m_iShaderHandle = _iShaderHandler;
+    m_iPositionSlot = glGetAttribLocation(m_iShaderHandle, k_SLOT_POSITION.c_str());
+    m_iTexcoordSlot = glGetAttribLocation(m_iShaderHandle, k_SLOT_TEXCOORD.c_str());
+    m_iNormalSlot   = glGetAttribLocation(m_iShaderHandle, k_SLOT_NORMAL.c_str());
+    m_iColorSlot    = glGetAttribLocation(m_iShaderHandle, k_SLOT_COLOR.c_str());
+}
+
+void CVertexBuffer::Enable()
 {
     glBindBuffer(GL_ARRAY_BUFFER, NULL);
     
-    GLint hPositionSlot = glGetAttribLocation(_hShaderHandle, k_SLOT_POSITION.c_str());
-    GLint hTexcoordSlot = glGetAttribLocation(_hShaderHandle, k_SLOT_TEXCOORD.c_str());
-    GLint hNormalSlot   = glGetAttribLocation(_hShaderHandle, k_SLOT_NORMAL.c_str());
-    GLint hColorSlot    = glGetAttribLocation(_hShaderHandle, k_SLOT_COLOR.c_str());
-
-    if(m_bVRAM)
+   
+    if(m_bIsInVRAM)
     {
-        glBindBuffer(GL_ARRAY_BUFFER, m_hVBHandle);
-        if(hPositionSlot >= 0)
+        glBindBuffer(GL_ARRAY_BUFFER, m_iHandle);
+        if(m_iPositionSlot >= 0)
         {
-            glEnableVertexAttribArray(hPositionSlot);
-            glVertexAttribPointer(hPositionSlot, 3, GL_FLOAT, GL_FALSE, m_iStride, 0);
+            glEnableVertexAttribArray(m_iPositionSlot);
+            glVertexAttribPointer(m_iPositionSlot, 3, GL_FLOAT, GL_FALSE, m_iSize, 0);
         }
-        if(hTexcoordSlot >= 0 && m_eMode == E_VERTEX_BUFFER_MODE_VTN)
+        if(m_iTexcoordSlot >= 0 && m_eMode == E_VERTEX_BUFFER_MODE_VTN)
         {
-            glEnableVertexAttribArray(hTexcoordSlot);
-            glVertexAttribPointer(hTexcoordSlot, 2, GL_FLOAT, GL_FALSE, m_iStride, (GLvoid*) (sizeof(float) * 3));
+            glEnableVertexAttribArray(m_iTexcoordSlot);
+            glVertexAttribPointer(m_iTexcoordSlot, 2, GL_FLOAT, GL_FALSE, m_iSize, (GLvoid*) (sizeof(float) * 3));
         }
-        if(hNormalSlot >= 0 && (m_eMode == E_VERTEX_BUFFER_MODE_VTN || m_eMode == E_VERTEX_BUFFER_MODE_VNC))
+        if(m_iNormalSlot >= 0 && (m_eMode == E_VERTEX_BUFFER_MODE_VTN || m_eMode == E_VERTEX_BUFFER_MODE_VNC))
         {
-            glEnableVertexAttribArray(hNormalSlot);
-            glVertexAttribPointer(hNormalSlot,   3, GL_FLOAT, GL_FALSE, m_iStride, (GLvoid*) (sizeof(float) * 5));
+            glEnableVertexAttribArray(m_iNormalSlot);
+            glVertexAttribPointer(m_iNormalSlot,   3, GL_FLOAT, GL_FALSE, m_iSize, (GLvoid*) (sizeof(float) * 5));
         }
-        if(hColorSlot >= 0 && (m_eMode == E_VERTEX_BUFFER_MODE_VC || m_eMode == E_VERTEX_BUFFER_MODE_VNC))
+        if(m_iColorSlot >= 0 && (m_eMode == E_VERTEX_BUFFER_MODE_VC || m_eMode == E_VERTEX_BUFFER_MODE_VNC))
         {
-            glEnableVertexAttribArray(hColorSlot);
-            glVertexAttribPointer(hColorSlot,  4, GL_FLOAT, GL_FALSE, m_iStride, (GLvoid*) (sizeof(float) * 11));
+            glEnableVertexAttribArray(m_iColorSlot);
+            glVertexAttribPointer(m_iColorSlot,  4, GL_FLOAT, GL_FALSE, m_iSize, (GLvoid*) (sizeof(float) * 11));
         }
         return; 
     }
@@ -88,59 +93,54 @@ void CVertexBuffer::Enable(GLuint _hShaderHandle)
         pColorSource = &pData[0].m_cColor.v[0];
     }
         
-    if(hPositionSlot >= 0)
+    if(m_iPositionSlot >= 0) 
     {
-        glVertexAttribPointer(hPositionSlot, 3, GL_FLOAT, GL_FALSE, m_iStride, pPositionSource);
-        glEnableVertexAttribArray(hPositionSlot);
+        glVertexAttribPointer(m_iPositionSlot, 3, GL_FLOAT, GL_FALSE, m_iSize, pPositionSource);
+        glEnableVertexAttribArray(m_iPositionSlot);
     }
-    if(hTexcoordSlot >= 0 && m_eMode == E_VERTEX_BUFFER_MODE_VTN)
+    if(m_iTexcoordSlot >= 0 && m_eMode == E_VERTEX_BUFFER_MODE_VTN)
     {
-        glVertexAttribPointer(hTexcoordSlot, 2, GL_FLOAT, GL_FALSE, m_iStride, pTexcoordSource);
-        glEnableVertexAttribArray(hTexcoordSlot); 
+        glVertexAttribPointer(m_iTexcoordSlot, 2, GL_FLOAT, GL_FALSE, m_iSize, pTexcoordSource);
+        glEnableVertexAttribArray(m_iTexcoordSlot); 
     }
-    if(hNormalSlot >= 0 && (m_eMode == E_VERTEX_BUFFER_MODE_VTN || m_eMode == E_VERTEX_BUFFER_MODE_VNC))
+    if(m_iNormalSlot >= 0 && (m_eMode == E_VERTEX_BUFFER_MODE_VTN || m_eMode == E_VERTEX_BUFFER_MODE_VNC))
     {
-        glVertexAttribPointer(hNormalSlot,   3, GL_FLOAT, GL_FALSE, m_iStride, pNormalSource);
-        glEnableVertexAttribArray(hNormalSlot);
+        glVertexAttribPointer(m_iNormalSlot,   3, GL_FLOAT, GL_FALSE, m_iSize, pNormalSource);
+        glEnableVertexAttribArray(m_iNormalSlot);
     }
-    if(hColorSlot >= 0 && (m_eMode == E_VERTEX_BUFFER_MODE_VC || m_eMode == E_VERTEX_BUFFER_MODE_VNC))
+    if(m_iColorSlot >= 0 && (m_eMode == E_VERTEX_BUFFER_MODE_VC || m_eMode == E_VERTEX_BUFFER_MODE_VNC))
     {
-        glVertexAttribPointer(hColorSlot,  4, GL_UNSIGNED_BYTE, GL_TRUE, m_iStride, pColorSource);
-        glEnableVertexAttribArray(hColorSlot);
+        glVertexAttribPointer(m_iColorSlot,  4, GL_UNSIGNED_BYTE, GL_TRUE, m_iSize, pColorSource);
+        glEnableVertexAttribArray(m_iColorSlot);
     }
 }
 
-void CVertexBuffer::Disable(GLuint _hShaderHandle)
+void CVertexBuffer::Disable()
 {
-    GLint hPositionSlot = glGetAttribLocation(_hShaderHandle, k_SLOT_POSITION.c_str());
-    GLint hTexcoordSlot = glGetAttribLocation(_hShaderHandle, k_SLOT_TEXCOORD.c_str());
-    GLint hNormalSlot   = glGetAttribLocation(_hShaderHandle, k_SLOT_NORMAL.c_str());
-    GLint hColorSlot    = glGetAttribLocation(_hShaderHandle, k_SLOT_COLOR.c_str());
-    
-    if(hPositionSlot >= 0)
+    if(m_iPositionSlot >= 0)
     {
-        glDisableVertexAttribArray(hPositionSlot);
+        glDisableVertexAttribArray(m_iPositionSlot);
     }
-    if(hTexcoordSlot >= 0)
+    if(m_iTexcoordSlot >= 0)
     {
-        glDisableVertexAttribArray(hTexcoordSlot); 
+        glDisableVertexAttribArray(m_iTexcoordSlot); 
     }
-    if(hNormalSlot >= 0)
+    if(m_iNormalSlot >= 0)
     {
-        glDisableVertexAttribArray(hNormalSlot);
+        glDisableVertexAttribArray(m_iNormalSlot);
     }
-    if(hColorSlot >= 0)
+    if(m_iColorSlot >= 0)
     {
-        glDisableVertexAttribArray(hColorSlot);
+        glDisableVertexAttribArray(m_iColorSlot);
     }
 }
 
 void CVertexBuffer::Commit()
 {
-    glGenBuffers(1, &m_hVBHandle);
-    glBindBuffer(GL_ARRAY_BUFFER, m_hVBHandle);
-    glBufferData(GL_ARRAY_BUFFER, m_iStride * m_iNumVertexes, m_pData, GL_STATIC_DRAW);
-    m_bVRAM = true;
+    glGenBuffers(1, &m_iHandle);
+    glBindBuffer(GL_ARRAY_BUFFER, m_iHandle);
+    glBufferData(GL_ARRAY_BUFFER, m_iSize * m_iNumVertexes, m_pData, GL_STATIC_DRAW);
+    m_bIsInVRAM = true;
 }
 
 

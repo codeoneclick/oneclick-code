@@ -9,8 +9,6 @@
 #include <iostream>
 #include "CBatchMgr.h"
 
-CBatchMgr* CBatchMgr::m_pInstance = NULL;
-
 CBatchMgr::CBatchMgr()
 {
     CBatch* pColliderBatch = new CBatch(CVertexBuffer::E_VERTEX_BUFFER_MODE_VC);
@@ -41,15 +39,6 @@ CBatchMgr::CBatchMgr()
 CBatchMgr::~CBatchMgr()
 {
     
-}
-
-CBatchMgr* CBatchMgr::Instance()
-{
-    if(m_pInstance == NULL)
-    {
-        m_pInstance = new CBatchMgr();
-    }
-    return m_pInstance;
 }
 
 void CBatchMgr::PushToBoundingBatch(CBoundingBox* _pNode)

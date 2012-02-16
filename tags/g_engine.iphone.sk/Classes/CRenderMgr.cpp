@@ -11,8 +11,6 @@
 #include "CInput.h"
 #include "CWindow.h"
 
-CRenderMgr* CRenderMgr::m_pInstance = NULL;
-
 CRenderMgr::CRenderMgr()
 {
     glGenRenderbuffers(1, &m_hDepthBuffer);
@@ -35,16 +33,6 @@ CRenderMgr::CRenderMgr()
 CRenderMgr::~CRenderMgr()
 {
     
-}
-
-CRenderMgr* CRenderMgr::Instance()
-{
-    if( m_pInstance == NULL)
-    {
-        m_pInstance = new CRenderMgr();
-    }
-    
-    return m_pInstance;
 }
 
 void CRenderMgr::Begin()

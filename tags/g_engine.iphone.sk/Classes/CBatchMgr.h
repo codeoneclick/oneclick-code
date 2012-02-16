@@ -19,10 +19,8 @@
 class CBatchMgr
 {
 private:
-    static CBatchMgr* m_pInstance;
     std::map<int, CBatch*> m_lContainer;
 public:
-    static CBatchMgr* Instance();
     CBatchMgr();
     ~CBatchMgr();
     

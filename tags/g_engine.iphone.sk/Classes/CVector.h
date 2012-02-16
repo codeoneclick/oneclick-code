@@ -149,6 +149,31 @@ public:
     }
 };
 
+inline bool IsEqual(const CVector2d& v1,const CVector2d& v2)
+{
+    CVector2d vEqual = v1 - v2;
+    for(unsigned int i = 0; i < 2; ++i)
+    {
+        if(vEqual.v[i] > MATH_EPS)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+inline bool IsEqual(const CVector3d& v1,const CVector3d& v2)
+{
+    CVector3d vEqual = v1 - v2;
+    for(unsigned int i = 0; i < 3; ++i)
+    {
+        if(vEqual.v[i] > MATH_EPS)
+        {
+            return false;
+        }
+    }
+    return true;
+}
 
 inline float Dot( const CVector3d& v1,const CVector3d& v2 )
 {

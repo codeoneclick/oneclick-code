@@ -19,7 +19,6 @@ class CCollisionMgr
 private:
     ICollider::SColliderID m_tLastColliderID;
     std::map<unsigned int, ICollider*> m_lContainer;
-    static CCollisionMgr* m_pInstance;
     CVector2d m_vTouch2DPoint;
     CVector3d m_vTouch3DPoint;
     unsigned int m_iHexColliderID;
@@ -29,7 +28,6 @@ public:
     CCollisionMgr();
     ~CCollisionMgr();
     
-    static CCollisionMgr* Instance();
     void Create_Collider(ICollider* _pCollider);
     void Remove_Collider(ICollider* _pCollider);
 

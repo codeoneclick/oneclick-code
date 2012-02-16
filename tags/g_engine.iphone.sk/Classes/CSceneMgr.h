@@ -12,7 +12,9 @@
 #include "INode.h"
 #include "ILight.h"
 #include "ICamera.h"
-#include "CBatch.h"
+#include "CBatchMgr.h"
+#include "CRenderMgr.h"
+#include "CCollisionMgr.h"
 #include "CEventMgr.h"
 
 class CSceneMgr
@@ -24,6 +26,10 @@ private:
     std::vector<INode*> m_lContainer;
     std::map<unsigned int, ILight*> m_lLights;
     ICamera* m_pCamera;
+    
+    CRenderMgr* m_pRenderMgr;
+    CBatchMgr* m_pBatchMgr;
+    CCollisionMgr* m_pCollisionMgr;
 public:
     CSceneMgr(void);
     ~CSceneMgr(void);
@@ -34,9 +40,8 @@ public:
     ICamera* Get_Camera(void) { return m_pCamera; }
     void Set_Camera(ICamera* _pCamera) { m_pCamera = _pCamera; }
     
-    INode* AddStaticModel(const std::string& _sName, bool _isBatching = false, IResource::E_THREAD _eThread = IResource::E_THREAD_MAIN);
-    INode* AddAnimatedModel(const std::string& _sName, bool _isBatching = false, IResource::E_THREAD _eThread = IResource::E_THREAD_MAIN);
-    INode* AddStandartModel(IResource::E_STANDART_MODEL _eModel, bool _isBatching = false, IResource::E_THREAD _eThread = IResource::E_THREAD_MAIN);
+    INode* AddModel(IResource::E_STANDART_MODEL _eModel, bool _isBatching);
+    INode* AddCustomModel(const std::string& _sName, bool _isBatching = false, IResource::E_THREAD _eThread = IResource::E_THREAD_MAIN);
     INode* AddLandscapeModel(const std::string& _sName, bool _isBatching = false);
     
     void AddEventListener(INode* _pNode, CEventMgr::E_EVENT _eEvent);
@@ -45,9 +50,9 @@ public:
     ICamera* CreateFreeCamera(float _fFov, float _fNearPlane, float _fFarPlane);
     ICamera* CreateTargetCamera(float _fFov, float _fNearPlane, float _fFarPlane, INode* _pTarget);
     
-    void CheckTouchCollision(const CVector2d &_vPosition);
-    
-    void OnScreenTouch(CVector2d _vTouchPoint);
+    CRenderMgr* Get_RenderMgr(void) { return m_pRenderMgr; }
+    CBatchMgr* Get_BatchMgr(void) { return m_pBatchMgr; }
+    CCollisionMgr* Get_CollisionMgr(void) { return m_pCollisionMgr; }
     
     void RemoveModel(INode *_pNode);
     void Update(void);

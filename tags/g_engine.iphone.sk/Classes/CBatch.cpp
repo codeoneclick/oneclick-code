@@ -41,6 +41,15 @@ CBatch::~CBatch()
     }
 }
 
+void CBatch::Set_Shader(CShader *_pShader)
+{
+    m_pShader = _pShader;
+    if(m_pSource->m_pVB != NULL)
+    {
+        m_pSource->m_pVB->Set_ShaderRef(m_pShader->Get_ProgramHandle());
+    }
+}
+
 void CBatch::Push(SSource _tSource)
 {
     m_pSource->m_iNumIndexes += _tSource.m_pMesh->Get_NumIndexes();
@@ -141,7 +150,7 @@ void CBatch::Render()
         m_pShader->SetTexture(m_pTextures[3]->Get_Handle(), CShader::k_TEXTURE_04);
     }
     
-    m_pMesh->Get_VB()->Enable(m_pShader->Get_ProgramHandle());
+    m_pMesh->Get_VB()->Enable();
     if(m_eRenderMode == E_RENDER_MODE_LINES)
     {
         glDrawElements(GL_LINES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IB()->Get_Data());
@@ -150,7 +159,7 @@ void CBatch::Render()
     {
         glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IB()->Get_Data());
     }
-    m_pMesh->Get_VB()->Disable(m_pShader->Get_ProgramHandle());
+    m_pMesh->Get_VB()->Disable();
     m_pShader->Disable();
     
     DestroyBatch();

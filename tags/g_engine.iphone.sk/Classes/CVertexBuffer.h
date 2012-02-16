@@ -49,19 +49,28 @@ public:
     
 private:
     void *m_pData;
-    GLuint m_hVBHandle;
+    GLuint m_iHandle;
+    GLuint m_iShaderHandle;
     unsigned int m_iNumVertexes;
-    unsigned int m_iStride;
-    bool m_bVRAM;
+    unsigned int m_iSize;
+    bool m_bIsInVRAM;
     E_VERTEX_BUFFER_MODE m_eMode;
+    
+    GLint m_iPositionSlot;
+    GLint m_iTexcoordSlot;
+    GLint m_iNormalSlot;
+    GLint m_iColorSlot;
+
 public:
     CVertexBuffer(unsigned int _iNumVertexes,unsigned char _iVertexSize, E_VERTEX_BUFFER_MODE _eMode);
     ~CVertexBuffer();
     
     unsigned int Get_NumVertexes(void) { return  m_iNumVertexes; }
     void *Get_Data() { return m_pData; }
-    void Enable(GLuint _hShaderHandle);
-    void Disable(GLuint _hShaderHandle);
+    void Set_ShaderRef(GLuint _iShaderHandler);
+    GLuint Get_ShaderRef(void) { return m_iShaderHandle; }
+    void Enable();
+    void Disable();
     void Commit();
 };
 

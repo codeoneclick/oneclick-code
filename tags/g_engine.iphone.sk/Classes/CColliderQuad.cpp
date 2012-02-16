@@ -41,6 +41,7 @@ CColliderQuad::CColliderQuad(const CVector3d &_vPoint_01, const CVector3d &_vPoi
     
     m_pMesh = new CMesh();
     m_pMesh->Set_Source(pSource);
+    m_pMesh->Get_VB()->Set_ShaderRef(m_pShader->Get_ProgramHandle());
 }
 
 CColliderQuad::~CColliderQuad()
@@ -52,7 +53,7 @@ void CColliderQuad::Render()
 {
     if(m_bIsBatching)
     {
-        CBatchMgr::Instance()->PushToColliderBatch(this);
+        CSceneMgr::Instance()->Get_BatchMgr()->PushToColliderBatch(this);
     }
     else
     {
@@ -62,9 +63,9 @@ void CColliderQuad::Render()
         ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
         m_pShader->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
         m_pShader->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
-        m_pMesh->Get_VB()->Enable(m_pShader->Get_ProgramHandle());
+        m_pMesh->Get_VB()->Enable();
         glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IB()->Get_Data());
-        m_pMesh->Get_VB()->Disable(m_pShader->Get_ProgramHandle());
+        m_pMesh->Get_VB()->Disable();
         m_pShader->Disable();
     }
 }

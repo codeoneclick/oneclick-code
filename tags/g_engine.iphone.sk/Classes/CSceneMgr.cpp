@@ -10,7 +10,6 @@
 #include "CSceneMgr.h"
 #include "CModel.h"
 #include "CLandscape.h"
-#include "CMovieModel.h"
 #include "CRenderMgr.h"
 #include "CCollisionMgr.h"
 #include "CCameraFree.h"
@@ -27,7 +26,10 @@ const unsigned int CSceneMgr::k_MAX_LIGHTS = 8;
 CSceneMgr::CSceneMgr()
 {
     m_pCamera = NULL;
-    CBatchMgr::Instance();
+    
+    m_pRenderMgr = new CRenderMgr();
+    m_pBatchMgr = new CBatchMgr();
+    m_pCollisionMgr = new CCollisionMgr();
     
     m_lLights[ILight::E_LIGHT_MODE_DIRECTION] = new CLightPoint();
     static_cast<CLightPoint*>(m_lLights[ILight::E_LIGHT_MODE_DIRECTION])->Set_Visible(false);
@@ -53,40 +55,26 @@ CSceneMgr* CSceneMgr::Instance()
     return m_pInsatnce;
 }
 
-INode* CSceneMgr::AddStaticModel(const std::string &_sName, bool _isBatching, IResource::E_THREAD _eThread)
+INode* CSceneMgr::AddModel(IResource::E_STANDART_MODEL _eModel, bool _isBatching)
 {
     IResource::SResource tResource;
-    tResource.m_sName = _sName;
-    tResource.m_eThread = _eThread;
+    tResource.m_sName = STANDART_MODEL;
+    tResource.m_eThread = IResource::E_THREAD_MAIN;
     tResource.m_bIsBatching = _isBatching;
-    tResource.m_eModel = IResource::E_STANDART_MODEL_NONE;
+    tResource.m_eModel = _eModel;
     INode* pNode = new CModel();
     pNode->Load(tResource);
     m_lContainer.push_back(pNode);
     return pNode;
 }
 
-INode* CSceneMgr::AddAnimatedModel(const std::string &_sName, bool _isBatching, IResource::E_THREAD _eThread)
+INode* CSceneMgr::AddCustomModel(const std::string &_sName, bool _isBatching, IResource::E_THREAD _eThread)
 {
     IResource::SResource tResource;
     tResource.m_sName = _sName;
     tResource.m_eThread = _eThread;
     tResource.m_bIsBatching = _isBatching;
     tResource.m_eModel = IResource::E_STANDART_MODEL_NONE;
-    INode* pNode = new CMovieModel();
-    pNode->Load(tResource);
-    m_lContainer.push_back(pNode);
-    return pNode;
-
-}
-
-INode* CSceneMgr::AddStandartModel(IResource::E_STANDART_MODEL _eModel, bool _isBatching, IResource::E_THREAD _eThread)
-{
-    IResource::SResource tResource;
-    tResource.m_sName = STANDART_MODEL;
-    tResource.m_eThread = _eThread;
-    tResource.m_eModel = _eModel;
-    tResource.m_bIsBatching = _isBatching;
     INode* pNode = new CModel();
     pNode->Load(tResource);
     m_lContainer.push_back(pNode);
@@ -143,65 +131,13 @@ void CSceneMgr::RemoveModel(INode *_pNode)
         if(pNode == _pNode)
         {
             m_lContainer.erase(pBIterator);
+            delete pNode;
+            _pNode = NULL;
             break;
         }
         ++pBIterator;
     }
-    
-    delete pNode;
-    _pNode = NULL;
 }
-
-#define SMALL_NUM  0.00000001
-
-void CSceneMgr::OnScreenTouch(CVector2d _vTouchPoint)
-{
-
-    CVector3d point_01 = CVector3d(1.0f, 0.0f, -1.0f);
-    CVector3d point_02 = CVector3d(-1.0f, 0.0f, 1.0f);
-    CVector3d point_03 = CVector3d(1.0f, 0.0f, 1.0f);
-    
-    CVector3d vOrigin = m_pCamera->Get_Position();
-    
-    CVector3d vStartRay = Unproject(CVector3d(_vTouchPoint.x,_vTouchPoint.y, 0.0f), m_pCamera->Get_View(), m_pCamera->Get_Projection(), CWindow::Get_Viewport().v);
-    CVector3d vEndRay = Unproject(CVector3d(_vTouchPoint.x,_vTouchPoint.y, 1.0f), m_pCamera->Get_View(), m_pCamera->Get_Projection(), CWindow::Get_Viewport().v);
-    
-    CVector3d vRayDirection = vEndRay - vStartRay;
-        
-    CVector3d vEdge_01 = point_02 - point_01;
-    CVector3d vEdge_02 = point_03 - point_01;
-    
-    CVector3d vNormal = Cross(vEdge_01, vEdge_02);
-    vNormal.Normalize();
-    
-    CVector3d vTemp_01 = vStartRay - point_01;
-    float fDistance = -Dot(vNormal, vTemp_01);
-    float fDelta = Dot(vNormal, vRayDirection);
-    CVector3d vIntersect;
-    
-    if (fabs(fDelta) < SMALL_NUM)
-    {
-        return;
-    }
-    else
-    {
-        vIntersect = vStartRay + vRayDirection * fDistance / fDelta;
-    }
-    
-    if(m_lContainer.size() <= 1)
-    {
-        return;
-    }
-    INode* pNode = m_lContainer[1];
-    pNode->Set_Position(vIntersect);
-    
-}
-
-
-void CSceneMgr::CheckTouchCollision(const CVector2d &_vPosition)
-{	
-    
-} 
 
 ILight* CSceneMgr::Get_Light(ILight::E_LIGHT_MODE _eMode, unsigned int _iIndex)
 {
@@ -242,12 +178,12 @@ void CSceneMgr::Update()
         ++pBIterator;
     }
     
-    CCollisionMgr::Instance()->Update();
+    m_pCollisionMgr->Update();
 }
 
 void CSceneMgr::Render()
 {
-    CRenderMgr::Instance()->Begin();
+    m_pRenderMgr->Begin();
     std::vector<INode*>::iterator pBIterator = m_lContainer.begin();
     std::vector<INode*>::iterator pEIterator = m_lContainer.end();
     
@@ -256,7 +192,6 @@ void CSceneMgr::Render()
         (*pBIterator)->Render();
         ++pBIterator;
     }
-    
     
     std::map<unsigned int, ILight*>::iterator pMapBIterator = m_lLights.begin();
     std::map<unsigned int, ILight*>::iterator pMapEIterator = m_lLights.end();
@@ -267,9 +202,9 @@ void CSceneMgr::Render()
         ++pMapBIterator;
     }
     
-    CBatchMgr::Instance()->RenderNodesBatch();
-    CBatchMgr::Instance()->RenderBoundingBatch();
+    m_pBatchMgr->RenderNodesBatch();
+    m_pBatchMgr->RenderBoundingBatch();
     
-    CRenderMgr::Instance()->End();
+    m_pRenderMgr->End();
 }
 
