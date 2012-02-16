@@ -21,8 +21,8 @@ CMesh* CBoundingBox::Get_BoundingBoxMesh(void)
 {
     if(m_pMesh == NULL)
     {
-        CVector3d m_vMin = CVector3d( -0.5f,  0.0f, -0.5f);
-        CVector3d m_vMax = CVector3d(  0.5f,  1.0f,  0.5f);
+        CVector3d m_vMin = CVector3d( -0.5f, -1.0f, -0.5f);
+        CVector3d m_vMax = CVector3d(  0.5f,  0.0f,  0.5f);
 
         CMesh::SSource* pSource = new CMesh::SSource();
         pSource->m_iNumVertexes = 8;

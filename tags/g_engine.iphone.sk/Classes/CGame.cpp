@@ -16,7 +16,7 @@ CGame* CGame::m_game = NULL;
 
 CGame::CGame()
 {
-    //CRenderMgr::Instance();
+
 }
 
 CGame::~CGame()

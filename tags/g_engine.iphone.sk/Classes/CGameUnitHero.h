@@ -17,6 +17,7 @@ public:
     ~CGameUnitHero(void);
     virtual void Load(void);
     virtual void Update(void);
+    virtual void OnTouchEvent(IDelegate* _pDelegateOwner);
 };
 
 #endif

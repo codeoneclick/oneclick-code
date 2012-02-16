@@ -17,6 +17,9 @@
 		4D8FB3730F9EC1010055EDDB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D8FB3720F9EC1010055EDDB /* main.m */; };
 		9303B33C14AC902A005ED3BF /* CCameraFree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9303B33B14AC902A005ED3BF /* CCameraFree.cpp */; };
 		9303B33F14AC9054005ED3BF /* CCameraTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9303B33E14AC9053005ED3BF /* CCameraTarget.cpp */; };
+		93060C7914EDA46E00306309 /* IAnimatorDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93060C7814EDA46E00306309 /* IAnimatorDelegate.cpp */; };
+		93060C7C14EDA48400306309 /* IAnimator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93060C7B14EDA48300306309 /* IAnimator.cpp */; };
+		93060C7F14EDA6A600306309 /* CAnimatorMove.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93060C7E14EDA6A600306309 /* CAnimatorMove.cpp */; };
 		9307CBB114EBB8AB00ADFE2B /* CWorld.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9307CBB014EBB8AB00ADFE2B /* CWorld.cpp */; };
 		9307CBB414EBB8D300ADFE2B /* CResourceTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9307CBB314EBB8D300ADFE2B /* CResourceTree.cpp */; };
 		9307CBB714EBB8EE00ADFE2B /* IBuilding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9307CBB614EBB8EE00ADFE2B /* IBuilding.cpp */; };
@@ -65,6 +68,9 @@
 		93A8E1F614ECF6ED0014BE15 /* IGameUnit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93A8E1F514ECF6ED0014BE15 /* IGameUnit.cpp */; };
 		93A8E1F914ECF7060014BE15 /* CGameUnitHero.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93A8E1F814ECF7060014BE15 /* CGameUnitHero.cpp */; };
 		93A8E1FC14ECF7380014BE15 /* CGameUnitMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93A8E1FB14ECF7380014BE15 /* CGameUnitMgr.cpp */; };
+		93A8E1FF14ED12520014BE15 /* IDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93A8E1FE14ED12520014BE15 /* IDelegate.cpp */; };
+		93A8E20214ED27250014BE15 /* CLevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93A8E20114ED27230014BE15 /* CLevel.cpp */; };
+		93A8E20D14ED52B70014BE15 /* CPathFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93A8E20B14ED52B70014BE15 /* CPathFinder.cpp */; };
 		93AA2A661487A7D10073F016 /* CRenderMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93AA2A651487A7CD0073F016 /* CRenderMgr.cpp */; };
 		93AA2A691487B3A30073F016 /* CSceneMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93AA2A681487B39F0073F016 /* CSceneMgr.cpp */; };
 		93AA2A7A148831D50073F016 /* ILight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93AA2A79148831D00073F016 /* ILight.cpp */; };
@@ -113,6 +119,12 @@
 		9303B33B14AC902A005ED3BF /* CCameraFree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCameraFree.cpp; sourceTree = "<group>"; };
 		9303B33D14AC9042005ED3BF /* CCameraTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCameraTarget.h; sourceTree = "<group>"; };
 		9303B33E14AC9053005ED3BF /* CCameraTarget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCameraTarget.cpp; sourceTree = "<group>"; };
+		93060C7614EDA46000306309 /* IAnimatorDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAnimatorDelegate.h; sourceTree = "<group>"; };
+		93060C7814EDA46E00306309 /* IAnimatorDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IAnimatorDelegate.cpp; sourceTree = "<group>"; };
+		93060C7A14EDA47900306309 /* IAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAnimator.h; sourceTree = "<group>"; };
+		93060C7B14EDA48300306309 /* IAnimator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IAnimator.cpp; sourceTree = "<group>"; };
+		93060C7D14EDA69A00306309 /* CAnimatorMove.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAnimatorMove.h; sourceTree = "<group>"; };
+		93060C7E14EDA6A600306309 /* CAnimatorMove.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CAnimatorMove.cpp; sourceTree = "<group>"; };
 		9307CBAE14EBB89F00ADFE2B /* CWorld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CWorld.h; sourceTree = "<group>"; };
 		9307CBB014EBB8AB00ADFE2B /* CWorld.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CWorld.cpp; sourceTree = "<group>"; };
 		9307CBB214EBB8C800ADFE2B /* CResourceTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CResourceTree.h; sourceTree = "<group>"; };
@@ -215,6 +227,12 @@
 		93A8E1F814ECF7060014BE15 /* CGameUnitHero.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGameUnitHero.cpp; sourceTree = "<group>"; };
 		93A8E1FA14ECF72F0014BE15 /* CGameUnitMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGameUnitMgr.h; sourceTree = "<group>"; };
 		93A8E1FB14ECF7380014BE15 /* CGameUnitMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGameUnitMgr.cpp; sourceTree = "<group>"; };
+		93A8E1FD14ED123C0014BE15 /* IDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IDelegate.h; sourceTree = "<group>"; };
+		93A8E1FE14ED12520014BE15 /* IDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IDelegate.cpp; sourceTree = "<group>"; };
+		93A8E20014ED27150014BE15 /* CLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLevel.h; sourceTree = "<group>"; };
+		93A8E20114ED27230014BE15 /* CLevel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CLevel.cpp; sourceTree = "<group>"; };
+		93A8E20B14ED52B70014BE15 /* CPathFinder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPathFinder.cpp; sourceTree = "<group>"; };
+		93A8E20C14ED52B70014BE15 /* CPathFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPathFinder.h; sourceTree = "<group>"; };
 		93AA2A641487A7BA0073F016 /* CRenderMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRenderMgr.h; sourceTree = "<group>"; };
 		93AA2A651487A7CD0073F016 /* CRenderMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CRenderMgr.cpp; sourceTree = "<group>"; };
 		93AA2A671487B38D0073F016 /* CSceneMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSceneMgr.h; sourceTree = "<group>"; };
@@ -522,6 +540,8 @@
 		933EF3DA14EA4D3D00B7EBCE /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				93A8E20B14ED52B70014BE15 /* CPathFinder.cpp */,
+				93A8E20C14ED52B70014BE15 /* CPathFinder.h */,
 				931A76E414DA8914007EDB2F /* CHeightMapSetter.cpp */,
 				931A76E214DA8905007EDB2F /* CHeightMapSetter.h */,
 				93A26E0A148D1E3000D14A0B /* CCommon_IOS.mm */,
@@ -534,6 +554,14 @@
 				93E52C1714C6E01E00697561 /* CIndexBuffer.h */,
 				937367CB144EE2B30051ED8D /* CVertexBuffer.cpp */,
 				937367CA144EE2A70051ED8D /* CVertexBuffer.h */,
+				93A8E1FD14ED123C0014BE15 /* IDelegate.h */,
+				93A8E1FE14ED12520014BE15 /* IDelegate.cpp */,
+				93060C7614EDA46000306309 /* IAnimatorDelegate.h */,
+				93060C7814EDA46E00306309 /* IAnimatorDelegate.cpp */,
+				93060C7A14EDA47900306309 /* IAnimator.h */,
+				93060C7B14EDA48300306309 /* IAnimator.cpp */,
+				93060C7D14EDA69A00306309 /* CAnimatorMove.h */,
+				93060C7E14EDA6A600306309 /* CAnimatorMove.cpp */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -630,6 +658,8 @@
 				CE8DFA9214587B0C00AE7288 /* CGame.cpp */,
 				9307CBAE14EBB89F00ADFE2B /* CWorld.h */,
 				9307CBB014EBB8AB00ADFE2B /* CWorld.cpp */,
+				93A8E20014ED27150014BE15 /* CLevel.h */,
+				93A8E20114ED27230014BE15 /* CLevel.cpp */,
 			);
 			name = Game;
 			sourceTree = "<group>";
@@ -814,6 +844,12 @@
 				93A8E1F614ECF6ED0014BE15 /* IGameUnit.cpp in Sources */,
 				93A8E1F914ECF7060014BE15 /* CGameUnitHero.cpp in Sources */,
 				93A8E1FC14ECF7380014BE15 /* CGameUnitMgr.cpp in Sources */,
+				93A8E1FF14ED12520014BE15 /* IDelegate.cpp in Sources */,
+				93A8E20214ED27250014BE15 /* CLevel.cpp in Sources */,
+				93A8E20D14ED52B70014BE15 /* CPathFinder.cpp in Sources */,
+				93060C7914EDA46E00306309 /* IAnimatorDelegate.cpp in Sources */,
+				93060C7C14EDA48400306309 /* IAnimator.cpp in Sources */,
+				93060C7F14EDA6A600306309 /* CAnimatorMove.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
