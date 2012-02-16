@@ -10,7 +10,6 @@
 #include "CInput.h"
 #include "CWindow.h"
 #include "CSceneMgr.h"
-#include "CCollisionMgr.h"
 
 CInput* CInput::m_pInstance = NULL;
 
@@ -48,8 +47,7 @@ void CInput::Set_State(CInput::E_STATE _eState, CVector2d _vTouchPoint)
             }
             else
             {
-                //CCollisionMgr::Instance()->OnScreenTouch(m_vStartTouchPoint);
-                //CSceneMgr::Instance()->OnScreenTouch(m_vStartTouchPoint);
+                CSceneMgr::Instance()->Get_CollisionMgr()->OnScreenTouch(m_vStartTouchPoint);
             }
             break;
         case E_STATE_TOUCH:

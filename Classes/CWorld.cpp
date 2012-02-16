@@ -40,6 +40,9 @@ void CWorld::Load(void)
     m_pGameResourceMgr = new CGameResourceMgr();
     m_pGameUnitMgr = new CGameUnitMgr();
     
+    m_pLevel = new CLevel();
+    m_pLevel->Load();
+    
     m_pGameUnitMgr->Add_Unit(CGameUnitMgr::E_UNIT_TYPE_HERO);
     m_pHero = (CGameUnitHero*)m_pGameUnitMgr->Get_Unit(CGameUnitMgr::E_UNIT_TYPE_HERO);
     
@@ -53,12 +56,6 @@ void CWorld::Load(void)
     CSceneMgr::Instance()->Set_Camera(m_pCamera);
     m_pCamera->Set_DistanceToLookAt(4.0f);
     m_pCamera->Set_HeightFromLookAt(4.0f);
-    
-    m_pLandscape = (CLandscape*)CSceneMgr::Instance()->AddLandscapeModel("landscape.data");
-    m_pLandscape->Set_Texture("TileSet.pvr");
-    m_pLandscape->Set_Shader(IResource::E_SHADER_PHONG);
-    CSceneMgr::Instance()->AddEventListener(m_pLandscape, CEventMgr::E_EVENT_TOUCH);
-    m_pLandscape->Set_Position(CVector3d(0.0f, 0.0f, 0.0f));
 }
 
 void CWorld::Update(void)
@@ -66,6 +63,8 @@ void CWorld::Update(void)
     m_pBuildingMgr->Update();
     m_pGameResourceMgr->Update();
     m_pGameUnitMgr->Update();
+    
+    m_pLevel->Update();
     
     static float fAngle = 0.0f; fAngle += 0.1f;
     m_pLight->Set_Rotation(CVector3d(0.0f, fAngle, 0.0f));

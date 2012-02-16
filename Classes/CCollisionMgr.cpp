@@ -99,13 +99,10 @@ void CCollisionMgr::Update()
             pCollider->Set_TouchCollided(true);
             
             m_iHexColliderID = iHexColliderID;
-            m_bIsTouch = false;
-            glFlush();
             CEventMgr::Instance()->OnEvent(CEventMgr::E_EVENT_TOUCH);
-            return;
         }
-        m_bIsTouch = false;
     }
+    m_bIsTouch = false;
     glFlush();
 }
 

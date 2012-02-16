@@ -12,8 +12,8 @@
 #include "CBuildingMgr.h"
 #include "CGameResourceMgr.h"
 #include "CGameUnitMgr.h"
+#include "CLevel.h"
 #include "CSceneMgr.h"
-#include "CLandscape.h"
 
 class CWorld
 {
@@ -21,7 +21,7 @@ private:
     CBuildingMgr* m_pBuildingMgr;
     CGameResourceMgr* m_pGameResourceMgr;
     CGameUnitMgr* m_pGameUnitMgr;
-    CLandscape* m_pLandscape;
+    CLevel* m_pLevel;
     CGameUnitHero* m_pHero;
     ICamera* m_pCamera;
     ILight* m_pLight;
@@ -29,6 +29,7 @@ private:
 public:
     CWorld(void);
     ~CWorld(void);
+    CLevel* Get_Level(void) { return m_pLevel; }
     void Load(void);
     void Update(void);
     static CWorld* Instance(void);

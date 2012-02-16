@@ -179,6 +179,7 @@ void CLandscape::OnTouchEvent(void)
         {
             CVector3d vTouch3DPoint = (*pIterator).second->m_vPosition;
             CSceneMgr::Instance()->Get_CollisionMgr()->Set_Touch3DPoint(vTouch3DPoint);
+            
             m_pTileSetter->Edit(vTouch3DPoint.x, vTouch3DPoint.z, CTileSetter::LEVEL_03);
             CVertexBuffer::SVertexVTN* pVBData = static_cast<CVertexBuffer::SVertexVTN*>(m_pMesh->Get_VB()->Get_Data());
             CTileSetter::STileTexCoords* pTilesetData = m_pTileSetter->Get_TexCoordData();
@@ -187,8 +188,12 @@ void CLandscape::OnTouchEvent(void)
             
             for(unsigned int i = 0; i < lEditCacheData.size(); ++i)
             {
-                unsigned int iIndex = lEditCacheData[i].m_iTexCoordIndex;
-                unsigned int iVBIndex = lEditCacheData[i].m_iTileIndex * 4;
+                int iIndex = lEditCacheData[i].m_iTexCoordIndex;
+                int iVBIndex = lEditCacheData[i].m_iTileIndex * 4;
+                if(iVBIndex < 0)
+                {
+                    continue;
+                }
                 
                 pVBData[iVBIndex    ].m_vTexCoord = pTilesetData[iIndex].m_vTexCoord[2];
                 pVBData[iVBIndex + 1].m_vTexCoord = pTilesetData[iIndex].m_vTexCoord[3];
@@ -196,6 +201,11 @@ void CLandscape::OnTouchEvent(void)
                 pVBData[iVBIndex + 3].m_vTexCoord = pTilesetData[iIndex].m_vTexCoord[1];
             }
         }
+    }
+    
+    for(size_t index = 0; index< m_lDelegateOwners.size(); index++)
+    {
+        m_lDelegateOwners[index]->OnTouchEvent(m_pSelfDelegate);
     }
 }
 

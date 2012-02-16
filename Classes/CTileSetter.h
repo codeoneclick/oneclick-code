@@ -20,8 +20,8 @@ public:
     
     struct STileIndex
     {
-        unsigned int m_iTileIndex;
-        unsigned int m_iTexCoordIndex;
+        int m_iTileIndex;
+        int m_iTexCoordIndex;
     };
     
     struct STileTableValue

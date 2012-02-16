@@ -11,8 +11,9 @@
 
 #include "CModel.h"
 #include "CSceneMgr.h"
+#include "IDelegate.h"
 
-class IGameUnit
+class IGameUnit : public IDelegate
 {
 protected:
     CModel* m_pModel;

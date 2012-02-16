@@ -24,6 +24,8 @@
 #include "ICollider.h"
 #include "ILight.h"
 
+#include "IDelegate.h"
+
 #define TEXTURES_MAX_COUNT 4
 
 class INode
@@ -47,6 +49,9 @@ protected:
     ILight* m_pLight;
     
     bool m_bIsBatching;
+    
+    std::vector<IDelegate*> m_lDelegateOwners;
+    IDelegate* m_pSelfDelegate;
     
 public:
     INode(void);
@@ -74,6 +79,12 @@ public:
     CVector3d Get_Scale(void) { return m_vScale; }
     
     CMatrix4x4 Get_WorldMatrix(void) { return m_mWorld; }
+    
+    void Add_DelegateOwner(IDelegate* _pDelegateOwner);
+    void Remove_DelegateOwner(IDelegate* _pDelegateOwner);
+    
+    void Set_SelfDelegate(IDelegate* _pSelfDelegate) { m_pSelfDelegate = _pSelfDelegate; }
+    IDelegate* Get_SelfDelegate(void) { return m_pSelfDelegate; }
     
     void Create_BoundingBox(void);
     void Create_ColliderBox(void);

@@ -37,7 +37,10 @@ void CModel::Load(IResource::SResource _tResource)
 
 void CModel::OnTouchEvent()
 {
-    
+    for(size_t index = 0; index< m_lDelegateOwners.size(); index++)
+    {
+        m_lDelegateOwners[index]->OnTouchEvent(m_pSelfDelegate);
+    }
 }
 
 void CModel::Update()

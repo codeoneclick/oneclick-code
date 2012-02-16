@@ -131,6 +131,33 @@ void INode::Remove_Collider()
     }
 }
 
+void INode::Add_DelegateOwner(IDelegate *_pDelegateOwner)
+{
+    for(size_t index = 0; index< m_lDelegateOwners.size(); index++)
+    {
+        if(m_lDelegateOwners[index] == _pDelegateOwner)
+        {
+            return;
+        }
+    }
+    m_lDelegateOwners.push_back(_pDelegateOwner);
+}
+
+void INode::Remove_DelegateOwner(IDelegate *_pDelegateOwner)
+{
+    std::vector<IDelegate*>::iterator pBeginIterator = m_lDelegateOwners.begin();
+    std::vector<IDelegate*>::iterator pEndIterator = m_lDelegateOwners.end();
+    while (pBeginIterator != pEndIterator)
+    {
+        if((*pBeginIterator) == _pDelegateOwner)
+        {
+            m_lDelegateOwners.erase(pBeginIterator);
+            return;
+        }
+        ++pBeginIterator;
+    }
+}
+
 void INode::Update()
 {
     CMatrix4x4 mRotationX = RotationX(m_vRotation.x);
