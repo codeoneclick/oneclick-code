@@ -18,7 +18,11 @@ ICollider::ICollider()
 
 ICollider::~ICollider()
 {
-    
+    if(m_pMesh != NULL)
+    {
+        delete m_pMesh;
+        m_pMesh = NULL;
+    }
 }
 
 void ICollider::Set_ColliredID(ICollider::SColliderID _tColliderID)

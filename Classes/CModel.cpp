@@ -35,7 +35,7 @@ void CModel::Load(IResource::SResource _tResource)
     m_bIsBatching = _tResource.m_bIsBatching;
 }
 
-void CModel::OnMouseTouchEvent()
+void CModel::OnTouchEvent()
 {
     
 }
@@ -93,9 +93,9 @@ void CModel::Render()
             m_pShader->SetTexture(m_pTextures[3]->Get_Handle(), CShader::k_TEXTURE_04);
         }
             
-        m_pMesh->Get_VB()->Enable(m_pShader->Get_ProgramHandle());
+        m_pMesh->Get_VB()->Enable();
         glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IB()->Get_Data());
-        m_pMesh->Get_VB()->Disable(m_pShader->Get_ProgramHandle());
+        m_pMesh->Get_VB()->Disable();
         m_pShader->Disable();
     }
     

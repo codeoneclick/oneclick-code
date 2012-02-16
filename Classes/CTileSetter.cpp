@@ -1,5 +1,5 @@
 //
-//  CTileSetterMgr.cpp
+//  CTileSetter.cpp
 //  gEngine
 //
 //  Created by Snow Leopard User on 26/10/2011.
@@ -7,40 +7,32 @@
 //
 
 #include <iostream>
-#include "CTileSetterMgr.h"
+#include "CTileSetter.h"
 
-CTileSetterMgr* CTileSetterMgr::m_pInstance = NULL;
-const int CTileSetterMgr::k_TILES_TYPE_COUNT = 16;
-const int CTileSetterMgr::k_TILESETS_TYPE_COUNT = 16;
-const float CTileSetterMgr::k_TILE_TEXTURE_OFFSET = 0.0001f;
+CTileSetter::STileTexCoords** CTileSetter::m_pTilesTable = NULL;
+const int CTileSetter::k_TILES_TYPE_COUNT = 16;
+const int CTileSetter::k_TILESETS_TYPE_COUNT = 16;
+const float CTileSetter::k_TILE_TEXTURE_OFFSET = 0.0001f;
 
-CTileSetterMgr::CTileSetterMgr()
+CTileSetter::CTileSetter()
 {
-    m_pTilesTable = new CTileSetterMgr::STileTexCoords*[k_TILESETS_TYPE_COUNT * 2];
-    for(unsigned int i = 0; i < k_TILESETS_TYPE_COUNT * 2; ++i)
+    if(m_pTilesTable == NULL)
     {
-        m_pTilesTable[i] = new CTileSetterMgr::STileTexCoords[k_TILES_TYPE_COUNT];
+        m_pTilesTable = new CTileSetter::STileTexCoords*[k_TILESETS_TYPE_COUNT * 2];
+        for(unsigned int i = 0; i < k_TILESETS_TYPE_COUNT * 2; ++i)
+        {
+            m_pTilesTable[i] = new CTileSetter::STileTexCoords[k_TILES_TYPE_COUNT];
+        }
+        CreateTileTable();
     }
-    
-    CreateTileTable();
 }
 
-CTileSetterMgr::~CTileSetterMgr()
+CTileSetter::~CTileSetter()
 {
 
 }
 
-CTileSetterMgr* CTileSetterMgr::Instance()
-{
-    if(m_pInstance == NULL)
-    {
-        m_pInstance = new CTileSetterMgr();
-    }
-    
-    return m_pInstance;
-}
-
-void CTileSetterMgr::CreateTileTable()
+void CTileSetter::CreateTileTable()
 {
 	float fTexCoordOffsetL = 0.0f;
 	float fTexCoordOffsetR = 0.0f;
@@ -87,16 +79,21 @@ void CTileSetterMgr::CreateTileTable()
 	}
 }
 
-void CTileSetterMgr::Set_Data(unsigned char* _pSource, int _iWidth, int _iHeight)
+void CTileSetter::Load_SourceData(const std::string& _sName, int _iWidth, int _iHeight)
 {
     m_iWidth = _iWidth;
     m_iHeight = _iHeight;
-    m_pSource = _pSource;
-    
-    m_pData = new CTileSetterMgr::STileTexCoords[m_iWidth * m_iHeight];
-    memset(m_pData, 0x0, sizeof(CTileSetterMgr::STileTexCoords) * m_iWidth * m_iHeight);
-    m_pTempData = new CTileSetterMgr::STileTableValue[m_iWidth * m_iHeight];
-    memset(m_pTempData, 0x0, sizeof(CTileSetterMgr::STileTableValue) * m_iWidth * m_iHeight);
+    m_pSource = new unsigned char[m_iWidth * m_iHeight]; 
+    memset(m_pSource, 0x0, sizeof(unsigned char) * m_iWidth * m_iHeight);
+}
+
+void CTileSetter::Create_TexCoordData(void)
+{
+    m_lEditCacheData.clear();
+    m_pData = new CTileSetter::STileTexCoords[m_iWidth * m_iHeight];
+    memset(m_pData, 0x0, sizeof(CTileSetter::STileTexCoords) * m_iWidth * m_iHeight);
+    m_pTempData = new CTileSetter::STileTableValue[m_iWidth * m_iHeight];
+    memset(m_pTempData, 0xF, sizeof(CTileSetter::STileTableValue) * m_iWidth * m_iHeight);
     for(int i = 0; i < m_iWidth; ++i)
     {
 		for(int j = 0; j < m_iHeight; ++j)
@@ -114,8 +111,10 @@ void CTileSetterMgr::Set_Data(unsigned char* _pSource, int _iWidth, int _iHeight
     CreateTileMap();
 }
 
-void CTileSetterMgr::Edit(int _iX, int _iY, CTileSetterMgr::E_TILE_LEVEL _eLevel)
+void CTileSetter::Edit(int _iX, int _iY, CTileSetter::E_TILE_LEVEL _eLevel)
 {
+    m_lEditCacheData.clear();
+    
     for(int i = 0; i < 2; ++i)
     {
         Set_Tile(_iX, _iY, _eLevel);
@@ -123,7 +122,7 @@ void CTileSetterMgr::Edit(int _iX, int _iY, CTileSetterMgr::E_TILE_LEVEL _eLevel
     CreateTileMap();
 }
 
-void CTileSetterMgr::Set_Tile(int _iX, int _iY, CTileSetterMgr::E_TILE_LEVEL _eLevel)
+void CTileSetter::Set_Tile(int _iX, int _iY, CTileSetter::E_TILE_LEVEL _eLevel)
 {
     m_pSource[_iX + _iY * m_iHeight] = _eLevel;
 	Set_Tileset(_iX, _iY, _eLevel);
@@ -148,7 +147,7 @@ void CTileSetterMgr::Set_Tile(int _iX, int _iY, CTileSetterMgr::E_TILE_LEVEL _eL
 					if(iCurrentLevel < iDecLevel && iDecLevel >-1 )
 						m_pSource[_iX + _iY * m_iHeight] = iDecLevel;
 				}
-				Set_Tileset(_iX, _iY, static_cast<CTileSetterMgr::E_TILE_LEVEL>(iCurrentLevel));		
+				Set_Tileset(_iX, _iY, static_cast<CTileSetter::E_TILE_LEVEL>(iCurrentLevel));		
 			}_iX++;
 		}
 		for(char indexLevel_02 = 0; indexLevel_02 < indexLevel_01 * 2; indexLevel_02++)
@@ -168,7 +167,7 @@ void CTileSetterMgr::Set_Tile(int _iX, int _iY, CTileSetterMgr::E_TILE_LEVEL _eL
 					if( iCurrentLevel < iDecLevel && iDecLevel > -1)
 						m_pSource[_iX + _iY * m_iHeight] = iDecLevel;
 				}
-				Set_Tileset(_iX, _iY, static_cast<CTileSetterMgr::E_TILE_LEVEL>(iCurrentLevel));
+				Set_Tileset(_iX, _iY, static_cast<CTileSetter::E_TILE_LEVEL>(iCurrentLevel));
 			}_iY++;
 		}
 		for(char indexLevel_02 = 0; indexLevel_02 < indexLevel_01 * 2; indexLevel_02++)
@@ -188,7 +187,7 @@ void CTileSetterMgr::Set_Tile(int _iX, int _iY, CTileSetterMgr::E_TILE_LEVEL _eL
 					if( iCurrentLevel < iDecLevel && iDecLevel > -1)
 						m_pSource[_iX + _iY * m_iHeight] = iDecLevel;
 				}
-				Set_Tileset(_iX, _iY, static_cast<CTileSetterMgr::E_TILE_LEVEL>(iCurrentLevel));  
+				Set_Tileset(_iX, _iY, static_cast<CTileSetter::E_TILE_LEVEL>(iCurrentLevel));  
 			}_iX--;
 		}
         for(char indexLevel_02 = 0; indexLevel_02 < indexLevel_01 * 2; indexLevel_02++)
@@ -208,13 +207,13 @@ void CTileSetterMgr::Set_Tile(int _iX, int _iY, CTileSetterMgr::E_TILE_LEVEL _eL
 					if( iCurrentLevel < iDecLevel && iDecLevel > -1)
 						m_pSource[_iX + _iY * m_iHeight] = iDecLevel;
 				}
-				Set_Tileset(_iX, _iY, static_cast<CTileSetterMgr::E_TILE_LEVEL>(iCurrentLevel));
+				Set_Tileset(_iX, _iY, static_cast<CTileSetter::E_TILE_LEVEL>(iCurrentLevel));
 			}_iY--;
 		}
 	}
 }
 
-void CTileSetterMgr::Set_Tileset(int _iX, int _iY, CTileSetterMgr::E_TILE_LEVEL _eLevel)
+void CTileSetter::Set_Tileset(int _iX, int _iY, CTileSetter::E_TILE_LEVEL _eLevel)
 {
     char tile_00 = m_pSource[_iX       + (_iY - 1 ) * m_iHeight];
 	char tile_01 = m_pSource[(_iX + 1) + ( _iY - 1 ) * m_iHeight];
@@ -267,26 +266,36 @@ void CTileSetterMgr::Set_Tileset(int _iX, int _iY, CTileSetterMgr::E_TILE_LEVEL 
 	if(tile_06==_eLevel&&tile_07==_eLevel&&tile_00==_eLevel)Set_Tile(_iX - 1, _iY - 1,_eLevel,T_C_02);
 }
 
-void CTileSetterMgr::Set_Tile(int _iX, int _iY, E_TILE_LEVEL _eLevel, E_TILE_NODE _eNode)
+void CTileSetter::Set_Tile(int _iX, int _iY, E_TILE_LEVEL _eLevel, E_TILE_NODE _eNode)
 {
-    m_pTempData[_iX + _iY * m_iHeight].m_iTileType = _eNode;
-	m_pTempData[_iX + _iY * m_iHeight].m_iTilesetType = _eLevel;
+    int iIndex = _iX + _iY * m_iHeight;
+    if(iIndex < 0)
+    {
+        return;
+    }
+    if(m_pTempData[iIndex].m_iTileType != _eNode || m_pTempData[iIndex].m_iTilesetType != _eLevel)
+    {
+        STileIndex tIndex;
+        tIndex.m_iTileIndex = _iY + _iX * m_iWidth;
+        tIndex.m_iTexCoordIndex = iIndex;
+        m_lEditCacheData.push_back(tIndex);
+    }
+    
+    m_pTempData[iIndex].m_iTileType = _eNode;
+	m_pTempData[iIndex].m_iTilesetType = _eLevel;
 }
 
-void CTileSetterMgr::CreateTileMap()
+void CTileSetter::CreateTileMap()
 {
-    for(int i = 0; i < m_iWidth; ++i)
+    for(int i = 0; i < m_lEditCacheData.size(); ++i)
     {
-		for(int j = 0; j < m_iHeight; ++j)
-		{
-			int index = i + j * m_iHeight;
-			for(int k = 0; k < 4; ++k)
-            {
-                char iTilesetIndex = m_pTempData[index].m_iTilesetType;
-                char iTileNodeIndex = m_pTempData[index].m_iTileType;
-				m_pData[index].m_vTexCoord[k] =  m_pTilesTable[iTilesetIndex][iTileNodeIndex].m_vTexCoord[k];
-            }
-		}
+		int iIndex = m_lEditCacheData[i].m_iTexCoordIndex;
+        for(int k = 0; k < 4; ++k)
+        {
+            char iTilesetIndex = m_pTempData[iIndex].m_iTilesetType;
+            char iTileNodeIndex = m_pTempData[iIndex].m_iTileType;
+            m_pData[iIndex].m_vTexCoord[k] = m_pTilesTable[iTilesetIndex][iTileNodeIndex].m_vTexCoord[k];
+        }
     }
 }
 

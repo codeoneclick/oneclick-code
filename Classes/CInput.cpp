@@ -48,8 +48,8 @@ void CInput::Set_State(CInput::E_STATE _eState, CVector2d _vTouchPoint)
             }
             else
             {
-                CCollisionMgr::Instance()->OnScreenTouch(m_vStartTouchPoint);
-                CSceneMgr::Instance()->OnScreenTouch(m_vStartTouchPoint);
+                //CCollisionMgr::Instance()->OnScreenTouch(m_vStartTouchPoint);
+                //CSceneMgr::Instance()->OnScreenTouch(m_vStartTouchPoint);
             }
             break;
         case E_STATE_TOUCH:

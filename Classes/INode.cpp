@@ -75,10 +75,20 @@ void INode::Set_Texture(const std::string &_sName, int index, IResource::E_THREA
 void INode::Set_Shader(IResource::E_SHADER _eShader)
 {
     m_pShader = CShaderComposite::Instance()->Get_Shader(_eShader);
+    if(m_pMesh->Get_VB() != NULL)
+    {
+        m_pMesh->Get_VB()->Set_ShaderRef(m_pShader->Get_ProgramHandle());
+    }
 }
 
 void INode::Create_BoundingBox()
 {
+    if(m_pBoundingBox != NULL)
+    {
+        delete m_pBoundingBox;
+        m_pBoundingBox = NULL;
+    }
+
     m_pBoundingBox = new CBoundingBox(m_pMesh->Get_MaxBound(), m_pMesh->Get_MinBound());
 }
 
@@ -97,7 +107,7 @@ void INode::Create_ColliderBox()
     }
     
     m_pCollider = new CColliderBox(m_pMesh->Get_MaxBound(), m_pMesh->Get_MinBound());
-    CCollisionMgr::Instance()->Create_Collider(m_pCollider);
+    CSceneMgr::Instance()->Get_CollisionMgr()->Create_Collider(m_pCollider);
 }
 
 void INode::Create_ColliderQuad()
@@ -109,13 +119,16 @@ void INode::Create_ColliderQuad()
     }
     
     m_pCollider = new CColliderQuad(CVector3d(), CVector3d(), CVector3d(), CVector3d());
-    CCollisionMgr::Instance()->Create_Collider(m_pCollider);
+    CSceneMgr::Instance()->Get_CollisionMgr()->Create_Collider(m_pCollider);
 }
 
 void INode::Remove_Collider()
 {
-    delete m_pCollider;
-    m_pCollider = NULL;
+    if(m_pCollider != NULL)
+    {
+        delete m_pCollider;
+        m_pCollider = NULL;
+    }
 }
 
 void INode::Update()

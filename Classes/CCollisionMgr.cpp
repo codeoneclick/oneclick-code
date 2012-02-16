@@ -11,8 +11,7 @@
 #include "CBatchMgr.h"
 #include "CEventMgr.h"
 #include "CInput.h"
-
-CCollisionMgr* CCollisionMgr::m_pInstance = NULL;
+#include "CSceneMgr.h"
 
 CCollisionMgr::CCollisionMgr()
 {
@@ -30,15 +29,6 @@ CCollisionMgr::CCollisionMgr()
 CCollisionMgr::~CCollisionMgr()
 {
     
-}
-
-CCollisionMgr* CCollisionMgr::Instance()
-{
-    if(m_pInstance == NULL)
-    {
-        m_pInstance = new CCollisionMgr();
-    }
-    return m_pInstance;
 }
 
 unsigned int CCollisionMgr::RgbToHex(unsigned char _r, unsigned char _g, unsigned char _b)
@@ -95,7 +85,7 @@ void CCollisionMgr::Update()
         ++pBIterator;
     }
     
-    CBatchMgr::Instance()->RenderColliderBatch();
+    CSceneMgr::Instance()->Get_BatchMgr()->RenderColliderBatch();
     
     if(m_bIsTouch == true)
     {
@@ -107,9 +97,11 @@ void CCollisionMgr::Update()
         {
             ICollider* pCollider = (*pIterator).second;
             pCollider->Set_TouchCollided(true);
-            CEventMgr::Instance()->OnEvent(CEventMgr::E_EVENT_TOUCH);
+            
             m_iHexColliderID = iHexColliderID;
+            m_bIsTouch = false;
             glFlush();
+            CEventMgr::Instance()->OnEvent(CEventMgr::E_EVENT_TOUCH);
             return;
         }
         m_bIsTouch = false;

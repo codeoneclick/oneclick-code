@@ -29,10 +29,10 @@ CMeshComposite::CMeshComposite()
     pSource->m_pVB = new CVertexBuffer(pSource->m_iNumVertexes, sizeof(CVertexBuffer::SVertexVTN), CVertexBuffer::E_VERTEX_BUFFER_MODE_VTN);
     CVertexBuffer::SVertexVTN* pVBData = static_cast<CVertexBuffer::SVertexVTN*>(pSource->m_pVB->Get_Data());
     
-    pVBData[0].m_vPosition = CVector3d(-1.0f / 2.0f, -1.0f / 2.0f, 0.0f);
-    pVBData[1].m_vPosition = CVector3d(-1.0f / 2.0f,  1.0f / 2.0f, 0.0f);
-    pVBData[2].m_vPosition = CVector3d( 1.0f / 2.0f,  1.0f / 2.0f, 0.0f);
-    pVBData[3].m_vPosition = CVector3d( 1.0f / 2.0f, -1.0f / 2.0f, 0.0f);
+    pVBData[0].m_vPosition = CVector3d(-0.5f, -0.5f, 0.0f);
+    pVBData[1].m_vPosition = CVector3d(-0.5f,  0.5f, 0.0f);
+    pVBData[2].m_vPosition = CVector3d( 0.5f,  0.5f, 0.0f);
+    pVBData[3].m_vPosition = CVector3d( 0.5f, -0.5f, 0.0f);
     
     pVBData[0].m_vNormal = CVector3d(0.0f, 0.0f, 1.0f);
     pVBData[1].m_vNormal = CVector3d(0.0f, 0.0f, 1.0f);

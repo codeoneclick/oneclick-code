@@ -22,15 +22,13 @@ protected:
     GLuint m_hProgramHandle;
     std::map<std::string, GLint> m_lUniformHandle;
 public:
-    CShader();
+    CShader(GLuint _hProgramHandle);
     ~CShader();
-    void Commit();
     
     void Enable();
     void Disable();
     
     inline GLuint Get_ProgramHandle() { return m_hProgramHandle; }
-    inline void   Set_ProgramHandle(GLuint _hProgramHandle) { m_hProgramHandle = _hProgramHandle; }
     
     void SetMatrix(const CMatrix4x4& _mValue, const std::string &_sName);
     void SetTexture(GLuint _hTextureHandle,  const std::string &_sName);

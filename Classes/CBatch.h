@@ -44,7 +44,7 @@ public:
     CBatch(CVertexBuffer::E_VERTEX_BUFFER_MODE _eVertexBufferMode);
     ~CBatch();
     void Push(SSource _tSource);
-    void Set_Shader(CShader* _pShader) { m_pShader = _pShader; }
+    void Set_Shader(CShader* _pShader);
     void Set_Textures(CTexture** _pTextures) { m_pTextures = _pTextures; }
     void Set_RenderMode(E_RENDER_MODE _eRenderMode) { m_eRenderMode = _eRenderMode; }
     void Render();

@@ -20,18 +20,21 @@ class CBoundingBox
 protected:
     CVector3d m_vMax;
     CVector3d m_vMin;
+    CVector3d m_vScale;
     CMatrix4x4 m_mWorld;
     CShader* m_pShader;
-    CMesh* m_pMesh;
+    static CMesh* m_pMesh;
     bool m_bIsBatching;
 public:
     static const float k_MAX_VALUE;
     static const float k_MIN_VALUE;
     
+    static CMesh* Get_BoundingBoxMesh(void);
+    
     CBoundingBox(const CVector3d &_vMax, const CVector3d &_vMin);
     ~CBoundingBox();
     
-    void Set_WorldMatrix(const CMatrix4x4 &_mWorld) { m_mWorld = _mWorld; }
+    void Set_WorldMatrix(const CMatrix4x4 &_mWorld);
     CMatrix4x4 Get_WorldMatrix(void) { return m_mWorld; }
     CMesh* Get_Mesh(void) { return m_pMesh; }
     void Set_MaxMinPoints(const CVector3d &_vMax, const CVector3d &_vMin) { m_vMax = _vMax; m_vMin = _vMin; }
