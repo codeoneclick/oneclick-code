@@ -26,6 +26,8 @@ protected:
     unsigned int m_iWidth;
     unsigned int m_iHeight;
     
+    CMesh* m_pNavMesh;
+    
     CTileSetter* m_pTileSetter;
     CHeightMapSetter* m_pHeightMapSetter;
     struct STile
@@ -46,6 +48,7 @@ public:
     CTileSetter* Get_TileSetter(void) { return m_pTileSetter; }
     unsigned int Get_Width(void) { return m_iWidth; }
     unsigned int Get_Height(void) { return m_iHeight; }
+    void Set_NavMesh(CMesh* _pNavMesh) { m_pNavMesh = _pNavMesh; }
 };
 
 #endif

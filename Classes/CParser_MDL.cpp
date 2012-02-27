@@ -42,7 +42,7 @@ void CParser_MDL::Load(const std::string& _sName)
     int iNumIndexes = 0;
     
     fread(&iNumVertexes, sizeof(int), 1, pFile);
-    fread(&iNumIndexes, sizeof(int), 1, pFile);++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    fread(&iNumIndexes, sizeof(int), 1, pFile);
     
     m_pSource = new CMesh::SSource();
     m_pSource->m_iNumVertexes = iNumVertexes;
@@ -59,7 +59,7 @@ void CParser_MDL::Load(const std::string& _sName)
         fread(&m_pSource->m_pData[i].m_vNormal, sizeof(struct CVector3d), 1, pFile);
         fread(&m_pSource->m_pData[i].m_vTexCoord, sizeof(struct CVector2d), 1, pFile);
         
-        std::cout<<"Position : "<<m_pSource->m_pData[i].m_vPosition.x<<","<<m_pSource->m_pData[i].m_vPosition.y<<","<<m_pSource->m_pData[i].m_vPosition.z<<"\n";
+        //std::cout<<"Position : "<<m_pSource->m_pData[i].m_vPosition.x<<","<<m_pSource->m_pData[i].m_vPosition.y<<","<<m_pSource->m_pData[i].m_vPosition.z<<"\n";
        
         if(m_pSource->m_pData[i].m_vPosition.x > m_pSource->m_vMaxBound.x)
         {

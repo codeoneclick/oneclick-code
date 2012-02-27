@@ -10,7 +10,7 @@
 #include "CHeightMapSetter.h"
 #include "CSceneMgr.h"
 
-const float CHeightMapSetter::k_HEIGHT_DIV_FACTOR = 2.0f;
+const float CHeightMapSetter::k_HEIGHT_DIV_FACTOR = 1.0f;
 
 CHeightMapSetter::CHeightMapSetter(void)
 {
@@ -22,10 +22,37 @@ CHeightMapSetter::~CHeightMapSetter(void)
     
 }
 
+CMesh* CHeightMapSetter::Load_SourceData(const std::string _sName, int _iWidth, int _iHeight, CVertexBuffer::E_VERTEX_BUFFER_MODE _eMode)
+{
+    m_iWidth = _iWidth;
+    m_iHeight = _iHeight;
+    
+    CParser_MDL* pParser = new CParser_MDL();
+    pParser->Load("landscape.mdl");
+    pParser->Commit();
+    CMesh* pMesh = new CMesh();
+    if(pParser->Get_Status() != IParser::E_ERROR_STATUS)
+    {
+        pMesh->Set_Source(pParser->Get_Source());
+    }
+    
+    m_pSource = new float[m_iWidth * m_iHeight];
+    for(unsigned int i = 0; i < m_iWidth; ++i)
+    {
+        for(unsigned int j = 0; j < m_iHeight; ++j)
+        {
+            m_pSource[i + j * m_iHeight] = 0.0f;
+        }
+    }
+
+    return pMesh;
+}
+
 void CHeightMapSetter::Load_SourceData(const std::string& _sName, int _iWidth, int _iHeight)
 {
     m_iWidth = _iWidth;
     m_iHeight = _iHeight;
+    
     m_pSource = new float[m_iWidth * m_iHeight];
     for(unsigned int i = 0; i < m_iWidth; ++i)
     {
