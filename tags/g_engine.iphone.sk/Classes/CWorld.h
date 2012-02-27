@@ -25,6 +25,7 @@ private:
     CGameUnitHero* m_pHero;
     ICamera* m_pCamera;
     ILight* m_pLight;
+    bool m_bIsHeroUnderControl;
     static CWorld* m_pInstance;
 public:
     CWorld(void);
@@ -33,6 +34,8 @@ public:
     void Load(void);
     void Update(void);
     static CWorld* Instance(void);
+    bool Get_IsHeroUnderControl(void) { return m_bIsHeroUnderControl; }
+    void Set_IsHeroUnderControl(bool _bValue) { m_bIsHeroUnderControl = _bValue; }
 };
 
 #endif

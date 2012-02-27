@@ -9,6 +9,7 @@
 #include <iostream>
 #include "CLevel.h"
 #include "CSceneMgr.h"
+#include "CNavigationMeshWrapper.h"
 
 CLevel::CLevel(void)
 {
@@ -24,11 +25,12 @@ void CLevel::Load(void)
 {
     m_pLandscape = (CLandscape*)CSceneMgr::Instance()->AddLandscapeModel("landscape.data");
     m_pLandscape->Set_Texture("TileSet.pvr");
-    m_pLandscape->Set_Shader(IResource::E_SHADER_PHONG);
+    m_pLandscape->Set_Shader(IResource::E_SHADER_LAMBERT);
     CSceneMgr::Instance()->AddEventListener(m_pLandscape, CEventMgr::E_EVENT_TOUCH);
     m_pLandscape->Set_Position(CVector3d(0.0f, 0.0f, 0.0f));
     m_pLandscape->Set_SelfDelegate(this);
     m_pLandscape->Add_DelegateOwner(this);
+    CNavigationMeshWrapper::Instance()->SetupNavigationMesh(m_pLandscape);
 }
 
 void CLevel::OnTouchEvent(IDelegate* _pDelegateOwner)

@@ -42,6 +42,10 @@ public:
     virtual void OnTouchEvent(void);
     virtual void Update(void);
     virtual void Render(void);
+    CHeightMapSetter* Get_HeightMapSetter(void) { return m_pHeightMapSetter; }
+    CTileSetter* Get_TileSetter(void) { return m_pTileSetter; }
+    unsigned int Get_Width(void) { return m_iWidth; }
+    unsigned int Get_Height(void) { return m_iHeight; }
 };
 
 #endif

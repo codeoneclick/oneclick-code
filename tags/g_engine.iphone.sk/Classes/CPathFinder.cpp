@@ -34,7 +34,7 @@ CPathFinder* CPathFinder::Instance()
 
 void CPathFinder::Clear()
 {
-    for(unsigned int i = 0; i < (m_iMapCells + 2); i++)
+    for(unsigned int i = 0; i < m_iMapCells; i++)
     {
         delete m_pMapSource[i];
         delete m_pMapWave[i];
@@ -46,6 +46,8 @@ void CPathFinder::Clear()
 
 bool CPathFinder::FindPath(int** _pMapSource, int _iMapCells, int _iMapRows, CVector2d vStartNode, CVector2d vEndNode)
 {
+    m_lPath.clear();
+    
     m_iMapCells = _iMapCells;
     m_iMapRows = _iMapRows;
     
@@ -55,26 +57,26 @@ bool CPathFinder::FindPath(int** _pMapSource, int _iMapCells, int _iMapRows, CVe
     m_iEndIndex[0] = vEndNode.x;
     m_iEndIndex[1] = vEndNode.y;
     
-    m_pMapSource = new int*[m_iMapCells + 2];
-    m_pMapWave = new int*[m_iMapCells + 2];
+    m_pMapSource = new int*[m_iMapCells];
+    m_pMapWave = new int*[m_iMapCells];
     
-    for(unsigned int i = 0; i < (m_iMapCells + 2); i++)
+    for(unsigned int i = 0; i < m_iMapCells; i++)
     {
-        m_pMapSource[i] = new int[m_iMapRows + 2];
-        m_pMapWave[i] = new int[m_iMapRows + 2];
-        for(unsigned int j = 0; j < (m_iMapRows + 2); j++)
+        m_pMapSource[i] = new int[m_iMapRows];
+        m_pMapWave[i] = new int[m_iMapRows];
+        for(unsigned int j = 0; j < m_iMapRows; j++)
         {
             m_pMapSource[i][j] = 0;
             m_pMapWave[i][j] = 0;
         }
     }
     
-    for(unsigned int i = 1; i <= m_iMapCells; i++)
+    for(unsigned int i = 0; i < m_iMapCells; i++)
     {
-        for(unsigned int j = 1; j <= m_iMapRows; j++)
+        for(unsigned int j = 0; j < m_iMapRows; j++)
         {
             m_pMapWave[i][j] = 0;
-            m_pMapSource[i][j] = _pMapSource[i-1][j-1];
+            m_pMapSource[i][j] = _pMapSource[i][j];
         }
     }
     
@@ -85,25 +87,16 @@ bool CPathFinder::FindPath(int** _pMapSource, int _iMapCells, int _iMapRows, CVe
     {
         if(TracePath())
         {
-            std::cout<<"[m_pMapSource] :\n";
-            for(int i = 1; i <= m_iMapCells; i++)
-            {
-                for(int j = 1; j <= m_iMapRows; j++)
-                {
-                    std::cout<<m_pMapSource[i][j];
-                }
-                std::cout<<"\n";
-            }
-            
             std::cout<<"[m_pMapWave] :\n";
-            for(unsigned int i = 1; i <= m_iMapCells; i++)
+            for(int i = 0; i < m_iMapCells; i++)
             {
-                for(unsigned int j = 1; j <= m_iMapRows; j++)
+                for(int j = 0; j < m_iMapRows; j++)
                 {
-                    std::cout<<m_pMapWave[i][j]<<",";
+                    std::cout<<m_pMapWave[i][j];
                 }
                 std::cout<<"\n";
             }
+            //std::reverse(m_lPath.begin(), m_lPath.end());
             Clear();
             return true;
         }
@@ -119,33 +112,33 @@ bool CPathFinder::DoWave()
     m_pMapWave[m_iStartIndex[0]][m_iStartIndex[1]] = index;
     while (index < m_iMapCells * m_iMapRows) 
     {
-        for(int i = 1; i <= m_iMapCells; i++)
+        for(int i = 0; i < m_iMapCells; i++)
         {
-            for(int j = 1; j <= m_iMapRows; j++)
+            for(int j = 0; j < m_iMapRows; j++)
             {
                 if(m_pMapWave[i][j] == index)
                 {
-                    if( m_pMapWave[i + 1][j] == 0 && m_pMapSource[i + 1][j] == 0)
+                    if((i + 1) < m_iMapCells && m_pMapWave[i + 1][j] == 0 && m_pMapSource[i + 1][j] == 0)
                     {
                         m_pMapWave[i + 1][j] = index + 1;
                     }
                     
-                    if( m_pMapWave[i - 1][j] == 0 && m_pMapSource[i - 1][j] == 0)
+                    if((i - 1) >= 0 &&  m_pMapWave[i - 1][j] == 0 && m_pMapSource[i - 1][j] == 0)
                     {
                         m_pMapWave[i - 1][j] = index + 1;
                     }
                     
-                    if( m_pMapWave[i][j + 1] == 0 && m_pMapSource[i][j + 1] == 0)
+                    if((j + 1) < m_iMapRows && m_pMapWave[i][j + 1] == 0 && m_pMapSource[i][j + 1] == 0)
                     {
                         m_pMapWave[i][j + 1] = index + 1;
                     }
                     
-                    if( m_pMapWave[i][j - 1] == 0 && m_pMapSource[i][j - 1] == 0)
+                    if((j - 1) >= 0 && m_pMapWave[i][j - 1] == 0 && m_pMapSource[i][j - 1] == 0)
                     {
                         m_pMapWave[i][j - 1] = index + 1;
                     }
                     
-                    if(m_pMapSource[i + 1][j] == 2 || m_pMapSource[i - 1][j] == 2 || m_pMapSource[i][j + 1] == 2 || m_pMapSource[i][j - 1] == 2)
+                    if(((i + 1) < m_iMapCells && m_pMapSource[i + 1][j] == 2) || ((i - 1) >= 0 && m_pMapSource[i - 1][j] == 2) || ((j + 1) < m_iMapRows && m_pMapSource[i][j + 1] == 2) || ((j - 1) >= 0 && m_pMapSource[i][j - 1] == 2))
                     {
                         m_pMapWave[m_iEndIndex[0]][m_iEndIndex[1]] = index + 1;
                         return true;
@@ -176,28 +169,28 @@ bool CPathFinder::TracePath()
     int index = 0;
     while ( index < m_iMapCells * m_iMapRows ) 
     {
-        if( m_pMapWave[pCurrentNode[0] + 1][pCurrentNode[1]] < iMinValue && m_pMapWave[pCurrentNode[0] + 1][pCurrentNode[1]] != 0  && m_pMapSource[pCurrentNode[0] + 1][pCurrentNode[1]] > 0)
+        if((pCurrentNode[0] + 1) < m_iMapCells && m_pMapWave[pCurrentNode[0] + 1][pCurrentNode[1]] < iMinValue && m_pMapWave[pCurrentNode[0] + 1][pCurrentNode[1]] != 0  && m_pMapSource[pCurrentNode[0] + 1][pCurrentNode[1]] > 0)
         {
             iMinValue = m_pMapWave[pCurrentNode[0] + 1][pCurrentNode[1]];
             pMinValueNode[0] = pCurrentNode[0] + 1;
             pMinValueNode[1] = pCurrentNode[1];
         }
         
-        if( m_pMapWave[pCurrentNode[0] - 1][pCurrentNode[1]] < iMinValue && m_pMapWave[pCurrentNode[0] - 1][pCurrentNode[1]] != 0 )
+        if((pCurrentNode[0] - 1) >= 0 && m_pMapWave[pCurrentNode[0] - 1][pCurrentNode[1]] < iMinValue && m_pMapWave[pCurrentNode[0] - 1][pCurrentNode[1]] != 0 )
         {
             iMinValue = m_pMapWave[pCurrentNode[0] - 1][pCurrentNode[1]];
             pMinValueNode[0] = pCurrentNode[0] - 1;
             pMinValueNode[1] = pCurrentNode[1];
         }
         
-        if( m_pMapWave[pCurrentNode[0]][pCurrentNode[1] + 1] < iMinValue && m_pMapWave[pCurrentNode[0]][pCurrentNode[1] + 1] != 0 )
+        if((pCurrentNode[1] + 1) < m_iMapRows && m_pMapWave[pCurrentNode[0]][pCurrentNode[1] + 1] < iMinValue && m_pMapWave[pCurrentNode[0]][pCurrentNode[1] + 1] != 0 )
         {
             iMinValue = m_pMapWave[pCurrentNode[0]][pCurrentNode[1] + 1];
             pMinValueNode[0] = pCurrentNode[0];
             pMinValueNode[1] = pCurrentNode[1] + 1;
         }
         
-        if( m_pMapWave[pCurrentNode[0]][pCurrentNode[1] - 1] < iMinValue && m_pMapWave[pCurrentNode[0]][pCurrentNode[1] - 1] != 0 )
+        if((pCurrentNode[1] - 1) >= 0 && m_pMapWave[pCurrentNode[0]][pCurrentNode[1] - 1] < iMinValue && m_pMapWave[pCurrentNode[0]][pCurrentNode[1] - 1] != 0 )
         {
             iMinValue = m_pMapWave[pCurrentNode[0]][pCurrentNode[1] - 1];
             pMinValueNode[0] = pCurrentNode[0];

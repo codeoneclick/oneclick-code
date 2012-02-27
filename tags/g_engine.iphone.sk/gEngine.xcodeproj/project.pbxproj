@@ -20,6 +20,10 @@
 		93060C7914EDA46E00306309 /* IAnimatorDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93060C7814EDA46E00306309 /* IAnimatorDelegate.cpp */; };
 		93060C7C14EDA48400306309 /* IAnimator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93060C7B14EDA48300306309 /* IAnimator.cpp */; };
 		93060C7F14EDA6A600306309 /* CAnimatorMove.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93060C7E14EDA6A600306309 /* CAnimatorMove.cpp */; };
+		93060C8614EE6F8C00306309 /* CAnimatorMoveHeightMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93060C8514EE6F8C00306309 /* CAnimatorMoveHeightMap.cpp */; };
+		93060C8D14EE8BB100306309 /* CGameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93060C8C14EE8BB100306309 /* CGameState.cpp */; };
+		93060C9014EE8EA800306309 /* CGameUnitMonk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93060C8F14EE8EA800306309 /* CGameUnitMonk.cpp */; };
+		93060CA414F26DF900306309 /* CPathFinderAstar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93060CA314F26DF800306309 /* CPathFinderAstar.cpp */; };
 		9307CBB114EBB8AB00ADFE2B /* CWorld.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9307CBB014EBB8AB00ADFE2B /* CWorld.cpp */; };
 		9307CBB414EBB8D300ADFE2B /* CResourceTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9307CBB314EBB8D300ADFE2B /* CResourceTree.cpp */; };
 		9307CBB714EBB8EE00ADFE2B /* IBuilding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9307CBB614EBB8EE00ADFE2B /* IBuilding.cpp */; };
@@ -48,22 +52,41 @@
 		9319B4A614E30981002152EC /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 9319B4A514E30980002152EC /* Default.png */; };
 		9319B4A814E30991002152EC /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9319B4A714E30991002152EC /* Default@2x.png */; };
 		931A76E514DA8914007EDB2F /* CHeightMapSetter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 931A76E414DA8914007EDB2F /* CHeightMapSetter.cpp */; };
+		931BF39814F800F7002D0E0D /* glu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 931BF39614F800F7002D0E0D /* glu.cpp */; };
 		9320598F145E964E00DEBCCB /* CParser_GLSL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9320598E145E964E00DEBCCB /* CParser_GLSL.cpp */; };
 		93205996145EA7D900DEBCCB /* CParser_PVR.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93205995145EA7D800DEBCCB /* CParser_PVR.cpp */; };
 		93243D5A147553B500ED7443 /* CModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93243D59147553B500ED7443 /* CModel.cpp */; };
 		933AFE2A14BC341D0090B5EC /* CCollisionMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933AFE2914BC341D0090B5EC /* CCollisionMgr.cpp */; };
 		933AFE2D14BC3F140090B5EC /* CColliderBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933AFE2C14BC3F140090B5EC /* CColliderBox.cpp */; };
 		933AFE3A14BC5D110090B5EC /* CBatchMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933AFE3914BC5D100090B5EC /* CBatchMgr.cpp */; };
+		936FEC5B14F4EC9500A33A33 /* Recast.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 936FEC5114F4EC9500A33A33 /* Recast.cpp */; };
+		936FEC5C14F4EC9500A33A33 /* RecastAlloc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 936FEC5214F4EC9500A33A33 /* RecastAlloc.cpp */; };
+		936FEC5D14F4EC9500A33A33 /* RecastArea.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 936FEC5314F4EC9500A33A33 /* RecastArea.cpp */; };
+		936FEC5E14F4EC9500A33A33 /* RecastContour.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 936FEC5414F4EC9500A33A33 /* RecastContour.cpp */; };
+		936FEC5F14F4EC9500A33A33 /* RecastFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 936FEC5514F4EC9500A33A33 /* RecastFilter.cpp */; };
+		936FEC6014F4EC9500A33A33 /* RecastLayers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 936FEC5614F4EC9500A33A33 /* RecastLayers.cpp */; };
+		936FEC6114F4EC9500A33A33 /* RecastMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 936FEC5714F4EC9500A33A33 /* RecastMesh.cpp */; };
+		936FEC6214F4EC9500A33A33 /* RecastMeshDetail.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 936FEC5814F4EC9500A33A33 /* RecastMeshDetail.cpp */; };
+		936FEC6314F4EC9500A33A33 /* RecastRasterization.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 936FEC5914F4EC9500A33A33 /* RecastRasterization.cpp */; };
+		936FEC6414F4EC9500A33A33 /* RecastRegion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 936FEC5A14F4EC9500A33A33 /* RecastRegion.cpp */; };
+		936FEC7614F4ECDE00A33A33 /* DetourAlloc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 936FEC7014F4ECDE00A33A33 /* DetourAlloc.cpp */; };
+		936FEC7714F4ECDE00A33A33 /* DetourCommon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 936FEC7114F4ECDE00A33A33 /* DetourCommon.cpp */; };
+		936FEC7814F4ECDE00A33A33 /* DetourNavMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 936FEC7214F4ECDE00A33A33 /* DetourNavMesh.cpp */; };
+		936FEC7914F4ECDE00A33A33 /* DetourNavMeshBuilder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 936FEC7314F4ECDE00A33A33 /* DetourNavMeshBuilder.cpp */; };
+		936FEC7A14F4ECDE00A33A33 /* DetourNavMeshQuery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 936FEC7414F4ECDE00A33A33 /* DetourNavMeshQuery.cpp */; };
+		936FEC7B14F4ECDE00A33A33 /* DetourNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 936FEC7514F4ECDE00A33A33 /* DetourNode.cpp */; };
+		936FEC8314F4F16500A33A33 /* CNavigationMeshWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 936FEC8214F4F16500A33A33 /* CNavigationMeshWrapper.cpp */; };
+		936FEC9214F579CB00A33A33 /* landscape.mdl in Resources */ = {isa = PBXBuildFile; fileRef = 936FEC9014F579CB00A33A33 /* landscape.mdl */; };
+		936FEC9314F579CB00A33A33 /* player.mdl in Resources */ = {isa = PBXBuildFile; fileRef = 936FEC9114F579CB00A33A33 /* player.mdl */; };
 		937367C9144ECE150051ED8D /* CShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937367C8144ECE140051ED8D /* CShader.cpp */; };
 		937367CC144EE2B40051ED8D /* CVertexBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937367CB144EE2B30051ED8D /* CVertexBuffer.cpp */; };
 		9373680614559D540051ED8D /* ICamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9373680514559D4F0051ED8D /* ICamera.cpp */; };
 		939733A814CF048C005268B7 /* TileSet.pvr in Resources */ = {isa = PBXBuildFile; fileRef = 939733A714CF048C005268B7 /* TileSet.pvr */; };
-		93A26DE7148BB1D000D14A0B /* footman.gmesh in Resources */ = {isa = PBXBuildFile; fileRef = 93A26DE6148BB1D000D14A0B /* footman.gmesh */; };
 		93A26DE9148BB1D800D14A0B /* footman.pvr in Resources */ = {isa = PBXBuildFile; fileRef = 93A26DE8148BB1D800D14A0B /* footman.pvr */; };
 		93A26DF0148BD5A100D14A0B /* CBone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93A26DEF148BD5A100D14A0B /* CBone.cpp */; };
 		93A26DF2148BDCB800D14A0B /* CSkeleton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93A26DF1148BDCB800D14A0B /* CSkeleton.cpp */; };
 		93A26E05148D087800D14A0B /* CWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93A26E04148D087600D14A0B /* CWindow.cpp */; };
-		93A26E09148D1DEA00D14A0B /* CParser_GMESH.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93A26E08148D1DE700D14A0B /* CParser_GMESH.cpp */; };
+		93A26E09148D1DEA00D14A0B /* CParser_MDL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93A26E08148D1DE700D14A0B /* CParser_MDL.cpp */; };
 		93A26E0B148D1E3800D14A0B /* CCommon_IOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 93A26E0A148D1E3000D14A0B /* CCommon_IOS.mm */; };
 		93A8E1F614ECF6ED0014BE15 /* IGameUnit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93A8E1F514ECF6ED0014BE15 /* IGameUnit.cpp */; };
 		93A8E1F914ECF7060014BE15 /* CGameUnitHero.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93A8E1F814ECF7060014BE15 /* CGameUnitHero.cpp */; };
@@ -125,6 +148,14 @@
 		93060C7B14EDA48300306309 /* IAnimator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IAnimator.cpp; sourceTree = "<group>"; };
 		93060C7D14EDA69A00306309 /* CAnimatorMove.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAnimatorMove.h; sourceTree = "<group>"; };
 		93060C7E14EDA6A600306309 /* CAnimatorMove.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CAnimatorMove.cpp; sourceTree = "<group>"; };
+		93060C8414EE6F7B00306309 /* CAnimatorMoveHeightMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAnimatorMoveHeightMap.h; sourceTree = "<group>"; };
+		93060C8514EE6F8C00306309 /* CAnimatorMoveHeightMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CAnimatorMoveHeightMap.cpp; sourceTree = "<group>"; };
+		93060C8B14EE8BA300306309 /* CGameState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGameState.h; sourceTree = "<group>"; };
+		93060C8C14EE8BB100306309 /* CGameState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGameState.cpp; sourceTree = "<group>"; };
+		93060C8E14EE8E9600306309 /* CGameUnitMonk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGameUnitMonk.h; sourceTree = "<group>"; };
+		93060C8F14EE8EA800306309 /* CGameUnitMonk.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGameUnitMonk.cpp; sourceTree = "<group>"; };
+		93060CA114F26DE500306309 /* CPathFinderAstar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPathFinderAstar.h; sourceTree = "<group>"; };
+		93060CA314F26DF800306309 /* CPathFinderAstar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPathFinderAstar.cpp; sourceTree = "<group>"; };
 		9307CBAE14EBB89F00ADFE2B /* CWorld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CWorld.h; sourceTree = "<group>"; };
 		9307CBB014EBB8AB00ADFE2B /* CWorld.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CWorld.cpp; sourceTree = "<group>"; };
 		9307CBB214EBB8C800ADFE2B /* CResourceTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CResourceTree.h; sourceTree = "<group>"; };
@@ -178,6 +209,8 @@
 		9319B4A714E30991002152EC /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		931A76E214DA8905007EDB2F /* CHeightMapSetter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHeightMapSetter.h; sourceTree = "<group>"; };
 		931A76E414DA8914007EDB2F /* CHeightMapSetter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CHeightMapSetter.cpp; sourceTree = "<group>"; };
+		931BF39614F800F7002D0E0D /* glu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = glu.cpp; sourceTree = "<group>"; };
+		931BF39714F800F7002D0E0D /* glu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glu.h; sourceTree = "<group>"; };
 		9320598D145E964100DEBCCB /* CParser_GLSL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CParser_GLSL.h; sourceTree = "<group>"; };
 		9320598E145E964E00DEBCCB /* CParser_GLSL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CParser_GLSL.cpp; sourceTree = "<group>"; };
 		93205994145EA7CC00DEBCCB /* CParser_PVR.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CParser_PVR.h; sourceTree = "<group>"; };
@@ -190,6 +223,37 @@
 		933AFE2C14BC3F140090B5EC /* CColliderBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CColliderBox.cpp; sourceTree = "<group>"; };
 		933AFE3814BC5CFF0090B5EC /* CBatchMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBatchMgr.h; sourceTree = "<group>"; };
 		933AFE3914BC5D100090B5EC /* CBatchMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CBatchMgr.cpp; sourceTree = "<group>"; };
+		936FEC4D14F4EC9500A33A33 /* Recast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Recast.h; sourceTree = "<group>"; };
+		936FEC4E14F4EC9500A33A33 /* RecastAlloc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecastAlloc.h; sourceTree = "<group>"; };
+		936FEC4F14F4EC9500A33A33 /* RecastAssert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecastAssert.h; sourceTree = "<group>"; };
+		936FEC5114F4EC9500A33A33 /* Recast.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Recast.cpp; sourceTree = "<group>"; };
+		936FEC5214F4EC9500A33A33 /* RecastAlloc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RecastAlloc.cpp; sourceTree = "<group>"; };
+		936FEC5314F4EC9500A33A33 /* RecastArea.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RecastArea.cpp; sourceTree = "<group>"; };
+		936FEC5414F4EC9500A33A33 /* RecastContour.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RecastContour.cpp; sourceTree = "<group>"; };
+		936FEC5514F4EC9500A33A33 /* RecastFilter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RecastFilter.cpp; sourceTree = "<group>"; };
+		936FEC5614F4EC9500A33A33 /* RecastLayers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RecastLayers.cpp; sourceTree = "<group>"; };
+		936FEC5714F4EC9500A33A33 /* RecastMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RecastMesh.cpp; sourceTree = "<group>"; };
+		936FEC5814F4EC9500A33A33 /* RecastMeshDetail.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RecastMeshDetail.cpp; sourceTree = "<group>"; };
+		936FEC5914F4EC9500A33A33 /* RecastRasterization.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RecastRasterization.cpp; sourceTree = "<group>"; };
+		936FEC5A14F4EC9500A33A33 /* RecastRegion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RecastRegion.cpp; sourceTree = "<group>"; };
+		936FEC6714F4ECDE00A33A33 /* DetourAlloc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetourAlloc.h; sourceTree = "<group>"; };
+		936FEC6814F4ECDE00A33A33 /* DetourAssert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetourAssert.h; sourceTree = "<group>"; };
+		936FEC6914F4ECDE00A33A33 /* DetourCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetourCommon.h; sourceTree = "<group>"; };
+		936FEC6A14F4ECDE00A33A33 /* DetourNavMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetourNavMesh.h; sourceTree = "<group>"; };
+		936FEC6B14F4ECDE00A33A33 /* DetourNavMeshBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetourNavMeshBuilder.h; sourceTree = "<group>"; };
+		936FEC6C14F4ECDE00A33A33 /* DetourNavMeshQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetourNavMeshQuery.h; sourceTree = "<group>"; };
+		936FEC6D14F4ECDE00A33A33 /* DetourNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetourNode.h; sourceTree = "<group>"; };
+		936FEC6E14F4ECDE00A33A33 /* DetourStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetourStatus.h; sourceTree = "<group>"; };
+		936FEC7014F4ECDE00A33A33 /* DetourAlloc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DetourAlloc.cpp; sourceTree = "<group>"; };
+		936FEC7114F4ECDE00A33A33 /* DetourCommon.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DetourCommon.cpp; sourceTree = "<group>"; };
+		936FEC7214F4ECDE00A33A33 /* DetourNavMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DetourNavMesh.cpp; sourceTree = "<group>"; };
+		936FEC7314F4ECDE00A33A33 /* DetourNavMeshBuilder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DetourNavMeshBuilder.cpp; sourceTree = "<group>"; };
+		936FEC7414F4ECDE00A33A33 /* DetourNavMeshQuery.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DetourNavMeshQuery.cpp; sourceTree = "<group>"; };
+		936FEC7514F4ECDE00A33A33 /* DetourNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DetourNode.cpp; sourceTree = "<group>"; };
+		936FEC8114F4F15200A33A33 /* CNavigationMeshWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CNavigationMeshWrapper.h; path = NavigationMesh/CNavigationMeshWrapper.h; sourceTree = "<group>"; };
+		936FEC8214F4F16500A33A33 /* CNavigationMeshWrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CNavigationMeshWrapper.cpp; path = NavigationMesh/CNavigationMeshWrapper.cpp; sourceTree = "<group>"; };
+		936FEC9014F579CB00A33A33 /* landscape.mdl */ = {isa = PBXFileReference; lastKnownFileType = file; path = landscape.mdl; sourceTree = "<group>"; };
+		936FEC9114F579CB00A33A33 /* player.mdl */ = {isa = PBXFileReference; lastKnownFileType = file; path = player.mdl; sourceTree = "<group>"; };
 		937367C7144ECE030051ED8D /* CShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CShader.h; sourceTree = "<group>"; };
 		937367C8144ECE140051ED8D /* CShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CShader.cpp; sourceTree = "<group>"; };
 		937367CA144EE2A70051ED8D /* CVertexBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVertexBuffer.h; sourceTree = "<group>"; };
@@ -210,16 +274,15 @@
 		9385B044147E6EA20041FAE1 /* ShaderPhong.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderPhong.vert; path = Shaders/ShaderPhong.vert; sourceTree = "<group>"; };
 		939733A714CF048C005268B7 /* TileSet.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = TileSet.pvr; path = Resources/Textures/TileSet.pvr; sourceTree = "<group>"; };
 		93A26DE5148B7D6800D14A0B /* CQuaternion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CQuaternion.h; sourceTree = "<group>"; };
-		93A26DE6148BB1D000D14A0B /* footman.gmesh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = footman.gmesh; path = Resources/Data/footman.gmesh; sourceTree = "<group>"; };
 		93A26DE8148BB1D800D14A0B /* footman.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = footman.pvr; path = Resources/Textures/footman.pvr; sourceTree = "<group>"; };
-		93A26DEA148BB1F600D14A0B /* CParser_GMESH.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CParser_GMESH.h; sourceTree = "<group>"; };
+		93A26DEA148BB1F600D14A0B /* CParser_MDL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CParser_MDL.h; sourceTree = "<group>"; };
 		93A26DED148BD57100D14A0B /* CSkeleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSkeleton.h; sourceTree = "<group>"; };
 		93A26DEE148BD59600D14A0B /* CBone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBone.h; sourceTree = "<group>"; };
 		93A26DEF148BD5A100D14A0B /* CBone.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CBone.cpp; sourceTree = "<group>"; };
 		93A26DF1148BDCB800D14A0B /* CSkeleton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CSkeleton.cpp; sourceTree = "<group>"; };
 		93A26E04148D087600D14A0B /* CWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CWindow.cpp; sourceTree = "<group>"; };
 		93A26E07148D19E300D14A0B /* CCommon_IOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCommon_IOS.h; sourceTree = "<group>"; };
-		93A26E08148D1DE700D14A0B /* CParser_GMESH.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CParser_GMESH.cpp; sourceTree = "<group>"; };
+		93A26E08148D1DE700D14A0B /* CParser_MDL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CParser_MDL.cpp; sourceTree = "<group>"; };
 		93A26E0A148D1E3000D14A0B /* CCommon_IOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CCommon_IOS.mm; sourceTree = "<group>"; };
 		93A8E1F314ECF6E00014BE15 /* IGameUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IGameUnit.h; sourceTree = "<group>"; };
 		93A8E1F514ECF6ED0014BE15 /* IGameUnit.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IGameUnit.cpp; sourceTree = "<group>"; };
@@ -355,7 +418,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				93CFC0C714683E9800720766 /* Data */,
+				936FEC8F14F579CB00A33A33 /* Models */,
 				CE91921914573F630021A0DC /* Textures */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 			);
@@ -482,6 +545,8 @@
 				93A8E1F514ECF6ED0014BE15 /* IGameUnit.cpp */,
 				93A8E1F714ECF6FA0014BE15 /* CGameUnitHero.h */,
 				93A8E1F814ECF7060014BE15 /* CGameUnitHero.cpp */,
+				93060C8E14EE8E9600306309 /* CGameUnitMonk.h */,
+				93060C8F14EE8EA800306309 /* CGameUnitMonk.cpp */,
 			);
 			name = GameUnits;
 			sourceTree = "<group>";
@@ -522,6 +587,15 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
+		931BF39514F800F7002D0E0D /* GLU */ = {
+			isa = PBXGroup;
+			children = (
+				931BF39614F800F7002D0E0D /* glu.cpp */,
+				931BF39714F800F7002D0E0D /* glu.h */,
+			);
+			path = GLU;
+			sourceTree = "<group>";
+		};
 		93205988145E8C6D00DEBCCB /* Loaders */ = {
 			isa = PBXGroup;
 			children = (
@@ -531,8 +605,8 @@
 				93205994145EA7CC00DEBCCB /* CParser_PVR.h */,
 				93CFC0901463E60C00720766 /* IParser.h */,
 				93CFC0921463E61800720766 /* IParser.cpp */,
-				93A26DEA148BB1F600D14A0B /* CParser_GMESH.h */,
-				93A26E08148D1DE700D14A0B /* CParser_GMESH.cpp */,
+				93A26DEA148BB1F600D14A0B /* CParser_MDL.h */,
+				93A26E08148D1DE700D14A0B /* CParser_MDL.cpp */,
 			);
 			name = Loaders;
 			sourceTree = "<group>";
@@ -540,10 +614,12 @@
 		933EF3DA14EA4D3D00B7EBCE /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				93A8E20B14ED52B70014BE15 /* CPathFinder.cpp */,
+				931BF39514F800F7002D0E0D /* GLU */,
+				936FEC4914F4EC1600A33A33 /* NavigationMesh */,
 				93A8E20C14ED52B70014BE15 /* CPathFinder.h */,
-				931A76E414DA8914007EDB2F /* CHeightMapSetter.cpp */,
+				93A8E20B14ED52B70014BE15 /* CPathFinder.cpp */,
 				931A76E214DA8905007EDB2F /* CHeightMapSetter.h */,
+				931A76E414DA8914007EDB2F /* CHeightMapSetter.cpp */,
 				93A26E0A148D1E3000D14A0B /* CCommon_IOS.mm */,
 				93A26E07148D19E300D14A0B /* CCommon_IOS.h */,
 				93A26E04148D087600D14A0B /* CWindow.cpp */,
@@ -562,6 +638,10 @@
 				93060C7B14EDA48300306309 /* IAnimator.cpp */,
 				93060C7D14EDA69A00306309 /* CAnimatorMove.h */,
 				93060C7E14EDA6A600306309 /* CAnimatorMove.cpp */,
+				93060C8414EE6F7B00306309 /* CAnimatorMoveHeightMap.h */,
+				93060C8514EE6F8C00306309 /* CAnimatorMoveHeightMap.cpp */,
+				93060CA114F26DE500306309 /* CPathFinderAstar.h */,
+				93060CA314F26DF800306309 /* CPathFinderAstar.cpp */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -571,18 +651,116 @@
 			children = (
 				933AFE2714BC34020090B5EC /* CCollisionMgr.h */,
 				933AFE2914BC341D0090B5EC /* CCollisionMgr.cpp */,
-				933AFE3914BC5D100090B5EC /* CBatchMgr.cpp */,
 				933AFE3814BC5CFF0090B5EC /* CBatchMgr.h */,
-				93C06CF814D2951100B7502A /* CEventMgr.cpp */,
+				933AFE3914BC5D100090B5EC /* CBatchMgr.cpp */,
 				93C06CF614D2950600B7502A /* CEventMgr.h */,
-				93CFC05D145EF15300720766 /* CInput.cpp */,
+				93C06CF814D2951100B7502A /* CEventMgr.cpp */,
 				93CFC05C145EF14800720766 /* CInput.h */,
-				93AA2A651487A7CD0073F016 /* CRenderMgr.cpp */,
+				93CFC05D145EF15300720766 /* CInput.cpp */,
 				93AA2A641487A7BA0073F016 /* CRenderMgr.h */,
-				93AA2A681487B39F0073F016 /* CSceneMgr.cpp */,
+				93AA2A651487A7CD0073F016 /* CRenderMgr.cpp */,
 				93AA2A671487B38D0073F016 /* CSceneMgr.h */,
+				93AA2A681487B39F0073F016 /* CSceneMgr.cpp */,
 			);
 			name = Mgrs;
+			sourceTree = "<group>";
+		};
+		936FEC4914F4EC1600A33A33 /* NavigationMesh */ = {
+			isa = PBXGroup;
+			children = (
+				936FEC6514F4ECC900A33A33 /* Detour */,
+				936FEC4B14F4EC2B00A33A33 /* Recast */,
+				936FEC8114F4F15200A33A33 /* CNavigationMeshWrapper.h */,
+				936FEC8214F4F16500A33A33 /* CNavigationMeshWrapper.cpp */,
+			);
+			name = NavigationMesh;
+			sourceTree = "<group>";
+		};
+		936FEC4B14F4EC2B00A33A33 /* Recast */ = {
+			isa = PBXGroup;
+			children = (
+				936FEC4C14F4EC9500A33A33 /* Include */,
+				936FEC5014F4EC9500A33A33 /* Source */,
+			);
+			name = Recast;
+			sourceTree = "<group>";
+		};
+		936FEC4C14F4EC9500A33A33 /* Include */ = {
+			isa = PBXGroup;
+			children = (
+				936FEC4D14F4EC9500A33A33 /* Recast.h */,
+				936FEC4E14F4EC9500A33A33 /* RecastAlloc.h */,
+				936FEC4F14F4EC9500A33A33 /* RecastAssert.h */,
+			);
+			name = Include;
+			path = NavigationMesh/Recast/Include;
+			sourceTree = "<group>";
+		};
+		936FEC5014F4EC9500A33A33 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				936FEC5114F4EC9500A33A33 /* Recast.cpp */,
+				936FEC5214F4EC9500A33A33 /* RecastAlloc.cpp */,
+				936FEC5314F4EC9500A33A33 /* RecastArea.cpp */,
+				936FEC5414F4EC9500A33A33 /* RecastContour.cpp */,
+				936FEC5514F4EC9500A33A33 /* RecastFilter.cpp */,
+				936FEC5614F4EC9500A33A33 /* RecastLayers.cpp */,
+				936FEC5714F4EC9500A33A33 /* RecastMesh.cpp */,
+				936FEC5814F4EC9500A33A33 /* RecastMeshDetail.cpp */,
+				936FEC5914F4EC9500A33A33 /* RecastRasterization.cpp */,
+				936FEC5A14F4EC9500A33A33 /* RecastRegion.cpp */,
+			);
+			name = Source;
+			path = NavigationMesh/Recast/Source;
+			sourceTree = "<group>";
+		};
+		936FEC6514F4ECC900A33A33 /* Detour */ = {
+			isa = PBXGroup;
+			children = (
+				936FEC6614F4ECDE00A33A33 /* Include */,
+				936FEC6F14F4ECDE00A33A33 /* Source */,
+			);
+			name = Detour;
+			sourceTree = "<group>";
+		};
+		936FEC6614F4ECDE00A33A33 /* Include */ = {
+			isa = PBXGroup;
+			children = (
+				936FEC6714F4ECDE00A33A33 /* DetourAlloc.h */,
+				936FEC6814F4ECDE00A33A33 /* DetourAssert.h */,
+				936FEC6914F4ECDE00A33A33 /* DetourCommon.h */,
+				936FEC6A14F4ECDE00A33A33 /* DetourNavMesh.h */,
+				936FEC6B14F4ECDE00A33A33 /* DetourNavMeshBuilder.h */,
+				936FEC6C14F4ECDE00A33A33 /* DetourNavMeshQuery.h */,
+				936FEC6D14F4ECDE00A33A33 /* DetourNode.h */,
+				936FEC6E14F4ECDE00A33A33 /* DetourStatus.h */,
+			);
+			name = Include;
+			path = NavigationMesh/Detour/Include;
+			sourceTree = "<group>";
+		};
+		936FEC6F14F4ECDE00A33A33 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				936FEC7014F4ECDE00A33A33 /* DetourAlloc.cpp */,
+				936FEC7114F4ECDE00A33A33 /* DetourCommon.cpp */,
+				936FEC7214F4ECDE00A33A33 /* DetourNavMesh.cpp */,
+				936FEC7314F4ECDE00A33A33 /* DetourNavMeshBuilder.cpp */,
+				936FEC7414F4ECDE00A33A33 /* DetourNavMeshQuery.cpp */,
+				936FEC7514F4ECDE00A33A33 /* DetourNode.cpp */,
+			);
+			name = Source;
+			path = NavigationMesh/Detour/Source;
+			sourceTree = "<group>";
+		};
+		936FEC8F14F579CB00A33A33 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				936FEC9014F579CB00A33A33 /* landscape.mdl */,
+				936FEC9114F579CB00A33A33 /* player.mdl */,
+			);
+			name = Models;
+			path = Resources/Models;
 			sourceTree = "<group>";
 		};
 		937367C5144ECDC20051ED8D /* Core */ = {
@@ -639,14 +817,6 @@
 			name = Nodes;
 			sourceTree = "<group>";
 		};
-		93CFC0C714683E9800720766 /* Data */ = {
-			isa = PBXGroup;
-			children = (
-				93A26DE6148BB1D000D14A0B /* footman.gmesh */,
-			);
-			name = Data;
-			sourceTree = "<group>";
-		};
 		CE8DFA8E14587A8200AE7288 /* Game */ = {
 			isa = PBXGroup;
 			children = (
@@ -660,6 +830,8 @@
 				9307CBB014EBB8AB00ADFE2B /* CWorld.cpp */,
 				93A8E20014ED27150014BE15 /* CLevel.h */,
 				93A8E20114ED27230014BE15 /* CLevel.cpp */,
+				93060C8B14EE8BA300306309 /* CGameState.h */,
+				93060C8C14EE8BB100306309 /* CGameState.cpp */,
 			);
 			name = Game;
 			sourceTree = "<group>";
@@ -755,13 +927,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				93A26DE7148BB1D000D14A0B /* footman.gmesh in Resources */,
 				93A26DE9148BB1D800D14A0B /* footman.pvr in Resources */,
 				939733A814CF048C005268B7 /* TileSet.pvr in Resources */,
 				9319B4A114E30904002152EC /* icon.png in Resources */,
 				9319B4A414E30924002152EC /* icon@2x.png in Resources */,
 				9319B4A614E30981002152EC /* Default.png in Resources */,
 				9319B4A814E30991002152EC /* Default@2x.png in Resources */,
+				936FEC9214F579CB00A33A33 /* landscape.mdl in Resources */,
+				936FEC9314F579CB00A33A33 /* player.mdl in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -800,7 +973,7 @@
 				93A26DF0148BD5A100D14A0B /* CBone.cpp in Sources */,
 				93A26DF2148BDCB800D14A0B /* CSkeleton.cpp in Sources */,
 				93A26E05148D087800D14A0B /* CWindow.cpp in Sources */,
-				93A26E09148D1DEA00D14A0B /* CParser_GMESH.cpp in Sources */,
+				93A26E09148D1DEA00D14A0B /* CParser_MDL.cpp in Sources */,
 				93A26E0B148D1E3800D14A0B /* CCommon_IOS.mm in Sources */,
 				93B40547148E111A00EB887D /* GameViewController.mm in Sources */,
 				93B4054F148E6E1800EB887D /* CBatch.cpp in Sources */,
@@ -850,6 +1023,28 @@
 				93060C7914EDA46E00306309 /* IAnimatorDelegate.cpp in Sources */,
 				93060C7C14EDA48400306309 /* IAnimator.cpp in Sources */,
 				93060C7F14EDA6A600306309 /* CAnimatorMove.cpp in Sources */,
+				93060C8614EE6F8C00306309 /* CAnimatorMoveHeightMap.cpp in Sources */,
+				93060C8D14EE8BB100306309 /* CGameState.cpp in Sources */,
+				93060C9014EE8EA800306309 /* CGameUnitMonk.cpp in Sources */,
+				93060CA414F26DF900306309 /* CPathFinderAstar.cpp in Sources */,
+				936FEC5B14F4EC9500A33A33 /* Recast.cpp in Sources */,
+				936FEC5C14F4EC9500A33A33 /* RecastAlloc.cpp in Sources */,
+				936FEC5D14F4EC9500A33A33 /* RecastArea.cpp in Sources */,
+				936FEC5E14F4EC9500A33A33 /* RecastContour.cpp in Sources */,
+				936FEC5F14F4EC9500A33A33 /* RecastFilter.cpp in Sources */,
+				936FEC6014F4EC9500A33A33 /* RecastLayers.cpp in Sources */,
+				936FEC6114F4EC9500A33A33 /* RecastMesh.cpp in Sources */,
+				936FEC6214F4EC9500A33A33 /* RecastMeshDetail.cpp in Sources */,
+				936FEC6314F4EC9500A33A33 /* RecastRasterization.cpp in Sources */,
+				936FEC6414F4EC9500A33A33 /* RecastRegion.cpp in Sources */,
+				936FEC7614F4ECDE00A33A33 /* DetourAlloc.cpp in Sources */,
+				936FEC7714F4ECDE00A33A33 /* DetourCommon.cpp in Sources */,
+				936FEC7814F4ECDE00A33A33 /* DetourNavMesh.cpp in Sources */,
+				936FEC7914F4ECDE00A33A33 /* DetourNavMeshBuilder.cpp in Sources */,
+				936FEC7A14F4ECDE00A33A33 /* DetourNavMeshQuery.cpp in Sources */,
+				936FEC7B14F4ECDE00A33A33 /* DetourNode.cpp in Sources */,
+				936FEC8314F4F16500A33A33 /* CNavigationMeshWrapper.cpp in Sources */,
+				931BF39814F800F7002D0E0D /* glu.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

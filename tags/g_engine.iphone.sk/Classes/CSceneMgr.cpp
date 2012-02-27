@@ -18,6 +18,8 @@
 #include "CRenderMgr.h"
 #include "CBatchMgr.h"
 #include "CLightPoint.h"
+#include "CAnimatorMove.h"
+#include "CAnimatorMoveHeightMap.h"
 
 
 CSceneMgr* CSceneMgr::m_pInsatnce = NULL;
@@ -152,6 +154,21 @@ ILight* CSceneMgr::Get_Light(ILight::E_LIGHT_MODE _eMode, unsigned int _iIndex)
     return NULL;
 }
 
+IAnimator* CSceneMgr::AddMoveAnimator(INode *_pNode, IAnimatorDelegate *_pAnimatorDelegateOwner, const CVector3d &_vStartPosition, const CVector3d &_vEndPosition, float _fStep)
+{
+    IAnimator* pAnimator = new CAnimatorMove();
+    ((CAnimatorMove*)pAnimator)->Init(_pNode, _pAnimatorDelegateOwner, _vStartPosition, _vEndPosition, _fStep);
+    m_lAnimators.push_back(pAnimator);
+    return pAnimator;
+}
+
+IAnimator* CSceneMgr::AddHeightMapMoveAnimator(INode *_pNode, IAnimatorDelegate *_pAnimatorDelegateOwner, CHeightMapSetter *_pHeightMapSetterRef, CVector2d _vStartPosition, CVector2d _vEndPosition, float _fStep)
+{
+    IAnimator* pAnimator = new CAnimatorMoveHeightMap();
+    ((CAnimatorMoveHeightMap*)pAnimator)->Init(_pNode, _pAnimatorDelegateOwner, _pHeightMapSetterRef,_vStartPosition,_vEndPosition,_fStep);
+    m_lAnimators.push_back(pAnimator);
+    return pAnimator;
+}
 
 void CSceneMgr::Update()
 {
@@ -178,6 +195,34 @@ void CSceneMgr::Update()
         ++pBIterator;
     }
     
+    std::vector<IAnimator*>::iterator pBeginAnimatorIterator = m_lAnimators.begin();
+    std::vector<IAnimator*>::iterator pEndAnimatorIterator = m_lAnimators.end();
+    
+    while (pBeginAnimatorIterator != pEndAnimatorIterator)
+    {
+        (*pBeginAnimatorIterator)->Update();
+        ++pBeginAnimatorIterator;
+    }
+    
+    pBeginAnimatorIterator = m_lAnimators.begin();
+    pEndAnimatorIterator = m_lAnimators.end();
+    
+    while (pBeginAnimatorIterator != pEndAnimatorIterator)
+    {
+        if((*pBeginAnimatorIterator)->Get_IsDone())
+        {
+            (*pBeginAnimatorIterator)->Remove();
+            IAnimator* pAnimator = (*pBeginAnimatorIterator);
+            m_lAnimators.erase(pBeginAnimatorIterator);
+            delete pAnimator;
+            break;
+        }
+        else
+        {
+            ++pBeginAnimatorIterator;
+        }
+    }
+
     m_pCollisionMgr->Update();
 }
 

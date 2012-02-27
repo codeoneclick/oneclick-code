@@ -11,8 +11,8 @@
 
 CMeshMgr::CMeshMgr()
 {
-    CParser_GMESH* pParser = new CParser_GMESH();
-    pParser->Load("footman.gmesh");
+    CParser_MDL* pParser = new CParser_MDL();
+    pParser->Load("player.mdl");
     pParser->Commit();
     m_pStub = static_cast<CMesh::SSource*>(pParser->Get_Source());
 }
@@ -38,7 +38,7 @@ IResource* CMeshMgr::Load(std::string _sName, IResource::E_THREAD _eThread)
             pMesh = new CMesh();
             pMesh->Set_Source(m_pStub);
             
-            IParser* pParser = new CParser_GMESH();
+            IParser* pParser = new CParser_MDL();
             
             pParser->Load(_sName.c_str());
             if(pParser->Get_Status() != IParser::E_ERROR_STATUS)
@@ -59,7 +59,7 @@ IResource* CMeshMgr::Load(std::string _sName, IResource::E_THREAD _eThread)
         {
             if(m_lTaskPool.find(_sName) == m_lTaskPool.end())
             {
-                m_lTaskPool[_sName] = new CParser_GMESH();
+                m_lTaskPool[_sName] = new CParser_MDL();
             }
             pMesh = new CMesh();
             pMesh->Set_Source(m_pStub);

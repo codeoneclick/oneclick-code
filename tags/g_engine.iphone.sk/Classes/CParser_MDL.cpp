@@ -1,5 +1,5 @@
 //
-//  CParser_GMESH.cpp
+//  CParser_MDL.cpp
 //  gEngine
 //
 //  Created by sergey.sergeev on 12/4/11.
@@ -7,33 +7,42 @@
 //
 
 #include <iostream>
-#include "CParser_GMESH.h"
+#include "CParser_MDL.h"
 #include <fstream>
 #include <strstream>
 #include "CCommon_IOS.h"
 
-CParser_GMESH::CParser_GMESH()
+CParser_MDL::CParser_MDL()
 {
     
 }
 
-CParser_GMESH::~CParser_GMESH()
+CParser_MDL::~CParser_MDL()
 {
     
 }
 
-void CParser_GMESH::Load(const std::string& _sName)
+void CParser_MDL::Load(const std::string& _sName)
 {
     m_eStatus = E_START_STATUS;
 
-    std::string sFileName = Get_ResourceFileName(_sName); 
-    std::ifstream pStream;
-    pStream.open(sFileName.c_str(), std::ios::in);
+    std::string sPath = Get_ResourceFileName(_sName); 
     
-    int iNumVertexes;
-    int iNumIndexes;
+    FILE *pFile = fopen(sPath.c_str(), "r");
+    if (!pFile)
+    {
+        return;
+    }
     
-    pStream >> iNumVertexes >> iNumIndexes;
+    /*fseek (pFile , 0 , SEEK_END);
+    long iFileBufferSize = ftell (pFile);
+    rewind (pFile);*/
+    
+    int iNumVertexes = 0;
+    int iNumIndexes = 0;
+    
+    fread(&iNumVertexes, sizeof(int), 1, pFile);
+    fread(&iNumIndexes, sizeof(int), 1, pFile);++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     
     m_pSource = new CMesh::SSource();
     m_pSource->m_iNumVertexes = iNumVertexes;
@@ -44,17 +53,14 @@ void CParser_GMESH::Load(const std::string& _sName)
     m_pSource->m_vMaxBound = CVector3d( -4096.0f, -4096.0f, -4096.0f );
     m_pSource->m_vMinBound = CVector3d(  4096.0f,  4096.0f,  4096.0f );
     
-    for( unsigned int i = 0; i < iNumVertexes; ++i)
+    for( unsigned int i = 0; i < m_pSource->m_iNumVertexes; ++i)
     {
-        pStream >> m_pSource->m_pData[i].m_vPosition.x >> m_pSource->m_pData[i].m_vPosition.y >> m_pSource->m_pData[i].m_vPosition.z;
-        pStream >> m_pSource->m_pData[i].m_vNormal.x >> m_pSource->m_pData[i].m_vNormal.y >> m_pSource->m_pData[i].m_vNormal.z;
-        pStream >> m_pSource->m_pData[i].m_vTexCoord.x >> m_pSource->m_pData[i].m_vTexCoord.y;
-        pStream >> m_pSource->m_pData[i].m_iNumBones;
-        for(unsigned int j = 0; j < m_pSource->m_pData[i].m_iNumBones; ++j)
-        {
-            pStream >> m_pSource->m_pData[i].m_tBoneWeights[j].m_iBoneID >> m_pSource->m_pData[i].m_tBoneWeights[j].m_fWeight;
-        }
+        fread(&m_pSource->m_pData[i].m_vPosition,sizeof(struct CVector3d), 1, pFile);
+        fread(&m_pSource->m_pData[i].m_vNormal, sizeof(struct CVector3d), 1, pFile);
+        fread(&m_pSource->m_pData[i].m_vTexCoord, sizeof(struct CVector2d), 1, pFile);
         
+        std::cout<<"Position : "<<m_pSource->m_pData[i].m_vPosition.x<<","<<m_pSource->m_pData[i].m_vPosition.y<<","<<m_pSource->m_pData[i].m_vPosition.z<<"\n";
+       
         if(m_pSource->m_pData[i].m_vPosition.x > m_pSource->m_vMaxBound.x)
         {
             m_pSource->m_vMaxBound.x = m_pSource->m_pData[i].m_vPosition.x;
@@ -85,34 +91,27 @@ void CParser_GMESH::Load(const std::string& _sName)
             m_pSource->m_vMinBound.z = m_pSource->m_pData[i].m_vPosition.z;
         }
     }
+    /*fseek (pFile , 0 , SEEK_CUR);
+    long iFileBufferSizeRead = ftell (pFile);
+    long iFileBufferSizeRest = iFileBufferSize - iFileBufferSizeRead;
     
+    unsigned int iBlockSize = iFileBufferSizeRest / m_pSource->m_iNumIndexes;
+    
+    std::cout<<"[CParser_MDL] Index block size: "<<iBlockSize;*/
+    
+    //int iNum = 0;
     unsigned short* pIBData = m_pSource->m_pIB->Get_Data();
-    for( unsigned int i = 0; i < iNumIndexes; ++i)
+    for(int i = 0; i < m_pSource->m_iNumIndexes; i++)
     {
-        int index = 0;
-        pStream >> index;
-        pIBData[i] = static_cast<short>(index);
+        fread(&pIBData[i], sizeof(unsigned short),1, pFile);
+        //std::cout<<"Index : "<<pIBData[i]<<"  Num : "<<iNum++<<"\n";
     }
+    fclose(pFile);
     
-    int iNumBones = 0;
-    pStream >> iNumBones;
-    
-    //m_pSource->m_pSkeleton = new CSkeleton(iNumBones);
-    std::string sBoneName;
-    int iBoneID, iParentBoneID;
-    
-    for(int i = 0; i < iNumBones; ++i)
-    {
-        pStream >> sBoneName >> iBoneID >> iParentBoneID;
-        //m_pSource->m_pSkeleton->AddBone(new CBone(sBoneName, iBoneID, iParentBoneID));
-    }
-    
-    
-    pStream.close();
     m_eStatus = E_DONE_STATUS;
 }
 
-void CParser_GMESH::Commit()
+void CParser_MDL::Commit()
 {
     m_pSource->m_pVB = new CVertexBuffer(m_pSource->m_iNumVertexes, sizeof(CVertexBuffer::SVertexVTN),CVertexBuffer::E_VERTEX_BUFFER_MODE_VTN);
     CVertexBuffer::SVertexVTN* pData = static_cast<CVertexBuffer::SVertexVTN*>(m_pSource->m_pVB->Get_Data());  

@@ -25,6 +25,7 @@ void CAnimatorMove::Init(INode *_pNode, IAnimatorDelegate *_pAnimatorDelegateOwn
     m_pAnimatorDelegateOwner = _pAnimatorDelegateOwner;
     m_vStartPosition = _vStartPosition;
     m_vEndPosition = _vEndPosition;
+    m_fStep = _fStep;
 }
 
 void CAnimatorMove::Start(void)
@@ -35,12 +36,24 @@ void CAnimatorMove::Start(void)
 void CAnimatorMove::Stop(void)
 {
     m_bIsAnimated = false;
+    m_pAnimatorDelegateOwner->OnAnimatorDone(this);
+    m_bIsDone = true;
 }
 
 void CAnimatorMove::Update(void)
 {
     if(m_bIsAnimated == true)
     {
-        
+        m_vStartPosition = Lerp(m_vStartPosition, m_vEndPosition, m_fStep);
+        m_pNode->Set_Position(m_vStartPosition);
+        if(IsEqual(m_vStartPosition, m_vEndPosition, m_fStep))
+        {
+            Stop();
+        }
     }
+}
+
+void CAnimatorMove::Remove(void)
+{
+    m_pAnimatorDelegateOwner->OnAnimatorRemove(this);
 }
