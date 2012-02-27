@@ -17,12 +17,15 @@ protected:
     IAnimatorDelegate* m_pAnimatorDelegateOwner;
     INode* m_pNode;
     bool m_bIsAnimated;
+    bool m_bIsDone;
 public:
     IAnimator(void);
     ~IAnimator(void);
     virtual void Start(void) = 0;
     virtual void Stop(void) = 0;
     virtual void Update(void) = 0;
+    bool Get_IsDone(void) { return m_bIsDone; }
+    virtual void Remove(void) = 0;
 };
 
 #endif

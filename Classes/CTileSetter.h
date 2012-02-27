@@ -15,7 +15,7 @@
 class CTileSetter
 {
 public:
-    enum E_TILE_LEVEL { LEVEL_01 = 0, LEVEL_02, LEVEL_03, LEVEL_MAX };
+    enum E_TILE_LEVEL { LEVEL_01 = 0, LEVEL_02, LEVEL_03, LEVEL_04, LEVEL_05, LEVEL_MAX };
     enum E_TILE_NODE  { T_C_02 = 0, T_LD, T_RD, T_LU, T_RU, T_L, T_D, T_DIAG_01, T_DIAG_02, T_U, T_R, T_RD_EXT, T_LD_EXT, T_RU_EXT, T_LU_EXT, T_C_01 };
     
     struct STileIndex

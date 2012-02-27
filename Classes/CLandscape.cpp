@@ -63,6 +63,7 @@ void CLandscape::Load(IResource::SResource _tResource)
     m_pTileSetter = new CTileSetter();
     m_pTileSetter->Load_SourceData("",m_iWidth, m_iHeight);
     m_pTileSetter->Create_TexCoordData();
+
     CTileSetter::STileTexCoords* pTilesetData = m_pTileSetter->Get_TexCoordData();
     
     for(int i = 0; i < m_iWidth; ++i)
@@ -169,9 +170,103 @@ void CLandscape::Load(IResource::SResource _tResource)
     m_bIsBatching = _tResource.m_bIsBatching;
 }
 
+#define RAY_ITERATIONS 1000
+#define COLLISION_RADIUS 1.0f
+
 void CLandscape::OnTouchEvent(void)
 {
-    unsigned int iHexColliderID = CSceneMgr::Instance()->Get_CollisionMgr()->Get_HexColliderID();
+    CRay3d tTouchRay = CSceneMgr::Instance()->Get_CollisionMgr()->Get_TouchRay();
+    CVector3d vCameraPosition = CSceneMgr::Instance()->Get_Camera()->Get_Position();
+    CVector3d vCollisionPoint;
+    
+    //CVector3d vPoint_01 = CVector3d(10.0f, 0.0f, 0.0f);
+    //CVector3d vPoint_02 = CVector3d(0.0f, 0.0f, 10.0f);
+    //CVector3d vPoint_03 = CVector3d(10.0f, 0.0f, 10.0f);
+    
+    //CSceneMgr::Instance()->Get_CollisionMgr()->RayTriangleIntersection(vPoint_01, vPoint_02, vPoint_03, vCameraPosition, vTouchRayTest, &vCollisionPoint);
+    //std::cout<<"[Collision_000] Colission Point = "<<vCollisionPoint.x<<","<<vCollisionPoint.y<<","<<vCollisionPoint.z<<"\n";
+    //float ft = -vCameraPosition.y / vTouchRayTest.y;
+    //vCollisionPoint.x = vCameraPosition.x + vTouchRayTest.x * ft;
+    //vCollisionPoint.z = vCameraPosition.z + vTouchRayTest.z * ft;
+    //vCollisionPoint.y = 0.0f;
+    //std::cout<<"[Collision_111] Colission Point = "<<vCollisionPoint.x<<","<<vCollisionPoint.y<<","<<vCollisionPoint.z<<"\n";
+    //return;
+    
+    
+    if(!m_pHeightMapSetter->CheckCollision(m_pMesh->Get_VB(), m_pMesh->Get_IB(), CVertexBuffer::E_VERTEX_BUFFER_MODE_VTN, tTouchRay, &vCollisionPoint))
+    {
+        return;
+    }
+    else
+    {
+        std::cout<<"[Collision] Colission Point = "<<vCollisionPoint.x<<","<<vCollisionPoint.y<<","<<vCollisionPoint.z<<"\n";
+    }
+    
+    //float ft = -vCameraPosition.y / vTouchRayTest.y;
+    //vTouchRayTest.x = vCameraPosition.x + vTouchRayTest.x * ft;
+    //vTouchRayTest.z = vCameraPosition.z + vTouchRayTest.z * ft;
+    //vTouchRayTest.y = 0.0f;
+    
+    //vCollisionPoint = vCollisionPoint * 10.0f;
+    CSceneMgr::Instance()->Get_CollisionMgr()->Set_Touch3DPoint(vCollisionPoint);
+    //std::cout<<"[TEST INode OnTouchEvent()] Position : "<<vTouchRayTest.x<<","<<vTouchRayTest.y<<","<<vTouchRayTest.z<<"\n";
+    for(size_t index = 0; index< m_lDelegateOwners.size(); index++)
+    {
+        m_lDelegateOwners[index]->OnTouchEvent(m_pSelfDelegate);
+    }
+    return;
+    
+    /*std::map<unsigned int, CLandscape::STile*>::iterator pBeginIterator = m_lContainer.begin();
+    std::map<unsigned int, CLandscape::STile*>::iterator pEndIterator = m_lContainer.end();
+    CVector3d vTouchRay = CSceneMgr::Instance()->Get_CollisionMgr()->Get_TouchRay();
+    while (pBeginIterator != pEndIterator)
+    {
+        CLandscape::STile* pTile = pBeginIterator->second;
+        for(int i = 0; i < RAY_ITERATIONS; i++)
+        {
+            vCollisionPoint.x = vTouchRay.x / RAY_ITERATIONS * i;
+            vCollisionPoint.y = vTouchRay.y / RAY_ITERATIONS * i;
+            vCollisionPoint.z = vTouchRay.z / RAY_ITERATIONS * i;
+            
+            if(pow(vCollisionPoint.x - pTile->m_vPosition.x, 2) + pow(vCollisionPoint.y - pTile->m_vPosition.y, 2) + pow(vCollisionPoint.z - pTile->m_vPosition.z, 2) < pow(COLLISION_RADIUS, 2))
+            {
+                CSceneMgr::Instance()->Get_CollisionMgr()->Set_Touch3DPoint(pTile->m_vPosition);
+                std::cout<<"[INode OnTouchEvent()] Position : "<<pTile->m_vPosition.x<<","<<pTile->m_vPosition.y<<","<<pTile->m_vPosition.z<<"\n";
+                
+                for(size_t index = 0; index< m_lDelegateOwners.size(); index++)
+                {
+                    m_lDelegateOwners[index]->OnTouchEvent(m_pSelfDelegate);
+                }
+                
+                m_pTileSetter->Edit(pTile->m_vPosition.x, pTile->m_vPosition.z, CTileSetter::LEVEL_03);
+                CVertexBuffer::SVertexVTN* pVBData = static_cast<CVertexBuffer::SVertexVTN*>(m_pMesh->Get_VB()->Get_Data());
+                CTileSetter::STileTexCoords* pTilesetData = m_pTileSetter->Get_TexCoordData();
+                std::vector<CTileSetter::STileIndex> lEditCacheData = m_pTileSetter->Get_EditCacheData();
+                
+                
+                for(unsigned int i = 0; i < lEditCacheData.size(); ++i)
+                {
+                    int iIndex = lEditCacheData[i].m_iTexCoordIndex;
+                    int iVBIndex = lEditCacheData[i].m_iTileIndex * 4;
+                    if(iVBIndex < 0)
+                    {
+                        continue;
+                    }
+                    
+                    pVBData[iVBIndex    ].m_vTexCoord = pTilesetData[iIndex].m_vTexCoord[2];
+                    pVBData[iVBIndex + 1].m_vTexCoord = pTilesetData[iIndex].m_vTexCoord[3];
+                    pVBData[iVBIndex + 2].m_vTexCoord = pTilesetData[iIndex].m_vTexCoord[0];
+                    pVBData[iVBIndex + 3].m_vTexCoord = pTilesetData[iIndex].m_vTexCoord[1];
+                }
+                
+                return;
+            }
+        }
+
+        ++pBeginIterator;
+    }*/
+
+    /*unsigned int iHexColliderID = CSceneMgr::Instance()->Get_CollisionMgr()->Get_HexColliderID();
     if(iHexColliderID != 0)
     {
         std::map<unsigned int, CLandscape::STile*>::iterator pIterator = m_lContainer.find(iHexColliderID);
@@ -179,6 +274,11 @@ void CLandscape::OnTouchEvent(void)
         {
             CVector3d vTouch3DPoint = (*pIterator).second->m_vPosition;
             CSceneMgr::Instance()->Get_CollisionMgr()->Set_Touch3DPoint(vTouch3DPoint);
+            
+            for(size_t index = 0; index< m_lDelegateOwners.size(); index++)
+            {
+                m_lDelegateOwners[index]->OnTouchEvent(m_pSelfDelegate);
+            }
             
             m_pTileSetter->Edit(vTouch3DPoint.x, vTouch3DPoint.z, CTileSetter::LEVEL_03);
             CVertexBuffer::SVertexVTN* pVBData = static_cast<CVertexBuffer::SVertexVTN*>(m_pMesh->Get_VB()->Get_Data());
@@ -201,12 +301,9 @@ void CLandscape::OnTouchEvent(void)
                 pVBData[iVBIndex + 3].m_vTexCoord = pTilesetData[iIndex].m_vTexCoord[1];
             }
         }
-    }
+    }*/
     
-    for(size_t index = 0; index< m_lDelegateOwners.size(); index++)
-    {
-        m_lDelegateOwners[index]->OnTouchEvent(m_pSelfDelegate);
-    }
+    
 }
 
 void CLandscape::Update()

@@ -13,7 +13,6 @@ void main(void)
 {
     highp vec4  vDiffuseColor = vec4( 0.0, 0.0, 0.5, 1.0 );
     highp float fDiffuseFactor = 0.2 + max ( dot ( OUT_Normal, OUT_Light ), 0.0 );
-    highp vec4  clr;
     
     if ( fDiffuseFactor < 0.3 )
         vDiffuseColor = vDiffuseColor * 0.1;

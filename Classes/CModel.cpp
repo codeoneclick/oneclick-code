@@ -1,4 +1,4 @@
-//
+
 //  CModel.cpp
 //  gEngine
 //
@@ -37,23 +37,27 @@ void CModel::Load(IResource::SResource _tResource)
 
 void CModel::OnTouchEvent()
 {
-    for(size_t index = 0; index< m_lDelegateOwners.size(); index++)
+    /*unsigned int iHexColliderID = CSceneMgr::Instance()->Get_CollisionMgr()->Get_HexColliderID();
+    if(iHexColliderID != 0 && iHexColliderID == m_pCollider->Get_ColliderID().m_iHex)
     {
-        m_lDelegateOwners[index]->OnTouchEvent(m_pSelfDelegate);
-    }
+        for(size_t index = 0; index< m_lDelegateOwners.size(); index++)
+        {
+            m_lDelegateOwners[index]->OnTouchEvent(m_pSelfDelegate);
+        }
+    }*/
 }
 
 void CModel::Update()
 {
     INode::Update();
     
-    if(m_pCollider != NULL)
+    /*if(m_pCollider != NULL)
     {
         if(m_pCollider->Get_TouchCollided() == true)
         {
             return;
         }
-    }
+    }*/
 }
 
 void CModel::Render()

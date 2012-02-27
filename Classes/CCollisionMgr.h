@@ -24,6 +24,7 @@ private:
     unsigned int m_iHexColliderID;
     bool m_bIsTouch;
     unsigned int RgbToHex(unsigned char _r, unsigned char _g, unsigned char _b);
+    CRay3d m_vTouchRay;
 public:
     CCollisionMgr();
     ~CCollisionMgr();
@@ -31,13 +32,15 @@ public:
     void Create_Collider(ICollider* _pCollider);
     void Remove_Collider(ICollider* _pCollider);
 
-    void OnScreenTouch(CVector2d _vTouchPoint) { m_bIsTouch = true; m_vTouch2DPoint = _vTouchPoint; }
+    void OnScreenTouch(CVector2d _vTouchPoint);
     
     unsigned int Get_HexColliderID(void) { return m_iHexColliderID; }
     
     void Set_Touch3DPoint(CVector3d _vTouchPoint) { m_vTouch3DPoint = _vTouchPoint; }
     CVector3d Get_Touch3DPoint(void) { return m_vTouch3DPoint; }
-   
+    CRay3d Get_TouchRay(void) { return m_vTouchRay; }
+    bool RayPlaneIntersection(CVector3d& vTrianglePoint_01, CVector3d& vTrianglePoint_02, CVector3d& vTrianglePoint_03, CRay3d& tRay, CVector3d* vIntersectPoint);
+    bool RayTriangleIntersection(CVector3d& vTrianglePoint_01, CVector3d& vTrianglePoint_02, CVector3d& vTrianglePoint_03, CRay3d& tRay, CVector3d* vIntersectPoint);
     void Update(void);
 };
 

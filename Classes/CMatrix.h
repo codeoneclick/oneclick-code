@@ -196,11 +196,29 @@ inline CMatrix4x4 Transpose(const CMatrix4x4& _mValue)
     return mValueOut;
 }
 
+inline CRay3d Unproject(const CVector2d& _vValue, const CMatrix4x4& _mView, const CMatrix4x4& _mProjection, const int* _pViewport)
+{
+    CVector3d vDirection, vOrigin;
+    float fScreenX =  ((( 2.0f * _vValue.x ) / _pViewport[2]) - 1.0f ) / _mProjection.m[0 + 0 * 4];
+    float fScreenY =  ((( 2.0f * _vValue.y ) / _pViewport[3]) - 1.0f ) / _mProjection.m[1 + 1 * 4];
+    CMatrix4x4 mInverseView = Inverse(_mView);
+    
+    vDirection.x  = -( fScreenX * mInverseView.m[0 * 4 + 0] + fScreenY * mInverseView.m[1 * 4 + 0] + mInverseView.m[2 * 4 + 0]);
+    vDirection.y  = -( fScreenX * mInverseView.m[0 * 4 + 1] + fScreenY * mInverseView.m[1 * 4 + 1] + mInverseView.m[2 * 4 + 1]);
+    vDirection.z  = -( fScreenX * mInverseView.m[0 * 4 + 2] + fScreenY * mInverseView.m[1 * 4 + 2] + mInverseView.m[2 * 4 + 2]);
+    vOrigin.x = mInverseView.m[3 * 4 + 0];
+    vOrigin.y = mInverseView.m[3 * 4 + 1];
+    vOrigin.z = mInverseView.m[3 * 4 + 2];
+    CRay3d tRay;
+    tRay.m_vDirection = vDirection;
+    tRay.m_vOrigin = vOrigin;
+    return tRay;
+}
+
 inline CVector3d Unproject(const CVector3d& _vValue, const CMatrix4x4& _mView, const CMatrix4x4& _mProjection, const int* _pViewport)
 {
     CVector4d vValueExt = CVector4d(_vValue.x, _vValue.y, _vValue.z, 1.0f);
-    CMatrix4x4 mWorld = CMatrix4x4(CMatrix4x4::E_MATRIX_ONE);
-    CMatrix4x4 mInvertViewProjection = Inverse(_mProjection * _mView);
+    CMatrix4x4 mInvertViewProjection = Inverse(_mView * _mProjection);
     vValueExt.x = (vValueExt.x - _pViewport[0]) * 2.0f / _pViewport[2] - 1.0f;
     vValueExt.y = (vValueExt.y - _pViewport[1]) * 2.0f / _pViewport[3] - 1.0f;
     vValueExt.z = vValueExt.z * 2.0f - 1.0f;
@@ -214,16 +232,20 @@ inline CVector3d Unproject(const CVector3d& _vValue, const CMatrix4x4& _mView, c
     CVector3d vValueOut = CVector3d(vValueTemp.x, vValueTemp.y, vValueTemp.z);
     return vValueOut;
     
-    /*CMatrix4x4 mWorld = CMatrix4x4(CMatrix4x4::E_MATRIX_ONE);
-    CMatrix4x4 mInvertViewProjection = Inverse(mWorld * _mView * _mProjection);
+    /*CVector4d vValueExt = CVector4d(_vValue.x, _vValue.y, _vValue.z, 1.0f);
+    CMatrix4x4 mInvertViewProjection = Inverse(_mView * _mProjection);
+    vValueExt.x = (vValueExt.x - _pViewport[0]) * 2.0f / _pViewport[2] - 1.0f;
+    vValueExt.y = (vValueExt.y - _pViewport[1]) * 2.0f / _pViewport[3] - 1.0f;
+    vValueExt.z = vValueExt.z * 2.0f - 1.0f;
     
-    CVector3d vValueTemp;
-    vValueTemp.x = (((_vValue.x - static_cast<float>(_pViewport[0])) / ( static_cast<float>(_pViewport[2]))) * 2.0f) - 1.0f;
-    vValueTemp.y = (((_vValue.y - static_cast<float>(_pViewport[1])) / ( static_cast<float>(_pViewport[3]))) * 2.0f) - 1.0f;
-    vValueTemp.z = (_vValue.z - 0.0f) / ( 1.0f - 0.0f);
-    float fW = (((vValueTemp.x * mInvertViewProjection.m[12]) + (vValueTemp.y * mInvertViewProjection.m[13])) + (vValueTemp.z * mInvertViewProjection.m[14])) + mInvertViewProjection.m[15];
+    CVector4d vValueTemp = mInvertViewProjection * vValueExt;
     
-    return vValueTemp / fW;*/
+    vValueTemp.x /= vValueTemp.w;
+    vValueTemp.y /= vValueTemp.w;
+    vValueTemp.z /= vValueTemp.w;
+    
+    CVector3d vValueOut = CVector3d(vValueTemp.x, vValueTemp.y, vValueTemp.z);
+    return vValueOut;*/
 }
 
 

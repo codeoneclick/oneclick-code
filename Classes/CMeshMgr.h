@@ -12,7 +12,7 @@
 #include "stdlib.h"
 #include <string>
 #include <map>
-#include "CParser_GMESH.h"
+#include "CParser_MDL.h"
 #include "IResourceMgr.h"
 
 class CMeshMgr : public IResourceMgr

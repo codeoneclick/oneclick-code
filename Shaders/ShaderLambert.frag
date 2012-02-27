@@ -12,7 +12,7 @@ const char* ShaderLambertF = STRINGIFY(
 void main(void)
 {
     highp vec4 vDiffuseColor = texture2D(EXT_TEXTURE_01, OUT_TexCoord);
-    vDiffuseColor = vDiffuseColor * max ( dot ( OUT_Normal, OUT_Light ), 0.0 );
+    vDiffuseColor = vDiffuseColor * max ( dot ( OUT_Normal, OUT_Light ), 0.33 );
     gl_FragColor = vDiffuseColor;
 }
 );

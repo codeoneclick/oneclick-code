@@ -10,10 +10,15 @@
 #include "CGameUnitHero.h"
 #include "CSceneMgr.h"
 #include "CWorld.h"
+//#include "CPathFinder.h"
+#include "CPathFinderAstar.h"
+#include "CNavigationMeshWrapper.h"
 
 CGameUnitHero::CGameUnitHero(void)
 {
-    
+    m_bIsMove = false;
+    m_pMoveAnimator = NULL;
+    m_pLandscapeRef = NULL;
 }
 
 CGameUnitHero::~CGameUnitHero(void)
@@ -23,35 +28,94 @@ CGameUnitHero::~CGameUnitHero(void)
 
 void CGameUnitHero::Load(void)
 {
-    m_pModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("footman.gmesh", false, IResource::E_THREAD_BACKGROUND);
+    m_pModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("player.mdl", false, IResource::E_THREAD_BACKGROUND);
     m_pModel->Set_Texture("footman.pvr");
     m_pModel->Set_Scale(CVector3d(0.01f, 0.01f, 0.01f));
-    m_pModel->Set_Shader(IResource::E_SHADER_PHONG);
+    m_pModel->Set_Shader(IResource::E_SHADER_LAMBERT);
     m_pModel->Create_BoundingBox();
     m_pModel->Create_ColliderBox();
     CSceneMgr::Instance()->AddEventListener(m_pModel, CEventMgr::E_EVENT_TOUCH);
     m_pModel->Set_SelfDelegate(this);
     m_pModel->Add_DelegateOwner(this);
     CWorld::Instance()->Get_Level()->Get_Model()->Add_DelegateOwner(this);
+    m_pLandscapeRef = ((CLandscape*)CWorld::Instance()->Get_Level()->Get_Model());
 }
 
 void CGameUnitHero::OnTouchEvent(IDelegate* _pDelegateOwner)
 {
     IDelegate* pDelegate = CWorld::Instance()->Get_Level();
-    if(_pDelegateOwner == pDelegate)
+    if(_pDelegateOwner == pDelegate && CWorld::Instance()->Get_IsHeroUnderControl())
     {
         CVector3d vPosition = CSceneMgr::Instance()->Get_CollisionMgr()->Get_Touch3DPoint();
+        std::cout<<"[CGameUnitHero::OnTouchEvent] End Point :"<<vPosition.x<<","<<vPosition.z<<"\n";
         m_pModel->Set_Position(vPosition);
+        return;
+        int** pPathFindData = m_pLandscapeRef->Get_HeightMapSetter()->Get_PathFindData();
+        int iWidth = m_pLandscapeRef->Get_Width();
+        int iHeight = m_pLandscapeRef->Get_Height();
+        CNavigationMeshWrapper::Instance()->FindPath(m_pModel->Get_Position(), vPosition);
+        CVector2d vStartPosition = CVector2d(m_pModel->Get_Position().x, m_pModel->Get_Position().z);
+        CVector2d vEndPosition = CVector2d(vPosition.x, vPosition.z);
+        //std::string sPath = CPathFinderAstar::Instance()->FindPath(pPathFindData, iWidth, iHeight, vStartPosition, vEndPosition);
+        //std::cout<<"[CGameUnitHero::OnTouchEvent] Path:"<<sPath<<"\n";
+        m_lPath.clear();
+        if(m_pMoveAnimator != NULL)
+        {
+            m_pMoveAnimator->Stop();
+        }
+        m_lPath = CNavigationMeshWrapper::Instance()->Get_Path();
+        //m_lPath = CPathFinderAstar::Instance()->Get_Path();
+        //m_lPath.pop_back();
+        for(size_t index = 0; index < m_lPath.size(); index++)
+        {
+            std::cout<<"[CGameUnitHero::OnTouchEvent] Path Point :"<<m_lPath[index].x<<","<<m_lPath[index].y<<"\n";
+        }
+        if(m_lPath.size() > 0)
+        {
+            m_pMoveAnimator = CSceneMgr::Instance()->AddHeightMapMoveAnimator(m_pModel, this, m_pLandscapeRef->Get_HeightMapSetter(), CVector2d(m_pModel->Get_Position().x,m_pModel->Get_Position().z), m_lPath.back(), 0.1f);
+            std::cout<<"[CGameUnitHero::OnTouchEvent] Move Point :"<<m_lPath.back().x<<","<<m_lPath.back().y<<"\n";
+            m_lPath.pop_back();
+            m_pMoveAnimator->Start();
+        }
         std::cout<<"[CGameUnitHero::OnTouchEvent] >> CLevel\n";
     }
 
     if(_pDelegateOwner == this)
     {
+        CWorld::Instance()->Set_IsHeroUnderControl(true);
         std::cout<<"[CGameUnitHero::OnTouchEvent] >> CGameUnitHero\n";
     }
 }
 
+void CGameUnitHero::OnAnimatorDone(IAnimator* _pAnimator)
+{
+    std::cout<<"[CGameUnitHero::OnAnimatorDone] >> CGameUnitHero\n";
+    m_pMoveAnimator = NULL;
+    if(m_lPath.size() > 0)
+    {
+        m_pMoveAnimator = CSceneMgr::Instance()->AddHeightMapMoveAnimator(m_pModel, this, m_pLandscapeRef->Get_HeightMapSetter(), CVector2d(m_pModel->Get_Position().x,m_pModel->Get_Position().z), m_lPath.back(), 0.1f);
+        std::cout<<"[CGameUnitHero::OnTouchEvent] Move Point :"<<m_lPath.back().x<<","<<m_lPath.back().y<<"\n";
+        m_lPath.pop_back();
+        m_pMoveAnimator->Start();
+    }
+}
+
+void CGameUnitHero::OnAnimatorRemove(IAnimator *_pAnimator)
+{
+    std::cout<<"[CGameUnitHero::OnAnimatorRemove] >> CGameUnitHero\n";
+}
+
 void CGameUnitHero::Update(void)
 {
-    
+
 }
+
+
+
+
+
+
+
+
+
+

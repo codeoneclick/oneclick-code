@@ -14,6 +14,7 @@ IAnimator::IAnimator(void)
     m_pNode = NULL;
     m_pAnimatorDelegateOwner = NULL;
     m_bIsAnimated = false;
+    m_bIsDone = false;
 }
 
 IAnimator::~IAnimator(void)

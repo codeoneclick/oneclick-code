@@ -12,11 +12,16 @@
 #include "CModel.h"
 #include "CSceneMgr.h"
 #include "IDelegate.h"
+#include "CLandscape.h"
 
 class IGameUnit : public IDelegate
 {
 protected:
     CModel* m_pModel;
+    bool m_bIsMove;
+    std::vector<CVector2d> m_lPath;
+    IAnimator* m_pMoveAnimator;
+    CLandscape* m_pLandscapeRef;
 public:
     IGameUnit(void);
     ~IGameUnit(void);

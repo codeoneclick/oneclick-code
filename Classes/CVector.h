@@ -149,12 +149,12 @@ public:
     }
 };
 
-inline bool IsEqual(const CVector2d& v1,const CVector2d& v2)
+inline bool IsEqual(const CVector2d& v1,const CVector2d& v2, float _fValue)
 {
     CVector2d vEqual = v1 - v2;
     for(unsigned int i = 0; i < 2; ++i)
     {
-        if(vEqual.v[i] > MATH_EPS)
+        if(fabs(vEqual.v[i]) > _fValue)
         {
             return false;
         }
@@ -162,17 +162,29 @@ inline bool IsEqual(const CVector2d& v1,const CVector2d& v2)
     return true;
 }
 
-inline bool IsEqual(const CVector3d& v1,const CVector3d& v2)
+inline bool IsEqual(const CVector3d& v1,const CVector3d& v2, float _fValue)
 {
     CVector3d vEqual = v1 - v2;
     for(unsigned int i = 0; i < 3; ++i)
     {
-        if(vEqual.v[i] > MATH_EPS)
+        if(fabs(vEqual.v[i]) > _fValue)
         {
             return false;
         }
     }
     return true;
+}
+
+inline CVector3d Lerp(const CVector3d& _vValue_01, const CVector3d& _vValue_02, float _fStep)
+{
+    CVector3d vValueOut = _vValue_01 + (_vValue_02 - _vValue_01) * _fStep;
+    return vValueOut;
+}
+
+inline CVector2d Lerp(const CVector2d& _vValue_01, const CVector2d& _vValue_02, float _fStep)
+{
+    CVector2d vValueOut = _vValue_01 + (_vValue_02 - _vValue_01) * _fStep;
+    return vValueOut;
 }
 
 inline float Dot( const CVector3d& v1,const CVector3d& v2 )
@@ -199,5 +211,12 @@ inline float AngleFromVectorToVector(CVector3d _vValue_01, CVector3d _vValue_02)
     return  -angleY;
 }
 
+class CRay3d
+{
+public:
+    CVector3d m_vDirection;
+    CVector3d m_vOrigin;
+    CVector3d m_vEnd;
+};
 
 #endif

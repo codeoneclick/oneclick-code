@@ -16,6 +16,8 @@
 #include "CRenderMgr.h"
 #include "CCollisionMgr.h"
 #include "CEventMgr.h"
+#include "CHeightMapSetter.h"
+#include "IAnimator.h"
 
 class CSceneMgr
 {
@@ -26,6 +28,8 @@ private:
     std::vector<INode*> m_lContainer;
     std::map<unsigned int, ILight*> m_lLights;
     ICamera* m_pCamera;
+    
+    std::vector<IAnimator*> m_lAnimators;
     
     CRenderMgr* m_pRenderMgr;
     CBatchMgr* m_pBatchMgr;
@@ -53,6 +57,9 @@ public:
     CRenderMgr* Get_RenderMgr(void) { return m_pRenderMgr; }
     CBatchMgr* Get_BatchMgr(void) { return m_pBatchMgr; }
     CCollisionMgr* Get_CollisionMgr(void) { return m_pCollisionMgr; }
+    
+    IAnimator* AddMoveAnimator(INode* _pNode, IAnimatorDelegate* _pAnimatorDelegateOwner, const CVector3d& _vStartPosition, const CVector3d&  _vEndPosition, float _fStep);
+    IAnimator* AddHeightMapMoveAnimator(INode *_pNode, IAnimatorDelegate *_pAnimatorDelegateOwner, CHeightMapSetter *_pHeightMapSetterRef, CVector2d _vStartPosition, CVector2d _vEndPosition, float _fStep);
     
     void RemoveModel(INode *_pNode);
     void Update(void);
