@@ -11,8 +11,7 @@
 
 
 #include "CTileSetter.h"
-#include "CVertexBuffer.h"
-#include "CIndexBuffer.h"
+#include "CMesh.h"
 
 class CHeightMapSetter
 {
@@ -25,6 +24,8 @@ private:
 public:
     CHeightMapSetter(void);
     ~CHeightMapSetter(void);
+    
+    CMesh* Load_SourceData(const std::string _sName, int _iWidth, int _iHeight, CVertexBuffer::E_VERTEX_BUFFER_MODE _eMode);
     
     void Load_SourceData(const std::string& _sName, int _iWidth, int _iHeight);
     void Set_SourceData(float* _pSource, int _iWidth, int _iHeight) { m_pSource = _pSource; m_iWidth = _iWidth; m_iHeight = _iHeight; }

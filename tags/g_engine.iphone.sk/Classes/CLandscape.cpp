@@ -32,6 +32,7 @@ CLandscape::CLandscape()
     
     m_pTileSetter = NULL;
     m_pHeightMapSetter = NULL;
+    m_pNavMesh = NULL;
 }
 
 CLandscape::~CLandscape()
@@ -41,18 +42,21 @@ CLandscape::~CLandscape()
 
 void CLandscape::Load(IResource::SResource _tResource)
 {
-    m_pMesh = new CMesh();
-    CMesh::SSource* pSource = new CMesh::SSource();
+    //m_pMesh = new CMesh();
+    /*CMesh::SSource* pSource = new CMesh::SSource();
     pSource->m_iNumVertexes = m_iHeight * m_iWidth * k_TILE_NUM_VERTEXES;
     pSource->m_iNumIndexes = m_iHeight * m_iWidth * k_TILE_NUM_INDEXES;
     
     pSource->m_pIB = new CIndexBuffer(pSource->m_iNumIndexes);
-    unsigned short* pIBData =  pSource->m_pIB->Get_Data();
+    //unsigned short* pIBData =  pSource->m_pIB->Get_Data();
    
-    pSource->m_pVB = new CVertexBuffer(pSource->m_iNumVertexes, sizeof(CVertexBuffer::SVertexVTN), CVertexBuffer::E_VERTEX_BUFFER_MODE_VTN);   
-    CVertexBuffer::SVertexVTN* pVBData = static_cast<CVertexBuffer::SVertexVTN*>(pSource->m_pVB->Get_Data());
+    pSource->m_pVB = new CVertexBuffer(pSource->m_iNumVertexes, sizeof(CVertexBuffer::SVertexVTN), CVertexBuffer::E_VERTEX_BUFFER_MODE_VTN);*/   
     
-    unsigned int iIBIndex = 0;
+    //CVertexBuffer::SVertexVTN* pVBData = static_cast<CVertexBuffer::SVertexVTN*>(pSource->m_pVB->Get_Data());
+    m_pHeightMapSetter = new CHeightMapSetter();
+    m_pMesh = m_pHeightMapSetter->Load_SourceData("landscape.mdl", m_iWidth, m_iHeight, CVertexBuffer::E_VERTEX_BUFFER_MODE_VTN);
+    
+    /*unsigned int iIBIndex = 0;
     unsigned int iVBIndex = 0; 
     int iOffset = 0;
     
@@ -165,8 +169,8 @@ void CLandscape::Load(IResource::SResource _tResource)
     }
     
     m_pHeightMapSetter->Calculate_Normals(pSource->m_pVB, pSource->m_pIB, CVertexBuffer::E_VERTEX_BUFFER_MODE_VTN);
-       
-    m_pMesh->Set_Source(pSource);
+    */   
+    //m_pMesh->Set_Source(pSource);
     m_bIsBatching = _tResource.m_bIsBatching;
 }
 
@@ -354,6 +358,46 @@ void CLandscape::Render()
         m_pMesh->Get_VB()->Enable();
         glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IB()->Get_Data());
         m_pMesh->Get_VB()->Disable();
+        m_pShader->Disable();
+    }
+    
+    if(m_pNavMesh != NULL)
+    {
+        m_pNavMesh->Get_VB()->Set_ShaderRef(m_pShader->Get_ProgramHandle());
+        m_pShader->Enable();
+        m_pShader->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD);
+        
+        ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
+        
+        m_pShader->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
+        m_pShader->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
+        m_pShader->SetVector(pCamera->Get_Position(), CShader::k_VECTOR_VIEW);
+        
+        if(m_pLight != NULL)
+        {
+            m_pShader->SetVector(m_pLight->Get_Position(), CShader::k_VECTOR_LIGHT);
+        }
+        
+        if( m_pTextures[0] != NULL )
+        {
+            m_pShader->SetTexture(m_pTextures[0]->Get_Handle(), CShader::k_TEXTURE_01);
+        }
+        if( m_pTextures[1] != NULL )
+        {
+            m_pShader->SetTexture(m_pTextures[1]->Get_Handle(), CShader::k_TEXTURE_02);
+        }
+        if( m_pTextures[2] != NULL )
+        {
+            m_pShader->SetTexture(m_pTextures[2]->Get_Handle(), CShader::k_TEXTURE_03);
+        }
+        if( m_pTextures[3] != NULL )
+        {
+            m_pShader->SetTexture(m_pTextures[3]->Get_Handle(), CShader::k_TEXTURE_04);
+        }
+        
+        m_pNavMesh->Get_VB()->Enable();
+        glDrawElements(GL_TRIANGLES, m_pNavMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pNavMesh->Get_IB()->Get_Data());
+        m_pNavMesh->Get_VB()->Disable();
         m_pShader->Disable();
     }
     

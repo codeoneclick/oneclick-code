@@ -47,25 +47,13 @@ void CGameUnitHero::OnTouchEvent(IDelegate* _pDelegateOwner)
     if(_pDelegateOwner == pDelegate && CWorld::Instance()->Get_IsHeroUnderControl())
     {
         CVector3d vPosition = CSceneMgr::Instance()->Get_CollisionMgr()->Get_Touch3DPoint();
-        std::cout<<"[CGameUnitHero::OnTouchEvent] End Point :"<<vPosition.x<<","<<vPosition.z<<"\n";
-        m_pModel->Set_Position(vPosition);
-        return;
-        int** pPathFindData = m_pLandscapeRef->Get_HeightMapSetter()->Get_PathFindData();
-        int iWidth = m_pLandscapeRef->Get_Width();
-        int iHeight = m_pLandscapeRef->Get_Height();
-        CNavigationMeshWrapper::Instance()->FindPath(m_pModel->Get_Position(), vPosition);
-        CVector2d vStartPosition = CVector2d(m_pModel->Get_Position().x, m_pModel->Get_Position().z);
-        CVector2d vEndPosition = CVector2d(vPosition.x, vPosition.z);
-        //std::string sPath = CPathFinderAstar::Instance()->FindPath(pPathFindData, iWidth, iHeight, vStartPosition, vEndPosition);
-        //std::cout<<"[CGameUnitHero::OnTouchEvent] Path:"<<sPath<<"\n";
         m_lPath.clear();
+       
         if(m_pMoveAnimator != NULL)
         {
             m_pMoveAnimator->Stop();
         }
-        m_lPath = CNavigationMeshWrapper::Instance()->Get_Path();
-        //m_lPath = CPathFinderAstar::Instance()->Get_Path();
-        //m_lPath.pop_back();
+        m_lPath = CNavigationMeshWrapper::Instance()->FindPath(m_pModel->Get_Position(), vPosition);
         for(size_t index = 0; index < m_lPath.size(); index++)
         {
             std::cout<<"[CGameUnitHero::OnTouchEvent] Path Point :"<<m_lPath[index].x<<","<<m_lPath[index].y<<"\n";

@@ -31,6 +31,8 @@ void CLevel::Load(void)
     m_pLandscape->Set_SelfDelegate(this);
     m_pLandscape->Add_DelegateOwner(this);
     CNavigationMeshWrapper::Instance()->SetupNavigationMesh(m_pLandscape);
+    CMesh* pMesh = CNavigationMeshWrapper::Instance()->CreateRenderNavMesh();
+    m_pLandscape->Set_NavMesh(pMesh);
 }
 
 void CLevel::OnTouchEvent(IDelegate* _pDelegateOwner)
