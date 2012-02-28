@@ -75,7 +75,7 @@
 		936FEC7914F4ECDE00A33A33 /* DetourNavMeshBuilder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 936FEC7314F4ECDE00A33A33 /* DetourNavMeshBuilder.cpp */; };
 		936FEC7A14F4ECDE00A33A33 /* DetourNavMeshQuery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 936FEC7414F4ECDE00A33A33 /* DetourNavMeshQuery.cpp */; };
 		936FEC7B14F4ECDE00A33A33 /* DetourNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 936FEC7514F4ECDE00A33A33 /* DetourNode.cpp */; };
-		936FEC8314F4F16500A33A33 /* CNavigationMeshWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 936FEC8214F4F16500A33A33 /* CNavigationMeshWrapper.cpp */; };
+		936FEC8314F4F16500A33A33 /* CNavigationMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 936FEC8214F4F16500A33A33 /* CNavigationMesh.cpp */; };
 		936FEC9214F579CB00A33A33 /* landscape.mdl in Resources */ = {isa = PBXBuildFile; fileRef = 936FEC9014F579CB00A33A33 /* landscape.mdl */; };
 		936FEC9314F579CB00A33A33 /* player.mdl in Resources */ = {isa = PBXBuildFile; fileRef = 936FEC9114F579CB00A33A33 /* player.mdl */; };
 		937367C9144ECE150051ED8D /* CShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937367C8144ECE140051ED8D /* CShader.cpp */; };
@@ -250,8 +250,8 @@
 		936FEC7314F4ECDE00A33A33 /* DetourNavMeshBuilder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DetourNavMeshBuilder.cpp; sourceTree = "<group>"; };
 		936FEC7414F4ECDE00A33A33 /* DetourNavMeshQuery.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DetourNavMeshQuery.cpp; sourceTree = "<group>"; };
 		936FEC7514F4ECDE00A33A33 /* DetourNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DetourNode.cpp; sourceTree = "<group>"; };
-		936FEC8114F4F15200A33A33 /* CNavigationMeshWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CNavigationMeshWrapper.h; path = NavigationMesh/CNavigationMeshWrapper.h; sourceTree = "<group>"; };
-		936FEC8214F4F16500A33A33 /* CNavigationMeshWrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CNavigationMeshWrapper.cpp; path = NavigationMesh/CNavigationMeshWrapper.cpp; sourceTree = "<group>"; };
+		936FEC8114F4F15200A33A33 /* CNavigationMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; name = CNavigationMesh.h; path = NavigationMesh/CNavigationMesh.h; sourceTree = "<group>"; };
+		936FEC8214F4F16500A33A33 /* CNavigationMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CNavigationMesh.cpp; path = NavigationMesh/CNavigationMesh.cpp; sourceTree = "<group>"; };
 		936FEC9014F579CB00A33A33 /* landscape.mdl */ = {isa = PBXFileReference; lastKnownFileType = file; path = landscape.mdl; sourceTree = "<group>"; };
 		936FEC9114F579CB00A33A33 /* player.mdl */ = {isa = PBXFileReference; lastKnownFileType = file; path = player.mdl; sourceTree = "<group>"; };
 		937367C7144ECE030051ED8D /* CShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CShader.h; sourceTree = "<group>"; };
@@ -670,8 +670,8 @@
 			children = (
 				936FEC6514F4ECC900A33A33 /* Detour */,
 				936FEC4B14F4EC2B00A33A33 /* Recast */,
-				936FEC8114F4F15200A33A33 /* CNavigationMeshWrapper.h */,
-				936FEC8214F4F16500A33A33 /* CNavigationMeshWrapper.cpp */,
+				936FEC8114F4F15200A33A33 /* CNavigationMesh.h */,
+				936FEC8214F4F16500A33A33 /* CNavigationMesh.cpp */,
 			);
 			name = NavigationMesh;
 			sourceTree = "<group>";
@@ -1043,7 +1043,7 @@
 				936FEC7914F4ECDE00A33A33 /* DetourNavMeshBuilder.cpp in Sources */,
 				936FEC7A14F4ECDE00A33A33 /* DetourNavMeshQuery.cpp in Sources */,
 				936FEC7B14F4ECDE00A33A33 /* DetourNode.cpp in Sources */,
-				936FEC8314F4F16500A33A33 /* CNavigationMeshWrapper.cpp in Sources */,
+				936FEC8314F4F16500A33A33 /* CNavigationMesh.cpp in Sources */,
 				931BF39814F800F7002D0E0D /* glu.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1,5 +1,5 @@
 //
-//  CNavigationMeshWrapper.cpp
+//  CNavigationMesh.cpp
 //  gEngine
 //
 //  Created by sergey.sergeev on 2/22/12.
@@ -7,12 +7,10 @@
 //
 
 #include <iostream>
-#include "CNavigationMeshWrapper.h"
+#include "CNavigationMesh.h"
 #include "CVector.h"
 
-CNavigationMeshWrapper* CNavigationMeshWrapper::m_pInstance = NULL;
-
-CNavigationMeshWrapper::CNavigationMeshWrapper(void)
+CNavigationMesh::CNavigationMesh(void)
 {
     memset(&m_cfg, 0x0, sizeof(m_cfg));
     m_cfg.cs = 0.1f;
@@ -30,21 +28,12 @@ CNavigationMeshWrapper::CNavigationMeshWrapper(void)
     m_cfg.detailSampleMaxError = m_cfg.ch * 1.0f;
 }
 
-CNavigationMeshWrapper::~CNavigationMeshWrapper(void)
+CNavigationMesh::~CNavigationMesh(void)
 {
     
 }
 
-CNavigationMeshWrapper* CNavigationMeshWrapper::Instance(void)
-{
-    if(m_pInstance == NULL)
-    {
-        m_pInstance = new CNavigationMeshWrapper();
-    }
-    return m_pInstance;
-}
-
-std::vector<CVector2d> CNavigationMeshWrapper::FindPath(CVector3d _vStartPoint, CVector3d _vEndPoint)
+std::vector<CVector2d> CNavigationMesh::FindPath(CVector3d _vStartPoint, CVector3d _vEndPoint)
 {
     std::vector<CVector2d> lPath;
     lPath.clear();
@@ -117,7 +106,7 @@ std::vector<CVector2d> CNavigationMeshWrapper::FindPath(CVector3d _vStartPoint, 
     return lPath;
 }
 
-CMesh* CNavigationMeshWrapper::CreateRenderNavMesh()
+void CNavigationMesh::Create_VisualMesh(void)
 {
     const int iMaxVertexesPerPolygon = m_pPolygonMesh->nvp; 
     const float fCellWidth = m_pPolygonMesh->cs;
@@ -177,28 +166,27 @@ CMesh* CNavigationMeshWrapper::CreateRenderNavMesh()
             pIndexesData[i] = lIndexesData[i];
         }
         
-        pSource->m_pVB = new CVertexBuffer(pSource->m_iNumVertexes, sizeof(CVertexBuffer::SVertexVTN), CVertexBuffer::E_VERTEX_BUFFER_MODE_VTN);
-        CVertexBuffer::SVertexVTN* pVertexesData = static_cast<CVertexBuffer::SVertexVTN*>(pSource->m_pVB->Get_Data());
+        pSource->m_pVB = new CVertexBuffer(pSource->m_iNumVertexes, sizeof(CVertexBuffer::SVertexVTN), CVertexBuffer::E_VERTEX_BUFFER_MODE_VC);
+        CVertexBuffer::SVertexVC* pVertexesData = static_cast<CVertexBuffer::SVertexVC*>(pSource->m_pVB->Get_Data());
         for(unsigned int i = 0; i < pSource->m_iNumVertexes; i++)
         {
             pVertexesData[i].m_vPosition = lVertexesData[i];
+            pVertexesData[i].m_cColor = CColor4(0, 255, 0, 255);
         }
         
         pSource->m_pVB->Commit();
-        CMesh* pMesh = new CMesh();
-        pMesh->Set_Source(pSource);
-        pMesh->Set_Name("navigation_mesh");
-        return pMesh;
+        m_pVisualMesh = new CMesh();
+        m_pVisualMesh->Set_Source(pSource);
+        m_pVisualMesh->Set_Name("navigation_mesh");
     }
     else
     {
-        std::cout<<"[CNavigationMeshWrapper::CreateRenderNavMesh()] Error : Polygon count = 0\n";
+        std::cout<<"[CNavigationMeshWrapper::Create_VisualMesh] Error : Polygon count = 0\n";
     }
-    return NULL;
 }
 
 
-void CNavigationMeshWrapper::SetupNavigationMesh(INode *_pNode)
+void CNavigationMesh::Set_NavigationModel(INode *_pNode)
 {
     size_t iNumVertexes = _pNode->Get_Mesh()->Get_NumVertexes();
     CVertexBuffer::SVertexVTN* pNodeVertexesData = static_cast<CVertexBuffer::SVertexVTN*>(_pNode->Get_Mesh()->Get_VB()->Get_Data()); 
@@ -355,7 +343,7 @@ void CNavigationMeshWrapper::SetupNavigationMesh(INode *_pNode)
                 m_pPolygonMesh->flags[i] = SAMPLE_POLYFLAGS_WALK;
             }
         }
-        
+         
         dtNavMeshCreateParams params;
         memset(&params, 0, sizeof(params));
         params.verts = m_pPolygonMesh->verts;
@@ -407,7 +395,26 @@ void CNavigationMeshWrapper::SetupNavigationMesh(INode *_pNode)
             return;
         }
     }
+    
+    if(m_pTriangleAreas != NULL)
+    {
+        delete[] m_pTriangleAreas;
+    }
+    rcFreeHeightField(m_pHeightField);
+    m_pHeightField = NULL;
+    rcFreeCompactHeightfield(m_pCompactHeightField);
+    m_pCompactHeightField = NULL;
+    rcFreeContourSet(m_pContour);
+    m_pContour = NULL;
+    rcFreePolyMeshDetail(m_pPolygonMeshDetail);
+    m_pPolygonMeshDetail = 0;
+    if(m_pNavigationMeshContext != NULL) 
+    {
+        delete m_pNavigationMeshContext;
+    }
+    
     std::cout<<"[CNavigationMeshWrapper::SetupNavigationMesh] Created Vertexes : "<<m_pPolygonMesh->nverts<<" Created Polygons "<<m_pPolygonMesh->npolys<<"\n"; 
+    Create_VisualMesh();
 }
 
 

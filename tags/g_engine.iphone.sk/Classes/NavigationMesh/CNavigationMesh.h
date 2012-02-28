@@ -1,13 +1,13 @@
 //
-//  CNavigationMeshWrapper.h
+//  CNavigationMesh.h
 //  gEngine
 //
 //  Created by sergey.sergeev on 2/22/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#ifndef gEngine_CNavigationMeshWrapper_h
-#define gEngine_CNavigationMeshWrapper_h
+#ifndef gEngine_CNavigationMesh_h
+#define gEngine_CNavigationMesh_h
 
 #include "Recast.h"
 #include "INode.h"
@@ -16,12 +16,12 @@
 #include "DetourNavMeshBuilder.h"
 #include "DetourNavMeshQuery.h"
 
-#define MAX_PATHSLOT      128 // how many paths we can store
-#define MAX_PATHPOLY      256 // max number of polygons in a path
-#define MAX_PATHVERT      512 // most verts in a path 
+#define MAX_PATHSLOT      128 
+#define MAX_PATHPOLY      256 
+#define MAX_PATHVERT      512 
 #define k_BOUND_BOX_VALUE 2048
 
-class CNavigationMeshWrapper
+class CNavigationMesh
 {
 enum SamplePolyAreas
 {
@@ -53,13 +53,13 @@ private:
     rcPolyMeshDetail* m_pPolygonMeshDetail;
     class dtNavMesh* m_pNavigationMesh;
     class dtNavMeshQuery* m_pNavigationMeshQuery;
-    static CNavigationMeshWrapper* m_pInstance;
+    CMesh* m_pVisualMesh;
+    void Create_VisualMesh(void);
 public:
-    CNavigationMeshWrapper(void);
-    ~CNavigationMeshWrapper(void);
-    static CNavigationMeshWrapper* Instance(void);
-    void SetupNavigationMesh(INode* _pNode);
-    CMesh* CreateRenderNavMesh();
+    CNavigationMesh(void);
+    ~CNavigationMesh(void);
+    void Set_NavigationModel(INode* _pNode);
+    CMesh* Get_VisualMesh(void) { return m_pVisualMesh; }
     std::vector<CVector2d> FindPath(CVector3d _vStartPoint, CVector3d _vEndPoint);
 };
 

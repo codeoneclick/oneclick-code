@@ -10,9 +10,7 @@
 #include "CGameUnitHero.h"
 #include "CSceneMgr.h"
 #include "CWorld.h"
-//#include "CPathFinder.h"
 #include "CPathFinderAstar.h"
-#include "CNavigationMeshWrapper.h"
 
 CGameUnitHero::CGameUnitHero(void)
 {
@@ -53,7 +51,7 @@ void CGameUnitHero::OnTouchEvent(IDelegate* _pDelegateOwner)
         {
             m_pMoveAnimator->Stop();
         }
-        m_lPath = CNavigationMeshWrapper::Instance()->FindPath(m_pModel->Get_Position(), vPosition);
+        m_lPath = CSceneMgr::Instance()->Get_NavigationMeshRef()->FindPath(m_pModel->Get_Position(), vPosition);
         for(size_t index = 0; index < m_lPath.size(); index++)
         {
             std::cout<<"[CGameUnitHero::OnTouchEvent] Path Point :"<<m_lPath[index].x<<","<<m_lPath[index].y<<"\n";

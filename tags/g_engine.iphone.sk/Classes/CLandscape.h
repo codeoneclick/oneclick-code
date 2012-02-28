@@ -13,6 +13,7 @@
 #include <map>
 #include "CTileSetter.h"
 #include "CHeightMapSetter.h"
+#include "CNavigationMesh.h"
 
 class CLandscape : public INode
 {
@@ -26,10 +27,12 @@ protected:
     unsigned int m_iWidth;
     unsigned int m_iHeight;
     
-    CMesh* m_pNavMesh;
+    CMesh* m_pVisualNavigationMeshRef;
+    CShader* m_pVisualNavigationMeshShader;
     
     CTileSetter* m_pTileSetter;
     CHeightMapSetter* m_pHeightMapSetter;
+    CNavigationMesh* m_pNavigationMesh;
     struct STile
     {
         CVector3d m_vPosition;
@@ -37,6 +40,7 @@ protected:
         ICollider* m_pCollider;
     };
     std::map<unsigned int, STile*> m_lContainer;
+    void LoadWithTileSet(void);
 public:
     CLandscape(void);
     virtual ~CLandscape();
@@ -48,7 +52,6 @@ public:
     CTileSetter* Get_TileSetter(void) { return m_pTileSetter; }
     unsigned int Get_Width(void) { return m_iWidth; }
     unsigned int Get_Height(void) { return m_iHeight; }
-    void Set_NavMesh(CMesh* _pNavMesh) { m_pNavMesh = _pNavMesh; }
 };
 
 #endif
