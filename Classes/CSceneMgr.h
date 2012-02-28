@@ -18,6 +18,7 @@
 #include "CEventMgr.h"
 #include "CHeightMapSetter.h"
 #include "IAnimator.h"
+#include "CNavigationMesh.h"
 
 class CSceneMgr
 {
@@ -34,6 +35,7 @@ private:
     CRenderMgr* m_pRenderMgr;
     CBatchMgr* m_pBatchMgr;
     CCollisionMgr* m_pCollisionMgr;
+    CNavigationMesh* m_pNavigationMeshRef;
 public:
     CSceneMgr(void);
     ~CSceneMgr(void);
@@ -57,6 +59,9 @@ public:
     CRenderMgr* Get_RenderMgr(void) { return m_pRenderMgr; }
     CBatchMgr* Get_BatchMgr(void) { return m_pBatchMgr; }
     CCollisionMgr* Get_CollisionMgr(void) { return m_pCollisionMgr; }
+    
+    CNavigationMesh* Get_NavigationMeshRef(void) { return m_pNavigationMeshRef; }
+    void Set_NavigationMeshRef(CNavigationMesh* _pNavigationMeshRef) { m_pNavigationMeshRef = _pNavigationMeshRef; }
     
     IAnimator* AddMoveAnimator(INode* _pNode, IAnimatorDelegate* _pAnimatorDelegateOwner, const CVector3d& _vStartPosition, const CVector3d&  _vEndPosition, float _fStep);
     IAnimator* AddHeightMapMoveAnimator(INode *_pNode, IAnimatorDelegate *_pAnimatorDelegateOwner, CHeightMapSetter *_pHeightMapSetterRef, CVector2d _vStartPosition, CVector2d _vEndPosition, float _fStep);

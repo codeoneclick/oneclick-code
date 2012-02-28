@@ -28,6 +28,7 @@ const unsigned int CSceneMgr::k_MAX_LIGHTS = 8;
 CSceneMgr::CSceneMgr()
 {
     m_pCamera = NULL;
+    m_pNavigationMeshRef = NULL;
     
     m_pRenderMgr = new CRenderMgr();
     m_pBatchMgr = new CBatchMgr();
