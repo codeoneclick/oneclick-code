@@ -35,7 +35,9 @@ private:
     CRenderMgr* m_pRenderMgr;
     CBatchMgr* m_pBatchMgr;
     CCollisionMgr* m_pCollisionMgr;
+    
     CNavigationMesh* m_pNavigationMeshRef;
+    CHeightMapSetter* m_pHeightMapSetterRef;
 public:
     CSceneMgr(void);
     ~CSceneMgr(void);
@@ -62,9 +64,11 @@ public:
     
     CNavigationMesh* Get_NavigationMeshRef(void) { return m_pNavigationMeshRef; }
     void Set_NavigationMeshRef(CNavigationMesh* _pNavigationMeshRef) { m_pNavigationMeshRef = _pNavigationMeshRef; }
+    CHeightMapSetter* Get_HeightMapSetterRef(void) { return m_pHeightMapSetterRef; }
+    void Set_HeightMapSetterRef(CHeightMapSetter* _pHeightMapSetterRef) { m_pHeightMapSetterRef = _pHeightMapSetterRef; }                                                         
     
     IAnimator* AddMoveAnimator(INode* _pNode, IAnimatorDelegate* _pAnimatorDelegateOwner, const CVector3d& _vStartPosition, const CVector3d&  _vEndPosition, float _fStep);
-    IAnimator* AddHeightMapMoveAnimator(INode *_pNode, IAnimatorDelegate *_pAnimatorDelegateOwner, CHeightMapSetter *_pHeightMapSetterRef, CVector2d _vStartPosition, CVector2d _vEndPosition, float _fStep);
+    IAnimator* AddHeightMapMoveAnimator(INode *_pNode, IAnimatorDelegate *_pAnimatorDelegateOwner, CVector2d _vStartPosition, CVector2d _vEndPosition, float _fStep);
     
     void RemoveModel(INode *_pNode);
     void Update(void);

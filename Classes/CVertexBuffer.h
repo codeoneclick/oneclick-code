@@ -13,7 +13,6 @@
 #include <OpenGLES/ES2/glext.h>
 #include "CVector.h"
 #include <stdlib.h>
-#include <string.h>
 
 class CVertexBuffer
 {

@@ -174,7 +174,7 @@ void CLandscape::LoadWithTileSet(void)
 void CLandscape::Load(IResource::SResource _tResource)
 {
     m_pHeightMapSetter = new CHeightMapSetter();
-    m_pMesh = m_pHeightMapSetter->Load_SourceData("landscape.mdl", m_iWidth, m_iHeight, CVertexBuffer::E_VERTEX_BUFFER_MODE_VTN);
+    m_pMesh = m_pHeightMapSetter->Load_SourceData(_tResource.m_sName, m_iWidth, m_iHeight, CVertexBuffer::E_VERTEX_BUFFER_MODE_VTN);
     
     m_pNavigationMesh = new CNavigationMesh();
     m_pNavigationMesh->Set_NavigationModel(this);
@@ -182,6 +182,7 @@ void CLandscape::Load(IResource::SResource _tResource)
     m_pVisualNavigationMeshShader = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_COLOR);
     m_pVisualNavigationMeshRef->Get_VB()->Set_ShaderRef(m_pVisualNavigationMeshShader->Get_ProgramHandle());
     CSceneMgr::Instance()->Set_NavigationMeshRef(m_pNavigationMesh);
+    CSceneMgr::Instance()->Set_HeightMapSetterRef(m_pHeightMapSetter);
     
     m_bIsBatching = _tResource.m_bIsBatching;
 }
@@ -191,7 +192,7 @@ void CLandscape::OnTouchEvent(void)
     CRay3d tTouchRay = CSceneMgr::Instance()->Get_CollisionMgr()->Get_TouchRay();
     CVector3d vCollisionPoint;
      
-    if(!m_pHeightMapSetter->CheckCollision(m_pMesh->Get_VB(), m_pMesh->Get_IB(), CVertexBuffer::E_VERTEX_BUFFER_MODE_VTN, tTouchRay, &vCollisionPoint))
+    if(!CSceneMgr::Instance()->Get_CollisionMgr()->Get_CollisionPoint(m_pMesh->Get_VB(), m_pMesh->Get_IB(), CVertexBuffer::E_VERTEX_BUFFER_MODE_VTN, tTouchRay, &vCollisionPoint))
     {
         return;
     }
@@ -201,11 +202,10 @@ void CLandscape::OnTouchEvent(void)
     }
     
     CSceneMgr::Instance()->Get_CollisionMgr()->Set_Touch3DPoint(vCollisionPoint);
-    for(size_t index = 0; index< m_lDelegateOwners.size(); index++)
+    for(size_t index = 0; index< m_lDelegates.size(); index++)
     {
-        m_lDelegateOwners[index]->OnTouchEvent(m_pSelfDelegate);
+        m_lDelegates[index]->OnTouchEvent(m_pDelegateTarget);
     }
-    return;
 }
 
 void CLandscape::Update()
@@ -259,7 +259,7 @@ void CLandscape::Render()
         m_pShader->Disable();
     }
     
-    if(m_pVisualNavigationMeshRef != NULL)
+    /*if(m_pVisualNavigationMeshRef != NULL)
     {
         m_pVisualNavigationMeshShader->Enable();
         m_pVisualNavigationMeshShader->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD);
@@ -272,7 +272,7 @@ void CLandscape::Render()
         glDrawElements(GL_TRIANGLES, m_pVisualNavigationMeshRef->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*)m_pVisualNavigationMeshRef->Get_IB()->Get_Data());
         m_pVisualNavigationMeshRef->Get_VB()->Disable();
         m_pVisualNavigationMeshShader->Disable();
-    }
+    }*/
     
     if(m_pBoundingBox != NULL)
     {

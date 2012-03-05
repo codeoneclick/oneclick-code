@@ -131,27 +131,27 @@ void INode::Remove_Collider()
     }
 }
 
-void INode::Add_DelegateOwner(IDelegate *_pDelegateOwner)
+void INode::Add_Delegate(IDelegate *_pDelegate)
 {
-    for(size_t index = 0; index< m_lDelegateOwners.size(); index++)
+    for(size_t index = 0; index< m_lDelegates.size(); index++)
     {
-        if(m_lDelegateOwners[index] == _pDelegateOwner)
+        if(m_lDelegates[index] == _pDelegate)
         {
             return;
         }
     }
-    m_lDelegateOwners.push_back(_pDelegateOwner);
+    m_lDelegates.push_back(_pDelegate);
 }
 
-void INode::Remove_DelegateOwner(IDelegate *_pDelegateOwner)
+void INode::Remove_Delegate(IDelegate *_pDelegate)
 {
-    std::vector<IDelegate*>::iterator pBeginIterator = m_lDelegateOwners.begin();
-    std::vector<IDelegate*>::iterator pEndIterator = m_lDelegateOwners.end();
+    std::vector<IDelegate*>::iterator pBeginIterator = m_lDelegates.begin();
+    std::vector<IDelegate*>::iterator pEndIterator = m_lDelegates.end();
     while (pBeginIterator != pEndIterator)
     {
-        if((*pBeginIterator) == _pDelegateOwner)
+        if((*pBeginIterator) == _pDelegate)
         {
-            m_lDelegateOwners.erase(pBeginIterator);
+            m_lDelegates.erase(pBeginIterator);
             return;
         }
         ++pBeginIterator;

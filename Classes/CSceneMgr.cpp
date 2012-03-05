@@ -29,6 +29,7 @@ CSceneMgr::CSceneMgr()
 {
     m_pCamera = NULL;
     m_pNavigationMeshRef = NULL;
+    m_pHeightMapSetterRef = NULL;
     
     m_pRenderMgr = new CRenderMgr();
     m_pBatchMgr = new CBatchMgr();
@@ -163,10 +164,10 @@ IAnimator* CSceneMgr::AddMoveAnimator(INode *_pNode, IAnimatorDelegate *_pAnimat
     return pAnimator;
 }
 
-IAnimator* CSceneMgr::AddHeightMapMoveAnimator(INode *_pNode, IAnimatorDelegate *_pAnimatorDelegateOwner, CHeightMapSetter *_pHeightMapSetterRef, CVector2d _vStartPosition, CVector2d _vEndPosition, float _fStep)
+IAnimator* CSceneMgr::AddHeightMapMoveAnimator(INode *_pNode, IAnimatorDelegate *_pAnimatorDelegateOwner, CVector2d _vStartPosition, CVector2d _vEndPosition, float _fStep)
 {
     IAnimator* pAnimator = new CAnimatorMoveHeightMap();
-    ((CAnimatorMoveHeightMap*)pAnimator)->Init(_pNode, _pAnimatorDelegateOwner, _pHeightMapSetterRef,_vStartPosition,_vEndPosition,_fStep);
+    ((CAnimatorMoveHeightMap*)pAnimator)->Init(_pNode, _pAnimatorDelegateOwner, _vStartPosition,_vEndPosition,_fStep);
     m_lAnimators.push_back(pAnimator);
     return pAnimator;
 }
@@ -229,7 +230,7 @@ void CSceneMgr::Update()
 
 void CSceneMgr::Render()
 {
-    m_pRenderMgr->Begin();
+    m_pRenderMgr->BeginDrawWorldSpaceScene();
     std::vector<INode*>::iterator pBIterator = m_lContainer.begin();
     std::vector<INode*>::iterator pEIterator = m_lContainer.end();
     
@@ -251,6 +252,20 @@ void CSceneMgr::Render()
     m_pBatchMgr->RenderNodesBatch();
     m_pBatchMgr->RenderBoundingBatch();
     
-    m_pRenderMgr->End();
+    m_pRenderMgr->EndDrawWorldSpaceScene();
+    
+    m_pRenderMgr->DrawResult();
 }
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -33,7 +33,6 @@ public:
     int** Get_PathFindData(void) { return m_pPathFindSource; }
     void Calculate_Normals(CVertexBuffer* _pVB, CIndexBuffer* _pIB, CVertexBuffer::E_VERTEX_BUFFER_MODE _eMode);
     float Get_HeightValueAtPoint(float _fX, float _fZ);
-    bool CheckCollision(CVertexBuffer* _pVB, CIndexBuffer* _pIB, CVertexBuffer::E_VERTEX_BUFFER_MODE _eMode,CRay3d& _tRay, CVector3d* _vCollisionPoint); 
 };
 
 #endif

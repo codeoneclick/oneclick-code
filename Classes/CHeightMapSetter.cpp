@@ -28,20 +28,22 @@ CMesh* CHeightMapSetter::Load_SourceData(const std::string _sName, int _iWidth, 
     m_iHeight = _iHeight;
     
     CParser_MDL* pParser = new CParser_MDL();
-    pParser->Load("landscape.mdl");
+    pParser->Load(_sName);
     pParser->Commit();
     CMesh* pMesh = new CMesh();
     if(pParser->Get_Status() != IParser::E_ERROR_STATUS)
     {
         pMesh->Set_Source(pParser->Get_Source());
     }
-    
+    CVertexBuffer::SVertexVTN* pVertexesData = static_cast<CVertexBuffer::SVertexVTN*>(pMesh->Get_VB()->Get_Data());
     m_pSource = new float[m_iWidth * m_iHeight];
     for(unsigned int i = 0; i < m_iWidth; ++i)
     {
         for(unsigned int j = 0; j < m_iHeight; ++j)
         {
-            m_pSource[i + j * m_iHeight] = 0.0f;
+            //pVertexesData[i + ((m_iWidth - 1) - j) * m_iWidth].m_vPosition.y = 0.0f;
+            //pVertexesData[i + ((m_iWidth - 1) - j) * m_iWidth].m_vNormal = CVector3d(0.0f,1.0f,0.0f);
+            m_pSource[i + j * m_iHeight] = pVertexesData[i + ((m_iWidth - 1) - j) * m_iWidth].m_vPosition.y;
         }
     }
 
@@ -151,28 +153,6 @@ void CHeightMapSetter::Calculate_Normals(CVertexBuffer* _pVB,CIndexBuffer* _pIB,
     }
 }
 
-
-bool CHeightMapSetter::CheckCollision(CVertexBuffer *_pVB, CIndexBuffer *_pIB, CVertexBuffer::E_VERTEX_BUFFER_MODE _eMode,CRay3d& _tRay3d, CVector3d* _vCollisionPoint)
-{
-    if(_eMode == CVertexBuffer::E_VERTEX_BUFFER_MODE_VTN)
-    {
-        CVertexBuffer::SVertexVTN* pVBData = static_cast<CVertexBuffer::SVertexVTN*>(_pVB->Get_Data());
-        unsigned short* pIBData = _pIB->Get_Data();
-        unsigned int iNumIndexes = _pIB->Get_NumIndexes();
-        for(unsigned int index = 0; index < iNumIndexes; index += 3)
-        {
-            CVector3d vPoint_01 = pVBData[pIBData[index]].m_vPosition;
-            CVector3d vPoint_02 = pVBData[pIBData[index + 1]].m_vPosition;
-            CVector3d vPoint_03 = pVBData[pIBData[index + 2]].m_vPosition;
-            
-            if(CSceneMgr::Instance()->Get_CollisionMgr()->RayTriangleIntersection(vPoint_01, vPoint_02, vPoint_03, _tRay3d, _vCollisionPoint))
-            {
-                return true;
-            }
-        }
-    }
-    return false;
-}
 
 
 

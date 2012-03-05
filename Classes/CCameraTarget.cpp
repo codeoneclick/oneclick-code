@@ -27,3 +27,8 @@ void CCameraTarget::Update()
     m_vPosition.z = m_vLookAt.z + sin(-m_vRotation.y) * -m_fDistanceToLookAt;
 	m_mView = View( m_vPosition, m_vLookAt, m_vUp );
 }
+
+void CCameraTarget::OnScreenMove(CVector2d _vMoveDirection)
+{
+    
+}

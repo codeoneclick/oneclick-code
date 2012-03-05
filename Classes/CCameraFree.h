@@ -26,11 +26,10 @@ public:
     CCameraFree();
     virtual ~CCameraFree();
     virtual void Update(void);
-    
+    virtual void OnScreenMove(CVector2d _vMoveDirection);
     void Set_MoveSpeed(float _fMoveSpeed) { m_fMoveSpeed = _fMoveSpeed; } 
-    
-    virtual CVector3d Get_Position() { return m_vLookAt; }
-    virtual void Set_Position(const CVector3d& _vPosition) { m_vLookAt = _vPosition; }
+    virtual CVector3d Get_Position() { return m_vPosition; }
+    virtual void Set_Position(const CVector3d& _vPosition) { }
     
 };
 

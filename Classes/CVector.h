@@ -198,17 +198,31 @@ inline CVector3d Cross( const CVector3d& v1,const CVector3d& v2 )
                      v1.x * v2.y - v1.y * v2.x );
 }
 
+inline float AngleFromVectorToVector(CVector2d _vValue_01, CVector2d _vValue_02)
+{
+    float fVectorLength = sqrtf(pow(_vValue_02.x - _vValue_01.x, 2) + pow(_vValue_02.y - _vValue_01.y, 2));
+    float fAngleX = MATH_PI * (_vValue_02.x - _vValue_01.x) / fVectorLength;
+    float fAngleZ = MATH_PI * (_vValue_02.y - _vValue_01.y) / fVectorLength;
+    float fAngleY = 0.0f;
+    if (fAngleX > 0) 
+        fAngleY = fAngleZ / 2.0f;
+    if (fAngleX < 0) 
+        fAngleY = -fAngleZ / 2.0f - MATH_PI;
+    return  -fAngleY;
+}
+
+
 inline float AngleFromVectorToVector(CVector3d _vValue_01, CVector3d _vValue_02)
 {
     float fVectorLength = sqrtf(pow(_vValue_02.x - _vValue_01.x, 2) + pow(_vValue_02.z - _vValue_01.z, 2));
-    float angleX = MATH_PI * (_vValue_02.x - _vValue_01.x) / fVectorLength;
-    float angleZ = MATH_PI * (_vValue_02.z - _vValue_01.z) / fVectorLength;
-    float angleY = 0.0f;
-    if (angleX > 0) 
-        angleY = angleZ/2.0f;
-    if (angleX < 0) 
-        angleY = -angleZ/2.0f - MATH_PI;
-    return  -angleY;
+    float fAngleX = MATH_PI * (_vValue_02.x - _vValue_01.x) / fVectorLength;
+    float fAngleZ = MATH_PI * (_vValue_02.z - _vValue_01.z) / fVectorLength;
+    float fAngleY = 0.0f;
+    if (fAngleX > 0) 
+        fAngleY = fAngleZ / 2.0f;
+    if (fAngleX < 0) 
+        fAngleY = -fAngleZ / 2.0f - MATH_PI;
+    return  -fAngleY;
 }
 
 class CRay3d

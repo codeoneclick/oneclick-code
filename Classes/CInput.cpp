@@ -51,29 +51,24 @@ void CInput::Set_State(CInput::E_STATE _eState, CVector2d _vTouchPoint)
             }
             break;
         case E_STATE_TOUCH:
+        {
             m_vStartTouchPoint = _vTouchPoint;
+            m_vEndTouchPoint = _vTouchPoint;
             m_vStartTouchPoint.y = CWindow::Get_Height() - m_vStartTouchPoint.y;
+        }
             break;
         case E_STATE_MOVE:
+        {
+            CVector2d vDeltaMove = m_vEndTouchPoint - _vTouchPoint;
             m_vEndTouchPoint = _vTouchPoint;
+            CSceneMgr::Instance()->Get_Camera()->OnScreenMove(vDeltaMove);
+        }
             break;
         default:
             break;
     }
     m_eState = _eState;
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

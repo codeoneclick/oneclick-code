@@ -22,13 +22,13 @@ CLevel::~CLevel(void)
 
 void CLevel::Load(void)
 {
-    m_pLandscape = (CLandscape*)CSceneMgr::Instance()->AddLandscapeModel("landscape.data");
-    m_pLandscape->Set_Texture("TileSet.pvr");
-    m_pLandscape->Set_Shader(IResource::E_SHADER_LAMBERT);
+    m_pLandscape = (CLandscape*)CSceneMgr::Instance()->AddLandscapeModel("landscape.mdl");
+    m_pLandscape->Set_Texture("layer_01.pvr");
+    m_pLandscape->Set_Shader(IResource::E_SHADER_CELL_SHADING);
     CSceneMgr::Instance()->AddEventListener(m_pLandscape, CEventMgr::E_EVENT_TOUCH);
     m_pLandscape->Set_Position(CVector3d(0.0f, 0.0f, 0.0f));
-    m_pLandscape->Set_SelfDelegate(this);
-    m_pLandscape->Add_DelegateOwner(this);
+    m_pLandscape->Set_DelegateTarget(this);
+    m_pLandscape->Add_Delegate(this);
 }
 
 void CLevel::OnTouchEvent(IDelegate* _pDelegateOwner)
