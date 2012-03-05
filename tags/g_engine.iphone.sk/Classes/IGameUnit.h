@@ -21,7 +21,6 @@ protected:
     bool m_bIsMove;
     std::vector<CVector2d> m_lPath;
     IAnimator* m_pMoveAnimator;
-    CLandscape* m_pLandscapeRef;
 public:
     IGameUnit(void);
     ~IGameUnit(void);

@@ -22,7 +22,7 @@ protected:
 public:
     CAnimatorMoveHeightMap(void);
     ~CAnimatorMoveHeightMap(void);
-    void Init(INode* _pNode, IAnimatorDelegate* _pAnimatorDelegateOwner, CHeightMapSetter* _pHeightMapSetterRef, CVector2d _vStartPosition, CVector2d _vEndPosition, float _fStep);
+    void Init(INode* _pNode, IAnimatorDelegate* _pAnimatorDelegateOwner, CVector2d _vStartPosition, CVector2d _vEndPosition, float _fStep);
     virtual void Start(void);
     virtual void Stop(void);
     virtual void Update(void);

@@ -12,6 +12,8 @@ const char* ShaderColorF = STRINGIFY(
                                      
 void main(void)
 {
-    gl_FragColor = OUT_Color;
+    lowp vec4 vColor = OUT_Color;
+    vColor.w = 0.33;
+    gl_FragColor = vColor;
 }
 );

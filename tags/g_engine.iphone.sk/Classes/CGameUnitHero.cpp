@@ -16,7 +16,6 @@ CGameUnitHero::CGameUnitHero(void)
 {
     m_bIsMove = false;
     m_pMoveAnimator = NULL;
-    m_pLandscapeRef = NULL;
 }
 
 CGameUnitHero::~CGameUnitHero(void)
@@ -29,14 +28,13 @@ void CGameUnitHero::Load(void)
     m_pModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("player.mdl", false, IResource::E_THREAD_BACKGROUND);
     m_pModel->Set_Texture("footman.pvr");
     m_pModel->Set_Scale(CVector3d(0.01f, 0.01f, 0.01f));
-    m_pModel->Set_Shader(IResource::E_SHADER_LAMBERT);
+    m_pModel->Set_Shader(IResource::E_SHADER_CELL_SHADING);
     m_pModel->Create_BoundingBox();
     m_pModel->Create_ColliderBox();
     CSceneMgr::Instance()->AddEventListener(m_pModel, CEventMgr::E_EVENT_TOUCH);
-    m_pModel->Set_SelfDelegate(this);
-    m_pModel->Add_DelegateOwner(this);
-    CWorld::Instance()->Get_Level()->Get_Model()->Add_DelegateOwner(this);
-    m_pLandscapeRef = ((CLandscape*)CWorld::Instance()->Get_Level()->Get_Model());
+    m_pModel->Set_DelegateTarget(this);
+    m_pModel->Add_Delegate(this);
+    CWorld::Instance()->Get_Level()->Get_Model()->Add_Delegate(this);
 }
 
 void CGameUnitHero::OnTouchEvent(IDelegate* _pDelegateOwner)
@@ -58,7 +56,12 @@ void CGameUnitHero::OnTouchEvent(IDelegate* _pDelegateOwner)
         }
         if(m_lPath.size() > 0)
         {
-            m_pMoveAnimator = CSceneMgr::Instance()->AddHeightMapMoveAnimator(m_pModel, this, m_pLandscapeRef->Get_HeightMapSetter(), CVector2d(m_pModel->Get_Position().x,m_pModel->Get_Position().z), m_lPath.back(), 0.1f);
+            CVector2d vModelXZPosition = CVector2d(m_pModel->Get_Position().x,m_pModel->Get_Position().z);
+            CVector2d vPathPart = vModelXZPosition -  m_lPath.back();
+            float fPathPartLength = vPathPart.Length();
+            float fAngle = AngleFromVectorToVector(vModelXZPosition, m_lPath.back()) + MATH_PI / 2;
+            m_pModel->Set_Rotation(CVector3d(0.0f, fAngle, 0.0f));
+            m_pMoveAnimator = CSceneMgr::Instance()->AddHeightMapMoveAnimator(m_pModel, this, vModelXZPosition, m_lPath.back(), 0.1f);
             std::cout<<"[CGameUnitHero::OnTouchEvent] Move Point :"<<m_lPath.back().x<<","<<m_lPath.back().y<<"\n";
             m_lPath.pop_back();
             m_pMoveAnimator->Start();
@@ -79,7 +82,12 @@ void CGameUnitHero::OnAnimatorDone(IAnimator* _pAnimator)
     m_pMoveAnimator = NULL;
     if(m_lPath.size() > 0)
     {
-        m_pMoveAnimator = CSceneMgr::Instance()->AddHeightMapMoveAnimator(m_pModel, this, m_pLandscapeRef->Get_HeightMapSetter(), CVector2d(m_pModel->Get_Position().x,m_pModel->Get_Position().z), m_lPath.back(), 0.1f);
+        CVector2d vModelXZPosition = CVector2d(m_pModel->Get_Position().x,m_pModel->Get_Position().z);
+        CVector2d vPathPart = vModelXZPosition -  m_lPath.back();
+        float fPathPartLength = vPathPart.Length();
+        float fAngle = AngleFromVectorToVector(vModelXZPosition, m_lPath.back()) + MATH_PI / 2;
+        m_pModel->Set_Rotation(CVector3d(0.0f, fAngle, 0.0f));
+        m_pMoveAnimator = CSceneMgr::Instance()->AddHeightMapMoveAnimator(m_pModel, this, vModelXZPosition, m_lPath.back(), 0.1f);
         std::cout<<"[CGameUnitHero::OnTouchEvent] Move Point :"<<m_lPath.back().x<<","<<m_lPath.back().y<<"\n";
         m_lPath.pop_back();
         m_pMoveAnimator->Start();

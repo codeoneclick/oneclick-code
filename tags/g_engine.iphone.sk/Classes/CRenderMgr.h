@@ -9,22 +9,18 @@
 #ifndef gEngine_CRenderMgr_h
 #define gEngine_CRenderMgr_h
 
-#include <OpenGLES/ES2/gl.h>
-#include <OpenGLES/ES2/glext.h>
+#include "CScreenSpacePostMgr.h"
 
 class CRenderMgr
 {
-public:
-    
-private:
-    GLuint m_hFrameBuffer;
-    GLuint m_hRenderBuffer;
-    GLuint m_hDepthBuffer;
+protected:
+    CScreenSpacePostMgr* m_pScreenSpacePostMgr;
 public:
     CRenderMgr();
     ~CRenderMgr();
-    void Begin(void);
-    void End(void);
+    void BeginDrawWorldSpaceScene(void);
+    void EndDrawWorldSpaceScene(void); 
+    void DrawResult(void);
 };
 
 #endif

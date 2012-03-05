@@ -13,6 +13,8 @@
 #include <vector>
 #include <map>
 #include "ICollider.h"
+#include "CVertexBuffer.h"
+#include "CIndexBuffer.h"
 
 class CCollisionMgr
 {
@@ -39,8 +41,9 @@ public:
     void Set_Touch3DPoint(CVector3d _vTouchPoint) { m_vTouch3DPoint = _vTouchPoint; }
     CVector3d Get_Touch3DPoint(void) { return m_vTouch3DPoint; }
     CRay3d Get_TouchRay(void) { return m_vTouchRay; }
-    bool RayPlaneIntersection(CVector3d& vTrianglePoint_01, CVector3d& vTrianglePoint_02, CVector3d& vTrianglePoint_03, CRay3d& tRay, CVector3d* vIntersectPoint);
-    bool RayTriangleIntersection(CVector3d& vTrianglePoint_01, CVector3d& vTrianglePoint_02, CVector3d& vTrianglePoint_03, CRay3d& tRay, CVector3d* vIntersectPoint);
+    bool RayPlaneIntersection(CVector3d& _vTrianglePoint_01, CVector3d& _vTrianglePoint_02, CVector3d& _vTrianglePoint_03, CRay3d& _tRay, CVector3d* _vIntersectPoint);
+    bool RayTriangleIntersection(CVector3d& _vTrianglePoint_01, CVector3d& _vTrianglePoint_02, CVector3d& _vTrianglePoint_03, CRay3d& _tRay, CVector3d* _vIntersectPoint);
+    bool Get_CollisionPoint(CVertexBuffer *_pVB, CIndexBuffer *_pIB, CVertexBuffer::E_VERTEX_BUFFER_MODE _eMode,CRay3d& _tRay3d, CVector3d* _vCollisionPoint);
     void Update(void);
 };
 

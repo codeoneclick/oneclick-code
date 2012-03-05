@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include "CAnimatorMoveHeightMap.h"
+#include "CSceneMgr.h"
 
 CAnimatorMoveHeightMap::CAnimatorMoveHeightMap(void)
 {
@@ -20,14 +21,14 @@ CAnimatorMoveHeightMap::~CAnimatorMoveHeightMap(void)
     
 }
 
-void CAnimatorMoveHeightMap::Init(INode *_pNode, IAnimatorDelegate *_pAnimatorDelegateOwner, CHeightMapSetter *_pHeightMapSetterRef, CVector2d _vStartPosition, CVector2d _vEndPosition, float _fStep)
+void CAnimatorMoveHeightMap::Init(INode *_pNode, IAnimatorDelegate *_pAnimatorDelegateOwner, CVector2d _vStartPosition, CVector2d _vEndPosition, float _fStep)
 {
     m_pNode = _pNode;
     m_fStep = _fStep;
     m_vStartPosition = _vStartPosition;
     m_vEndPosition = _vEndPosition;
     m_pAnimatorDelegateOwner = _pAnimatorDelegateOwner;
-    m_pHeightMapSetterRef = _pHeightMapSetterRef;
+    m_pHeightMapSetterRef = CSceneMgr::Instance()->Get_HeightMapSetterRef();
 }
 
 void CAnimatorMoveHeightMap::Start(void)

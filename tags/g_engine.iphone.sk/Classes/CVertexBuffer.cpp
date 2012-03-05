@@ -69,7 +69,7 @@ void CVertexBuffer::Enable()
         if(m_iColorSlot >= 0 && (m_eMode == E_VERTEX_BUFFER_MODE_VC || m_eMode == E_VERTEX_BUFFER_MODE_VNC))
         {
             glEnableVertexAttribArray(m_iColorSlot);
-            glVertexAttribPointer(m_iColorSlot,  4, GL_FLOAT, GL_FALSE, m_iSize, (GLvoid*) (sizeof(float) * 11));
+            glVertexAttribPointer(m_iColorSlot,  4, GL_UNSIGNED_BYTE, GL_FALSE, m_iSize, (GLvoid*) (sizeof(float) * 11));
         }
         return; 
     }

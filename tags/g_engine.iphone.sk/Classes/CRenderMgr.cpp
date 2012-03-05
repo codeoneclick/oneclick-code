@@ -8,41 +8,53 @@
 
 #include <iostream>
 #include "CRenderMgr.h"
-#include "CInput.h"
-#include "CWindow.h"
 
-CRenderMgr::CRenderMgr()
+CRenderMgr::CRenderMgr(void)
 {
-    glGenRenderbuffers(1, &m_hDepthBuffer);
-    glBindRenderbuffer(GL_RENDERBUFFER, m_hDepthBuffer);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, CWindow::Get_Width(), CWindow::Get_Height());
-    
-    glGenRenderbuffers(1, &m_hRenderBuffer);
-    glBindRenderbuffer(GL_RENDERBUFFER, m_hRenderBuffer);
-    
-    glGenFramebuffers(1, &m_hFrameBuffer);
-    glBindFramebuffer(GL_FRAMEBUFFER, m_hFrameBuffer);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, m_hRenderBuffer);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,  GL_RENDERBUFFER, m_hDepthBuffer);
-    glEnable( GL_DEPTH_TEST );
-    glEnable( GL_CULL_FACE );
-    glViewport(0, 0, CWindow::Get_Width(), CWindow::Get_Height());
-    CWindow::Set_Viewport(0, 0, CWindow::Get_Width(), CWindow::Get_Height());
+    m_pScreenSpacePostMgr = new CScreenSpacePostMgr();
 }
 
-CRenderMgr::~CRenderMgr()
+CRenderMgr::~CRenderMgr(void)
 {
     
 }
 
-void CRenderMgr::Begin()
+void CRenderMgr::BeginDrawWorldSpaceScene(void)
 {
-    glClearColor( 0.2f, 0.2f, 0.2f, 1.0f );
+    m_pScreenSpacePostMgr->BindRenderBufferAsTexture(CScreenSpacePostMgr::E_POST_TEXTURE_SIMPLE);
+    glClearColor( 0.99f, 0.99f, 0.99f, 1.0f );
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 }
 
-void CRenderMgr::End()
+void CRenderMgr::EndDrawWorldSpaceScene(void)
 {
+    glFlush();
+}
+
+void CRenderMgr::DrawResult(void)
+{
+    m_pScreenSpacePostMgr->BindRenderBufferAsTexture(CScreenSpacePostMgr::E_POST_TEXTURE_BLOOM_EXTRACT);
+    glClearColor( 0.2f, 0.2f, 0.2f, 1.0f );
+    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+    m_pScreenSpacePostMgr->Render_PostBloomExtract();
+    glFlush();
+    
+    m_pScreenSpacePostMgr->BindRenderBufferAsTexture(CScreenSpacePostMgr::E_POST_TEXTURE_BLUR);
+    glClearColor( 0.2f, 0.2f, 0.2f, 1.0f );
+    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+    m_pScreenSpacePostMgr->Render_PostBlur();
+    glFlush();
+
+    m_pScreenSpacePostMgr->BindRenderBufferAsTexture(CScreenSpacePostMgr::E_POST_TEXTURE_BLOOM_COMBINE);
+    glClearColor( 0.2f, 0.2f, 0.2f, 1.0f );
+    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+    m_pScreenSpacePostMgr->Render_PostBloomCombine();
+    glFlush();
+    
+    m_pScreenSpacePostMgr->BindRenderBufferAsBuffer();
+    glClearColor( 0.2f, 0.2f, 0.2f, 1.0f );
+    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+    m_pScreenSpacePostMgr->Render_PostSimple();
     glFlush();
 }
 

@@ -16,7 +16,6 @@ CGameUnitMonk::CGameUnitMonk(void)
 {
     m_bIsMove = false;
     m_pMoveAnimator = NULL;
-    m_pLandscapeRef = NULL;
 }
 
 CGameUnitMonk::~CGameUnitMonk(void)
@@ -29,13 +28,12 @@ void CGameUnitMonk::Load(void)
     m_pModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("player.mdl", false, IResource::E_THREAD_BACKGROUND);
     m_pModel->Set_Texture("footman.pvr");
     m_pModel->Set_Scale(CVector3d(0.01f, 0.01f, 0.01f));
-    m_pModel->Set_Shader(IResource::E_SHADER_PHONG);
+    m_pModel->Set_Shader(IResource::E_SHADER_CELL_SHADING);
     m_pModel->Create_BoundingBox();
     m_pModel->Create_ColliderBox();
     CSceneMgr::Instance()->AddEventListener(m_pModel, CEventMgr::E_EVENT_TOUCH);
-    m_pModel->Set_SelfDelegate(this);
-    m_pModel->Add_DelegateOwner(this);
-    m_pLandscapeRef = ((CLandscape*)CWorld::Instance()->Get_Level()->Get_Model());
+    m_pModel->Set_DelegateTarget(this);
+    m_pModel->Add_Delegate(this);
 }
 
 void CGameUnitMonk::OnTouchEvent(IDelegate* _pDelegateOwner)
@@ -57,7 +55,7 @@ void CGameUnitMonk::OnAnimatorDone(IAnimator* _pAnimator)
     }
     if(m_lPath.size() > 0)
     {
-        m_pMoveAnimator = CSceneMgr::Instance()->AddHeightMapMoveAnimator(m_pModel, this, m_pLandscapeRef->Get_HeightMapSetter(), CVector2d(m_pModel->Get_Position().x,m_pModel->Get_Position().z), m_lPath[0], 0.01f);
+        m_pMoveAnimator = CSceneMgr::Instance()->AddHeightMapMoveAnimator(m_pModel, this, CVector2d(m_pModel->Get_Position().x,m_pModel->Get_Position().z), m_lPath[0], 0.01f);
         m_pMoveAnimator->Start();
     }
 }

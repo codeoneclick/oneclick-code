@@ -35,29 +35,29 @@ void CModel::Load(IResource::SResource _tResource)
     m_bIsBatching = _tResource.m_bIsBatching;
 }
 
-void CModel::OnTouchEvent()
+void CModel::OnTouchEvent(void)
 {
-    /*unsigned int iHexColliderID = CSceneMgr::Instance()->Get_CollisionMgr()->Get_HexColliderID();
-    if(iHexColliderID != 0 && iHexColliderID == m_pCollider->Get_ColliderID().m_iHex)
+    CRay3d tTouchRay = CSceneMgr::Instance()->Get_CollisionMgr()->Get_TouchRay();
+    CVector3d vCollisionPoint;
+    
+    if(!CSceneMgr::Instance()->Get_CollisionMgr()->Get_CollisionPoint(m_pBoundingBox->Get_Mesh()->Get_VB(), m_pBoundingBox->Get_Mesh()->Get_IB(), CVertexBuffer::E_VERTEX_BUFFER_MODE_VC, tTouchRay, &vCollisionPoint))
     {
-        for(size_t index = 0; index< m_lDelegateOwners.size(); index++)
-        {
-            m_lDelegateOwners[index]->OnTouchEvent(m_pSelfDelegate);
-        }
-    }*/
+        return;
+    }
+    else
+    {
+        std::cout<<"[CModel::OnTouchEven] Colission Point = "<<vCollisionPoint.x<<","<<vCollisionPoint.y<<","<<vCollisionPoint.z<<"\n";
+    }
+    
+    for(size_t index = 0; index < m_lDelegates.size(); index++)
+    {
+        m_lDelegates[index]->OnTouchEvent(m_pDelegateTarget);
+    }
 }
 
 void CModel::Update()
 {
     INode::Update();
-    
-    /*if(m_pCollider != NULL)
-    {
-        if(m_pCollider->Get_TouchCollided() == true)
-        {
-            return;
-        }
-    }*/
 }
 
 void CModel::Render()

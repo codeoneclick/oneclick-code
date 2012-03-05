@@ -37,6 +37,8 @@ public:
     void Init(int _iScreenWidth, int _iScreenHeight, float _fFovY, float _fFarPlane, float _fNearPlane);
     virtual void Update(void) = 0;
     
+    virtual void OnScreenMove(CVector2d _vMoveDirection) = 0;
+    
     const CMatrix4x4 Get_Projection(void) { return m_mProjection; }
     const CMatrix4x4 Get_View(void) { return m_mView; }
     
@@ -44,7 +46,9 @@ public:
     void Set_FarPlane(float _fFarPlane) { m_fFarPlane = _fFarPlane; }
     void Set_NearPlane(float _fNearPlane) { m_fNearPlane = _fNearPlane; }
     void Set_DistanceToLookAt(float _fDistanceToLookAt) { m_fDistanceToLookAt = _fDistanceToLookAt; }
+    float Get_DistanceToLookAt(void) { return m_fDistanceToLookAt; }
     void Set_HeightFromLookAt(float _fHeightFromLookAt) { m_fHeightFromLookAt = _fHeightFromLookAt; }
+    float Get_HeightFromLookAt(void) { return m_fHeightFromLookAt; }
     void Set_AspectRation(float _fAspectRation) { m_fAspectRatio = _fAspectRation; }
     
     virtual CVector3d Get_Position(void) { return m_vPosition; }

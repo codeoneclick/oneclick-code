@@ -50,8 +50,8 @@ protected:
     
     bool m_bIsBatching;
     
-    std::vector<IDelegate*> m_lDelegateOwners;
-    IDelegate* m_pSelfDelegate;
+    std::vector<IDelegate*> m_lDelegates;
+    IDelegate* m_pDelegateTarget;
     
 public:
     INode(void);
@@ -80,11 +80,11 @@ public:
     
     CMatrix4x4 Get_WorldMatrix(void) { return m_mWorld; }
     
-    void Add_DelegateOwner(IDelegate* _pDelegateOwner);
-    void Remove_DelegateOwner(IDelegate* _pDelegateOwner);
+    void Add_Delegate(IDelegate* _pDelegate);
+    void Remove_Delegate(IDelegate* _pDelegate);
     
-    void Set_SelfDelegate(IDelegate* _pSelfDelegate) { m_pSelfDelegate = _pSelfDelegate; }
-    IDelegate* Get_SelfDelegate(void) { return m_pSelfDelegate; }
+    void Set_DelegateTarget(IDelegate* _pDelegateTarget) { m_pDelegateTarget = _pDelegateTarget; }
+    IDelegate* Get_DelegateTarget(void) { return m_pDelegateTarget; }
     
     void Create_BoundingBox(void);
     void Create_ColliderBox(void);

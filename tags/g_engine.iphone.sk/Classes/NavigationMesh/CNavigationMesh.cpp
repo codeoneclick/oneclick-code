@@ -65,10 +65,45 @@ std::vector<CVector2d> CNavigationMesh::FindPath(CVector3d _vStartPoint, CVector
     if((tStatus & DT_FAILURE) || (tStatus & DT_STATUS_DETAIL_MASK)) 
     {
         std::cout<<"[CNavigationMeshWrapper::FindPath] couldn't find a end polygon.\n";
-        return lPath; 
+        return lPath;
     }
     
-    tStatus = m_pNavigationMeshQuery->findPath(pStartPolygon, pEndPolygon, pStartPolygonNeighbors, pEndPolygonNeighbors, &tFilter, pPolygonPath, &iPathPolygonsCount, MAX_PATHPOLY) ;
+    tStatus = m_pNavigationMeshQuery->initSlicedFindPath(pStartPolygon, pEndPolygon, &_vStartPoint.v[0], &_vEndPoint.v[0], &tFilter);
+    if((tStatus & DT_FAILURE) || (tStatus & DT_STATUS_DETAIL_MASK)) 
+    {
+        std::cout<<"[CNavigationMeshWrapper::FindPath] couldn't init a sliced path.\n";
+        return lPath;
+    }
+    
+    tStatus = m_pNavigationMeshQuery->updateSlicedFindPath(1,0);
+    while(dtStatusInProgress(tStatus))
+    {
+        tStatus = m_pNavigationMeshQuery->updateSlicedFindPath(1,0);
+    }
+    
+    if (dtStatusSucceed(tStatus))
+    {
+        m_pNavigationMeshQuery->finalizeSlicedFindPath(pPolygonPath, &iPathPolygonsCount, MAX_PATHPOLY);
+        if (iPathPolygonsCount)
+        {
+            float pEndPosition[3];
+            rcVcopy(pEndPosition, &_vEndPoint.v[0]);
+
+            if (pPolygonPath[iPathPolygonsCount - 1] != pEndPolygon)
+            {
+				m_pNavigationMeshQuery->closestPointOnPoly(pPolygonPath[iPathPolygonsCount - 1], &_vEndPoint.v[0], pEndPosition);
+            }
+            
+            tStatus = m_pNavigationMeshQuery->findStraightPath(&_vStartPoint.v[0], &_vEndPoint.v[0], pPolygonPath, iPathPolygonsCount, pStraightPath, NULL, NULL, &iPathVertexesNum, MAX_PATHPOLY);
+            if((tStatus & DT_FAILURE) || (tStatus & DT_STATUS_DETAIL_MASK))
+            {
+                std::cout<<"[CNavigationMeshWrapper::FindPath] couldn't create a path.\n";
+                return lPath; 
+            }
+        }
+    }
+    
+    /*tStatus = m_pNavigationMeshQuery->findPath(pStartPolygon, pEndPolygon, pStartPolygonNeighbors, pEndPolygonNeighbors, &tFilter, pPolygonPath, &iPathPolygonsCount, MAX_PATHPOLY) ;
     if((tStatus & DT_FAILURE) || (tStatus & DT_STATUS_DETAIL_MASK)) 
     {
         std::cout<<"[CNavigationMeshWrapper::FindPath] couldn't create a path.\n";
@@ -80,12 +115,12 @@ std::vector<CVector2d> CNavigationMesh::FindPath(CVector3d _vStartPoint, CVector
         return lPath; 
     }
     
-    tStatus = m_pNavigationMeshQuery->findStraightPath(pStartPolygonNeighbors, pEndPolygonNeighbors, pPolygonPath, iPathPolygonsCount, pStraightPath, NULL, NULL, &iPathVertexesNum, MAX_PATHVERT) ;
+    tStatus = m_pNavigationMeshQuery->findStraightPath(pStartPolygonNeighbors, pEndPolygonNeighbors, pPolygonPath, iPathPolygonsCount, pStraightPath, NULL, NULL, &iPathVertexesNum, MAX_PATHVERT);
     if((tStatus & DT_FAILURE) || (tStatus & DT_STATUS_DETAIL_MASK))
     {
         std::cout<<"[CNavigationMeshWrapper::FindPath] couldn't create a path.\n";
         return lPath; 
-    }
+    }*/
     if(iPathVertexesNum == 0) 
     {
         std::cout<<"[CNavigationMeshWrapper::FindPath] couldn't find a path.\n";
@@ -166,13 +201,16 @@ void CNavigationMesh::Create_VisualMesh(void)
             pIndexesData[i] = lIndexesData[i];
         }
         
-        pSource->m_pVB = new CVertexBuffer(pSource->m_iNumVertexes, sizeof(CVertexBuffer::SVertexVTN), CVertexBuffer::E_VERTEX_BUFFER_MODE_VC);
+        pSource->m_pVB = new CVertexBuffer(pSource->m_iNumVertexes, sizeof(CVertexBuffer::SVertexVC), CVertexBuffer::E_VERTEX_BUFFER_MODE_VC);
         CVertexBuffer::SVertexVC* pVertexesData = static_cast<CVertexBuffer::SVertexVC*>(pSource->m_pVB->Get_Data());
         for(unsigned int i = 0; i < pSource->m_iNumVertexes; i++)
         {
             pVertexesData[i].m_vPosition = lVertexesData[i];
             pVertexesData[i].m_cColor = CColor4(0, 255, 0, 255);
         }
+        
+        lVertexesData.clear();
+        lIndexesData.clear();
         
         pSource->m_pVB->Commit();
         m_pVisualMesh = new CMesh();
@@ -184,7 +222,6 @@ void CNavigationMesh::Create_VisualMesh(void)
         std::cout<<"[CNavigationMeshWrapper::Create_VisualMesh] Error : Polygon count = 0\n";
     }
 }
-
 
 void CNavigationMesh::Set_NavigationModel(INode *_pNode)
 {
@@ -238,12 +275,12 @@ void CNavigationMesh::Set_NavigationModel(INode *_pNode)
     m_pHeightField = rcAllocHeightfield();
     if (!m_pHeightField)
     {
-        std::cout<<"[CNavigationMeshWrapper::SetupNavigationMesh] Out of memory 'solid'.";
+        std::cout<<"[CNavigationMeshWrapper::SetupNavigationMesh] Out of memory 'solid'.\n";
         return;
     }
     if (!rcCreateHeightfield(m_pNavigationMeshContext, *m_pHeightField, m_cfg.width, m_cfg.height, m_cfg.bmin, m_cfg.bmax, m_cfg.cs, m_cfg.ch))
     {
-        std::cout<<"[CNavigationMeshWrapper::SetupNavigationMesh] Could not create solid heightfield.";
+        std::cout<<"[CNavigationMeshWrapper::SetupNavigationMesh] Could not create solid heightfield.\n";
         return;
     }
     
@@ -251,7 +288,7 @@ void CNavigationMesh::Set_NavigationModel(INode *_pNode)
     m_pTriangleAreas = new unsigned char[iNumTriangles];
     if (!m_pTriangleAreas)
     {
-        std::cout<<"[CNavigationMeshWrapper::SetupNavigationMesh] Out of memory 'm_triareas'."; 
+        std::cout<<"[CNavigationMeshWrapper::SetupNavigationMesh] Out of memory 'm_triareas'.\n"; 
         return;
     }
     
@@ -266,67 +303,67 @@ void CNavigationMesh::Set_NavigationModel(INode *_pNode)
 	m_pCompactHeightField = rcAllocCompactHeightfield();
 	if (!m_pCompactHeightField)
 	{
-        std::cout<<"[CNavigationMeshWrapper::SetupNavigationMesh] Out of memory 'chf'."; 
+        std::cout<<"[CNavigationMeshWrapper::SetupNavigationMesh] Out of memory 'chf'.\n"; 
 		return;
 	}
 	if (!rcBuildCompactHeightfield(m_pNavigationMeshContext, m_cfg.walkableHeight, m_cfg.walkableClimb, *m_pHeightField, *m_pCompactHeightField))
 	{
-        std::cout<<"[CNavigationMeshWrapper::SetupNavigationMesh] Could not build compact data."; 
+        std::cout<<"[CNavigationMeshWrapper::SetupNavigationMesh] Could not build compact data.\n"; 
 		return;
 	}
     
 	if (!rcErodeWalkableArea(m_pNavigationMeshContext, m_cfg.walkableRadius, *m_pCompactHeightField))
 	{
-        std::cout<<"[CNavigationMeshWrapper::SetupNavigationMesh] Could not erode."; 
+        std::cout<<"[CNavigationMeshWrapper::SetupNavigationMesh] Could not erode.\n"; 
 		return;
 	}
     
     if (!rcBuildDistanceField(m_pNavigationMeshContext, *m_pCompactHeightField))
     {
-        std::cout<<"[CNavigationMeshWrapper::SetupNavigationMesh] Could not build distance field.";
+        std::cout<<"[CNavigationMeshWrapper::SetupNavigationMesh] Could not build distance field.\n";
         return;
     }
         
     if (!rcBuildRegions(m_pNavigationMeshContext, *m_pCompactHeightField, 0, m_cfg.minRegionArea, m_cfg.mergeRegionArea))
     {
-        std::cout<<"[CNavigationMeshWrapper::SetupNavigationMesh] Could not build regions.";
+        std::cout<<"[CNavigationMeshWrapper::SetupNavigationMesh] Could not build regions.\n";
         return;
     }
     
     m_pContour = rcAllocContourSet();
 	if (!m_pContour)
 	{
-        std::cout<<"[CNavigationMeshWrapper::SetupNavigationMesh] Out of memory 'cset'.";
+        std::cout<<"[CNavigationMeshWrapper::SetupNavigationMesh] Out of memory 'cset'.\n";
 		return;
 	}
 	if (!rcBuildContours(m_pNavigationMeshContext, *m_pCompactHeightField, m_cfg.maxSimplificationError, m_cfg.maxEdgeLen, *m_pContour))
 	{
-        std::cout<<"[CNavigationMeshWrapper::SetupNavigationMesh] Could not create contours.";
+        std::cout<<"[CNavigationMeshWrapper::SetupNavigationMesh] Could not create contours.\n";
 		return;
 	}
 	
 	m_pPolygonMesh = rcAllocPolyMesh();
 	if (!m_pPolygonMesh)
 	{
-        std::cout<<"[CNavigationMeshWrapper::SetupNavigationMesh] Out of memory 'pmesh'.";
+        std::cout<<"[CNavigationMeshWrapper::SetupNavigationMesh] Out of memory 'pmesh'.\n";
 		return;
 	}
 	if (!rcBuildPolyMesh(m_pNavigationMeshContext, *m_pContour, m_cfg.maxVertsPerPoly, *m_pPolygonMesh))
 	{
-        std::cout<<"[CNavigationMeshWrapper::SetupNavigationMesh] Could not triangulate contours.";
+        std::cout<<"[CNavigationMeshWrapper::SetupNavigationMesh] Could not triangulate contours.\n";
 		return;
 	}
 	
 	m_pPolygonMeshDetail = rcAllocPolyMeshDetail();
 	if (!m_pPolygonMeshDetail)
 	{
-        std::cout<<"[CNavigationMeshWrapper::SetupNavigationMesh] Out of memory 'pmdtl'.";
+        std::cout<<"[CNavigationMeshWrapper::SetupNavigationMesh] Out of memory 'pmdtl'.\n";
 		return;
 	}
     
 	if (!rcBuildPolyMeshDetail(m_pNavigationMeshContext, *m_pPolygonMesh, *m_pCompactHeightField, m_cfg.detailSampleDist, m_cfg.detailSampleMaxError, *m_pPolygonMeshDetail))
 	{
-        std::cout<<"[CNavigationMeshWrapper::SetupNavigationMesh] Could not build detail mesh.";
+        std::cout<<"[CNavigationMeshWrapper::SetupNavigationMesh] Could not build detail mesh.\n";
 		return;
 	}
     

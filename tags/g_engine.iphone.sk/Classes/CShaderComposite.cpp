@@ -31,6 +31,15 @@
 #include "../Shaders/ShaderRimLight.vert"
 #include "../Shaders/ShaderRimLight.frag"
 
+#include "../Shaders/ShaderPostBloomCombine.vert"
+#include "../Shaders/ShaderPostBloomCombine.frag"
+
+#include "../Shaders/ShaderPostBloomExtract.vert"
+#include "../Shaders/ShaderPostBloomExtract.frag"
+
+#include "../Shaders/ShaderPostBlur.vert"
+#include "../Shaders/ShaderPostBlur.frag"
+
 
 CShaderComposite* CShaderComposite::m_pInstance = NULL;
 
@@ -66,6 +75,18 @@ CShaderComposite::CShaderComposite()
     pData = pParser->Load(ShaderRimLightV, ShaderRimLightF);
     pShader = new CShader(pData.s_pHandle);
     m_lContainer[IResource::E_SHADER_RIM_LIGHT] = pShader;
+    
+    pData = pParser->Load(ShaderPostBloomExtractV, ShaderPostBloomExtractF);
+    pShader = new CShader(pData.s_pHandle);
+    m_lContainer[IResource::E_SHADER_BLOOM_EXTRACT] = pShader;
+    
+    pData = pParser->Load(ShaderPostBloomCombineV, ShaderPostBloomCombineF);
+    pShader = new CShader(pData.s_pHandle);
+    m_lContainer[IResource::E_SHADER_BLOOM_COMBINE] = pShader;
+    
+    pData = pParser->Load(ShaderPostBlurV, ShaderPostBlurF);
+    pShader = new CShader(pData.s_pHandle);
+    m_lContainer[IResource::E_SHADER_BLUR] = pShader;
 }
 
 CShaderComposite::~CShaderComposite()
