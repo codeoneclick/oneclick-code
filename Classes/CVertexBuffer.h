@@ -16,61 +16,67 @@
 
 class CVertexBuffer
 {
-public:
-    enum E_VERTEX_BUFFER_MODE { E_VERTEX_BUFFER_MODE_VTN = 0, E_VERTEX_BUFFER_MODE_VC, E_VERTEX_BUFFER_MODE_VNC };
-        
-    struct SVertexVTN
+protected:
+    struct SVertex
     {
-        CVector3d m_vPosition; 
-        CVector2d m_vTexCoord; 
-        CVector3d m_vNormal;   
-    };
-    
-    struct SVertexVNC
-    {
-        CVector3d m_vPosition;
-        CVector3d m_vNormal;
-        CColor4 m_cColor;
-        char padding[4];
-    };
-    
-    struct SVertexVC
-    {
-        CVector3d m_vPosition; 
-        CColor4 m_cColor;
-        char padding[16];
+        CVector3d*      m_pPositionData;
+        CVector2d*      m_pTexCoordData;    
+        CByteVector3d*  m_pNormalData;  
+        CByteVector3d*  m_pTangentData; 
+        CColor4*        m_pColorData;
     };
     
     static const std::string k_SLOT_POSITION;
     static const std::string k_SLOT_TEXCOORD;
     static const std::string k_SLOT_NORMAL;
+    static const std::string k_SLOT_TANGENT;
     static const std::string k_SLOT_COLOR;
     
 private:
-    void *m_pData;
     GLuint m_iHandle;
     GLuint m_iShaderHandle;
     unsigned int m_iNumVertexes;
     unsigned int m_iSize;
     bool m_bIsInVRAM;
-    E_VERTEX_BUFFER_MODE m_eMode;
     
     GLint m_iPositionSlot;
     GLint m_iTexcoordSlot;
     GLint m_iNormalSlot;
+    GLint m_iTangentSlot;
     GLint m_iColorSlot;
-
+    
+    SVertex m_pData;
+    char* m_pSource;
 public:
-    CVertexBuffer(unsigned int _iNumVertexes,unsigned char _iVertexSize, E_VERTEX_BUFFER_MODE _eMode);
+    CVertexBuffer(unsigned int _iNumVertexes);
     ~CVertexBuffer();
     
     unsigned int Get_NumVertexes(void) { return  m_iNumVertexes; }
-    void *Get_Data() { return m_pData; }
+    
+    CVector3d*      Get_PositionData(void) { return m_pData.m_pPositionData; }
+    CVector2d*      Get_TexCoordData(void) { return m_pData.m_pTexCoordData; }
+    CByteVector3d*  Get_NormalData(void)   { return m_pData.m_pNormalData;   }
+    CByteVector3d*  Get_TangentData(void)  { return m_pData.m_pTangentData;  }
+    CColor4*        Get_ColorData(void)   { return m_pData.m_pColorData; }
+    
+    CVector3d*      CreateOrReUse_PositionData(void);
+    CVector2d*      CreateOrReUse_TexCoordData(void);
+    CByteVector3d*  CreateOrReUse_NormalData(void);
+    CByteVector3d*  CreateOrReUse_TangentData(void);
+    CColor4*        CreateOrReUse_ColorData(void);
+
     void Set_ShaderRef(GLuint _iShaderHandler);
     GLuint Get_ShaderRef(void) { return m_iShaderHandle; }
-    void Enable();
-    void Disable();
-    void Commit();
+    
+    void Enable(void);
+    void Disable(void);
+    
+    void Lock(void);
+    void Unlock(void);
+    
+    void CommitToRAM(void);
+    void CommitFromRAMToVRAM(void);
+    
 };
 
 #endif

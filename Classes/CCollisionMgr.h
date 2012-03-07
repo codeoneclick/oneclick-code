@@ -43,7 +43,7 @@ public:
     CRay3d Get_TouchRay(void) { return m_vTouchRay; }
     bool RayPlaneIntersection(CVector3d& _vTrianglePoint_01, CVector3d& _vTrianglePoint_02, CVector3d& _vTrianglePoint_03, CRay3d& _tRay, CVector3d* _vIntersectPoint);
     bool RayTriangleIntersection(CVector3d& _vTrianglePoint_01, CVector3d& _vTrianglePoint_02, CVector3d& _vTrianglePoint_03, CRay3d& _tRay, CVector3d* _vIntersectPoint);
-    bool Get_CollisionPoint(CVertexBuffer *_pVB, CIndexBuffer *_pIB, CVertexBuffer::E_VERTEX_BUFFER_MODE _eMode,CRay3d& _tRay3d, CVector3d* _vCollisionPoint);
+    bool Get_CollisionPoint(CVertexBuffer *_pVB, CIndexBuffer *_pIB/*, CVertexBuffer::E_VERTEX_BUFFER_MODE _eMode*/,CRay3d& _tRay3d, CVector3d* _vCollisionPoint);
     void Update(void);
 };
 

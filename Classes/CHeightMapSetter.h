@@ -16,7 +16,6 @@
 class CHeightMapSetter
 {
 private:
-    static const float k_HEIGHT_DIV_FACTOR;
     float* m_pSource;
     int** m_pPathFindSource;
     int m_iWidth;
@@ -25,13 +24,12 @@ public:
     CHeightMapSetter(void);
     ~CHeightMapSetter(void);
     
-    CMesh* Load_SourceData(const std::string _sName, int _iWidth, int _iHeight, CVertexBuffer::E_VERTEX_BUFFER_MODE _eMode);
+    CMesh* Load_SourceData(const std::string _sName, int _iWidth, int _iHeight);
     
-    void Load_SourceData(const std::string& _sName, int _iWidth, int _iHeight);
     void Set_SourceData(float* _pSource, int _iWidth, int _iHeight) { m_pSource = _pSource; m_iWidth = _iWidth; m_iHeight = _iHeight; }
     float* Get_HeightMapData(void) { return m_pSource; }
     int** Get_PathFindData(void) { return m_pPathFindSource; }
-    void Calculate_Normals(CVertexBuffer* _pVB, CIndexBuffer* _pIB, CVertexBuffer::E_VERTEX_BUFFER_MODE _eMode);
+    void Calculate_Normals(CVertexBuffer* _pVB, CIndexBuffer* _pIB);
     float Get_HeightValueAtPoint(float _fX, float _fZ);
 };
 

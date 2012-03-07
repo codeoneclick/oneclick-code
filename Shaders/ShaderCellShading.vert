@@ -23,7 +23,8 @@ void main(void)
     vec4 vWorldPosition = EXT_MATRIX_World * vec4(IN_SLOT_Position, 1.0);
     OUT_View = normalize(EXT_View - vec3(vWorldPosition));
     OUT_Light = normalize(EXT_Light - vec3(vWorldPosition));
-    OUT_Normal = normalize(mat3(EXT_MATRIX_World) * IN_SLOT_Normal);
+    OUT_Normal = IN_SLOT_Normal / 127.0 - 1.0;
+    OUT_Normal = normalize(mat3(EXT_MATRIX_World) * OUT_Normal);
     OUT_TexCoord = IN_SLOT_TexCoord;
     gl_Position = EXT_MATRIX_Projection * EXT_MATRIX_View * vWorldPosition;
 

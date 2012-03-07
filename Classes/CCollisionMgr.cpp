@@ -135,40 +135,20 @@ bool CCollisionMgr::RayTriangleIntersection(CVector3d& _vTrianglePoint_01, CVect
 	return true;
 }
 
-bool CCollisionMgr::Get_CollisionPoint(CVertexBuffer *_pVB, CIndexBuffer *_pIB, CVertexBuffer::E_VERTEX_BUFFER_MODE _eMode,CRay3d& _tRay3d, CVector3d* _vCollisionPoint)
+bool CCollisionMgr::Get_CollisionPoint(CVertexBuffer *_pVB, CIndexBuffer *_pIB,CRay3d& _tRay3d, CVector3d* _vCollisionPoint)
 {
-    if(_eMode == CVertexBuffer::E_VERTEX_BUFFER_MODE_VTN)
+    CVector3d* pPositionData = _pVB->CreateOrReUse_PositionData();
+    unsigned short* pIBData = _pIB->Get_Data();
+    unsigned int iNumIndexes = _pIB->Get_NumIndexes();
+    for(unsigned int index = 0; index < iNumIndexes; index += 3)
     {
-        CVertexBuffer::SVertexVTN* pVBData = static_cast<CVertexBuffer::SVertexVTN*>(_pVB->Get_Data());
-        unsigned short* pIBData = _pIB->Get_Data();
-        unsigned int iNumIndexes = _pIB->Get_NumIndexes();
-        for(unsigned int index = 0; index < iNumIndexes; index += 3)
-        {
-            CVector3d vPoint_01 = pVBData[pIBData[index]].m_vPosition;
-            CVector3d vPoint_02 = pVBData[pIBData[index + 1]].m_vPosition;
-            CVector3d vPoint_03 = pVBData[pIBData[index + 2]].m_vPosition;
+        CVector3d vPoint_01 = pPositionData[pIBData[index]];
+        CVector3d vPoint_02 = pPositionData[pIBData[index + 1]];
+        CVector3d vPoint_03 = pPositionData[pIBData[index + 2]];
             
-            if(RayTriangleIntersection(vPoint_01, vPoint_02, vPoint_03, _tRay3d, _vCollisionPoint))
-            {
-                return true;
-            }
-        }
-    }
-    else if(_eMode == CVertexBuffer::E_VERTEX_BUFFER_MODE_VC)
-    {
-        CVertexBuffer::SVertexVC* pVBData = static_cast<CVertexBuffer::SVertexVC*>(_pVB->Get_Data());
-        unsigned short* pIBData = _pIB->Get_Data();
-        unsigned int iNumIndexes = _pIB->Get_NumIndexes();
-        for(unsigned int index = 0; index < iNumIndexes; index += 3)
+        if(RayTriangleIntersection(vPoint_01, vPoint_02, vPoint_03, _tRay3d, _vCollisionPoint))
         {
-            CVector3d vPoint_01 = pVBData[pIBData[index]].m_vPosition;
-            CVector3d vPoint_02 = pVBData[pIBData[index + 1]].m_vPosition;
-            CVector3d vPoint_03 = pVBData[pIBData[index + 2]].m_vPosition;
-            
-            if(RayTriangleIntersection(vPoint_01, vPoint_02, vPoint_03, _tRay3d, _vCollisionPoint))
-            {
-                return true;
-            }
+            return true;
         }
     }
     return false;

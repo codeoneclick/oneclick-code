@@ -37,12 +37,11 @@ protected:
     CMesh*          m_pMesh;
     CMesh::SSource* m_pSource; 
     E_RENDER_MODE m_eRenderMode;
-    CVertexBuffer::E_VERTEX_BUFFER_MODE m_eVertexBufferMode;
     void MakeBatch(void);
     void DestroyBatch(void);
 public:
-    CBatch(CVertexBuffer::E_VERTEX_BUFFER_MODE _eVertexBufferMode);
-    ~CBatch();
+    CBatch(void);
+    ~CBatch(void);
     void Push(SSource _tSource);
     void Set_Shader(CShader* _pShader);
     void Set_Textures(CTexture** _pTextures) { m_pTextures = _pTextures; }

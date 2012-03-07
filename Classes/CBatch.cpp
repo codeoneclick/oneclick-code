@@ -10,21 +10,11 @@
 #include "CBatch.h"
 #include "CSceneMgr.h"
 
-CBatch::CBatch(CVertexBuffer::E_VERTEX_BUFFER_MODE _eVertexBufferMode)
+CBatch::CBatch(void)
 {
-     m_eVertexBufferMode = _eVertexBufferMode;
-    
      m_pSource = new CMesh::SSource();
      m_pSource->m_pIB = new CIndexBuffer(4096 * 8);
-    
-     if(m_eVertexBufferMode == CVertexBuffer::E_VERTEX_BUFFER_MODE_VTN)
-     {
-         m_pSource->m_pVB = new CVertexBuffer(2048 * 8, sizeof(CVertexBuffer::SVertexVTN),_eVertexBufferMode); 
-     }
-     else if(m_eVertexBufferMode == CVertexBuffer::E_VERTEX_BUFFER_MODE_VC)
-     {
-         m_pSource->m_pVB = new CVertexBuffer(2048 * 8, sizeof(CVertexBuffer::SVertexVC),_eVertexBufferMode); 
-     }
+     m_pSource->m_pVB = new CVertexBuffer(2048 * 8); 
       
      m_pMesh = new CMesh();
      m_pSource->m_iNumVertexes = 0;
@@ -32,7 +22,7 @@ CBatch::CBatch(CVertexBuffer::E_VERTEX_BUFFER_MODE _eVertexBufferMode)
      m_eRenderMode = E_RENDER_MODE_TRIANGLES;
 }
 
-CBatch::~CBatch()
+CBatch::~CBatch(void)
 {
     if(m_pMesh != NULL)
     {
@@ -59,7 +49,6 @@ void CBatch::Push(SSource _tSource)
 
 void CBatch::MakeBatch()
 {
-    void* pBatchData = m_pSource->m_pVB->Get_Data();
     unsigned short* pIBData = m_pSource->m_pIB->Get_Data();
     
     std::vector<CBatch::SSource>::iterator itBegin = m_lContainer.begin();
@@ -71,30 +60,58 @@ void CBatch::MakeBatch()
     {
         CMesh* pMesh = (*itBegin).m_pMesh;
         int iNumVertexes = pMesh->Get_NumVertexes();
-        void* pNodeData = pMesh->Get_VB()->Get_Data();
         CMatrix4x4 mWorld = (*itBegin).m_mWorld;
+        
+        CVector3d* pNodePositionData = NULL;
+        CVector2d* pNodeTexCoordData = NULL;
+        CByteVector3d* pNodeNormalData = NULL;
+        CByteVector3d* pNodeTangentData = NULL;
+        CColor4* pNodeColorData = NULL;
+        
+        CVector3d* pBatchPositionData = NULL;
+        CVector2d* pBatchTexCoordData = NULL;
+        CByteVector3d* pBatchNormalData = NULL;
+        CByteVector3d* pBatchTangentData = NULL;
+        CColor4* pBatchColorData = NULL;
+
+        
+        if(pMesh->Get_VB()->Get_PositionData())
+        {
+            pNodePositionData = pMesh->Get_VB()->Get_PositionData();
+            pBatchPositionData = m_pSource->m_pVB->CreateOrReUse_PositionData();
+        }
+        
+        if(pMesh->Get_VB()->Get_TexCoordData())
+        {
+            pNodeTexCoordData = pMesh->Get_VB()->Get_TexCoordData();
+            pNodeTexCoordData = m_pSource->m_pVB->CreateOrReUse_TexCoordData();
+        }
+        
+        if(pMesh->Get_VB()->Get_NormalData())
+        {
+            pNodeNormalData = pMesh->Get_VB()->Get_NormalData();
+            pBatchNormalData = m_pSource->m_pVB->CreateOrReUse_NormalData();
+        }
+        
+        if(pMesh->Get_VB()->Get_TangentData())
+        {
+            pNodeTangentData = pMesh->Get_VB()->Get_TangentData();
+            pBatchTangentData = m_pSource->m_pVB->CreateOrReUse_TangentData();
+        }
+        
+        if(pMesh->Get_VB()->Get_ColorData())
+        {
+            pNodeColorData = pMesh->Get_VB()->Get_ColorData();
+            pBatchColorData = m_pSource->m_pVB->CreateOrReUse_ColorData();
+        }
         
         for(int i = 0; i < iNumVertexes; ++i)
         {
-            if(m_eVertexBufferMode == CVertexBuffer::E_VERTEX_BUFFER_MODE_VTN)
-            {
-                CVertexBuffer::SVertexVTN* pRefBatchData = static_cast<CVertexBuffer::SVertexVTN*>(pBatchData);
-                CVertexBuffer::SVertexVTN* pRefNodeData = static_cast<CVertexBuffer::SVertexVTN*>(pNodeData);
-                pRefBatchData->m_vPosition = mWorld * pRefNodeData[i].m_vPosition;
-                pRefBatchData->m_vTexCoord = pRefNodeData[i].m_vTexCoord;
-                pRefBatchData->m_vNormal = pRefNodeData[i].m_vNormal;
-                ++pRefBatchData;
-                pBatchData = pRefBatchData;
-            }
-            else if(m_eVertexBufferMode == CVertexBuffer::E_VERTEX_BUFFER_MODE_VC)
-            {
-                CVertexBuffer::SVertexVC* pRefBatchData = static_cast<CVertexBuffer::SVertexVC*>(pBatchData);
-                CVertexBuffer::SVertexVC* pRefNodeData = static_cast<CVertexBuffer::SVertexVC*>(pNodeData);
-                pRefBatchData->m_vPosition = mWorld * pRefNodeData[i].m_vPosition;
-                pRefBatchData->m_cColor = pRefNodeData[i].m_cColor;
-                ++pRefBatchData;
-                pBatchData = pRefBatchData;
-            }
+            //pRefBatchData->m_vPosition = mWorld * pRefNodeData[i].m_vPosition;
+            //pRefBatchData->m_vTexCoord = pRefNodeData[i].m_vTexCoord;
+            //pRefBatchData->m_vNormal = pRefNodeData[i].m_vNormal;
+            //++pRefBatchData;
+            //pBatchData = pRefBatchData;
         }
         int iNumIndexes = pMesh->Get_NumIndexes();
         unsigned short *pNodeIBData = pMesh->Get_IB()->Get_Data();

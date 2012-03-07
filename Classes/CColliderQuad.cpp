@@ -14,7 +14,7 @@
 
 CColliderQuad::CColliderQuad(const CVector3d &_vPoint_01, const CVector3d &_vPoint_02, const CVector3d &_vPoint_03, const CVector3d &_vPoint_04)
 {
-    m_mWorld = CMatrix4x4(CMatrix4x4::E_MATRIX_ONE);
+    /*m_mWorld = CMatrix4x4(CMatrix4x4::E_MATRIX_ONE);
     
     m_pShader = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_COLOR);
     
@@ -41,7 +41,7 @@ CColliderQuad::CColliderQuad(const CVector3d &_vPoint_01, const CVector3d &_vPoi
     
     m_pMesh = new CMesh();
     m_pMesh->Set_Source(pSource);
-    m_pMesh->Get_VB()->Set_ShaderRef(m_pShader->Get_ProgramHandle());
+    m_pMesh->Get_VB()->Set_ShaderRef(m_pShader->Get_ProgramHandle());*/
 }
 
 CColliderQuad::~CColliderQuad()

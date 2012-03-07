@@ -1,4 +1,4 @@
-const char* ShaderPhongV = STRINGIFY(
+const char* ShaderParallaxV = STRINGIFY(
                                                     
                                                     attribute vec3 IN_SLOT_Position;
                                                     attribute vec2 IN_SLOT_TexCoord;
@@ -21,11 +21,28 @@ const char* ShaderPhongV = STRINGIFY(
 void main(void)
 {
     vec4 vWorldPosition = EXT_MATRIX_World * vec4(IN_SLOT_Position, 1.0);
-    OUT_View = normalize(EXT_View - vec3(vWorldPosition));
-    OUT_Light = normalize(EXT_Light - vec3(vWorldPosition));
-    OUT_Normal = IN_SLOT_Normal / 127.0 - 1.0;
-    OUT_Normal = normalize(mat3(EXT_MATRIX_World) * OUT_Normal);
-    OUT_TexCoord = IN_SLOT_TexCoord;
     gl_Position = EXT_MATRIX_Projection * EXT_MATRIX_View * vWorldPosition;
+    
+    vec3 vNormal = IN_SLOT_Normal / 127.0 - 1.0;
+    vec3 vTangent = IN_SLOT_Tangent / 127.0 - 1.0;
+    vec3 vBinormal = cross(vNormal, vTangent);
+    
+    vNormal = mat3(EXT_MATRIX_World) * vNormal;
+    vTangent = mat3(EXT_MATRIX_World) * vTangent; 
+    vBinormal = mat3(EXT_MATRIX_World) * vBinormal;
+    
+    mat3 mTangentSpace = mat3(vTangent.x, vBinormal.x, vNormal.x,
+                              vTangent.y, vBinormal.y, vNormal.y,
+                              vTangent.z, vBinormal.z, vNormal.z);
+
+    
+    vec3 vLightDirection = normalize(EXT_Light - vec3(vWorldPosition));
+    vec3 vViewDirection = normalize(EXT_View - vec3(vWorldPosition));
+    
+    OUT_View = mTangentSpace * vViewDirection;
+    OUT_Light = mTangentSpace * vLightDirection;
+    
+    OUT_TexCoord = IN_SLOT_TexCoord;
+   
 }
 );

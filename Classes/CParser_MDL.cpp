@@ -57,7 +57,9 @@ void CParser_MDL::Load(const std::string& _sName)
     {
         fread(&m_pSource->m_pData[i].m_vPosition,sizeof(struct CVector3d), 1, pFile);
         fread(&m_pSource->m_pData[i].m_vNormal, sizeof(struct CVector3d), 1, pFile);
+        fread(&m_pSource->m_pData[i].m_vTangent, sizeof(struct CVector3d), 1, pFile);
         fread(&m_pSource->m_pData[i].m_vTexCoord, sizeof(struct CVector2d), 1, pFile);
+        
         
         //std::cout<<"Position : "<<m_pSource->m_pData[i].m_vPosition.x<<","<<m_pSource->m_pData[i].m_vPosition.y<<","<<m_pSource->m_pData[i].m_vPosition.z<<"\n";
        
@@ -113,15 +115,24 @@ void CParser_MDL::Load(const std::string& _sName)
 
 void CParser_MDL::Commit()
 {
-    m_pSource->m_pVB = new CVertexBuffer(m_pSource->m_iNumVertexes, sizeof(CVertexBuffer::SVertexVTN),CVertexBuffer::E_VERTEX_BUFFER_MODE_VTN);
-    CVertexBuffer::SVertexVTN* pData = static_cast<CVertexBuffer::SVertexVTN*>(m_pSource->m_pVB->Get_Data());  
+    m_pSource->m_pVB = new CVertexBuffer(m_pSource->m_iNumVertexes);
+
+    CVector3d* pPositionData = m_pSource->m_pVB->CreateOrReUse_PositionData();
+    CVector2d* pTexCoordData = m_pSource->m_pVB->CreateOrReUse_TexCoordData();
+    CByteVector3d* pNormalData = m_pSource->m_pVB->CreateOrReUse_NormalData();
+    CByteVector3d* pTangentData = m_pSource->m_pVB->CreateOrReUse_TangentData();
     
     for(unsigned int index = 0; index < m_pSource->m_iNumVertexes; index++)
     {
-        pData[index].m_vPosition = m_pSource->m_pData[index].m_vPosition;
-        pData[index].m_vTexCoord = m_pSource->m_pData[index].m_vTexCoord;
-        pData[index].m_vNormal = m_pSource->m_pData[index].m_vNormal;
+        pPositionData[index] = m_pSource->m_pData[index].m_vPosition;
+        pTexCoordData[index] = m_pSource->m_pData[index].m_vTexCoord;
+        CByteVector3d vNormal = CByteVector3d(m_pSource->m_pData[index].m_vNormal);
+        pNormalData[index] = vNormal;
+        CByteVector3d vTangent = CByteVector3d(m_pSource->m_pData[index].m_vTangent);
+        pTangentData[index] = vTangent;
     }
+    
+    m_pSource->m_pVB->CommitToRAM();
 }
 
 

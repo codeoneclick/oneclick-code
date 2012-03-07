@@ -14,7 +14,7 @@
 
 CColliderBox::CColliderBox(const CVector3d &_vMax, const CVector3d &_vMin)
 {
-    m_vMax = _vMax;
+    /*m_vMax = _vMax;
     m_vMin = _vMin;
     
     m_mWorld = CMatrix4x4(CMatrix4x4::E_MATRIX_ONE);
@@ -106,7 +106,7 @@ CColliderBox::CColliderBox(const CVector3d &_vMax, const CVector3d &_vMin)
     
     m_pMesh = new CMesh();
     m_pMesh->Set_Source(pSource);
-    m_pMesh->Get_VB()->Set_ShaderRef(m_pShader->Get_ProgramHandle());
+    m_pMesh->Get_VB()->Set_ShaderRef(m_pShader->Get_ProgramHandle());*/
 }
 
 CColliderBox::~CColliderBox()
