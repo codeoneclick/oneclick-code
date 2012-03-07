@@ -11,7 +11,7 @@
 
 CBatchMgr::CBatchMgr()
 {
-    CBatch* pColliderBatch = new CBatch(CVertexBuffer::E_VERTEX_BUFFER_MODE_VC);
+    CBatch* pColliderBatch = new CBatch();
     CShader* pColliderShader = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_COLOR);
     CTexture** pColliderTextures = new CTexture*[TEXTURES_MAX_COUNT];
     pColliderTextures[0] = NULL;
@@ -23,7 +23,7 @@ CBatchMgr::CBatchMgr()
     pColliderBatch->Set_RenderMode(CBatch::E_RENDER_MODE_TRIANGLES);
     m_lContainer[BATCH_COLLIDER_BOX] = pColliderBatch;
     
-    CBatch* pBoundingBatch = new CBatch(CVertexBuffer::E_VERTEX_BUFFER_MODE_VC);
+    CBatch* pBoundingBatch = new CBatch();
     CShader* pBoundingShader = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_COLOR);
     CTexture** pBoundingTextures = new CTexture*[TEXTURES_MAX_COUNT];
     pBoundingTextures[0] = NULL;

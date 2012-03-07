@@ -28,7 +28,7 @@ void CGameUnitHero::Load(void)
     m_pModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("player.mdl", false, IResource::E_THREAD_BACKGROUND);
     m_pModel->Set_Texture("footman.pvr");
     m_pModel->Set_Scale(CVector3d(0.01f, 0.01f, 0.01f));
-    m_pModel->Set_Shader(IResource::E_SHADER_CELL_SHADING);
+    m_pModel->Set_Shader(IResource::E_SHADER_PARALLAX);
     m_pModel->Create_BoundingBox();
     m_pModel->Create_ColliderBox();
     CSceneMgr::Instance()->AddEventListener(m_pModel, CEventMgr::E_EVENT_TOUCH);

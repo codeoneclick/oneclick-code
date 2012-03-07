@@ -28,22 +28,24 @@ CMesh* CBoundingBox::Get_BoundingBoxMesh(void)
         pSource->m_iNumVertexes = 8;
         pSource->m_iNumIndexes  = 24;
     
-        pSource->m_pVB = new CVertexBuffer(pSource->m_iNumVertexes, sizeof(CVertexBuffer::SVertexVC), CVertexBuffer::E_VERTEX_BUFFER_MODE_VC);
-        CVertexBuffer::SVertexVC* pData = static_cast<CVertexBuffer::SVertexVC*>(pSource->m_pVB->Get_Data());
+        pSource->m_pVB = new CVertexBuffer(pSource->m_iNumVertexes);
+        
+        CVector3d* pPositionData = pSource->m_pVB->CreateOrReUse_PositionData();
+        CColor4* pColorData = pSource->m_pVB->CreateOrReUse_ColorData();
     
-        pData[0].m_vPosition = CVector3d( m_vMin.x,  m_vMin.y, m_vMax.z);
-        pData[1].m_vPosition = CVector3d( m_vMax.x,  m_vMin.y, m_vMax.z);
-        pData[2].m_vPosition = CVector3d( m_vMax.x,  m_vMax.y, m_vMax.z);
-        pData[3].m_vPosition = CVector3d( m_vMin.x,  m_vMax.y, m_vMax.z);
+        pPositionData[0] = CVector3d( m_vMin.x,  m_vMin.y, m_vMax.z);
+        pPositionData[1] = CVector3d( m_vMax.x,  m_vMin.y, m_vMax.z);
+        pPositionData[2] = CVector3d( m_vMax.x,  m_vMax.y, m_vMax.z);
+        pPositionData[3] = CVector3d( m_vMin.x,  m_vMax.y, m_vMax.z);
     
-        pData[4].m_vPosition = CVector3d( m_vMin.x,  m_vMin.y,  m_vMin.z);
-        pData[5].m_vPosition = CVector3d( m_vMin.x,  m_vMax.y,  m_vMin.z);
-        pData[6].m_vPosition = CVector3d( m_vMax.x,  m_vMax.y,  m_vMin.z);
-        pData[7].m_vPosition = CVector3d( m_vMax.x,  m_vMin.y,  m_vMin.z);
+        pPositionData[4] = CVector3d( m_vMin.x,  m_vMin.y,  m_vMin.z);
+        pPositionData[5] = CVector3d( m_vMin.x,  m_vMax.y,  m_vMin.z);
+        pPositionData[6] = CVector3d( m_vMax.x,  m_vMax.y,  m_vMin.z);
+        pPositionData[7] = CVector3d( m_vMax.x,  m_vMin.y,  m_vMin.z);
     
         for(unsigned int i = 0; i < pSource->m_iNumVertexes; i++)
         {
-            pData[i].m_cColor = CColor4(0, 255, 0, 255);
+            pColorData[i] = CColor4(0, 255, 0, 255);
         }
     
         pSource->m_pIB = new CIndexBuffer(pSource->m_iNumIndexes);
@@ -78,6 +80,7 @@ CMesh* CBoundingBox::Get_BoundingBoxMesh(void)
     
         m_pMesh = new CMesh();
         m_pMesh->Set_Source(pSource);
+        m_pMesh->Get_VB()->CommitToRAM();
     }
     return m_pMesh;
 }

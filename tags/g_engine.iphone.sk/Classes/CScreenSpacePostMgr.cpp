@@ -86,21 +86,23 @@ CScreenSpacePostMgr::CScreenSpacePostMgr(void)
     pSource->m_iNumVertexes = 4;
     pSource->m_iNumIndexes  = 6;
     
-    pSource->m_pVB = new CVertexBuffer(pSource->m_iNumVertexes, sizeof(CVertexBuffer::SVertexVTN), CVertexBuffer::E_VERTEX_BUFFER_MODE_VTN);
-    CVertexBuffer::SVertexVTN* pData = static_cast<CVertexBuffer::SVertexVTN*>(pSource->m_pVB->Get_Data());
+    pSource->m_pVB = new CVertexBuffer(pSource->m_iNumVertexes);
+    
+    CVector3d* pPositionData = pSource->m_pVB->CreateOrReUse_PositionData();
+    CVector2d* pTexCoordData = pSource->m_pVB->CreateOrReUse_TexCoordData();
     
     unsigned i = 0;
-    pData[i].m_vPosition = CVector3d(-1.0f,-1.0f,0.0f);
-    pData[i].m_vTexCoord = CVector2d(0.0f,0.0f);
+    pPositionData[i] = CVector3d(-1.0f,-1.0f,0.0f);
+    pTexCoordData[i] = CVector2d(0.0f,0.0f);
     i++;
-    pData[i].m_vPosition = CVector3d(-1.0f,1.0f,0.0f);
-    pData[i].m_vTexCoord = CVector2d(0.0f,1.0f);
+    pPositionData[i] = CVector3d(-1.0f,1.0f,0.0f);
+    pTexCoordData[i] = CVector2d(0.0f,1.0f);
     i++;
-    pData[i].m_vPosition = CVector3d(1.0f,-1.0f,0.0f);
-    pData[i].m_vTexCoord = CVector2d(1.0f,0.0f);
+    pPositionData[i] = CVector3d(1.0f,-1.0f,0.0f);
+    pTexCoordData[i] = CVector2d(1.0f,0.0f);
     i++;
-    pData[i].m_vPosition = CVector3d(1.0f,1.0f,0.0f);
-    pData[i].m_vTexCoord = CVector2d(1.0f,1.0f);
+    pPositionData[i] = CVector3d(1.0f,1.0f,0.0f);
+    pTexCoordData[i] = CVector2d(1.0f,1.0f);
     i++;
 
     pSource->m_pIB = new CIndexBuffer(pSource->m_iNumIndexes);
@@ -118,6 +120,9 @@ CScreenSpacePostMgr::CScreenSpacePostMgr(void)
     
     m_pMesh = new CMesh();
     m_pMesh->Set_Source(pSource);
+    
+    m_pMesh->Get_VB()->CommitToRAM();
+    m_pMesh->Get_VB()->CommitFromRAMToVRAM();
     
     m_pShaderPostSimple = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_TEXTURE);
     m_pShaderPostBloomExtract = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_BLOOM_EXTRACT);

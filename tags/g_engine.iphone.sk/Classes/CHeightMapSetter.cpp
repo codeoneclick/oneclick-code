@@ -10,8 +10,6 @@
 #include "CHeightMapSetter.h"
 #include "CSceneMgr.h"
 
-const float CHeightMapSetter::k_HEIGHT_DIV_FACTOR = 1.0f;
-
 CHeightMapSetter::CHeightMapSetter(void)
 {
     m_pSource = NULL;
@@ -22,7 +20,7 @@ CHeightMapSetter::~CHeightMapSetter(void)
     
 }
 
-CMesh* CHeightMapSetter::Load_SourceData(const std::string _sName, int _iWidth, int _iHeight, CVertexBuffer::E_VERTEX_BUFFER_MODE _eMode)
+CMesh* CHeightMapSetter::Load_SourceData(const std::string _sName, int _iWidth, int _iHeight)
 {
     m_iWidth = _iWidth;
     m_iHeight = _iHeight;
@@ -35,46 +33,19 @@ CMesh* CHeightMapSetter::Load_SourceData(const std::string _sName, int _iWidth, 
     {
         pMesh->Set_Source(pParser->Get_Source());
     }
-    CVertexBuffer::SVertexVTN* pVertexesData = static_cast<CVertexBuffer::SVertexVTN*>(pMesh->Get_VB()->Get_Data());
+
+    CVector3d* pPositionData = pMesh->Get_VB()->CreateOrReUse_PositionData();
     m_pSource = new float[m_iWidth * m_iHeight];
     for(unsigned int i = 0; i < m_iWidth; ++i)
     {
         for(unsigned int j = 0; j < m_iHeight; ++j)
         {
-            //pVertexesData[i + ((m_iWidth - 1) - j) * m_iWidth].m_vPosition.y = 0.0f;
-            //pVertexesData[i + ((m_iWidth - 1) - j) * m_iWidth].m_vNormal = CVector3d(0.0f,1.0f,0.0f);
-            m_pSource[i + j * m_iHeight] = pVertexesData[i + ((m_iWidth - 1) - j) * m_iWidth].m_vPosition.y;
+            m_pSource[i + j * m_iHeight] = pPositionData[i + ((m_iWidth - 1) - j) * m_iWidth].y;
         }
     }
 
     return pMesh;
 }
-
-void CHeightMapSetter::Load_SourceData(const std::string& _sName, int _iWidth, int _iHeight)
-{
-    m_iWidth = _iWidth;
-    m_iHeight = _iHeight;
-    
-    m_pSource = new float[m_iWidth * m_iHeight];
-    for(unsigned int i = 0; i < m_iWidth; ++i)
-    {
-        for(unsigned int j = 0; j < m_iHeight; ++j)
-        {
-            m_pSource[i + j * m_iHeight] = (sinf(static_cast<float>(i)) + sinf(static_cast<float>(j))) / k_HEIGHT_DIV_FACTOR;
-        }
-    }
-    
-    m_pPathFindSource = new int*[m_iWidth];
-    for(unsigned int i = 0; i < m_iWidth; ++i)
-    {
-        m_pPathFindSource[i] = new int[m_iHeight];
-        for(unsigned int j = 0; j < m_iHeight; ++j)
-        {
-            m_pPathFindSource[i][j] = 0;
-        }
-    }
-}
-
 
 float CHeightMapSetter::Get_HeightValueAtPoint(float _fX, float _fZ)
 {
@@ -107,50 +78,28 @@ float CHeightMapSetter::Get_HeightValueAtPoint(float _fX, float _fZ)
 }
 
 
-void CHeightMapSetter::Calculate_Normals(CVertexBuffer* _pVB,CIndexBuffer* _pIB, CVertexBuffer::E_VERTEX_BUFFER_MODE _eMode)
+void CHeightMapSetter::Calculate_Normals(CVertexBuffer* _pVB,CIndexBuffer* _pIB)
 {
-    if(_eMode == CVertexBuffer::E_VERTEX_BUFFER_MODE_VTN)
+    CVector3d* pPositionData = _pVB->CreateOrReUse_PositionData();
+    CByteVector3d* pNormalData = _pVB->CreateOrReUse_NormalData();
+    unsigned short* pIBData = _pIB->Get_Data();
+    unsigned int iNumIndexes = _pIB->Get_NumIndexes();
+    for(unsigned int index = 0; index < iNumIndexes; index += 3)
     {
-        CVertexBuffer::SVertexVTN* pVBData = static_cast<CVertexBuffer::SVertexVTN*>(_pVB->Get_Data());
-        unsigned short* pIBData = _pIB->Get_Data();
-        unsigned int iNumIndexes = _pIB->Get_NumIndexes();
-        for(unsigned int index = 0; index < iNumIndexes; index += 3)
-        {
-            CVector3d vPoint_01 = pVBData[pIBData[index]].m_vPosition;
-            CVector3d vPoint_02 = pVBData[pIBData[index + 1]].m_vPosition;
-            CVector3d vPoint_03 = pVBData[pIBData[index + 2]].m_vPosition;
+        CVector3d vPoint_01 = pPositionData[pIBData[index]];
+        CVector3d vPoint_02 = pPositionData[pIBData[index + 1]];
+        CVector3d vPoint_03 = pPositionData[pIBData[index + 2]];
             
-            CVector3d vEdge_01 = vPoint_02 - vPoint_01;
-            CVector3d vEdge_02 = vPoint_03 - vPoint_01;
-            CVector3d vNormal = Cross(vEdge_01, vEdge_02);
-            vNormal.Normalize();
-            vNormal = CVector3d(0.0f, 1.0f, 0.0f);
-            pVBData[pIBData[index]].m_vNormal = vNormal;
-            pVBData[pIBData[index + 1]].m_vNormal = vNormal;
-            pVBData[pIBData[index + 2]].m_vNormal = vNormal;
-        }
+        CVector3d vEdge_01 = vPoint_02 - vPoint_01;
+        CVector3d vEdge_02 = vPoint_03 - vPoint_01;
+        CVector3d vNormal = Cross(vEdge_01, vEdge_02);
+        vNormal.Normalize();
+        CByteVector3d vByteNormal = CByteVector3d(vNormal);
+        pNormalData[pIBData[index]] = vByteNormal;
+        pNormalData[pIBData[index + 1]] = vByteNormal;
+        pNormalData[pIBData[index + 2]] = vByteNormal;
     }
-    else if(_eMode == CVertexBuffer::E_VERTEX_BUFFER_MODE_VNC)
-    {
-        CVertexBuffer::SVertexVNC* pVBData = static_cast<CVertexBuffer::SVertexVNC*>(_pVB->Get_Data());
-        unsigned short* pIBData = _pIB->Get_Data();
-        unsigned int iNumIndexes = _pIB->Get_NumIndexes();
-        for(unsigned int index = 0; index < iNumIndexes; index += 3)
-        {
-            CVector3d vPoint_01 = pVBData[pIBData[index]].m_vPosition;
-            CVector3d vPoint_02 = pVBData[pIBData[index + 1]].m_vPosition;
-            CVector3d vPoint_03 = pVBData[pIBData[index + 2]].m_vPosition;
-            
-            CVector3d vEdge_01 = vPoint_02 - vPoint_01;
-            CVector3d vEdge_02 = vPoint_03 - vPoint_01;
-            CVector3d vNormal = Cross(vEdge_01, vEdge_02);
-            vNormal.Normalize();
-            
-            pVBData[pIBData[index]].m_vNormal = vNormal;
-            pVBData[pIBData[index + 1]].m_vNormal = vNormal;
-            pVBData[pIBData[index + 2]].m_vNormal = vNormal;
-        }
-    }
+    _pVB->CommitToRAM();
 }
 
 

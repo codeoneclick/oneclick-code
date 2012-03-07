@@ -40,6 +40,8 @@
 #include "../Shaders/ShaderPostBlur.vert"
 #include "../Shaders/ShaderPostBlur.frag"
 
+#include "../Shaders/ShaderParallax.vert"
+#include "../Shaders/ShaderParallax.frag"
 
 CShaderComposite* CShaderComposite::m_pInstance = NULL;
 
@@ -87,6 +89,10 @@ CShaderComposite::CShaderComposite()
     pData = pParser->Load(ShaderPostBlurV, ShaderPostBlurF);
     pShader = new CShader(pData.s_pHandle);
     m_lContainer[IResource::E_SHADER_BLUR] = pShader;
+    
+    pData = pParser->Load(ShaderParallaxV, ShaderParallaxF);
+    pShader = new CShader(pData.s_pHandle);
+    m_lContainer[IResource::E_SHADER_PARALLAX] = pShader;
 }
 
 CShaderComposite::~CShaderComposite()

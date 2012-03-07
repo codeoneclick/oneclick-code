@@ -44,7 +44,7 @@ CLandscape::~CLandscape()
 
 void CLandscape::LoadWithTileSet(void)
 {
-     m_pMesh = new CMesh();
+     /*m_pMesh = new CMesh();
      CMesh::SSource* pSource = new CMesh::SSource();
      pSource->m_iNumVertexes = m_iHeight * m_iWidth * k_TILE_NUM_VERTEXES;
      pSource->m_iNumIndexes = m_iHeight * m_iWidth * k_TILE_NUM_INDEXES;
@@ -53,7 +53,7 @@ void CLandscape::LoadWithTileSet(void)
      unsigned short* pIBData =  pSource->m_pIB->Get_Data();
      
      pSource->m_pVB = new CVertexBuffer(pSource->m_iNumVertexes, sizeof(CVertexBuffer::SVertexVTN), CVertexBuffer::E_VERTEX_BUFFER_MODE_VTN);   
-     CVertexBuffer::SVertexVTN* pVBData = static_cast<CVertexBuffer::SVertexVTN*>(pSource->m_pVB->Get_Data());
+     //CVertexBuffer::SVertexVTN* pVBData = static_cast<CVertexBuffer::SVertexVTN*>(pSource->m_pVB->Get_Data());
     
      unsigned int iIBIndex = 0;
      unsigned int iVBIndex = 0; 
@@ -168,13 +168,13 @@ void CLandscape::LoadWithTileSet(void)
      }
      
      m_pHeightMapSetter->Calculate_Normals(pSource->m_pVB, pSource->m_pIB, CVertexBuffer::E_VERTEX_BUFFER_MODE_VTN);
-     m_pMesh->Set_Source(pSource);
+     m_pMesh->Set_Source(pSource);*/
 }
 
 void CLandscape::Load(IResource::SResource _tResource)
 {
     m_pHeightMapSetter = new CHeightMapSetter();
-    m_pMesh = m_pHeightMapSetter->Load_SourceData(_tResource.m_sName, m_iWidth, m_iHeight, CVertexBuffer::E_VERTEX_BUFFER_MODE_VTN);
+    m_pMesh = m_pHeightMapSetter->Load_SourceData(_tResource.m_sName, m_iWidth, m_iHeight/*, CVertexBuffer::E_VERTEX_BUFFER_MODE_VTN*/);
     
     m_pNavigationMesh = new CNavigationMesh();
     m_pNavigationMesh->Set_NavigationModel(this);
@@ -185,6 +185,8 @@ void CLandscape::Load(IResource::SResource _tResource)
     CSceneMgr::Instance()->Set_HeightMapSetterRef(m_pHeightMapSetter);
     
     m_bIsBatching = _tResource.m_bIsBatching;
+    
+    m_pMesh->Get_VB()->CommitFromRAMToVRAM();
 }
 
 void CLandscape::OnTouchEvent(void)
@@ -192,7 +194,7 @@ void CLandscape::OnTouchEvent(void)
     CRay3d tTouchRay = CSceneMgr::Instance()->Get_CollisionMgr()->Get_TouchRay();
     CVector3d vCollisionPoint;
      
-    if(!CSceneMgr::Instance()->Get_CollisionMgr()->Get_CollisionPoint(m_pMesh->Get_VB(), m_pMesh->Get_IB(), CVertexBuffer::E_VERTEX_BUFFER_MODE_VTN, tTouchRay, &vCollisionPoint))
+    if(!CSceneMgr::Instance()->Get_CollisionMgr()->Get_CollisionPoint(m_pMesh->Get_VB(), m_pMesh->Get_IB()/*, CVertexBuffer::E_VERTEX_BUFFER_MODE_VTN*/, tTouchRay, &vCollisionPoint))
     {
         return;
     }

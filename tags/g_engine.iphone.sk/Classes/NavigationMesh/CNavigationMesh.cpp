@@ -201,21 +201,25 @@ void CNavigationMesh::Create_VisualMesh(void)
             pIndexesData[i] = lIndexesData[i];
         }
         
-        pSource->m_pVB = new CVertexBuffer(pSource->m_iNumVertexes, sizeof(CVertexBuffer::SVertexVC), CVertexBuffer::E_VERTEX_BUFFER_MODE_VC);
-        CVertexBuffer::SVertexVC* pVertexesData = static_cast<CVertexBuffer::SVertexVC*>(pSource->m_pVB->Get_Data());
+        pSource->m_pVB = new CVertexBuffer(pSource->m_iNumVertexes);
+       
+        CVector3d* pPositionData = pSource->m_pVB->CreateOrReUse_PositionData();
+        CColor4* pColorData = pSource->m_pVB->CreateOrReUse_ColorData();
         for(unsigned int i = 0; i < pSource->m_iNumVertexes; i++)
         {
-            pVertexesData[i].m_vPosition = lVertexesData[i];
-            pVertexesData[i].m_cColor = CColor4(0, 255, 0, 255);
+            pPositionData[i] = lVertexesData[i];
+            pColorData[i] = CColor4(0, 255, 0, 255);
         }
         
         lVertexesData.clear();
         lIndexesData.clear();
         
-        pSource->m_pVB->Commit();
+        
         m_pVisualMesh = new CMesh();
         m_pVisualMesh->Set_Source(pSource);
         m_pVisualMesh->Set_Name("navigation_mesh");
+        m_pVisualMesh->Get_VB()->CommitToRAM();
+        m_pVisualMesh->Get_VB()->CommitFromRAMToVRAM();
     }
     else
     {
@@ -226,7 +230,7 @@ void CNavigationMesh::Create_VisualMesh(void)
 void CNavigationMesh::Set_NavigationModel(INode *_pNode)
 {
     size_t iNumVertexes = _pNode->Get_Mesh()->Get_NumVertexes();
-    CVertexBuffer::SVertexVTN* pNodeVertexesData = static_cast<CVertexBuffer::SVertexVTN*>(_pNode->Get_Mesh()->Get_VB()->Get_Data()); 
+    CVector3d* pPositionData = _pNode->Get_Mesh()->Get_VB()->CreateOrReUse_PositionData();
     float* pNavigationMeshVertexesData = new float[iNumVertexes * 3];
     
     float pBoundingBoxMin[3];
@@ -241,17 +245,17 @@ void CNavigationMesh::Set_NavigationModel(INode *_pNode)
     
     for(size_t index = 0; index < iNumVertexes; index++)
     {
-        pNavigationMeshVertexesData[index*3    ] = pNodeVertexesData[index].m_vPosition.x;
-        pNavigationMeshVertexesData[index*3 + 1] = pNodeVertexesData[index].m_vPosition.y;
-        pNavigationMeshVertexesData[index*3 + 2] = pNodeVertexesData[index].m_vPosition.z;
+        pNavigationMeshVertexesData[index*3    ] = pPositionData[index].x;
+        pNavigationMeshVertexesData[index*3 + 1] = pPositionData[index].y;
+        pNavigationMeshVertexesData[index*3 + 2] = pPositionData[index].z;
         
-        if(pNodeVertexesData[index].m_vPosition.x < pBoundingBoxMin[0]) pBoundingBoxMin[0] = pNodeVertexesData[index].m_vPosition.x;
-        if(pNodeVertexesData[index].m_vPosition.y < pBoundingBoxMin[1]) pBoundingBoxMin[1] = pNodeVertexesData[index].m_vPosition.y;
-        if(pNodeVertexesData[index].m_vPosition.z < pBoundingBoxMin[2]) pBoundingBoxMin[2] = pNodeVertexesData[index].m_vPosition.z;
+        if(pPositionData[index].x < pBoundingBoxMin[0]) pBoundingBoxMin[0] = pPositionData[index].x;
+        if(pPositionData[index].y < pBoundingBoxMin[1]) pBoundingBoxMin[1] = pPositionData[index].y;
+        if(pPositionData[index].z < pBoundingBoxMin[2]) pBoundingBoxMin[2] = pPositionData[index].z;
         
-        if(pNodeVertexesData[index].m_vPosition.x > pBoundingBoxMax[0]) pBoundingBoxMax[0] = pNodeVertexesData[index].m_vPosition.x;
-        if(pNodeVertexesData[index].m_vPosition.y > pBoundingBoxMax[1]) pBoundingBoxMax[1] = pNodeVertexesData[index].m_vPosition.y;
-        if(pNodeVertexesData[index].m_vPosition.z > pBoundingBoxMax[2]) pBoundingBoxMax[2] = pNodeVertexesData[index].m_vPosition.z;
+        if(pPositionData[index].x > pBoundingBoxMax[0]) pBoundingBoxMax[0] = pPositionData[index].x;
+        if(pPositionData[index].y > pBoundingBoxMax[1]) pBoundingBoxMax[1] = pPositionData[index].y;
+        if(pPositionData[index].z > pBoundingBoxMax[2]) pBoundingBoxMax[2] = pPositionData[index].z;
     }
     
     size_t iNumIndexes = _pNode->Get_Mesh()->Get_NumIndexes();

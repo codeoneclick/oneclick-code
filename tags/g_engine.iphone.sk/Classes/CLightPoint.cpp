@@ -17,7 +17,7 @@ CLightPoint::CLightPoint()
 {
     m_vDistanceToLightAt = CVector2d( 5.0f, 5.0f);
     
-    m_mWorld = CMatrix4x4(CMatrix4x4::E_MATRIX_ONE);
+    /*m_mWorld = CMatrix4x4(CMatrix4x4::E_MATRIX_ONE);
     m_pShader = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_COLOR);
     
     CMesh::SSource* pSource = new CMesh::SSource();
@@ -113,7 +113,7 @@ CLightPoint::CLightPoint()
     
     m_pMesh = new CMesh();
     m_pMesh->Set_Source(pSource);
-    m_pMesh->Get_VB()->Set_ShaderRef(m_pShader->Get_ProgramHandle());
+    m_pMesh->Get_VB()->Set_ShaderRef(m_pShader->Get_ProgramHandle());*/
 }
 
 CLightPoint::~CLightPoint()
@@ -130,7 +130,7 @@ void CLightPoint::Update(void)
 
 void CLightPoint::Render()
 {
-    if(m_bIsVisible)
+    /*if(m_bIsVisible)
     {
         glCullFace(GL_BACK);
         m_pShader->Enable();
@@ -142,5 +142,5 @@ void CLightPoint::Render()
         glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IB()->Get_Data());
         m_pMesh->Get_VB()->Disable();
         m_pShader->Disable();
-    }
+    }*/
 }

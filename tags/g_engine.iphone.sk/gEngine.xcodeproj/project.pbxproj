@@ -52,19 +52,12 @@
 		9319B4A614E30981002152EC /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 9319B4A514E30980002152EC /* Default.png */; };
 		9319B4A814E30991002152EC /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9319B4A714E30991002152EC /* Default@2x.png */; };
 		931A76E514DA8914007EDB2F /* CHeightMapSetter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 931A76E414DA8914007EDB2F /* CHeightMapSetter.cpp */; };
-		931BF39814F800F7002D0E0D /* glu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 931BF39614F800F7002D0E0D /* glu.cpp */; };
 		9320598F145E964E00DEBCCB /* CParser_GLSL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9320598E145E964E00DEBCCB /* CParser_GLSL.cpp */; };
 		93205996145EA7D900DEBCCB /* CParser_PVR.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93205995145EA7D800DEBCCB /* CParser_PVR.cpp */; };
 		93243D5A147553B500ED7443 /* CModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93243D59147553B500ED7443 /* CModel.cpp */; };
 		933AFE2A14BC341D0090B5EC /* CCollisionMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933AFE2914BC341D0090B5EC /* CCollisionMgr.cpp */; };
 		933AFE2D14BC3F140090B5EC /* CColliderBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933AFE2C14BC3F140090B5EC /* CColliderBox.cpp */; };
 		933AFE3A14BC5D110090B5EC /* CBatchMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933AFE3914BC5D100090B5EC /* CBatchMgr.cpp */; };
-		935D650D1504AE3C00FBE552 /* ShaderPostBloomCombine.frag in Sources */ = {isa = PBXBuildFile; fileRef = 935D65071504AE3C00FBE552 /* ShaderPostBloomCombine.frag */; };
-		935D650E1504AE3C00FBE552 /* ShaderPostBloomCombine.vert in Sources */ = {isa = PBXBuildFile; fileRef = 935D65081504AE3C00FBE552 /* ShaderPostBloomCombine.vert */; };
-		935D650F1504AE3C00FBE552 /* ShaderPostBloomExtract.frag in Sources */ = {isa = PBXBuildFile; fileRef = 935D65091504AE3C00FBE552 /* ShaderPostBloomExtract.frag */; };
-		935D65101504AE3C00FBE552 /* ShaderPostBloomExtract.vert in Sources */ = {isa = PBXBuildFile; fileRef = 935D650A1504AE3C00FBE552 /* ShaderPostBloomExtract.vert */; };
-		935D65111504AE3C00FBE552 /* ShaderPostBlur.frag in Sources */ = {isa = PBXBuildFile; fileRef = 935D650B1504AE3C00FBE552 /* ShaderPostBlur.frag */; };
-		935D65121504AE3C00FBE552 /* ShaderPostBlur.vert in Sources */ = {isa = PBXBuildFile; fileRef = 935D650C1504AE3C00FBE552 /* ShaderPostBlur.vert */; };
 		936FEC5B14F4EC9500A33A33 /* Recast.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 936FEC5114F4EC9500A33A33 /* Recast.cpp */; };
 		936FEC5C14F4EC9500A33A33 /* RecastAlloc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 936FEC5214F4EC9500A33A33 /* RecastAlloc.cpp */; };
 		936FEC5D14F4EC9500A33A33 /* RecastArea.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 936FEC5314F4EC9500A33A33 /* RecastArea.cpp */; };
@@ -90,6 +83,9 @@
 		937B276814FF677D00B346E0 /* layer_01.pvr in Resources */ = {isa = PBXBuildFile; fileRef = 937B276714FF677D00B346E0 /* layer_01.pvr */; };
 		937B276C14FF738C00B346E0 /* CScreenSpacePostMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 937B276B14FF738C00B346E0 /* CScreenSpacePostMgr.cpp */; };
 		939733A814CF048C005268B7 /* TileSet.pvr in Resources */ = {isa = PBXBuildFile; fileRef = 939733A714CF048C005268B7 /* TileSet.pvr */; };
+		9399F6AF15062DBC0066639A /* layer_01_bump.pvr in Resources */ = {isa = PBXBuildFile; fileRef = 9399F6AC15062DBC0066639A /* layer_01_bump.pvr */; };
+		9399F6B015062DBC0066639A /* layer_01_normal.pvr in Resources */ = {isa = PBXBuildFile; fileRef = 9399F6AD15062DBC0066639A /* layer_01_normal.pvr */; };
+		9399F6B115062DBC0066639A /* layer_01_diffuse.pvr in Resources */ = {isa = PBXBuildFile; fileRef = 9399F6AE15062DBC0066639A /* layer_01_diffuse.pvr */; };
 		93A26DE9148BB1D800D14A0B /* footman.pvr in Resources */ = {isa = PBXBuildFile; fileRef = 93A26DE8148BB1D800D14A0B /* footman.pvr */; };
 		93A26DF0148BD5A100D14A0B /* CBone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93A26DEF148BD5A100D14A0B /* CBone.cpp */; };
 		93A26DF2148BDCB800D14A0B /* CSkeleton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93A26DF1148BDCB800D14A0B /* CSkeleton.cpp */; };
@@ -217,8 +213,6 @@
 		9319B4A714E30991002152EC /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		931A76E214DA8905007EDB2F /* CHeightMapSetter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHeightMapSetter.h; sourceTree = "<group>"; };
 		931A76E414DA8914007EDB2F /* CHeightMapSetter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CHeightMapSetter.cpp; sourceTree = "<group>"; };
-		931BF39614F800F7002D0E0D /* glu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = glu.cpp; sourceTree = "<group>"; };
-		931BF39714F800F7002D0E0D /* glu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glu.h; sourceTree = "<group>"; };
 		9320598D145E964100DEBCCB /* CParser_GLSL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CParser_GLSL.h; sourceTree = "<group>"; };
 		9320598E145E964E00DEBCCB /* CParser_GLSL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CParser_GLSL.cpp; sourceTree = "<group>"; };
 		93205994145EA7CC00DEBCCB /* CParser_PVR.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CParser_PVR.h; sourceTree = "<group>"; };
@@ -290,6 +284,11 @@
 		9385B043147E6EA10041FAE1 /* ShaderPhong.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderPhong.frag; path = Shaders/ShaderPhong.frag; sourceTree = "<group>"; };
 		9385B044147E6EA20041FAE1 /* ShaderPhong.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderPhong.vert; path = Shaders/ShaderPhong.vert; sourceTree = "<group>"; };
 		939733A714CF048C005268B7 /* TileSet.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = TileSet.pvr; path = Resources/Textures/TileSet.pvr; sourceTree = "<group>"; };
+		9399F6A815062A290066639A /* ShaderParallax.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderParallax.frag; path = Shaders/ShaderParallax.frag; sourceTree = "<group>"; };
+		9399F6A915062A290066639A /* ShaderParallax.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderParallax.vert; path = Shaders/ShaderParallax.vert; sourceTree = "<group>"; };
+		9399F6AC15062DBC0066639A /* layer_01_bump.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = layer_01_bump.pvr; path = Resources/Textures/layer_01_bump.pvr; sourceTree = "<group>"; };
+		9399F6AD15062DBC0066639A /* layer_01_normal.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = layer_01_normal.pvr; path = Resources/Textures/layer_01_normal.pvr; sourceTree = "<group>"; };
+		9399F6AE15062DBC0066639A /* layer_01_diffuse.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = layer_01_diffuse.pvr; path = Resources/Textures/layer_01_diffuse.pvr; sourceTree = "<group>"; };
 		93A26DE5148B7D6800D14A0B /* CQuaternion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CQuaternion.h; sourceTree = "<group>"; };
 		93A26DE8148BB1D800D14A0B /* footman.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = footman.pvr; path = Resources/Textures/footman.pvr; sourceTree = "<group>"; };
 		93A26DEA148BB1F600D14A0B /* CParser_MDL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CParser_MDL.h; sourceTree = "<group>"; };
@@ -592,15 +591,6 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
-		931BF39514F800F7002D0E0D /* GLU */ = {
-			isa = PBXGroup;
-			children = (
-				931BF39614F800F7002D0E0D /* glu.cpp */,
-				931BF39714F800F7002D0E0D /* glu.h */,
-			);
-			path = GLU;
-			sourceTree = "<group>";
-		};
 		93205988145E8C6D00DEBCCB /* Loaders */ = {
 			isa = PBXGroup;
 			children = (
@@ -620,7 +610,6 @@
 		933EF3DA14EA4D3D00B7EBCE /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				931BF39514F800F7002D0E0D /* GLU */,
 				936FEC4914F4EC1600A33A33 /* NavigationMesh */,
 				93A8E20C14ED52B70014BE15 /* CPathFinder.h */,
 				93A8E20B14ED52B70014BE15 /* CPathFinder.cpp */,
@@ -710,6 +699,8 @@
 		935D65061504AE0B00FBE552 /* CustomEffect */ = {
 			isa = PBXGroup;
 			children = (
+				9399F6A815062A290066639A /* ShaderParallax.frag */,
+				9399F6A915062A290066639A /* ShaderParallax.vert */,
 			);
 			name = CustomEffect;
 			sourceTree = "<group>";
@@ -911,6 +902,9 @@
 		CE91921914573F630021A0DC /* Textures */ = {
 			isa = PBXGroup;
 			children = (
+				9399F6AC15062DBC0066639A /* layer_01_bump.pvr */,
+				9399F6AD15062DBC0066639A /* layer_01_normal.pvr */,
+				9399F6AE15062DBC0066639A /* layer_01_diffuse.pvr */,
 				937B276714FF677D00B346E0 /* layer_01.pvr */,
 				939733A714CF048C005268B7 /* TileSet.pvr */,
 				93A26DE8148BB1D800D14A0B /* footman.pvr */,
@@ -979,6 +973,9 @@
 				936FEC9214F579CB00A33A33 /* landscape.mdl in Resources */,
 				936FEC9314F579CB00A33A33 /* player.mdl in Resources */,
 				937B276814FF677D00B346E0 /* layer_01.pvr in Resources */,
+				9399F6AF15062DBC0066639A /* layer_01_bump.pvr in Resources */,
+				9399F6B015062DBC0066639A /* layer_01_normal.pvr in Resources */,
+				9399F6B115062DBC0066639A /* layer_01_diffuse.pvr in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1088,14 +1085,7 @@
 				936FEC7A14F4ECDE00A33A33 /* DetourNavMeshQuery.cpp in Sources */,
 				936FEC7B14F4ECDE00A33A33 /* DetourNode.cpp in Sources */,
 				936FEC8314F4F16500A33A33 /* CNavigationMesh.cpp in Sources */,
-				931BF39814F800F7002D0E0D /* glu.cpp in Sources */,
 				937B276C14FF738C00B346E0 /* CScreenSpacePostMgr.cpp in Sources */,
-				935D650D1504AE3C00FBE552 /* ShaderPostBloomCombine.frag in Sources */,
-				935D650E1504AE3C00FBE552 /* ShaderPostBloomCombine.vert in Sources */,
-				935D650F1504AE3C00FBE552 /* ShaderPostBloomExtract.frag in Sources */,
-				935D65101504AE3C00FBE552 /* ShaderPostBloomExtract.vert in Sources */,
-				935D65111504AE3C00FBE552 /* ShaderPostBlur.frag in Sources */,
-				935D65121504AE3C00FBE552 /* ShaderPostBlur.vert in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

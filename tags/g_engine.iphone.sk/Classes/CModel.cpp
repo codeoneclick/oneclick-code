@@ -40,7 +40,7 @@ void CModel::OnTouchEvent(void)
     CRay3d tTouchRay = CSceneMgr::Instance()->Get_CollisionMgr()->Get_TouchRay();
     CVector3d vCollisionPoint;
     
-    if(!CSceneMgr::Instance()->Get_CollisionMgr()->Get_CollisionPoint(m_pBoundingBox->Get_Mesh()->Get_VB(), m_pBoundingBox->Get_Mesh()->Get_IB(), CVertexBuffer::E_VERTEX_BUFFER_MODE_VC, tTouchRay, &vCollisionPoint))
+    if(!CSceneMgr::Instance()->Get_CollisionMgr()->Get_CollisionPoint(m_pBoundingBox->Get_Mesh()->Get_VB(), m_pBoundingBox->Get_Mesh()->Get_IB(), tTouchRay, &vCollisionPoint))
     {
         return;
     }
