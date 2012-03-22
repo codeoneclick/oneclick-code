@@ -8,7 +8,7 @@
 
 #ifndef gEngine_CQuaternion_h
 #define gEngine_CQuaternion_h
-
+/*
 #include "math.h"
 #include "CVector.h"
 
@@ -80,7 +80,7 @@ inline CQuaternion Slerp(const CQuaternion& _qFrom, const CQuaternion& _qTo, flo
     
     return ((_qFrom * fScale_01) + (qTemp * fScale_02));
 }
-
+*/
 
 
 #endif

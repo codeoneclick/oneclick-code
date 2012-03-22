@@ -13,6 +13,6 @@ void main(void)
 {
     highp vec4 vDiffuseColor = texture2D(EXT_TEXTURE_01, OUT_TexCoord);
     vDiffuseColor = vDiffuseColor * max ( dot ( OUT_Normal, OUT_Light ), 0.33 );
-    gl_FragColor = vDiffuseColor;
+    gl_FragColor = vec4(1.0,0.0,0.0,1.0); //vDiffuseColor;
 }
 );

@@ -9,7 +9,10 @@
 #ifndef gEngine_INode_h
 #define gEngine_INode_h
 
-#include "CQuaternion.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp> 
+
+//#include "CQuaternion.h"
 #include "CTexture.h"
 
 #include "CShader.h"
@@ -26,26 +29,34 @@
 
 #include "IDelegate.h"
 
-#define TEXTURES_MAX_COUNT 4
+#define TEXTURES_MAX_COUNT 8
 
 class INode
 {
 protected:
-    CMatrix4x4 m_mScale;
+    glm::mat4x4 m_mScale;
+    glm::mat4x4 m_mRotation;
+    glm::mat4x4 m_mTranslation;
+    glm::mat4x4 m_mWorld;
+    
+    glm::vec3 m_vPosition;
+    glm::vec3 m_vRotation;
+    glm::vec3 m_vScale;
+   
+    /*CMatrix4x4 m_mScale;
     CMatrix4x4 m_mRotation;
     CMatrix4x4 m_mTranslation;
-    CMatrix4x4 m_mWorld;
+    CMatrix4x4 m_mWorld;*/
     
     CShader* m_pShader;
     CTexture** m_pTextures;
     CMesh* m_pMesh;
     
-    CVector3d m_vScale;
+    /*CVector3d m_vScale;
     CVector3d m_vPosition;
-    CVector3d m_vRotation;
+    CVector3d m_vRotation;*/
     
     CBoundingBox* m_pBoundingBox;
-    ICollider* m_pCollider;
     ILight* m_pLight;
     
     bool m_bIsBatching;
@@ -69,16 +80,16 @@ public:
     
     void Set_Shader(IResource::E_SHADER _eShader);
     
-    void Set_Position(CVector3d _vPosition) { m_vPosition = _vPosition; }
-    CVector3d Get_Position(void) { return m_vPosition; }
+    void Set_Position(const glm::vec3& _vPosition) { m_vPosition = _vPosition; }
+    glm::vec3 Get_Position(void) { return m_vPosition; }
     
-    void Set_Rotation(CVector3d _vRotation) { m_vRotation = _vRotation; }
-    CVector3d Get_Rotation(void) { return m_vRotation; }
+    void Set_Rotation(const glm::vec3& _vRotation) { m_vRotation = _vRotation; }
+    glm::vec3 Get_Rotation(void) { return m_vRotation; }
     
-    void Set_Scale(CVector3d _vScale) { m_vScale = _vScale; }
-    CVector3d Get_Scale(void) { return m_vScale; }
+    void Set_Scale(const glm::vec3& _vScale) { m_vScale = _vScale; }
+    glm::vec3 Get_Scale(void) { return m_vScale; }
     
-    CMatrix4x4 Get_WorldMatrix(void) { return m_mWorld; }
+    glm::mat4x4 Get_WorldMatrix(void) { return m_mWorld; }
     
     void Add_Delegate(IDelegate* _pDelegate);
     void Remove_Delegate(IDelegate* _pDelegate);
@@ -87,11 +98,8 @@ public:
     IDelegate* Get_DelegateTarget(void) { return m_pDelegateTarget; }
     
     void Create_BoundingBox(void);
-    void Create_ColliderBox(void);
-    void Create_ColliderQuad(void);
     
     void Remove_BoundingBox(void);
-    void Remove_Collider(void);
     
     void Set_Light(ILight* _pLight)  { m_pLight = _pLight; }
     

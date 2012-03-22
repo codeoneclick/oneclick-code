@@ -3,6 +3,7 @@ const char* ShaderTextureV = STRINGIFY(
                                        attribute vec3 IN_SLOT_Position;
                                        attribute vec2 IN_SLOT_TexCoord;
                                        attribute vec3 IN_SLOT_Normal;
+                                       attribute vec4 IN_SLOT_Color;
                                        
                                        varying vec3   OUT_View;
                                        varying vec3   OUT_Light;

@@ -33,9 +33,9 @@ CNavigationMesh::~CNavigationMesh(void)
     
 }
 
-std::vector<CVector2d> CNavigationMesh::FindPath(CVector3d _vStartPoint, CVector3d _vEndPoint)
+std::vector<glm::vec2> CNavigationMesh::FindPath(glm::vec3 _vStartPoint, glm::vec3 _vEndPoint)
 {
-    std::vector<CVector2d> lPath;
+    std::vector<glm::vec2> lPath;
     lPath.clear();
     dtStatus tStatus;
     float pBound[3] = {2.0f, 4.0f, 2.0f};
@@ -54,21 +54,21 @@ std::vector<CVector2d> CNavigationMesh::FindPath(CVector3d _vStartPoint, CVector
     tFilter.setAreaCost(SAMPLE_POLYAREA_GROUND, 1.0f) ;
     
 
-    tStatus = m_pNavigationMeshQuery->findNearestPoly(&_vStartPoint.v[0], pBound, &tFilter, &pStartPolygon, pStartPolygonNeighbors) ;
+    tStatus = m_pNavigationMeshQuery->findNearestPoly(&_vStartPoint[0], pBound, &tFilter, &pStartPolygon, pStartPolygonNeighbors) ;
     if((tStatus & DT_FAILURE) || (tStatus & DT_STATUS_DETAIL_MASK)) 
     {
         std::cout<<"[CNavigationMeshWrapper::FindPath] couldn't find a start polygon.\n";
         return lPath;
     }
     
-    tStatus = m_pNavigationMeshQuery->findNearestPoly(&_vEndPoint.v[0], pBound, &tFilter, &pEndPolygon, pEndPolygonNeighbors) ;
+    tStatus = m_pNavigationMeshQuery->findNearestPoly(&_vEndPoint[0], pBound, &tFilter, &pEndPolygon, pEndPolygonNeighbors) ;
     if((tStatus & DT_FAILURE) || (tStatus & DT_STATUS_DETAIL_MASK)) 
     {
         std::cout<<"[CNavigationMeshWrapper::FindPath] couldn't find a end polygon.\n";
         return lPath;
     }
     
-    tStatus = m_pNavigationMeshQuery->initSlicedFindPath(pStartPolygon, pEndPolygon, &_vStartPoint.v[0], &_vEndPoint.v[0], &tFilter);
+    tStatus = m_pNavigationMeshQuery->initSlicedFindPath(pStartPolygon, pEndPolygon, &_vStartPoint[0], &_vEndPoint[0], &tFilter);
     if((tStatus & DT_FAILURE) || (tStatus & DT_STATUS_DETAIL_MASK)) 
     {
         std::cout<<"[CNavigationMeshWrapper::FindPath] couldn't init a sliced path.\n";
@@ -87,14 +87,14 @@ std::vector<CVector2d> CNavigationMesh::FindPath(CVector3d _vStartPoint, CVector
         if (iPathPolygonsCount)
         {
             float pEndPosition[3];
-            rcVcopy(pEndPosition, &_vEndPoint.v[0]);
+            rcVcopy(pEndPosition, &_vEndPoint[0]);
 
             if (pPolygonPath[iPathPolygonsCount - 1] != pEndPolygon)
             {
-				m_pNavigationMeshQuery->closestPointOnPoly(pPolygonPath[iPathPolygonsCount - 1], &_vEndPoint.v[0], pEndPosition);
+				m_pNavigationMeshQuery->closestPointOnPoly(pPolygonPath[iPathPolygonsCount - 1], &_vEndPoint[0], pEndPosition);
             }
             
-            tStatus = m_pNavigationMeshQuery->findStraightPath(&_vStartPoint.v[0], &_vEndPoint.v[0], pPolygonPath, iPathPolygonsCount, pStraightPath, NULL, NULL, &iPathVertexesNum, MAX_PATHPOLY);
+            tStatus = m_pNavigationMeshQuery->findStraightPath(&_vStartPoint[0], &_vEndPoint[0], pPolygonPath, iPathPolygonsCount, pStraightPath, NULL, NULL, &iPathVertexesNum, MAX_PATHPOLY);
             if((tStatus & DT_FAILURE) || (tStatus & DT_STATUS_DETAIL_MASK))
             {
                 std::cout<<"[CNavigationMeshWrapper::FindPath] couldn't create a path.\n";
@@ -130,7 +130,7 @@ std::vector<CVector2d> CNavigationMesh::FindPath(CVector3d _vStartPoint, CVector
     int iIndex=0 ;
     for(unsigned int i = 0 ; i < iPathVertexesNum; ++i)
     {
-        CVector2d vPosition;
+        glm::vec2 vPosition;
         vPosition.x = pStraightPath[iIndex++];
         iIndex++;
         vPosition.y = pStraightPath[iIndex++];
@@ -148,7 +148,7 @@ void CNavigationMesh::Create_VisualMesh(void)
     const float fCellHeight = m_pPolygonMesh->ch;
     const float* pBoundingBoxOffset = m_pPolygonMesh->bmin;
     
-    std::vector<CVector3d> lVertexesData;
+    std::vector<glm::vec3> lVertexesData;
     lVertexesData.clear();
     std::vector<unsigned short> lIndexesData;
     lIndexesData.clear();
@@ -179,7 +179,7 @@ void CNavigationMesh::Create_VisualMesh(void)
                         const float fY = pBoundingBoxOffset[1] + (pVertexes[1]+1) * fCellHeight;
                         const float fZ = pBoundingBoxOffset[2] + pVertexes[2] * fCellWidth;
                         
-                        CVector3d vPosition = CVector3d(fX, fY, fZ);
+                        glm::vec3 vPosition = glm::vec3(fX, fY, fZ);
                         lVertexesData.push_back(vPosition);
                     }
                     lIndexesData.push_back(iIndex + 0);
@@ -203,12 +203,12 @@ void CNavigationMesh::Create_VisualMesh(void)
         
         pSource->m_pVB = new CVertexBuffer(pSource->m_iNumVertexes);
        
-        CVector3d* pPositionData = pSource->m_pVB->CreateOrReUse_PositionData();
-        CColor4* pColorData = pSource->m_pVB->CreateOrReUse_ColorData();
+        glm::vec3* pPositionData = pSource->m_pVB->CreateOrReUse_PositionData();
+        glm::u8vec4* pColorData = pSource->m_pVB->CreateOrReUse_ColorData();
         for(unsigned int i = 0; i < pSource->m_iNumVertexes; i++)
         {
             pPositionData[i] = lVertexesData[i];
-            pColorData[i] = CColor4(0, 255, 0, 255);
+            pColorData[i] = glm::u8vec4(0, 255, 0, 255);
         }
         
         lVertexesData.clear();
@@ -230,7 +230,7 @@ void CNavigationMesh::Create_VisualMesh(void)
 void CNavigationMesh::Set_NavigationModel(INode *_pNode)
 {
     size_t iNumVertexes = _pNode->Get_Mesh()->Get_NumVertexes();
-    CVector3d* pPositionData = _pNode->Get_Mesh()->Get_VB()->CreateOrReUse_PositionData();
+    glm::vec3* pPositionData = _pNode->Get_Mesh()->Get_VB()->CreateOrReUse_PositionData();
     float* pNavigationMeshVertexesData = new float[iNumVertexes * 3];
     
     float pBoundingBoxMin[3];

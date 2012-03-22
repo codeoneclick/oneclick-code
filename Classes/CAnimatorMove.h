@@ -12,7 +12,7 @@
 
 class CAnimatorMove : public IAnimator
 {
-protected:
+/*protected:
     CVector3d m_vStartPosition;
     CVector3d m_vEndPosition;
     float m_fStep;
@@ -23,7 +23,7 @@ public:
     virtual void Start(void);
     virtual void Stop(void);
     virtual void Update(void);
-    virtual void Remove(void);
+    virtual void Remove(void);*/
 };
 
 

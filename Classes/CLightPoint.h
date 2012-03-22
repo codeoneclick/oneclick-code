@@ -18,10 +18,10 @@
 class CLightPoint : public ILight
 {
 protected:
-    static const CVector3d k_Size;
-    CVector3d m_vMin;
-    CVector3d m_vMax;
-    CVector2d m_vDistanceToLightAt;
+    static const glm::vec3 k_Size;
+    glm::vec3 m_vMin;
+    glm::vec3 m_vMax;
+    glm::vec2 m_vDistanceToLightAt;
     CShader* m_pShader;
     CMesh* m_pMesh;
     bool m_bIsVisible;

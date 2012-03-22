@@ -41,10 +41,10 @@ CLandscape::~CLandscape()
 {
     
 }
-
+/*
 void CLandscape::LoadWithTileSet(void)
 {
-     /*m_pMesh = new CMesh();
+     m_pMesh = new CMesh();
      CMesh::SSource* pSource = new CMesh::SSource();
      pSource->m_iNumVertexes = m_iHeight * m_iWidth * k_TILE_NUM_VERTEXES;
      pSource->m_iNumIndexes = m_iHeight * m_iWidth * k_TILE_NUM_INDEXES;
@@ -52,8 +52,9 @@ void CLandscape::LoadWithTileSet(void)
      pSource->m_pIB = new CIndexBuffer(pSource->m_iNumIndexes);
      unsigned short* pIBData =  pSource->m_pIB->Get_Data();
      
-     pSource->m_pVB = new CVertexBuffer(pSource->m_iNumVertexes, sizeof(CVertexBuffer::SVertexVTN), CVertexBuffer::E_VERTEX_BUFFER_MODE_VTN);   
-     //CVertexBuffer::SVertexVTN* pVBData = static_cast<CVertexBuffer::SVertexVTN*>(pSource->m_pVB->Get_Data());
+     pSource->m_pVB = new CVertexBuffer(pSource->m_iNumVertexes);
+     glm::vec3* pPositionData = pSource->m_pVB->CreateOrReUse_PositionData();
+     glm::vec2* pTexCoordData = pSource->m_pVB->CreateOrReUse_TexCoordData();
     
      unsigned int iIBIndex = 0;
      unsigned int iVBIndex = 0; 
@@ -80,7 +81,7 @@ void CLandscape::LoadWithTileSet(void)
                 fHeight = m_pHeihtmapData[(i - 1)+ (j - 1) * m_iHeight];
              }
              fNormalHeight += fHeight;
-             pVBData[iVBIndex].m_vPosition = CVector3d(-k_TILE_SIZE / 2.0f + i, fHeight, -k_TILE_SIZE / 2.0f + j);
+             pPositionData[iVBIndex] = glm::vec3(-k_TILE_SIZE / 2.0f + i, fHeight, -k_TILE_SIZE / 2.0f + j);
      
              fHeight = -0.5f;
              if((i - 1) >= 0)
@@ -88,11 +89,11 @@ void CLandscape::LoadWithTileSet(void)
                  fHeight = m_pHeihtmapData[(i - 1) + j * m_iHeight];
              }  
              fNormalHeight += fHeight;
-             pVBData[iVBIndex + 1].m_vPosition = CVector3d(-k_TILE_SIZE / 2.0f + i, fHeight,  k_TILE_SIZE / 2.0f + j);
+             pPositionData[iVBIndex + 1] = glm::vec3(-k_TILE_SIZE / 2.0f + i, fHeight,  k_TILE_SIZE / 2.0f + j);
      
              fHeight = m_pHeihtmapData[i + j * m_iHeight];
              fNormalHeight += fHeight;
-             pVBData[iVBIndex + 2].m_vPosition = CVector3d( k_TILE_SIZE / 2.0f + i, fHeight, k_TILE_SIZE / 2.0f + j);
+             pPositionData[iVBIndex + 2] = glm::vec3( k_TILE_SIZE / 2.0f + i, fHeight, k_TILE_SIZE / 2.0f + j);
      
              fHeight = -0.5f;
              if((j - 1) >= 0)
@@ -100,12 +101,12 @@ void CLandscape::LoadWithTileSet(void)
                  fHeight = m_pHeihtmapData[i + (j - 1) * m_iHeight];
              }
              fNormalHeight += fHeight;
-             pVBData[iVBIndex + 3].m_vPosition = CVector3d( k_TILE_SIZE / 2.0f + i, fHeight, -k_TILE_SIZE / 2.0f + j);
+             pPositionData[iVBIndex + 3] = glm::vec3( k_TILE_SIZE / 2.0f + i, fHeight, -k_TILE_SIZE / 2.0f + j);
      
-             pVBData[iVBIndex    ].m_vTexCoord = pTilesetData[i + j * m_iHeight].m_vTexCoord[2];
-             pVBData[iVBIndex + 1].m_vTexCoord = pTilesetData[i + j * m_iHeight].m_vTexCoord[3];
-             pVBData[iVBIndex + 2].m_vTexCoord = pTilesetData[i + j * m_iHeight].m_vTexCoord[0];
-             pVBData[iVBIndex + 3].m_vTexCoord = pTilesetData[i + j * m_iHeight].m_vTexCoord[1];
+             pTexCoordData[iVBIndex    ] = pTilesetData[i + j * m_iHeight].m_vTexCoord[2];
+             pTexCoordData[iVBIndex + 1] = pTilesetData[i + j * m_iHeight].m_vTexCoord[3];
+             pTexCoordData[iVBIndex + 2] = pTilesetData[i + j * m_iHeight].m_vTexCoord[0];
+             pTexCoordData[iVBIndex + 3] = pTilesetData[i + j * m_iHeight].m_vTexCoord[1];
      
              CLandscape::STile* pTile = new CLandscape::STile();
              fNormalHeight /= 4.0f;
@@ -116,41 +117,41 @@ void CLandscape::LoadWithTileSet(void)
      
              for( unsigned int k = 0; k < k_TILE_NUM_VERTEXES; ++k )
              {
-                 if(pVBData[iVBIndex + k].m_vPosition.x > vMaxBound.x)
+                 if(pPositionData[iVBIndex + k].x > vMaxBound.x)
                  {
-                     vMaxBound.x = pVBData[iVBIndex + k].m_vPosition.x;
+                     vMaxBound.x = pPositionData[iVBIndex + k].x;
                  }
      
-                 if(pVBData[iVBIndex + k].m_vPosition.y > vMaxBound.y)
+                 if(pPositionData[iVBIndex + k].y > vMaxBound.y)
                  {
-                     vMaxBound.y = pVBData[iVBIndex + k].m_vPosition.y;
+                     vMaxBound.y = pPositionData[iVBIndex + k].y;
                  }
      
-                 if(pVBData[iVBIndex + k].m_vPosition.z > vMaxBound.z)
+                 if(pPositionData[iVBIndex + k].z > vMaxBound.z)
                  {
-                     vMaxBound.z = pVBData[iVBIndex + k].m_vPosition.z;
+                     vMaxBound.z = pPositionData[iVBIndex + k].z;
                  }
      
-                 if(pVBData[iVBIndex + k].m_vPosition.x < vMinBound.x)
+                 if(pPositionData[iVBIndex + k].x < vMinBound.x)
                  {
-                     vMinBound.x = pVBData[iVBIndex + k].m_vPosition.x;
+                     vMinBound.x = pPositionData[iVBIndex + k].x;
                  }
      
-                 if(pVBData[iVBIndex + k].m_vPosition.y < vMinBound.y)
+                 if(pPositionData[iVBIndex + k].y < vMinBound.y)
                  {
-                     vMinBound.y = pVBData[iVBIndex + k].m_vPosition.y;
+                     vMinBound.y = pPositionData[iVBIndex + k].y;
                  }
      
-                 if(pVBData[iVBIndex + k].m_vPosition.z < vMinBound.z)
+                 if(pPositionData[iVBIndex + k].z < vMinBound.z)
                  {
-                     vMinBound.z = pVBData[iVBIndex + k].m_vPosition.z;
+                     vMinBound.z = pPositionData[iVBIndex + k].z;
                  }
              }
      
              pTile->m_pBoundingBox = new CBoundingBox(vMaxBound,vMinBound);  
              pTile->m_pBoundingBox->Set_Batching(true);
      
-             pTile->m_pCollider = new CColliderQuad(pVBData[iVBIndex].m_vPosition, pVBData[iVBIndex + 1].m_vPosition, pVBData[iVBIndex + 2].m_vPosition, pVBData[iVBIndex + 3].m_vPosition);
+             pTile->m_pCollider = new CColliderQuad(pPositionData[iVBIndex], pPositionData[iVBIndex + 1], pPositionData[iVBIndex + 2], pPositionData[iVBIndex + 3]);
              pTile->m_pCollider->Set_Batching(true);
      
              CSceneMgr::Instance()->Get_CollisionMgr()->Create_Collider(pTile->m_pCollider); 
@@ -167,14 +168,14 @@ void CLandscape::LoadWithTileSet(void)
          }
      }
      
-     m_pHeightMapSetter->Calculate_Normals(pSource->m_pVB, pSource->m_pIB, CVertexBuffer::E_VERTEX_BUFFER_MODE_VTN);
-     m_pMesh->Set_Source(pSource);*/
-}
+     m_pHeightMapSetter->Calculate_Normals(pSource->m_pVB, pSource->m_pIB);
+     m_pMesh->Set_Source(pSource);
+}*/
 
 void CLandscape::Load(IResource::SResource _tResource)
 {
     m_pHeightMapSetter = new CHeightMapSetter();
-    m_pMesh = m_pHeightMapSetter->Load_SourceData(_tResource.m_sName, m_iWidth, m_iHeight/*, CVertexBuffer::E_VERTEX_BUFFER_MODE_VTN*/);
+    m_pMesh = m_pHeightMapSetter->Load_SourceData(_tResource.m_sName, m_iWidth, m_iHeight);
     
     m_pNavigationMesh = new CNavigationMesh();
     m_pNavigationMesh->Set_NavigationModel(this);
@@ -187,14 +188,15 @@ void CLandscape::Load(IResource::SResource _tResource)
     m_bIsBatching = _tResource.m_bIsBatching;
     
     m_pMesh->Get_VB()->CommitFromRAMToVRAM();
+    m_pMesh->Get_IB()->CommitFromRAMToVRAM();
 }
 
 void CLandscape::OnTouchEvent(void)
 {
-    CRay3d tTouchRay = CSceneMgr::Instance()->Get_CollisionMgr()->Get_TouchRay();
-    CVector3d vCollisionPoint;
+    CCollisionMgr::SRay3d tTouchRay = CSceneMgr::Instance()->Get_CollisionMgr()->Get_TouchRay();
+    glm::vec3 vCollisionPoint;
      
-    if(!CSceneMgr::Instance()->Get_CollisionMgr()->Get_CollisionPoint(m_pMesh->Get_VB(), m_pMesh->Get_IB()/*, CVertexBuffer::E_VERTEX_BUFFER_MODE_VTN*/, tTouchRay, &vCollisionPoint))
+    if(!CSceneMgr::Instance()->Get_CollisionMgr()->Get_CollisionPoint(m_pMesh->Get_VB(), m_pMesh->Get_IB(), tTouchRay, &vCollisionPoint))
     {
         return;
     }
@@ -223,7 +225,7 @@ void CLandscape::Render()
     }
     else
     {
-        glCullFace(GL_FRONT);
+        glCullFace(GL_BACK);
         m_pShader->Enable();
         m_pShader->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD);
         
@@ -254,11 +256,25 @@ void CLandscape::Render()
         {
             m_pShader->SetTexture(m_pTextures[3]->Get_Handle(), CShader::k_TEXTURE_04);
         }
+        if( m_pTextures[4] != NULL )
+        {
+            m_pShader->SetTexture(m_pTextures[4]->Get_Handle(), CShader::k_TEXTURE_05);
+        }
+        if( m_pTextures[5] != NULL )
+        {
+            m_pShader->SetTexture(m_pTextures[5]->Get_Handle(), CShader::k_TEXTURE_06);
+        }
+        
+        m_pShader->SetTexture(m_pHeightMapSetter->Get_SplattingTexture(), CShader::k_TEXTURE_07);
         
         m_pMesh->Get_VB()->Enable();
-        glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IB()->Get_Data());
+        m_pMesh->Get_IB()->Enable();
+        glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IB()->Get_DataFromVRAM());
+        m_pMesh->Get_IB()->Disable();
         m_pMesh->Get_VB()->Disable();
         m_pShader->Disable();
+        
+        glCullFace(GL_FRONT);
     }
     
     /*if(m_pVisualNavigationMeshRef != NULL)

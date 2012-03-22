@@ -12,7 +12,7 @@
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
 #include "PVRTTexture.h"
-#include "CVector.h"
+#include <glm/glm.hpp>
 #include "CTexture.h"
 #include "IParser.h"
 
@@ -21,16 +21,10 @@ class CParser_PVR : public IParser
 protected:
     enum E_TEXTURE_FORMAT 
     {
-        TextureFormatGray,
-        TextureFormatGrayAlpha,
-        TextureFormatRgb,
-        TextureFormatRgba,
         TextureFormatPvrtcRgb2,
         TextureFormatPvrtcRgba2,
         TextureFormatPvrtcRgb4,
         TextureFormatPvrtcRgba4,
-        TextureFormat565,
-        TextureFormat5551,
     };
     
     struct SDescription
@@ -39,7 +33,7 @@ protected:
         GLenum m_glFormat;
         GLenum m_glType;
         int m_uiBPP;
-        CVector2d m_vSize;
+        glm::vec2 m_vSize;
         unsigned int m_uiMIP;
         bool m_bCompressed;
     };

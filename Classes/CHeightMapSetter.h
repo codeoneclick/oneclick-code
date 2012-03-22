@@ -20,6 +20,8 @@ private:
     int** m_pPathFindSource;
     int m_iWidth;
     int m_iHeight;
+    GLuint m_hTextureSplatting;
+    void Create_SplattingTexture(void);
 public:
     CHeightMapSetter(void);
     ~CHeightMapSetter(void);
@@ -31,6 +33,7 @@ public:
     int** Get_PathFindData(void) { return m_pPathFindSource; }
     void Calculate_Normals(CVertexBuffer* _pVB, CIndexBuffer* _pIB);
     float Get_HeightValueAtPoint(float _fX, float _fZ);
+    GLuint Get_SplattingTexture(void) { return m_hTextureSplatting; }
 };
 
 #endif

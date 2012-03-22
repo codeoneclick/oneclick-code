@@ -40,23 +40,12 @@ void CParser_PVR::Load(const std::string& _sName)
     m_pData = new char[iLength];
     pStream.read( m_pData,iLength );
     pStream.close();
-    
 
     m_pDescription = new SDescription();
     m_pHeader = (PVR_Texture_Header*)m_pData;
     
     switch (m_pHeader->dwpfFlags & PVRTEX_PIXELTYPE) 
     {
-        case OGL_RGB_565:
-            m_pDescription->m_eFormat = TextureFormat565;
-            break;
-        case OGL_RGBA_5551:
-            m_pDescription->m_eFormat = TextureFormat5551;
-            break;
-        case OGL_RGBA_4444:
-            m_pDescription->m_eFormat = TextureFormatRgba;
-            m_pDescription->m_uiBPP = 4;
-            break;
         case OGL_PVRTC2:    
             m_pDescription->m_eFormat = m_pHeader->dwAlphaBitMask ? TextureFormatPvrtcRgba2 : TextureFormatPvrtcRgb2;
             break;
@@ -64,7 +53,7 @@ void CParser_PVR::Load(const std::string& _sName)
             m_pDescription->m_eFormat = m_pHeader->dwAlphaBitMask ? TextureFormatPvrtcRgba4 : TextureFormatPvrtcRgb4;
             break;
         default:
-            std::cout<<"[Texture controller] Unsupported format";
+            std::cout<<"[CParser_PVR::Load] Unsupported format for Texture Name : "<<_sName<<"\n";
             m_eStatus = E_ERROR_STATUS;
             return;
             break;
@@ -98,36 +87,14 @@ void CParser_PVR::Load(const std::string& _sName)
             break;
     }
     
-    if(!m_pDescription->m_bCompressed)
-    {
-        switch (m_pDescription->m_eFormat) 
-        {
-            case TextureFormatRgba: 
-                m_pDescription->m_glFormat = GL_RGBA;
-                m_pDescription->m_glType = GL_UNSIGNED_SHORT_4_4_4_4;
-                m_pDescription->m_uiBPP = 16;
-                break;
-            case TextureFormat565:
-                m_pDescription->m_glFormat = GL_RGB;
-                m_pDescription->m_glType = GL_UNSIGNED_SHORT_5_6_5;
-                m_pDescription->m_uiBPP = 16;
-                break;
-            case TextureFormat5551:
-                m_pDescription->m_glFormat = GL_RGBA;
-                m_pDescription->m_glType = GL_UNSIGNED_SHORT_5_5_5_1;
-                m_pDescription->m_uiBPP = 16;
-                break;
-            default:
-                break;
-        }
-    }
+    std::cout<<"[CParser_PVR::Load] Texture Name : "<<_sName<<" Texture Width : "<<m_pDescription->m_vSize.x<<" Texture Height : "<<m_pDescription->m_vSize.y<<" Texture MIPS : "<<m_pDescription->m_uiMIP<<"\n";
     m_eStatus = E_DONE_STATUS;
 }
 
-void CParser_PVR::Commit()
+void CParser_PVR::Commit(void)
 {
-    int uiWidth  = m_pDescription->m_vSize.x;
-    int uiHeight = m_pDescription->m_vSize.y;
+    int iWidth  = m_pDescription->m_vSize.x;
+    int iHeight = m_pDescription->m_vSize.y;
     char* pData = m_pData + m_pHeader->dwHeaderSize;
     
     m_pSource = new CTexture::SSource();
@@ -136,29 +103,29 @@ void CParser_PVR::Commit()
     
     glGenTextures( 1, &m_pSource->m_hTextureHanlde );
     glBindTexture( GL_TEXTURE_2D, m_pSource->m_hTextureHanlde );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     
     if (m_pDescription->m_bCompressed) 
     {
-        for (unsigned int level = 0; level < m_pDescription->m_uiMIP; ++level) 
+        for (int level = 0; iWidth > 0 && iHeight > 0; ++level) 
         {
-            GLsizei size = std::max(32, uiWidth * uiHeight * m_pDescription->m_uiBPP / 8);
-            glCompressedTexImage2D(GL_TEXTURE_2D, level, m_pDescription->m_glFormat, uiWidth, uiHeight, 0, size, pData);
-            pData += size;
-            uiWidth >>= 1; uiHeight >>= 1;
+            GLsizei iSize = std::max(32, iWidth * iHeight * m_pDescription->m_uiBPP / 8);
+            glCompressedTexImage2D(GL_TEXTURE_2D, level, m_pDescription->m_glFormat, iWidth, iHeight, 0, iSize, pData);
+            pData += iSize;
+            iWidth >>= 1; iHeight >>= 1;
         }
     } 
     else
     {       
-        for (int level = 0; level < m_pDescription->m_uiMIP; ++level)
-        {
-            GLsizei size = uiWidth * uiHeight * m_pDescription->m_uiBPP / 8;
-            glTexImage2D(GL_TEXTURE_2D, level, m_pDescription->m_glFormat, uiWidth, uiHeight, 0, m_pDescription->m_glFormat, m_pDescription->m_glType, pData);
-            pData += size;
-            uiWidth >>= 1; uiHeight >>= 1;
-        }
+        glTexImage2D(GL_TEXTURE_2D, 0, m_pDescription->m_glFormat, iWidth, iHeight, 0, m_pDescription->m_glFormat, m_pDescription->m_glType, pData);
+        //glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
+        glHint(GL_GENERATE_MIPMAP_HINT, GL_FASTEST);
+        glGenerateMipmap(GL_TEXTURE_2D);
     }
+
 }
 
 

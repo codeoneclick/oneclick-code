@@ -9,7 +9,8 @@
 #ifndef gEngine_CInput_h
 #define gEngine_CInput_h
 
-#include "CVector.h"
+//#include "CVector.h"
+#include <glm/glm.hpp>
 
 class CInput
 {
@@ -23,14 +24,14 @@ public:
 protected:
     static CInput* m_pInstance;
     E_STATE m_eState;
-    CVector2d m_vStartTouchPoint;
-    CVector2d m_vEndTouchPoint;
+    glm::vec2 m_vStartTouchPoint;
+    glm::vec2 m_vEndTouchPoint;
 public:
     CInput();
     ~CInput();
     static CInput* Instance();
-    void Set_State(E_STATE _eState, CVector2d _vTouchPoint);
-    CVector2d Get_TouchPoint(void) { return m_vStartTouchPoint; }
+    void Set_State(E_STATE _eState, glm::vec2 _vTouchPoint);
+    glm::vec2 Get_TouchPoint(void) { return m_vStartTouchPoint; }
 };
 
 #endif

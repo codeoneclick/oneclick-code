@@ -14,7 +14,7 @@
 class CColliderQuad : public ICollider
 {
 public:
-    CColliderQuad(const CVector3d &_vPoint_01, const CVector3d &_vPoint_02, const CVector3d &_vPoint_03, const CVector3d &_vPoint_04);
+    CColliderQuad(const glm::vec3 &_vPoint_01, const glm::vec3 &_vPoint_02, const glm::vec3 &_vPoint_03, const glm::vec3 &_vPoint_04);
     virtual ~CColliderQuad();
     virtual void Render(void);
 };

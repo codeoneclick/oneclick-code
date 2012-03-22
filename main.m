@@ -1,3 +1,4 @@
+#define GLM_MESSAGES
 int main(int argc, char *argv[])
 {
     NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];

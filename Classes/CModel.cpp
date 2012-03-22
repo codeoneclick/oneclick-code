@@ -37,8 +37,8 @@ void CModel::Load(IResource::SResource _tResource)
 
 void CModel::OnTouchEvent(void)
 {
-    CRay3d tTouchRay = CSceneMgr::Instance()->Get_CollisionMgr()->Get_TouchRay();
-    CVector3d vCollisionPoint;
+    CCollisionMgr::SRay3d tTouchRay = CSceneMgr::Instance()->Get_CollisionMgr()->Get_TouchRay();
+    glm::vec3 vCollisionPoint;
     
     if(!CSceneMgr::Instance()->Get_CollisionMgr()->Get_CollisionPoint(m_pBoundingBox->Get_Mesh()->Get_VB(), m_pBoundingBox->Get_Mesh()->Get_IB(), tTouchRay, &vCollisionPoint))
     {
@@ -68,7 +68,6 @@ void CModel::Render()
     }
     else
     {
-        glCullFace(GL_FRONT);
         m_pShader->Enable();
         m_pShader->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD);
         ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
@@ -101,7 +100,9 @@ void CModel::Render()
         }
             
         m_pMesh->Get_VB()->Enable();
-        glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IB()->Get_Data());
+        m_pMesh->Get_IB()->Enable();
+        glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IB()->Get_DataFromVRAM());
+        m_pMesh->Get_IB()->Disable();
         m_pMesh->Get_VB()->Disable();
         m_pShader->Disable();
     }

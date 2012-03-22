@@ -8,7 +8,7 @@
 
 #ifndef gEngine_CTileSetter_h
 #define gEngine_CTileSetter_h
-#include "CVector.h"
+#include <glm/glm.hpp>
 #include "stdlib.h"
 #include <vector>
 
@@ -32,7 +32,7 @@ public:
     
     struct STileTexCoords
     {
-        CVector2d m_vTexCoord[4];
+        glm::vec2 m_vTexCoord[4];
     };
     
 protected:

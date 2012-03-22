@@ -11,6 +11,7 @@
 
 #include "math.h"
 #include <iostream>
+#include <glm/glm.hpp>
 
 #define MATH_RAD_TO_DEG 0.01745329f
 #define MATH_DEG_TO_RAD 57.3248408f
@@ -18,6 +19,8 @@
 #define MATH_DEGREES 180.0f
 #define MATH_EPS (1e-6f)
 
+#define RGB(r,g,b) (unsigned short)(b + (g << 5) + (r << 11))
+/*
 class CColor4
 {
 public:
@@ -69,6 +72,13 @@ class CVector2d
      inline const float operator[](int i) const { return v[i]; }
      
      inline float Length( void ) const { return sqrtf( x * x + y * y ); }
+    
+     inline void Normalize( void )
+     {
+        float _length = Length();
+        x /= _length;
+        y /= _length;
+     };
 };
 
 class CVector4d
@@ -157,30 +167,31 @@ public:
     {
         struct 
         {
-            unsigned char x, y, z;
+            unsigned char x, y, z, w;
         };
-        unsigned char v[3];
+        unsigned char v[4];
     };
     
-    CByteVector3d(void) : x(0), y(0), z(0) {}
-    CByteVector3d(const CByteVector3d& _vVector ) : x(_vVector.x), y(_vVector.y), z(_vVector.z) {}
-    CByteVector3d(unsigned char _x, unsigned char _y, unsigned char _z) : x(_x), y(_y), z(_z) {}
+    CByteVector3d(void) : x(0), y(0), z(0), w(0) {}
+    CByteVector3d(const CByteVector3d& _vVector ) : x(_vVector.x), y(_vVector.y), z(_vVector.z), w(0) {}
+    CByteVector3d(unsigned char _x, unsigned char _y, unsigned char _z) : x(_x), y(_y), z(_z), w(0) {}
     CByteVector3d(const CVector3d& _vVector) 
     {
         CVector3d vNormalized = _vVector;
         vNormalized.Normalize();
-        std::cout<<"[CByteVector3d] Value before pack : "<<vNormalized.x<<","<<vNormalized.y<<","<<vNormalized.z<<"\n";
+        std::cout<<"[CByteVector3d] Value before pack : "<<vNormalized.x<<","<<vNormalized.y<<","<<vNormalized.z<<"\n";*/
         
-        x = static_cast<unsigned char>((vNormalized.x + 1.0f) * 0.5f * 255.0f);
+        /*x = static_cast<unsigned char>((vNormalized.x + 1.0f) * 0.5f * 255.0f);
         y = static_cast<unsigned char>((vNormalized.y + 1.0f) * 0.5f * 255.0f);
         z = static_cast<unsigned char>((vNormalized.z + 1.0f) * 0.5f * 255.0f);
+        w = 0;
         
         vNormalized.x = static_cast<float>(x / (255.0f * 0.5f) - 1.0f);
         vNormalized.y = static_cast<float>(y / (255.0f * 0.5f) - 1.0f);
-        vNormalized.z = static_cast<float>(z / (255.0f * 0.5f) - 1.0f);
+        vNormalized.z = static_cast<float>(z / (255.0f * 0.5f) - 1.0f);*/
         
-        std::cout<<"[CByteVector3d] Value after unpack : "<<vNormalized.x<<","<<vNormalized.y<<","<<vNormalized.z<<"\n";
-    };
+        /*std::cout<<"[CByteVector3d] Value after unpack : "<<vNormalized.x<<","<<vNormalized.y<<","<<vNormalized.z<<"\n";*/
+/*    };
 };
 
 
@@ -243,7 +254,7 @@ inline float AngleFromVectorToVector(CVector2d _vValue_01, CVector2d _vValue_02)
         fAngleY = fAngleZ / 2.0f;
     if (fAngleX < 0) 
         fAngleY = -fAngleZ / 2.0f - MATH_PI;
-    return  -fAngleY;
+    return atan2(_vValue_02.y - _vValue_01.y, _vValue_02.x - _vValue_01.x) * 180 / MATH_PI; //-fAngleY;
 }
 
 
@@ -267,5 +278,5 @@ public:
     CVector3d m_vOrigin;
     CVector3d m_vEnd;
 };
-
+*/
 #endif

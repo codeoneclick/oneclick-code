@@ -23,7 +23,7 @@ private:
     int m_iMapRows;
     int m_iStartIndex[2]; 
     int m_iEndIndex[2];
-    std::vector<CVector2d> m_lPath;
+    std::vector<glm::vec2> m_lPath;
     bool DoWave();
     bool TracePath();
     void Clear();
@@ -31,8 +31,8 @@ public:
     CPathFinder();
     ~CPathFinder();
     static CPathFinder* Instance();
-    bool FindPath(int** _pMapSource, int _iMapCells, int _iMapRows, CVector2d vStartNode, CVector2d vEndNode);
-    std::vector<CVector2d> Get_Path() { return m_lPath; }
+    bool FindPath(int** _pMapSource, int _iMapCells, int _iMapRows, glm::vec2 vStartNode, glm::vec2 vEndNode);
+    std::vector<glm::vec2> Get_Path() { return m_lPath; }
 };
 
 

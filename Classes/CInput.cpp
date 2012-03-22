@@ -16,8 +16,8 @@ CInput* CInput::m_pInstance = NULL;
 CInput::CInput()
 {
     m_eState = E_STATE_UNTOUCH;
-    m_vStartTouchPoint = CVector2d(0.0f, 0.0f);
-    m_vEndTouchPoint = CVector2d(0.0f, 0.0f);
+    m_vStartTouchPoint = glm::vec2(0.0f, 0.0f);
+    m_vEndTouchPoint = glm::vec2(0.0f, 0.0f);
 }
 
 CInput::~CInput()
@@ -35,7 +35,7 @@ CInput* CInput::Instance()
     return m_pInstance;
 }
 
-void CInput::Set_State(CInput::E_STATE _eState, CVector2d _vTouchPoint)
+void CInput::Set_State(CInput::E_STATE _eState, glm::vec2 _vTouchPoint)
 {
     
     switch (_eState)
@@ -54,12 +54,12 @@ void CInput::Set_State(CInput::E_STATE _eState, CVector2d _vTouchPoint)
         {
             m_vStartTouchPoint = _vTouchPoint;
             m_vEndTouchPoint = _vTouchPoint;
-            m_vStartTouchPoint.y = CWindow::Get_Height() - m_vStartTouchPoint.y;
+            m_vStartTouchPoint.y = CWindow::Get_ScreenWidth() - m_vStartTouchPoint.y;
         }
             break;
         case E_STATE_MOVE:
         {
-            CVector2d vDeltaMove = m_vEndTouchPoint - _vTouchPoint;
+            glm::vec2 vDeltaMove = m_vEndTouchPoint - _vTouchPoint;
             m_vEndTouchPoint = _vTouchPoint;
             CSceneMgr::Instance()->Get_Camera()->OnScreenMove(vDeltaMove);
         }

@@ -19,7 +19,7 @@ class IGameUnit : public IDelegate
 protected:
     CModel* m_pModel;
     bool m_bIsMove;
-    std::vector<CVector2d> m_lPath;
+    std::vector<glm::vec2> m_lPath;
     IAnimator* m_pMoveAnimator;
 public:
     IGameUnit(void);

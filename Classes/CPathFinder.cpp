@@ -44,7 +44,7 @@ void CPathFinder::Clear()
     delete m_pMapWave;
 }
 
-bool CPathFinder::FindPath(int** _pMapSource, int _iMapCells, int _iMapRows, CVector2d vStartNode, CVector2d vEndNode)
+bool CPathFinder::FindPath(int** _pMapSource, int _iMapCells, int _iMapRows, glm::vec2 vStartNode, glm::vec2 vEndNode)
 {
     m_lPath.clear();
     
@@ -164,7 +164,7 @@ bool CPathFinder::TracePath()
     
     int iMinValue = m_pMapWave[m_iEndIndex[0]][m_iEndIndex[1]];
     
-    m_lPath.push_back(CVector2d(pCurrentNode[0], pCurrentNode[1]));
+    m_lPath.push_back(glm::vec2(pCurrentNode[0], pCurrentNode[1]));
     
     int index = 0;
     while ( index < m_iMapCells * m_iMapRows ) 
@@ -205,7 +205,7 @@ bool CPathFinder::TracePath()
             return true;
         }
         
-        m_lPath.push_back(CVector2d(pCurrentNode[0], pCurrentNode[1]));
+        m_lPath.push_back(glm::vec2(pCurrentNode[0], pCurrentNode[1]));
         
         index++;
     }

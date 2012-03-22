@@ -16,35 +16,35 @@ CScreenSpacePostMgr::CScreenSpacePostMgr(void)
 {
     glGenTextures(1, &m_hTexturePostSimple);
     glBindTexture(GL_TEXTURE_2D, m_hTexturePostSimple);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, CWindow::Get_Width(), CWindow::Get_Height(), 0, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, 0);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, CWindow::Get_OffScreenWidth(), CWindow::Get_OffScreenHeight(), 0, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, 0);
     
     glGenTextures(1, &m_hTexturePostBloomExtract);
     glBindTexture(GL_TEXTURE_2D, m_hTexturePostBloomExtract);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, CWindow::Get_Width(), CWindow::Get_Height(), 0, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, 0);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, CWindow::Get_OffScreenWidth(), CWindow::Get_OffScreenHeight(), 0, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, 0);
     
     glGenTextures(1, &m_hTexturePostBloomCombine);
     glBindTexture(GL_TEXTURE_2D, m_hTexturePostBloomCombine);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, CWindow::Get_Width(), CWindow::Get_Height(), 0, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, 0);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, CWindow::Get_OffScreenWidth(), CWindow::Get_OffScreenHeight(), 0, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, 0);
     
     glGenTextures(1, &m_hTexturePostBlur);
     glBindTexture(GL_TEXTURE_2D, m_hTexturePostBlur);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, CWindow::Get_Width(), CWindow::Get_Height(), 0, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, 0);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, CWindow::Get_OffScreenWidth(), CWindow::Get_OffScreenHeight(), 0, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, 0);
     
     glGenFramebuffers(1, &m_hOffScreenFrameBuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, m_hOffScreenFrameBuffer);
@@ -52,7 +52,7 @@ CScreenSpacePostMgr::CScreenSpacePostMgr(void)
     glGenRenderbuffers(1, &m_hDepthBuffer);
     glBindRenderbuffer(GL_RENDERBUFFER, m_hDepthBuffer);
     
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, CWindow::Get_Width(), CWindow::Get_Height());
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, CWindow::Get_OffScreenWidth(), CWindow::Get_OffScreenHeight());
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_hDepthBuffer);
     
     GLuint uStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
@@ -63,7 +63,6 @@ CScreenSpacePostMgr::CScreenSpacePostMgr(void)
     
     glGenRenderbuffers(1, &m_hRenderBuffer);
     glBindRenderbuffer(GL_RENDERBUFFER, m_hRenderBuffer);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_RGB, CWindow::Get_Width(), CWindow::Get_Height());
     
     glGenFramebuffers(1, &m_hScreenFrameBuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, m_hScreenFrameBuffer);
@@ -76,11 +75,11 @@ CScreenSpacePostMgr::CScreenSpacePostMgr(void)
     }
     
     glEnable(GL_DEPTH_TEST);
-    //glEnable(GL_CULL_FACE);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT);
+    
+    //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     //glEnable(GL_BLEND);
-    glViewport(0, 0, CWindow::Get_Width(), CWindow::Get_Height());
-    CWindow::Set_Viewport(0, 0, CWindow::Get_Width(), CWindow::Get_Height());
     
     CMesh::SSource* pSource = new CMesh::SSource();
     pSource->m_iNumVertexes = 4;
@@ -88,21 +87,21 @@ CScreenSpacePostMgr::CScreenSpacePostMgr(void)
     
     pSource->m_pVB = new CVertexBuffer(pSource->m_iNumVertexes);
     
-    CVector3d* pPositionData = pSource->m_pVB->CreateOrReUse_PositionData();
-    CVector2d* pTexCoordData = pSource->m_pVB->CreateOrReUse_TexCoordData();
+    glm::vec3* pPositionData = pSource->m_pVB->CreateOrReUse_PositionData();
+    glm::vec2* pTexCoordData = pSource->m_pVB->CreateOrReUse_TexCoordData();
     
     unsigned i = 0;
-    pPositionData[i] = CVector3d(-1.0f,-1.0f,0.0f);
-    pTexCoordData[i] = CVector2d(0.0f,0.0f);
+    pPositionData[i] = glm::vec3(-1.0f,-1.0f,0.0f);
+    pTexCoordData[i] = glm::vec2(0.0f,0.0f);
     i++;
-    pPositionData[i] = CVector3d(-1.0f,1.0f,0.0f);
-    pTexCoordData[i] = CVector2d(0.0f,1.0f);
+    pPositionData[i] = glm::vec3(-1.0f,1.0f,0.0f);
+    pTexCoordData[i] = glm::vec2(0.0f,1.0f);
     i++;
-    pPositionData[i] = CVector3d(1.0f,-1.0f,0.0f);
-    pTexCoordData[i] = CVector2d(1.0f,0.0f);
+    pPositionData[i] = glm::vec3(1.0f,-1.0f,0.0f);
+    pTexCoordData[i] = glm::vec2(1.0f,0.0f);
     i++;
-    pPositionData[i] = CVector3d(1.0f,1.0f,0.0f);
-    pTexCoordData[i] = CVector2d(1.0f,1.0f);
+    pPositionData[i] = glm::vec3(1.0f,1.0f,0.0f);
+    pTexCoordData[i] = glm::vec2(1.0f,1.0f);
     i++;
 
     pSource->m_pIB = new CIndexBuffer(pSource->m_iNumIndexes);
@@ -110,19 +109,20 @@ CScreenSpacePostMgr::CScreenSpacePostMgr(void)
     
     i = 0;
     unsigned short iValue = 0;
-    pIBData[i++] = iValue; iValue++;
-    pIBData[i++] = iValue; iValue++;
-    pIBData[i++] = iValue; iValue--;
+    pIBData[i++] = 0; iValue++;
+    pIBData[i++] = 1; iValue++;
+    pIBData[i++] = 2; iValue--;
     
-    pIBData[i++] = iValue; iValue++;
-    pIBData[i++] = iValue; iValue++;
-    pIBData[i++] = iValue; iValue++;
+    pIBData[i++] = 3; iValue++;
+    pIBData[i++] = 2; iValue++;
+    pIBData[i++] = 1; iValue++;
     
     m_pMesh = new CMesh();
     m_pMesh->Set_Source(pSource);
     
     m_pMesh->Get_VB()->CommitToRAM();
     m_pMesh->Get_VB()->CommitFromRAMToVRAM();
+    m_pMesh->Get_IB()->CommitFromRAMToVRAM();
     
     m_pShaderPostSimple = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_TEXTURE);
     m_pShaderPostBloomExtract = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_BLOOM_EXTRACT);
@@ -138,13 +138,20 @@ CScreenSpacePostMgr::~CScreenSpacePostMgr(void)
 void CScreenSpacePostMgr::BindRenderBufferAsBuffer(void)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, m_hScreenFrameBuffer);
-    glViewport(0, 0, CWindow::Get_Width(), CWindow::Get_Height());
+    glViewport(0, 0, CWindow::Get_ScreenWidth(), CWindow::Get_ScreenHeight());
+}
+
+void CScreenSpacePostMgr::DiscardRenderBufferAsTexture(void)
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, m_hOffScreenFrameBuffer);
+    const GLenum tDiscards[]  = { GL_COLOR_ATTACHMENT0, GL_DEPTH_ATTACHMENT };
+    glDiscardFramebufferEXT(GL_FRAMEBUFFER,2,tDiscards);
 }
 
 void CScreenSpacePostMgr::BindRenderBufferAsTexture(CScreenSpacePostMgr::E_POST_TEXTURE _ePostTexture)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, m_hOffScreenFrameBuffer);
-    glViewport(0, 0, CWindow::Get_Width(), CWindow::Get_Height());
+    glViewport(0, 0, CWindow::Get_OffScreenWidth(), CWindow::Get_OffScreenHeight());
     
     switch (_ePostTexture)
     {
@@ -174,7 +181,9 @@ void CScreenSpacePostMgr::Render_PostSimple(void)
     m_pShaderPostSimple->Enable();
     m_pShaderPostSimple->SetTexture(m_hTexturePostBloomCombine, CShader::k_TEXTURE_01);
     m_pMesh->Get_VB()->Enable();
-    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IB()->Get_Data());
+    m_pMesh->Get_IB()->Enable();
+    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IB()->Get_DataFromVRAM());
+    m_pMesh->Get_IB()->Disable();
     m_pMesh->Get_VB()->Disable();
     m_pShaderPostSimple->Disable();
 }
@@ -185,10 +194,13 @@ void CScreenSpacePostMgr::Render_PostBloomExtract(void)
     {
         m_pMesh->Get_VB()->Set_ShaderRef(m_pShaderPostBloomExtract->Get_ProgramHandle());
     }
+
     m_pShaderPostBloomExtract->Enable();
     m_pShaderPostBloomExtract->SetTexture(m_hTexturePostSimple, CShader::k_TEXTURE_01);
     m_pMesh->Get_VB()->Enable();
-    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IB()->Get_Data());
+    m_pMesh->Get_IB()->Enable();
+    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IB()->Get_DataFromVRAM());
+    m_pMesh->Get_IB()->Disable();
     m_pMesh->Get_VB()->Disable();
     m_pShaderPostBloomExtract->Disable();
 }
@@ -203,7 +215,9 @@ void CScreenSpacePostMgr::Render_PostBloomCombine(void)
     m_pShaderPostBloomCombine->SetTexture(m_hTexturePostBlur, CShader::k_TEXTURE_01);
     m_pShaderPostBloomCombine->SetTexture(m_hTexturePostSimple, CShader::k_TEXTURE_02);
     m_pMesh->Get_VB()->Enable();
-    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IB()->Get_Data());
+    m_pMesh->Get_IB()->Enable();
+    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IB()->Get_DataFromVRAM());
+    m_pMesh->Get_IB()->Disable();
     m_pMesh->Get_VB()->Disable();
     m_pShaderPostBloomCombine->Disable();
 }
@@ -217,7 +231,9 @@ void CScreenSpacePostMgr::Render_PostBlur(void)
     m_pShaderPostBlur->Enable();
     m_pShaderPostBlur->SetTexture(m_hTexturePostBloomExtract, CShader::k_TEXTURE_01);
     m_pMesh->Get_VB()->Enable();
-    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IB()->Get_Data());
+    m_pMesh->Get_IB()->Enable();
+    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IB()->Get_DataFromVRAM());
+    m_pMesh->Get_IB()->Disable();
     m_pMesh->Get_VB()->Disable();
     m_pShaderPostBlur->Disable();
 }

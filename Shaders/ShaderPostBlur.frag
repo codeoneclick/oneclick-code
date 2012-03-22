@@ -11,7 +11,7 @@ const char* ShaderPostBlurF = STRINGIFY(
                                        
 void main(void)
 {
-    mediump float fBlurDistance = 0.005;
+    mediump float fBlurDistance = 0.002;
     mediump vec4 vColor;
 	vColor  = texture2D(EXT_TEXTURE_01, vec2(OUT_TexCoord.x + fBlurDistance, OUT_TexCoord.y + fBlurDistance));
 	vColor += texture2D(EXT_TEXTURE_01, vec2(OUT_TexCoord.x - fBlurDistance, OUT_TexCoord.y - fBlurDistance));

@@ -75,7 +75,7 @@ private:
     
     static CPathFinderAstar* m_pInstance;
     
-    std::vector<CVector2d> m_lPath;
+    std::vector<glm::vec2> m_lPath;
     
     void Clear(void);
     //static int m_pDirection_4_X[k_DIRECTION_4];
@@ -84,8 +84,8 @@ public:
     CPathFinderAstar(void);
     ~CPathFinderAstar(void);
     static CPathFinderAstar* Instance(void);
-    std::string FindPath(int** _pMapSource, int _iWidth, int _iHeight, CVector2d vStartNode, CVector2d vEndNode);
-    std::vector<CVector2d> Get_Path() { return m_lPath; }
+    std::string FindPath(int** _pMapSource, int _iWidth, int _iHeight, glm::vec2 vStartNode, glm::vec2 vEndNode);
+    std::vector<glm::vec2> Get_Path() { return m_lPath; }
 };
 
 

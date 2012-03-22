@@ -14,7 +14,7 @@
 class CColliderBox : public ICollider
 {
 public:
-    CColliderBox(const CVector3d &_vMax, const CVector3d &_vMin);
+    CColliderBox(const glm::vec3 &_vMax, const glm::vec3 &_vMin);
     virtual ~CColliderBox();
     virtual void Render(void);
 };

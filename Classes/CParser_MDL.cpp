@@ -50,15 +50,15 @@ void CParser_MDL::Load(const std::string& _sName)
     m_pSource->m_pIB  = new CIndexBuffer(m_pSource->m_iNumIndexes);
 	m_pSource->m_pData = new CMesh::SVertex[m_pSource->m_iNumVertexes];
     
-    m_pSource->m_vMaxBound = CVector3d( -4096.0f, -4096.0f, -4096.0f );
-    m_pSource->m_vMinBound = CVector3d(  4096.0f,  4096.0f,  4096.0f );
+    m_pSource->m_vMaxBound = glm::vec3( -4096.0f, -4096.0f, -4096.0f );
+    m_pSource->m_vMinBound = glm::vec3(  4096.0f,  4096.0f,  4096.0f );
     
     for( unsigned int i = 0; i < m_pSource->m_iNumVertexes; ++i)
     {
-        fread(&m_pSource->m_pData[i].m_vPosition,sizeof(struct CVector3d), 1, pFile);
-        fread(&m_pSource->m_pData[i].m_vNormal, sizeof(struct CVector3d), 1, pFile);
-        fread(&m_pSource->m_pData[i].m_vTangent, sizeof(struct CVector3d), 1, pFile);
-        fread(&m_pSource->m_pData[i].m_vTexCoord, sizeof(struct CVector2d), 1, pFile);
+        fread(&m_pSource->m_pData[i].m_vPosition,sizeof(glm::vec3), 1, pFile);
+        fread(&m_pSource->m_pData[i].m_vNormal, sizeof(glm::vec3), 1, pFile);
+        fread(&m_pSource->m_pData[i].m_vTangent, sizeof(glm::vec3), 1, pFile);
+        fread(&m_pSource->m_pData[i].m_vTexCoord, sizeof(glm::vec2), 1, pFile);
         
         
         //std::cout<<"Position : "<<m_pSource->m_pData[i].m_vPosition.x<<","<<m_pSource->m_pData[i].m_vPosition.y<<","<<m_pSource->m_pData[i].m_vPosition.z<<"\n";
@@ -117,22 +117,22 @@ void CParser_MDL::Commit()
 {
     m_pSource->m_pVB = new CVertexBuffer(m_pSource->m_iNumVertexes);
 
-    CVector3d* pPositionData = m_pSource->m_pVB->CreateOrReUse_PositionData();
-    CVector2d* pTexCoordData = m_pSource->m_pVB->CreateOrReUse_TexCoordData();
-    CByteVector3d* pNormalData = m_pSource->m_pVB->CreateOrReUse_NormalData();
-    CByteVector3d* pTangentData = m_pSource->m_pVB->CreateOrReUse_TangentData();
+    glm::vec3* pPositionData = m_pSource->m_pVB->CreateOrReUse_PositionData();
+    glm::vec2* pTexCoordData = m_pSource->m_pVB->CreateOrReUse_TexCoordData();
+    glm::u8vec4* pNormalData = m_pSource->m_pVB->CreateOrReUse_NormalData();
+    glm::u8vec4* pTangentData = m_pSource->m_pVB->CreateOrReUse_TangentData();
     
     for(unsigned int index = 0; index < m_pSource->m_iNumVertexes; index++)
     {
         pPositionData[index] = m_pSource->m_pData[index].m_vPosition;
         pTexCoordData[index] = m_pSource->m_pData[index].m_vTexCoord;
-        CByteVector3d vNormal = CByteVector3d(m_pSource->m_pData[index].m_vNormal);
-        pNormalData[index] = vNormal;
-        CByteVector3d vTangent = CByteVector3d(m_pSource->m_pData[index].m_vTangent);
-        pTangentData[index] = vTangent;
+        pNormalData[index] = CVertexBuffer::CompressVector(m_pSource->m_pData[index].m_vNormal);
+        pTangentData[index] = CVertexBuffer::CompressVector(m_pSource->m_pData[index].m_vTangent);
     }
     
     m_pSource->m_pVB->CommitToRAM();
+    m_pSource->m_pVB->CommitFromRAMToVRAM();
+    m_pSource->m_pIB->CommitFromRAMToVRAM();
 }
 
 

@@ -9,7 +9,9 @@
 #include <iostream>
 #include "CWindow.h"
 
-int CWindow::m_iWidth  = 320;
-int CWindow::m_iHeight = 480;
+int CWindow::m_iScreenWidth  = 480;
+int CWindow::m_iScreenHeight = 320;
 
-CWindow::SViewport  CWindow::m_tViewport;
+int CWindow::m_iOffScreenWidth = 480;
+int CWindow::m_iOffScreenHeight = 320;
+
