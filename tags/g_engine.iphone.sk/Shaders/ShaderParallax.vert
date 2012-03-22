@@ -2,8 +2,8 @@ const char* ShaderParallaxV = STRINGIFY(
                                                     
                                                     attribute vec3 IN_SLOT_Position;
                                                     attribute vec2 IN_SLOT_TexCoord;
-                                                    attribute vec3 IN_SLOT_Normal;
-                                                    attribute vec3 IN_SLOT_Tangent;
+                                                    attribute vec4 IN_SLOT_Normal;
+                                                    attribute vec4 IN_SLOT_Tangent;
                                                     
                                                     varying vec3   OUT_View;
                                                     varying vec3   OUT_Light;
@@ -23,8 +23,8 @@ void main(void)
     vec4 vWorldPosition = EXT_MATRIX_World * vec4(IN_SLOT_Position, 1.0);
     gl_Position = EXT_MATRIX_Projection * EXT_MATRIX_View * vWorldPosition;
     
-    vec3 vNormal = IN_SLOT_Normal / 127.0 - 1.0;
-    vec3 vTangent = IN_SLOT_Tangent / 127.0 - 1.0;
+    vec3 vNormal = IN_SLOT_Normal.xyz / 127.0 - 1.0;
+    vec3 vTangent = IN_SLOT_Tangent.xyz / 127.0 - 1.0;
     vec3 vBinormal = cross(vNormal, vTangent);
     
     vNormal = mat3(EXT_MATRIX_World) * vNormal;
@@ -35,9 +35,8 @@ void main(void)
                               vTangent.y, vBinormal.y, vNormal.y,
                               vTangent.z, vBinormal.z, vNormal.z);
 
-    
-    vec3 vLightDirection = normalize(EXT_Light - vec3(vWorldPosition));
-    vec3 vViewDirection = normalize(EXT_View - vec3(vWorldPosition));
+    vec3 vLightDirection = EXT_Light - vec3(vWorldPosition);
+    vec3 vViewDirection = EXT_View - vec3(vWorldPosition);
     
     OUT_View = mTangentSpace * vViewDirection;
     OUT_Light = mTangentSpace * vLightDirection;

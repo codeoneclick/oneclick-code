@@ -13,7 +13,7 @@
 #include <OpenGLES/ES2/glext.h>
 #include "stdlib.h"
 #include <string>
-#include "CMatrix.h"
+#include <glm/glm.hpp>
 #include <map>
 
 class CShader
@@ -30,9 +30,9 @@ public:
     
     inline GLuint Get_ProgramHandle() { return m_hProgramHandle; }
     
-    void SetMatrix(const CMatrix4x4& _mValue, const std::string &_sName);
+    void SetMatrix(const glm::mat4x4& _mValue, const std::string &_sName);
     void SetTexture(GLuint _hTextureHandle,  const std::string &_sName);
-    void SetVector(const CVector3d& _vValue,  const std::string &_sName);
+    void SetVector(const glm::vec3& _vValue,  const std::string &_sName);
 public:
     static const std::string k_MATRIX_WORLD;
     static const std::string k_MATRIX_VIEW;
@@ -45,6 +45,10 @@ public:
     static const std::string k_TEXTURE_02;
     static const std::string k_TEXTURE_03;
     static const std::string k_TEXTURE_04;
+    static const std::string k_TEXTURE_05;
+    static const std::string k_TEXTURE_06;
+    static const std::string k_TEXTURE_07;
+    static const std::string k_TEXTURE_08;
 };
 
 

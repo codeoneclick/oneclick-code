@@ -19,10 +19,10 @@ public:
     struct SSource
     {
         CMesh* m_pMesh;
-        CMatrix4x4 m_mWorld;
+        glm::mat4x4 m_mWorld;
         
         SSource();
-        SSource(CMesh* _pMesh, CMatrix4x4 _mWorld)
+        SSource(CMesh* _pMesh, const glm::mat4x4& _mWorld)
         {
             m_pMesh = _pMesh;
             m_mWorld = _mWorld;

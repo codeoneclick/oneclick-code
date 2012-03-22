@@ -15,7 +15,7 @@
 CTextureMgr::CTextureMgr()
 {
     CParser_PVR* pParser = new CParser_PVR();
-    pParser->Load("TileSet.pvr");
+    pParser->Load("layer_02_diffuse.pvr");
     pParser->Commit();
     m_pStub = static_cast<CTexture::SSource*>(pParser->Get_Source());
 }

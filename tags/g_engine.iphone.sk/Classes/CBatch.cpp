@@ -60,19 +60,19 @@ void CBatch::MakeBatch()
     {
         CMesh* pMesh = (*itBegin).m_pMesh;
         int iNumVertexes = pMesh->Get_NumVertexes();
-        CMatrix4x4 mWorld = (*itBegin).m_mWorld;
+        glm::mat4x4 mWorld = (*itBegin).m_mWorld;
         
-        CVector3d* pNodePositionData = NULL;
-        CVector2d* pNodeTexCoordData = NULL;
-        CByteVector3d* pNodeNormalData = NULL;
-        CByteVector3d* pNodeTangentData = NULL;
-        CColor4* pNodeColorData = NULL;
+        glm::vec3*   pNodePositionData = NULL;
+        glm::vec2*   pNodeTexCoordData = NULL;
+        glm::u8vec4* pNodeNormalData   = NULL;
+        glm::u8vec4* pNodeTangentData  = NULL;
+        glm::u8vec4* pNodeColorData    = NULL;
         
-        CVector3d* pBatchPositionData = NULL;
-        CVector2d* pBatchTexCoordData = NULL;
-        CByteVector3d* pBatchNormalData = NULL;
-        CByteVector3d* pBatchTangentData = NULL;
-        CColor4* pBatchColorData = NULL;
+        glm::vec3*   pBatchPositionData = NULL;
+        glm::vec2*   pBatchTexCoordData = NULL;
+        glm::u8vec4* pBatchNormalData   = NULL;
+        glm::u8vec4* pBatchTangentData  = NULL;
+        glm::u8vec4* pBatchColorData    = NULL;
 
         
         if(pMesh->Get_VB()->Get_PositionData())
@@ -84,7 +84,7 @@ void CBatch::MakeBatch()
         if(pMesh->Get_VB()->Get_TexCoordData())
         {
             pNodeTexCoordData = pMesh->Get_VB()->Get_TexCoordData();
-            pNodeTexCoordData = m_pSource->m_pVB->CreateOrReUse_TexCoordData();
+            pBatchTexCoordData = m_pSource->m_pVB->CreateOrReUse_TexCoordData();
         }
         
         if(pMesh->Get_VB()->Get_NormalData())
@@ -107,11 +107,32 @@ void CBatch::MakeBatch()
         
         for(int i = 0; i < iNumVertexes; ++i)
         {
-            //pRefBatchData->m_vPosition = mWorld * pRefNodeData[i].m_vPosition;
-            //pRefBatchData->m_vTexCoord = pRefNodeData[i].m_vTexCoord;
-            //pRefBatchData->m_vNormal = pRefNodeData[i].m_vNormal;
-            //++pRefBatchData;
-            //pBatchData = pRefBatchData;
+            if(pBatchPositionData != NULL)
+            {
+                glm::vec4 vPosition4 = mWorld * glm::vec4(pNodePositionData[i], 1.0f);
+                *pBatchPositionData = glm::vec3(vPosition4.x,vPosition4.y,vPosition4.z);
+                pBatchPositionData++;
+            }
+            if(pBatchTexCoordData != NULL)
+            {
+                *pBatchTexCoordData = pNodeTexCoordData[i];
+                pBatchTexCoordData++;
+            }
+            if(pBatchNormalData != NULL)
+            {
+                *pBatchNormalData = pNodeNormalData[i];
+                pBatchNormalData++;
+            }
+            if(pBatchTangentData != NULL)
+            {
+                *pBatchTangentData = pNodeTangentData[i];
+                pBatchTangentData++;
+            }
+            if(pBatchColorData != NULL)
+            {
+                *pBatchColorData = pNodeColorData[i];
+                pBatchColorData++;
+            }
         }
         int iNumIndexes = pMesh->Get_NumIndexes();
         unsigned short *pNodeIBData = pMesh->Get_IB()->Get_Data();
@@ -124,6 +145,7 @@ void CBatch::MakeBatch()
         ++itBegin;
     }
     
+    m_pSource->m_pVB->CommitToRAM();
     m_pMesh->Set_Source(m_pSource);
 }
 
@@ -143,9 +165,8 @@ void CBatch::Render()
     
     MakeBatch();
     
-    glCullFace(GL_FRONT);
     m_pShader->Enable();
-    m_pShader->SetMatrix(CMatrix4x4(CMatrix4x4::E_MATRIX_ONE), CShader::k_MATRIX_WORLD);
+    m_pShader->SetMatrix(glm::mat4x4(1.0f), CShader::k_MATRIX_WORLD);
     ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
     m_pShader->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
     m_pShader->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);

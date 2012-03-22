@@ -11,33 +11,21 @@
 
 class CWindow
 {
-public:
-    struct SViewport
-    {
-        union 
-        {
-            struct 
-            {
-                int m_iX;
-                int m_iY;
-                int m_iWidth;
-                int m_iHeight;
-            };
-            int v[4];
-        }; 
-    };
 private:
-    static int m_iWidth;
-    static int m_iHeight;
-    static SViewport m_tViewport;
+    static int m_iScreenWidth;
+    static int m_iScreenHeight;
+    static int m_iOffScreenWidth;
+    static int m_iOffScreenHeight;
 public:
-    static int Get_Width()  { return m_iWidth;  }
-    static int Get_Height() { return m_iHeight; }
-    static void Set_Width(int _iWidth)   { m_iWidth  = _iWidth;  }
-    static void Set_Height(int _iHeight) { m_iHeight = _iHeight; } 
-    static void Set_Viewport(int _iX, int _iY, int _iWidth, int _iHeight) { m_tViewport.m_iX = _iX; m_tViewport.m_iY = _iY;
-        m_tViewport.m_iWidth = _iWidth; m_tViewport.m_iHeight = _iHeight; }
-    static SViewport Get_Viewport(void) { return m_tViewport; }
+    static int Get_ScreenWidth()  { return m_iScreenWidth;  }
+    static int Get_ScreenHeight() { return m_iScreenHeight; }
+    static void Set_ScreenWidth(int _iWidth)   { m_iScreenWidth  = _iWidth;  }
+    static void Set_ScreenHeight(int _iHeight) { m_iScreenHeight = _iHeight; } 
+    
+    static int Get_OffScreenWidth()  { return m_iOffScreenWidth;  }
+    static int Get_OffScreenHeight() { return m_iOffScreenHeight; }
+    static void Set_OffScreenWidth(int _iWidth)   { m_iOffScreenWidth  = _iWidth;  }
+    static void Set_OffScreenHeight(int _iHeight) { m_iOffScreenHeight = _iHeight; } 
 };
 
 #endif

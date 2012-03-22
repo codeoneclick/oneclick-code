@@ -50,10 +50,10 @@ void CTileSetter::CreateTileTable()
 			fTexCoordOffsetL = 1.0f / k_TILES_TYPE_COUNT * j + k_TILE_TEXTURE_OFFSET;
 			fTexCoordOffsetR = 1.0f / k_TILES_TYPE_COUNT * ( j + 1 ) - k_TILE_TEXTURE_OFFSET;
 
-			m_pTilesTable[iTilesetTypeIndex][j].m_vTexCoord[0] =  CVector2d(fTexCoordOffsetR,fTexCoordOffsetD);
-			m_pTilesTable[iTilesetTypeIndex][j].m_vTexCoord[1] =  CVector2d(fTexCoordOffsetR,fTexCoordOffsetU);
-			m_pTilesTable[iTilesetTypeIndex][j].m_vTexCoord[2] =  CVector2d(fTexCoordOffsetL,fTexCoordOffsetU);
-			m_pTilesTable[iTilesetTypeIndex][j].m_vTexCoord[3] =  CVector2d(fTexCoordOffsetL,fTexCoordOffsetD);
+			m_pTilesTable[iTilesetTypeIndex][j].m_vTexCoord[0] =  glm::vec2(fTexCoordOffsetR,fTexCoordOffsetD);
+			m_pTilesTable[iTilesetTypeIndex][j].m_vTexCoord[1] =  glm::vec2(fTexCoordOffsetR,fTexCoordOffsetU);
+			m_pTilesTable[iTilesetTypeIndex][j].m_vTexCoord[2] =  glm::vec2(fTexCoordOffsetL,fTexCoordOffsetU);
+			m_pTilesTable[iTilesetTypeIndex][j].m_vTexCoord[3] =  glm::vec2(fTexCoordOffsetL,fTexCoordOffsetD);
 		}
 		iTilesetTypeIndex++;
 		unsigned int iTileIndex = 0;
@@ -69,10 +69,10 @@ void CTileSetter::CreateTileTable()
 				fTexCoordOffsetL = fTexCoordTemp;
 			}
 
-			m_pTilesTable[iTilesetTypeIndex][iTileIndex].m_vTexCoord[0] = CVector2d(fTexCoordOffsetR,fTexCoordOffsetD);
-			m_pTilesTable[iTilesetTypeIndex][iTileIndex].m_vTexCoord[1] = CVector2d(fTexCoordOffsetR,fTexCoordOffsetU);
-			m_pTilesTable[iTilesetTypeIndex][iTileIndex].m_vTexCoord[2] = CVector2d(fTexCoordOffsetL,fTexCoordOffsetU);
-			m_pTilesTable[iTilesetTypeIndex][iTileIndex].m_vTexCoord[3] = CVector2d(fTexCoordOffsetL,fTexCoordOffsetD);
+			m_pTilesTable[iTilesetTypeIndex][iTileIndex].m_vTexCoord[0] = glm::vec2(fTexCoordOffsetR,fTexCoordOffsetD);
+			m_pTilesTable[iTilesetTypeIndex][iTileIndex].m_vTexCoord[1] = glm::vec2(fTexCoordOffsetR,fTexCoordOffsetU);
+			m_pTilesTable[iTilesetTypeIndex][iTileIndex].m_vTexCoord[2] = glm::vec2(fTexCoordOffsetL,fTexCoordOffsetU);
+			m_pTilesTable[iTilesetTypeIndex][iTileIndex].m_vTexCoord[3] = glm::vec2(fTexCoordOffsetL,fTexCoordOffsetD);
 			iTileIndex++;
 		}
 		iTilesetTypeIndex++;

@@ -35,7 +35,7 @@ protected:
     CNavigationMesh* m_pNavigationMesh;
     struct STile
     {
-        CVector3d m_vPosition;
+        glm::vec3 m_vPosition;
         CBoundingBox* m_pBoundingBox;
         ICollider* m_pCollider;
     };

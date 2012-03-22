@@ -18,6 +18,10 @@ const std::string CShader::k_TEXTURE_01         = "EXT_TEXTURE_01";
 const std::string CShader::k_TEXTURE_02         = "EXT_TEXTURE_02";
 const std::string CShader::k_TEXTURE_03         = "EXT_TEXTURE_03";
 const std::string CShader::k_TEXTURE_04         = "EXT_TEXTURE_04";
+const std::string CShader::k_TEXTURE_05         = "EXT_TEXTURE_05";
+const std::string CShader::k_TEXTURE_06         = "EXT_TEXTURE_06";
+const std::string CShader::k_TEXTURE_07         = "EXT_TEXTURE_07";
+const std::string CShader::k_TEXTURE_08         = "EXT_TEXTURE_08";
 const std::string CShader::k_VECTOR_VIEW        = "EXT_View";
 const std::string CShader::k_VECTOR_LIGHT       = "EXT_Light"; 
 
@@ -31,6 +35,10 @@ CShader::CShader(GLuint _hProgramHandle)
     m_lUniformHandle[k_TEXTURE_02]        = glGetUniformLocation(m_hProgramHandle, k_TEXTURE_02.c_str());
     m_lUniformHandle[k_TEXTURE_03]        = glGetUniformLocation(m_hProgramHandle, k_TEXTURE_03.c_str());
     m_lUniformHandle[k_TEXTURE_04]        = glGetUniformLocation(m_hProgramHandle, k_TEXTURE_04.c_str());
+    m_lUniformHandle[k_TEXTURE_05]        = glGetUniformLocation(m_hProgramHandle, k_TEXTURE_05.c_str());
+    m_lUniformHandle[k_TEXTURE_06]        = glGetUniformLocation(m_hProgramHandle, k_TEXTURE_06.c_str());
+    m_lUniformHandle[k_TEXTURE_07]        = glGetUniformLocation(m_hProgramHandle, k_TEXTURE_07.c_str());
+    m_lUniformHandle[k_TEXTURE_08]        = glGetUniformLocation(m_hProgramHandle, k_TEXTURE_08.c_str());
     m_lUniformHandle[k_VECTOR_VIEW]       = glGetUniformLocation(m_hProgramHandle, k_VECTOR_VIEW.c_str());
     m_lUniformHandle[k_VECTOR_LIGHT]      = glGetUniformLocation(m_hProgramHandle, k_VECTOR_LIGHT.c_str());
 }
@@ -40,15 +48,15 @@ CShader::~CShader()
     
 }
 
-void CShader::SetVector(const CVector3d& _vValue, const std::string& _sName)
+void CShader::SetVector(const glm::vec3& _vValue, const std::string& _sName)
 {
     GLint hHandle = m_lUniformHandle[_sName];
-    glUniform3fv(hHandle, 1, &_vValue.v[0]);
+    glUniform3fv(hHandle, 1, &_vValue[0]);
 }
 
-void CShader::SetMatrix(const CMatrix4x4& _mValue,const std::string& _sName)
+void CShader::SetMatrix(const glm::mat4x4& _mValue,const std::string& _sName)
 {
-    glUniformMatrix4fv(m_lUniformHandle[_sName], 1, 0, &_mValue.m[0]);
+    glUniformMatrix4fv(m_lUniformHandle[_sName], 1, 0, &_mValue[0][0]);
 }
 
 void CShader::SetTexture(GLuint _hTextureHandle, const std::string& _sName)
@@ -83,14 +91,45 @@ void CShader::SetTexture(GLuint _hTextureHandle, const std::string& _sName)
         glUniform1i(m_lUniformHandle[_sName], 3);
         return;
     }
+    
+    if(_sName == k_TEXTURE_05)
+    {
+        glActiveTexture(GL_TEXTURE4);
+        glBindTexture(GL_TEXTURE_2D, _hTextureHandle);
+        glUniform1i(m_lUniformHandle[_sName], 4);
+        return;
+    }
+    if(_sName == k_TEXTURE_06)
+    {
+        glActiveTexture(GL_TEXTURE5);
+        glBindTexture(GL_TEXTURE_2D, _hTextureHandle);
+        glUniform1i(m_lUniformHandle[_sName], 5);
+        return;
+    }
+    
+    if(_sName == k_TEXTURE_07)
+    {
+        glActiveTexture(GL_TEXTURE6);
+        glBindTexture(GL_TEXTURE_2D, _hTextureHandle);
+        glUniform1i(m_lUniformHandle[_sName], 6);
+        return;
+    }
+    
+    if(_sName == k_TEXTURE_08)
+    {
+        glActiveTexture(GL_TEXTURE7);
+        glBindTexture(GL_TEXTURE_2D, _hTextureHandle);
+        glUniform1i(m_lUniformHandle[_sName], 7);
+        return;
+    }
 }
 
-void CShader::Enable()
+void CShader::Enable(void)
 {
     glUseProgram(m_hProgramHandle);
 }
 
-void CShader::Disable()
+void CShader::Disable(void)
 {
     glUseProgram(NULL);
 }

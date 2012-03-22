@@ -15,7 +15,7 @@ void main(void)
     mediump vec3 vView = normalize(OUT_View);
     
     mediump float fHeight = texture2D(EXT_TEXTURE_03, OUT_TexCoord).r;
-    fHeight = fHeight * 0.06;
+    fHeight = fHeight * 0.03;
     mediump vec2 vTexCoord = OUT_TexCoord + fHeight * vView.xy;
     
     mediump vec4 vDiffuseColor = texture2D(EXT_TEXTURE_01, vTexCoord);
@@ -26,7 +26,7 @@ void main(void)
     vDiffuseColor = vDiffuseColor * max(dot(vNormalColor, vLight), 0.33);
     
     mediump vec3 vReflect = reflect(-vView, vNormalColor);
-    vSpecularColor = vSpecularColor * pow(max(dot(vLight, vReflect),0.0),64.0);
+    vSpecularColor = vSpecularColor * pow(max(dot(vLight, vReflect),0.0),8.0);
     
     gl_FragColor = vDiffuseColor;// + vSpecularColor;
 }

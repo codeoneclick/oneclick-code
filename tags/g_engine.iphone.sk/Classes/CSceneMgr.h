@@ -51,6 +51,7 @@ public:
     INode* AddModel(IResource::E_STANDART_MODEL _eModel, bool _isBatching);
     INode* AddCustomModel(const std::string& _sName, bool _isBatching = false, IResource::E_THREAD _eThread = IResource::E_THREAD_MAIN);
     INode* AddLandscapeModel(const std::string& _sName, bool _isBatching = false);
+    INode* AddLandscapeGrassModel(const std::string& _sName, bool _isBatching = false);
     
     void AddEventListener(INode* _pNode, CEventMgr::E_EVENT _eEvent);
     void RemoveEventListener(INode* _pNode, CEventMgr::E_EVENT _eEvent);
@@ -67,8 +68,8 @@ public:
     CHeightMapSetter* Get_HeightMapSetterRef(void) { return m_pHeightMapSetterRef; }
     void Set_HeightMapSetterRef(CHeightMapSetter* _pHeightMapSetterRef) { m_pHeightMapSetterRef = _pHeightMapSetterRef; }                                                         
     
-    IAnimator* AddMoveAnimator(INode* _pNode, IAnimatorDelegate* _pAnimatorDelegateOwner, const CVector3d& _vStartPosition, const CVector3d&  _vEndPosition, float _fStep);
-    IAnimator* AddHeightMapMoveAnimator(INode *_pNode, IAnimatorDelegate *_pAnimatorDelegateOwner, CVector2d _vStartPosition, CVector2d _vEndPosition, float _fStep);
+    IAnimator* AddMoveAnimator(INode* _pNode, IAnimatorDelegate* _pAnimatorDelegateOwner, const glm::vec3& _vStartPosition, const glm::vec3&  _vEndPosition, float _fStep);
+    IAnimator* AddHeightMapMoveAnimator(INode *_pNode, IAnimatorDelegate *_pAnimatorDelegateOwner, glm::vec2 _vStartPosition, glm::vec2 _vEndPosition, float _fStep);
     
     void RemoveModel(INode *_pNode);
     void Update(void);

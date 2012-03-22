@@ -9,18 +9,19 @@
 #ifndef gEngine_ICamera_h
 #define gEngine_ICamera_h
 
-#include "CMatrix.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp> 
 
 class ICamera
 {
 protected:
-    CVector3d m_vPosition;
-    CVector3d m_vRotation;
-    CVector3d m_vLookAt;
-    CVector3d m_vUp;
+    glm::vec3 m_vPosition;
+    glm::vec3 m_vRotation;
+    glm::vec3 m_vLookAt;
+    glm::vec3 m_vUp;
     
-    CMatrix4x4 m_mView;
-    CMatrix4x4 m_mProjection;
+    glm::mat4x4 m_mView;
+    glm::mat4x4 m_mProjection;
     
     float m_fFovY;
     float m_fAspectRatio;
@@ -37,10 +38,10 @@ public:
     void Init(int _iScreenWidth, int _iScreenHeight, float _fFovY, float _fFarPlane, float _fNearPlane);
     virtual void Update(void) = 0;
     
-    virtual void OnScreenMove(CVector2d _vMoveDirection) = 0;
+    virtual void OnScreenMove(glm::vec2 _vMoveDirection) = 0;
     
-    const CMatrix4x4 Get_Projection(void) { return m_mProjection; }
-    const CMatrix4x4 Get_View(void) { return m_mView; }
+    const glm::mat4x4 Get_Projection(void) { return m_mProjection; }
+    const glm::mat4x4 Get_View(void) { return m_mView; }
     
     void Set_FovY(float _fFovY) { m_fFovY = _fFovY; }
     void Set_FarPlane(float _fFarPlane) { m_fFarPlane = _fFarPlane; }
@@ -51,14 +52,14 @@ public:
     float Get_HeightFromLookAt(void) { return m_fHeightFromLookAt; }
     void Set_AspectRation(float _fAspectRation) { m_fAspectRatio = _fAspectRation; }
     
-    virtual CVector3d Get_Position(void) { return m_vPosition; }
-    virtual void Set_Position(const CVector3d& _vPosition) { m_vPosition = _vPosition; }
+    virtual glm::vec3 Get_Position(void) { return m_vPosition; }
+    virtual void Set_Position(const glm::vec3& _vPosition) { m_vPosition = _vPosition; }
     
-    CVector3d Get_Rotation(void) { return m_vRotation; }
-    void Set_Rotation(const CVector3d& _fRotation) { m_vRotation = _fRotation; }
+    glm::vec3 Get_Rotation(void) { return m_vRotation; }
+    void Set_Rotation(const glm::vec3& _fRotation) { m_vRotation = _fRotation; }
     
-    CVector3d Get_LookAt(void) { return m_vLookAt; }
-    void Set_LookAt(const CVector3d& _vLookAt) { m_vLookAt = _vLookAt; }
+    glm::vec3 Get_LookAt(void) { return m_vLookAt; }
+    void Set_LookAt(const glm::vec3& _vLookAt) { m_vLookAt = _vLookAt; }
 };
 
 

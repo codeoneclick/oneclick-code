@@ -18,7 +18,7 @@
 
 class ICollider
 {
-public:
+/*public:
     struct SColliderID
     {
         unsigned int m_iHex;
@@ -57,7 +57,7 @@ public:
     void Set_TouchCollided(bool _bIsTouchCollided) { m_bIsTouchCollided = _bIsTouchCollided; }
     bool Get_TouchCollided(void) { return m_bIsTouchCollided; }
     
-    virtual void Render(void) = 0;
+    virtual void Render(void) = 0;*/
 };
 
 

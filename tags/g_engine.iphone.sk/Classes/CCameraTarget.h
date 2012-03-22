@@ -20,7 +20,7 @@ public:
     CCameraTarget(void);
     virtual ~CCameraTarget();
     virtual void Update(void);
-    virtual void OnScreenMove(CVector2d _vMoveDirection);
+    virtual void OnScreenMove(glm::vec2 _vMoveDirection);
     void Set_Target(INode* _pTarget) { m_pTarget = _pTarget; }
     INode* Get_Target(void) { return m_pTarget; }
 };

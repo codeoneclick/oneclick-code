@@ -60,7 +60,7 @@ public:
     ~CNavigationMesh(void);
     void Set_NavigationModel(INode* _pNode);
     CMesh* Get_VisualMesh(void) { return m_pVisualMesh; }
-    std::vector<CVector2d> FindPath(CVector3d _vStartPoint, CVector3d _vEndPoint);
+    std::vector<glm::vec2> FindPath(glm::vec3 _vStartPoint, glm::vec3 _vEndPoint);
 };
 
 #endif

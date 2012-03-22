@@ -17,20 +17,23 @@
 
 INode::INode()
 {
-    m_vScale    = CVector3d(1.0f, 1.0f, 1.0f);
-    m_vRotation = CVector3d(0.0f, 0.0f, 0.0f);
-    m_vPosition = CVector3d(0.0f, 0.0f, 0.0f);
+    m_vScale    = glm::vec3(1.0f, 1.0f, 1.0f);
+    m_vRotation = glm::vec3(0.0f, 0.0f, 0.0f);
+    m_vPosition = glm::vec3(0.0f, 0.0f, 0.0f);
     
     m_pTextures = new CTexture*[TEXTURES_MAX_COUNT];
     m_pTextures[0] = NULL;
     m_pTextures[1] = NULL;
     m_pTextures[2] = NULL;
     m_pTextures[3] = NULL;
+    m_pTextures[4] = NULL;
+    m_pTextures[5] = NULL;
+    m_pTextures[6] = NULL;
+    m_pTextures[7] = NULL;
     
     m_pShader = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_TEXTURE);
     
     m_pBoundingBox = NULL;
-    m_pCollider = NULL;
     
     m_pLight = NULL;
     
@@ -98,39 +101,6 @@ void INode::Remove_BoundingBox()
     m_pBoundingBox = NULL;
 }
 
-void INode::Create_ColliderBox()
-{
-    if(m_pCollider != NULL)
-    {
-        delete m_pCollider;
-        m_pCollider = NULL;
-    }
-    
-    m_pCollider = new CColliderBox(m_pMesh->Get_MaxBound(), m_pMesh->Get_MinBound());
-    CSceneMgr::Instance()->Get_CollisionMgr()->Create_Collider(m_pCollider);
-}
-
-void INode::Create_ColliderQuad()
-{
-    if(m_pCollider != NULL)
-    {
-        delete m_pCollider;
-        m_pCollider = NULL;
-    }
-    
-    m_pCollider = new CColliderQuad(CVector3d(), CVector3d(), CVector3d(), CVector3d());
-    CSceneMgr::Instance()->Get_CollisionMgr()->Create_Collider(m_pCollider);
-}
-
-void INode::Remove_Collider()
-{
-    if(m_pCollider != NULL)
-    {
-        delete m_pCollider;
-        m_pCollider = NULL;
-    }
-}
-
 void INode::Add_Delegate(IDelegate *_pDelegate)
 {
     for(size_t index = 0; index< m_lDelegates.size(); index++)
@@ -160,24 +130,22 @@ void INode::Remove_Delegate(IDelegate *_pDelegate)
 
 void INode::Update()
 {
-    CMatrix4x4 mRotationX = RotationX(m_vRotation.x);
-    CMatrix4x4 mRotationY = RotationY(m_vRotation.y);
-    CMatrix4x4 mRotationZ = RotationZ(m_vRotation.z);
-    m_mRotation = mRotationX * mRotationY * mRotationZ;
-    m_mTranslation = Translation(m_vPosition);
-    m_mScale = Scale(m_vScale);
-    m_mWorld = m_mScale * m_mRotation * m_mTranslation;
+    glm::mat4x4 mRotationX = glm::rotate(glm::mat4(1.0f), m_vRotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
+    glm::mat4x4 mRotationY = glm::rotate(mRotationX, m_vRotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
+    glm::mat4x4 mRotationZ = glm::rotate(mRotationY, m_vRotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
+    
+    m_mRotation = mRotationZ;
+    
+    m_mTranslation = glm::translate(glm::mat4(1.0f), m_vPosition);
+    
+    m_mScale = glm::scale(glm::mat4(1.0f), m_vScale);
+    
+    m_mWorld =  m_mTranslation * m_mRotation * m_mScale;
     
     if(m_pBoundingBox != NULL)
     {
         m_pBoundingBox->Set_WorldMatrix(m_mWorld);
         m_pBoundingBox->Set_MaxMinPoints(m_pMesh->Get_MaxBound(), m_pMesh->Get_MinBound());
-    }
-    
-    if(m_pCollider != NULL)
-    {
-        m_pCollider->Set_WorldMatrix(m_mWorld);
-        m_pCollider->Set_MaxMinPoints(m_pMesh->Get_MaxBound(), m_pMesh->Get_MinBound());
     }
 }
 

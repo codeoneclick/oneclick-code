@@ -16,13 +16,13 @@
 
 CCollisionMgr::CCollisionMgr()
 {
-    m_tLastColliderID.r = 0;
-    m_tLastColliderID.g = 0;
-    m_tLastColliderID.b = 0;
+    //m_tLastColliderID.r = 0;
+    //m_tLastColliderID.g = 0;
+    //m_tLastColliderID.b = 0;
     
     m_iHexColliderID = 0;
     
-    m_vTouch3DPoint = CVector3d(0.0f, 0.0f, 0.0f);
+    m_vTouch3DPoint = glm::vec3(0.0f, 0.0f, 0.0f);
     
     m_bIsTouch = false;
 }
@@ -40,7 +40,7 @@ unsigned int CCollisionMgr::RgbToHex(unsigned char _r, unsigned char _g, unsigne
 
 void CCollisionMgr::Create_Collider(ICollider* _pCollider)
 {   
-    if(m_tLastColliderID.r < 255)
+    /*if(m_tLastColliderID.r < 255)
     {
         m_tLastColliderID.r++;
     }
@@ -58,7 +58,7 @@ void CCollisionMgr::Create_Collider(ICollider* _pCollider)
     
     m_tLastColliderID.m_iHex = RgbToHex(m_tLastColliderID.r, m_tLastColliderID.g, m_tLastColliderID.b);
     _pCollider->Set_ColliredID(m_tLastColliderID);
-    m_lContainer[m_tLastColliderID.m_iHex] = _pCollider;
+    m_lContainer[m_tLastColliderID.m_iHex] = _pCollider;*/
 }
 
 void CCollisionMgr::Remove_Collider(ICollider* _pCollider)
@@ -66,34 +66,55 @@ void CCollisionMgr::Remove_Collider(ICollider* _pCollider)
     
 }
 
-void CCollisionMgr::OnScreenTouch(CVector2d _vTouchPoint) 
+void CCollisionMgr::OnScreenTouch(glm::vec2 _vTouchPoint) 
 { 
     m_bIsTouch = true; 
     m_vTouch2DPoint = _vTouchPoint; 
     
-    CMatrix4x4 mView = CSceneMgr::Instance()->Get_Camera()->Get_View();
-    CMatrix4x4 mProjection = CSceneMgr::Instance()->Get_Camera()->Get_Projection();
-    CWindow::SViewport tViewport = CWindow::Get_Viewport();
-
+    glm::mat4x4 mView = CSceneMgr::Instance()->Get_Camera()->Get_View();
+    glm::mat4x4 mProjection = CSceneMgr::Instance()->Get_Camera()->Get_Projection();
     
-    CVector2d vScreenCoord = _vTouchPoint;
-    m_vTouchRay = Unproject(vScreenCoord, mView, mProjection, tViewport.v);
+    glm::vec3 vTouchPointNear = glm::vec3(_vTouchPoint, 0.0f);
+    glm::vec3 vTouchPointFar  = glm::vec3(_vTouchPoint, 0.9f);
+    glm::vec4 vViewport = glm::vec4(0.0f, 0.0f, CWindow::Get_ScreenHeight(), CWindow::Get_ScreenWidth());
+    
+    glm::vec3 vUnProjectPointNear = glm::unProject(vTouchPointNear, mView, mProjection, vViewport);
+    glm::vec3 vUnProjectPointFar  = glm::unProject(vTouchPointFar, mView, mProjection, vViewport);
+    
+    glm::vec3 vDirection = glm::normalize(vTouchPointFar - vTouchPointNear);
+    
+    //glm::mat4x4 mvp_inverse = glm::inverse(mView * mProjection);
+    //glm::vec4 dir = mvp_inverse * glm::vec4(0, 0, 1, 0);
+    //O = glm::vec3(origin.x, origin.y, origin.z);
+    //glm::vec3 vDirection = glm::normalize(glm::vec3(dir.x, dir.y, dir.z));
+    
+    glm::vec3 vCameraPosition = CSceneMgr::Instance()->Get_Camera()->Get_Position();
+    
+    std::cout<<"[CCollisionMgr::OnScreenTouch] Camera Position : ( "<<vCameraPosition.x<<", "<<vCameraPosition.y<<", "<<vCameraPosition.z<<" )\n";
+    
+    int pViewport[4];
+    pViewport[0] = 0;
+    pViewport[1] = 0;
+    pViewport[2] = CWindow::Get_ScreenHeight();
+    pViewport[3] = CWindow::Get_ScreenWidth();
+    glm::vec2 vScreenCoord = _vTouchPoint;
+    m_vTouchRay = Unproject(vScreenCoord, mView, mProjection, pViewport);
     CEventMgr::Instance()->OnEvent(CEventMgr::E_EVENT_TOUCH);
 }
 
-bool CCollisionMgr::RayPlaneIntersection(CVector3d& _vTrianglePoint_01, CVector3d& _vTrianglePoint_02, CVector3d& _vTrianglePoint_03, CRay3d& _tRay, CVector3d* _vIntersectPoint)
+bool CCollisionMgr::RayPlaneIntersection(glm::vec3& _vTrianglePoint_01, glm::vec3& _vTrianglePoint_02, glm::vec3& _vTrianglePoint_03, SRay3d& _tRay, glm::vec3* _vIntersectPoint)
 {
-    CVector3d vEdge_01 = _vTrianglePoint_02 - _vTrianglePoint_01;
-	CVector3d vEdge_02 = _vTrianglePoint_03 - _vTrianglePoint_01;
+    glm::vec3 vEdge_01 = _vTrianglePoint_02 - _vTrianglePoint_01;
+	glm::vec3 vEdge_02 = _vTrianglePoint_03 - _vTrianglePoint_01;
     
-    CVector3d vNormal = Cross(vEdge_01, vEdge_02);
-    vNormal.Normalize();
+    glm::vec3 vNormal = glm::cross(vEdge_01, vEdge_02);
+    vNormal = glm::normalize(vNormal);
     
-    CVector3d vOffset_01 = _tRay.m_vOrigin - _vTrianglePoint_01;
-    CVector3d vOffset_02 = _tRay.m_vEnd - _vTrianglePoint_01;
+    glm::vec3 vOffset_01 = _tRay.m_vOrigin - _vTrianglePoint_01;
+    glm::vec3 vOffset_02 = _tRay.m_vEnd - _vTrianglePoint_01;
     
-    float fValue_01 = Dot(vOffset_01, vNormal);
-    float fValue_02 = Dot(vOffset_02, vNormal);
+    float fValue_01 = glm::dot(vOffset_01, vNormal);
+    float fValue_02 = glm::dot(vOffset_02, vNormal);
     
     if((fValue_01 >= 0.0f && fValue_02 >= 0.0f) || (fValue_01 <= 0.0f && fValue_02 <= 0.0f))
     {
@@ -103,13 +124,13 @@ bool CCollisionMgr::RayPlaneIntersection(CVector3d& _vTrianglePoint_01, CVector3
     return true;
 }
 
-bool CCollisionMgr::RayTriangleIntersection(CVector3d& _vTrianglePoint_01, CVector3d& _vTrianglePoint_02, CVector3d& _vTrianglePoint_03, CRay3d& _tRay, CVector3d* _vIntersectPoint)
+bool CCollisionMgr::RayTriangleIntersection(glm::vec3& _vTrianglePoint_01, glm::vec3& _vTrianglePoint_02, glm::vec3& _vTrianglePoint_03, SRay3d& _tRay, glm::vec3* _vIntersectPoint)
 {
-    CVector3d vEdge_01 = _vTrianglePoint_02 - _vTrianglePoint_01;
-	CVector3d vEdge_02 = _vTrianglePoint_03 - _vTrianglePoint_01;
+    glm::vec3 vEdge_01 = _vTrianglePoint_02 - _vTrianglePoint_01;
+	glm::vec3 vEdge_02 = _vTrianglePoint_03 - _vTrianglePoint_01;
     
-    CVector3d vPVector = Cross(_tRay.m_vDirection, vEdge_02);
-	float fDeterminant = Dot(vEdge_01, vPVector);
+    glm::vec3 vPVector = glm::cross(_tRay.m_vDirection, vEdge_02);
+	float fDeterminant = glm::dot(vEdge_01, vPVector);
 	if(fabs(fDeterminant) < 0.0001f) 
     {
         return false;
@@ -117,15 +138,15 @@ bool CCollisionMgr::RayTriangleIntersection(CVector3d& _vTrianglePoint_01, CVect
     
     float fInvDeterminant = 1.0f / fDeterminant;
     
-	CVector3d vTVector = _tRay.m_vOrigin - _vTrianglePoint_01;
-	float fU = Dot(vTVector, vPVector) * fInvDeterminant;  
+	glm::vec3 vTVector = _tRay.m_vOrigin - _vTrianglePoint_01;
+	float fU = glm::dot(vTVector, vPVector) * fInvDeterminant;  
     if ( fU < -0.0001f || fU > 1.0001f )
     {
         return false;
     }
     
-    CVector3d vQVector = Cross(vTVector, vEdge_01);
-	float fV = Dot(_tRay.m_vDirection, vQVector) * fInvDeterminant; 
+    glm::vec3 vQVector = glm::cross(vTVector, vEdge_01);
+	float fV = glm::dot(_tRay.m_vDirection, vQVector) * fInvDeterminant; 
 	if ( fV < -0.0001f || (fV + fU) > 1.0001f )
     {
         return false;
@@ -135,16 +156,16 @@ bool CCollisionMgr::RayTriangleIntersection(CVector3d& _vTrianglePoint_01, CVect
 	return true;
 }
 
-bool CCollisionMgr::Get_CollisionPoint(CVertexBuffer *_pVB, CIndexBuffer *_pIB,CRay3d& _tRay3d, CVector3d* _vCollisionPoint)
+bool CCollisionMgr::Get_CollisionPoint(CVertexBuffer *_pVB, CIndexBuffer *_pIB, SRay3d& _tRay3d, glm::vec3* _vCollisionPoint)
 {
-    CVector3d* pPositionData = _pVB->CreateOrReUse_PositionData();
+    glm::vec3* pPositionData = _pVB->CreateOrReUse_PositionData();
     unsigned short* pIBData = _pIB->Get_Data();
     unsigned int iNumIndexes = _pIB->Get_NumIndexes();
     for(unsigned int index = 0; index < iNumIndexes; index += 3)
     {
-        CVector3d vPoint_01 = pPositionData[pIBData[index]];
-        CVector3d vPoint_02 = pPositionData[pIBData[index + 1]];
-        CVector3d vPoint_03 = pPositionData[pIBData[index + 2]];
+        glm::vec3 vPoint_01 = pPositionData[pIBData[index]];
+        glm::vec3 vPoint_02 = pPositionData[pIBData[index + 1]];
+        glm::vec3 vPoint_03 = pPositionData[pIBData[index + 2]];
             
         if(RayTriangleIntersection(vPoint_01, vPoint_02, vPoint_03, _tRay3d, _vCollisionPoint))
         {

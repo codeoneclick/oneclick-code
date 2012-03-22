@@ -8,8 +8,6 @@
 
 #ifndef gEngine_CBoundingBox_h
 #define gEngine_CBoundingBox_h
-#include "CVector.h"
-#include "CMatrix.h"
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
 #include "CMesh.h"
@@ -18,10 +16,10 @@
 class CBoundingBox
 {
 protected:
-    CVector3d m_vMax;
-    CVector3d m_vMin;
-    CVector3d m_vScale;
-    CMatrix4x4 m_mWorld;
+    glm::vec3   m_vMax;
+    glm::vec3   m_vMin;
+    glm::vec3   m_vScale;
+    glm::mat4x4 m_mWorld;
     CShader* m_pShader;
     static CMesh* m_pMesh;
     bool m_bIsBatching;
@@ -31,13 +29,13 @@ public:
     
     static CMesh* Get_BoundingBoxMesh(void);
     
-    CBoundingBox(const CVector3d &_vMax, const CVector3d &_vMin);
+    CBoundingBox(const glm::vec3 &_vMax, const glm::vec3 &_vMin);
     ~CBoundingBox();
     
-    void Set_WorldMatrix(const CMatrix4x4 &_mWorld);
-    CMatrix4x4 Get_WorldMatrix(void) { return m_mWorld; }
+    void Set_WorldMatrix(const glm::mat4x4 &_mWorld);
+    glm::mat4x4 Get_WorldMatrix(void) { return m_mWorld; }
     CMesh* Get_Mesh(void) { return m_pMesh; }
-    void Set_MaxMinPoints(const CVector3d &_vMax, const CVector3d &_vMin) { m_vMax = _vMax; m_vMin = _vMin; }
+    void Set_MaxMinPoints(const glm::vec3 &_vMax, const glm::vec3 &_vMin) { m_vMax = _vMax; m_vMin = _vMin; }
     void Set_Batching(bool _bValue) { m_bIsBatching = _bValue; }
     
     void Render(void);

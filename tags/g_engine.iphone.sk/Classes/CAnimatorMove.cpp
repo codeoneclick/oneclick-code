@@ -8,7 +8,7 @@
 
 #include <iostream>
 #include "CAnimatorMove.h"
-
+/*
 CAnimatorMove::CAnimatorMove(void)
 {
     
@@ -19,7 +19,7 @@ CAnimatorMove::~CAnimatorMove(void)
     
 }
 
-void CAnimatorMove::Init(INode *_pNode, IAnimatorDelegate *_pAnimatorDelegateOwner, const CVector3d &_vStartPosition, const CVector3d &_vEndPosition, float _fStep)
+void CAnimatorMove::Init(INode *_pNode, IAnimatorDelegate *_pAnimatorDelegateOwner, const glm::vec3 &_vStartPosition, const glm::vec3 &_vEndPosition, float _fStep)
 {
     m_pNode = _pNode;
     m_pAnimatorDelegateOwner = _pAnimatorDelegateOwner;
@@ -44,7 +44,7 @@ void CAnimatorMove::Update(void)
 {
     if(m_bIsAnimated == true)
     {
-        m_vStartPosition = Lerp(m_vStartPosition, m_vEndPosition, m_fStep);
+        m_vStartPosition = m_vEndPosition;//Lerp(m_vStartPosition, m_vEndPosition, m_fStep);
         m_pNode->Set_Position(m_vStartPosition);
         if(IsEqual(m_vStartPosition, m_vEndPosition, m_fStep))
         {
@@ -56,4 +56,4 @@ void CAnimatorMove::Update(void)
 void CAnimatorMove::Remove(void)
 {
     m_pAnimatorDelegateOwner->OnAnimatorRemove(this);
-}
+}*/

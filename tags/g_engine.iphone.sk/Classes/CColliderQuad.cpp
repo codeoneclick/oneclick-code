@@ -12,7 +12,7 @@
 #include "CSceneMgr.h"
 #include "CBatchMgr.h"
 
-CColliderQuad::CColliderQuad(const CVector3d &_vPoint_01, const CVector3d &_vPoint_02, const CVector3d &_vPoint_03, const CVector3d &_vPoint_04)
+CColliderQuad::CColliderQuad(const glm::vec3 &_vPoint_01, const glm::vec3 &_vPoint_02, const glm::vec3 &_vPoint_03, const glm::vec3 &_vPoint_04)
 {
     /*m_mWorld = CMatrix4x4(CMatrix4x4::E_MATRIX_ONE);
     
@@ -51,13 +51,12 @@ CColliderQuad::~CColliderQuad()
 
 void CColliderQuad::Render()
 {
-    if(m_bIsBatching)
+    /*if(m_bIsBatching)
     {
         CSceneMgr::Instance()->Get_BatchMgr()->PushToColliderBatch(this);
     }
     else
     {
-        glCullFace(GL_BACK);
         m_pShader->Enable();
         m_pShader->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD);
         ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
@@ -67,5 +66,5 @@ void CColliderQuad::Render()
         glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IB()->Get_Data());
         m_pMesh->Get_VB()->Disable();
         m_pShader->Disable();
-    }
+    }*/
 }

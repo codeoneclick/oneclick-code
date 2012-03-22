@@ -10,6 +10,7 @@
 #include "CSceneMgr.h"
 #include "CModel.h"
 #include "CLandscape.h"
+#include "CGrass.h"
 #include "CRenderMgr.h"
 #include "CCollisionMgr.h"
 #include "CCameraFree.h"
@@ -98,6 +99,19 @@ INode* CSceneMgr::AddLandscapeModel(const std::string &_sName, bool _isBatching)
     return pNode;
 }
 
+INode* CSceneMgr::AddLandscapeGrassModel(const std::string &_sName, bool _isBatching)
+{
+    IResource::SResource tResource;
+    tResource.m_sName = _sName;
+    tResource.m_eThread = IResource::E_THREAD_MAIN;
+    tResource.m_eModel = IResource::E_STANDART_MODEL_NONE;
+    tResource.m_bIsBatching = _isBatching;
+    INode* pNode = new CGrass();
+    pNode->Load(tResource);
+    m_lContainer.push_back(pNode);
+    return pNode;
+}
+
 void CSceneMgr::AddEventListener(INode *_pNode, CEventMgr::E_EVENT _eEvent)
 {
     CEventMgr::Instance()->AddEventListener(_pNode, _eEvent);
@@ -111,14 +125,14 @@ void CSceneMgr::RemoveEventListener(INode *_pNode, CEventMgr::E_EVENT _eEvent)
 ICamera* CSceneMgr::CreateFreeCamera(float _fFov, float _fNearPlane, float _fFarPlane)
 {
     CCameraFree* pCamera = new CCameraFree();
-    pCamera->Init(CWindow::Get_Width(), CWindow::Get_Height(), _fFov, _fFarPlane, _fNearPlane);
+    pCamera->Init(CWindow::Get_OffScreenWidth(), CWindow::Get_OffScreenHeight(), _fFov, _fFarPlane, _fNearPlane);
     return pCamera;
 }
 
 ICamera* CSceneMgr::CreateTargetCamera(float _fFov, float _fNearPlane, float _fFarPlane, INode *_pTarget)
 {
     CCameraTarget* pCamera = new CCameraTarget();
-    pCamera->Init(CWindow::Get_Width(), CWindow::Get_Height(), _fFov, _fFarPlane, _fNearPlane);
+    pCamera->Init(CWindow::Get_OffScreenWidth(), CWindow::Get_OffScreenHeight(), _fFov, _fFarPlane, _fNearPlane);
     pCamera->Set_Target(_pTarget);
     return pCamera;
 }
@@ -156,15 +170,15 @@ ILight* CSceneMgr::Get_Light(ILight::E_LIGHT_MODE _eMode, unsigned int _iIndex)
     return NULL;
 }
 
-IAnimator* CSceneMgr::AddMoveAnimator(INode *_pNode, IAnimatorDelegate *_pAnimatorDelegateOwner, const CVector3d &_vStartPosition, const CVector3d &_vEndPosition, float _fStep)
+IAnimator* CSceneMgr::AddMoveAnimator(INode *_pNode, IAnimatorDelegate *_pAnimatorDelegateOwner, const glm::vec3 &_vStartPosition, const glm::vec3 &_vEndPosition, float _fStep)
 {
-    IAnimator* pAnimator = new CAnimatorMove();
-    ((CAnimatorMove*)pAnimator)->Init(_pNode, _pAnimatorDelegateOwner, _vStartPosition, _vEndPosition, _fStep);
-    m_lAnimators.push_back(pAnimator);
-    return pAnimator;
+    //IAnimator* pAnimator = new CAnimatorMove();
+    //((CAnimatorMove*)pAnimator)->Init(_pNode, _pAnimatorDelegateOwner, _vStartPosition, _vEndPosition, _fStep);
+    //m_lAnimators.push_back(pAnimator);
+    return NULL;
 }
 
-IAnimator* CSceneMgr::AddHeightMapMoveAnimator(INode *_pNode, IAnimatorDelegate *_pAnimatorDelegateOwner, CVector2d _vStartPosition, CVector2d _vEndPosition, float _fStep)
+IAnimator* CSceneMgr::AddHeightMapMoveAnimator(INode *_pNode, IAnimatorDelegate *_pAnimatorDelegateOwner, glm::vec2 _vStartPosition, glm::vec2 _vEndPosition, float _fStep)
 {
     IAnimator* pAnimator = new CAnimatorMoveHeightMap();
     ((CAnimatorMoveHeightMap*)pAnimator)->Init(_pNode, _pAnimatorDelegateOwner, _vStartPosition,_vEndPosition,_fStep);
@@ -249,8 +263,8 @@ void CSceneMgr::Render()
         ++pMapBIterator;
     }
     
-    m_pBatchMgr->RenderNodesBatch();
-    m_pBatchMgr->RenderBoundingBatch();
+    /*m_pBatchMgr->RenderNodesBatch();
+    m_pBatchMgr->RenderBoundingBatch();*/
     
     m_pRenderMgr->EndDrawWorldSpaceScene();
     

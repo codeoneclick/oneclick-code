@@ -21,7 +21,7 @@ CAnimatorMoveHeightMap::~CAnimatorMoveHeightMap(void)
     
 }
 
-void CAnimatorMoveHeightMap::Init(INode *_pNode, IAnimatorDelegate *_pAnimatorDelegateOwner, CVector2d _vStartPosition, CVector2d _vEndPosition, float _fStep)
+void CAnimatorMoveHeightMap::Init(INode *_pNode, IAnimatorDelegate *_pAnimatorDelegateOwner, glm::vec2 _vStartPosition, glm::vec2 _vEndPosition, float _fStep)
 {
     m_pNode = _pNode;
     m_fStep = _fStep;
@@ -47,13 +47,13 @@ void CAnimatorMoveHeightMap::Update(void)
 {
     if(m_bIsAnimated == true)
     {
-        m_vStartPosition = Lerp(m_vStartPosition, m_vEndPosition, m_fStep);
-        CVector3d vPosition;
+        m_vStartPosition = m_vEndPosition;//Lerp(m_vStartPosition, m_vEndPosition, m_fStep);
+        glm::vec3 vPosition;
         vPosition.y = m_pHeightMapSetterRef->Get_HeightValueAtPoint(m_vStartPosition.x, m_vStartPosition.y);
         vPosition.x = m_vStartPosition.x;
         vPosition.z = m_vStartPosition.y;
         m_pNode->Set_Position(vPosition);
-        if(IsEqual(m_vStartPosition, m_vEndPosition, m_fStep))
+        //if(IsEqual(m_vStartPosition, m_vEndPosition, m_fStep))
         {
             Stop();
         }

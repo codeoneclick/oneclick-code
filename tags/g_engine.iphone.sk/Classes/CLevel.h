@@ -10,12 +10,14 @@
 #define gEngine_CLevel_h
 
 #include "CLandscape.h"
+#include "CGrass.h"
 #include "IDelegate.h"
 
 class CLevel : public IDelegate
 {
 private:
     CLandscape* m_pLandscape;
+    CGrass* m_pGrass;
 public:
     CLevel(void);
     ~CLevel(void);

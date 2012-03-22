@@ -11,7 +11,6 @@
 
 #include "stdlib.h"
 #include <string>
-#include "CVector.h"
 #include "CMesh.h"
 #include "IParser.h"
 

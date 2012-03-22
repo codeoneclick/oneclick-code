@@ -12,7 +12,7 @@
 
 CCameraFree::CCameraFree()
 {
-    m_fMoveSpeed = 0.1f;
+    m_fMoveSpeed = 0.3f;
 }
 
 CCameraFree::~CCameraFree()
@@ -26,10 +26,10 @@ void CCameraFree::Update()
     m_vPosition.x = m_vLookAt.x + cos(-m_vRotation.y) * -m_fDistanceToLookAt;
     m_vPosition.z = m_vLookAt.z + sin(-m_vRotation.y) * -m_fDistanceToLookAt;
     m_vLookAt.y = 0.0f;
-	m_mView = View( m_vPosition, m_vLookAt, m_vUp );
+	m_mView = glm::lookAt(m_vPosition, m_vLookAt, m_vUp);
 }
 
-void CCameraFree::OnScreenMove(CVector2d _vMoveDirection)
+void CCameraFree::OnScreenMove(glm::vec2 _vMoveDirection)
 {
     if(_vMoveDirection.x == 0.0f && _vMoveDirection.y == 0.0f)
     {
@@ -38,11 +38,11 @@ void CCameraFree::OnScreenMove(CVector2d _vMoveDirection)
     
     if(_vMoveDirection.x < 0.0f)
     {
-        MoveForward();
+         MoveBackward();
     }
     if(_vMoveDirection.x > 0.0f)
     {
-        MoveBackward(); 
+         MoveForward();
     }
     if(_vMoveDirection.y > 0.0f)
     {

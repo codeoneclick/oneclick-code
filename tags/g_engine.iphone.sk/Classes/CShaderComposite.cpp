@@ -43,6 +43,12 @@
 #include "../Shaders/ShaderParallax.vert"
 #include "../Shaders/ShaderParallax.frag"
 
+#include "../Shaders/ShaderLandscape.vert"
+#include "../Shaders/ShaderLandscape.frag"
+
+#include "../Shaders/ShaderUnit.vert"
+#include "../Shaders/ShaderUnit.frag"
+
 CShaderComposite* CShaderComposite::m_pInstance = NULL;
 
 CShaderComposite::CShaderComposite()
@@ -93,6 +99,15 @@ CShaderComposite::CShaderComposite()
     pData = pParser->Load(ShaderParallaxV, ShaderParallaxF);
     pShader = new CShader(pData.s_pHandle);
     m_lContainer[IResource::E_SHADER_PARALLAX] = pShader;
+    
+    pData = pParser->Load(ShaderLandscapeV, ShaderLandscapeF);
+    pShader = new CShader(pData.s_pHandle);
+    m_lContainer[IResource::E_SHADER_LANDSCAPE] = pShader;
+    
+    pData = pParser->Load(ShaderUnitV, ShaderUnitF);
+    pShader = new CShader(pData.s_pHandle);
+    m_lContainer[IResource::E_SHADER_UNIT] = pShader;
+
 }
 
 CShaderComposite::~CShaderComposite()

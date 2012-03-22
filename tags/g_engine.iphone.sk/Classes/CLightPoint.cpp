@@ -11,54 +11,55 @@
 #include "CShaderComposite.h"
 #include "CSceneMgr.h"
 
-const CVector3d CLightPoint::k_Size = CVector3d(0.2f, 0.2f, 0.2f);
+const glm::vec3 CLightPoint::k_Size = glm::vec3(0.2f, 0.2f, 0.2f);
 
 CLightPoint::CLightPoint()
 {
-    m_vDistanceToLightAt = CVector2d( 5.0f, 5.0f);
+    m_vDistanceToLightAt = glm::vec2( 5.0f, 5.0f);
     
-    /*m_mWorld = CMatrix4x4(CMatrix4x4::E_MATRIX_ONE);
+    m_mWorld = glm::mat4x4(1.0f);
     m_pShader = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_COLOR);
     
     CMesh::SSource* pSource = new CMesh::SSource();
     pSource->m_iNumVertexes = 24;
     pSource->m_iNumIndexes  = 36;
     
-    pSource->m_pVB = new CVertexBuffer(pSource->m_iNumVertexes, sizeof(CVertexBuffer::SVertexVC), CVertexBuffer::E_VERTEX_BUFFER_MODE_VC);
-    CVertexBuffer::SVertexVC* pData = static_cast<CVertexBuffer::SVertexVC*>(pSource->m_pVB->Get_Data());
+    pSource->m_pVB = new CVertexBuffer(pSource->m_iNumVertexes);
     
-    m_vMax = CVector3d(k_Size.x / 2.0f, k_Size.y / 2.0f, k_Size.z / 2.0f);
-    m_vMin = CVector3d(-k_Size.x / 2.0f, -k_Size.y / 2.0f, -k_Size.z / 2.0f);
+    glm::vec3* pPositionData = pSource->m_pVB->CreateOrReUse_PositionData();
     
-    pData[0].m_vPosition = CVector3d( m_vMin.x,  m_vMin.y, m_vMax.z);
-    pData[1].m_vPosition = CVector3d( m_vMax.x,  m_vMin.y, m_vMax.z);
-    pData[2].m_vPosition = CVector3d( m_vMax.x,  m_vMax.y, m_vMax.z);
-    pData[3].m_vPosition = CVector3d( m_vMin.x,  m_vMax.y, m_vMax.z);
+    m_vMax = glm::vec3(k_Size.x / 2.0f, k_Size.y / 2.0f, k_Size.z / 2.0f);
+    m_vMin = glm::vec3(-k_Size.x / 2.0f, -k_Size.y / 2.0f, -k_Size.z / 2.0f);
+    
+    pPositionData[0] = glm::vec3( m_vMin.x,  m_vMin.y, m_vMax.z);
+    pPositionData[1] = glm::vec3( m_vMax.x,  m_vMin.y, m_vMax.z);
+    pPositionData[2] = glm::vec3( m_vMax.x,  m_vMax.y, m_vMax.z);
+    pPositionData[3] = glm::vec3( m_vMin.x,  m_vMax.y, m_vMax.z);
     // Back
-    pData[4].m_vPosition = CVector3d( m_vMin.x,  m_vMin.y,  m_vMin.z);
-    pData[5].m_vPosition = CVector3d( m_vMin.x,  m_vMax.y,  m_vMin.z);
-    pData[6].m_vPosition = CVector3d( m_vMax.x,  m_vMax.y,  m_vMin.z);
-    pData[7].m_vPosition = CVector3d( m_vMax.x,  m_vMin.y,  m_vMin.z);
+    pPositionData[4] = glm::vec3( m_vMin.x,  m_vMin.y,  m_vMin.z);
+    pPositionData[5] = glm::vec3( m_vMin.x,  m_vMax.y,  m_vMin.z);
+    pPositionData[6] = glm::vec3( m_vMax.x,  m_vMax.y,  m_vMin.z);
+    pPositionData[7] = glm::vec3( m_vMax.x,  m_vMin.y,  m_vMin.z);
     // Left
-    pData[8].m_vPosition = CVector3d( m_vMin.x,  m_vMax.y,  m_vMin.z);
-    pData[9].m_vPosition = CVector3d( m_vMin.x,  m_vMax.y,  m_vMax.z);
-    pData[10].m_vPosition = CVector3d( m_vMax.x,  m_vMax.y,  m_vMax.z);
-    pData[11].m_vPosition = CVector3d( m_vMax.x,  m_vMax.y,  m_vMin.z);
+    pPositionData[8] = glm::vec3( m_vMin.x,  m_vMax.y,  m_vMin.z);
+    pPositionData[9] = glm::vec3( m_vMin.x,  m_vMax.y,  m_vMax.z);
+    pPositionData[10] = glm::vec3( m_vMax.x,  m_vMax.y,  m_vMax.z);
+    pPositionData[11] = glm::vec3( m_vMax.x,  m_vMax.y,  m_vMin.z);
     // Right
-    pData[12].m_vPosition = CVector3d( m_vMin.x,  m_vMin.y,  m_vMin.z);
-    pData[13].m_vPosition = CVector3d( m_vMax.x,  m_vMin.y,  m_vMin.z);
-    pData[14].m_vPosition = CVector3d( m_vMax.x,  m_vMin.y,  m_vMax.z);
-    pData[15].m_vPosition = CVector3d( m_vMin.x,  m_vMin.y,  m_vMax.z);
+    pPositionData[12] = glm::vec3( m_vMin.x,  m_vMin.y,  m_vMin.z);
+    pPositionData[13] = glm::vec3( m_vMax.x,  m_vMin.y,  m_vMin.z);
+    pPositionData[14] = glm::vec3( m_vMax.x,  m_vMin.y,  m_vMax.z);
+    pPositionData[15] = glm::vec3( m_vMin.x,  m_vMin.y,  m_vMax.z);
     // Top
-    pData[16].m_vPosition = CVector3d( m_vMax.x,  m_vMin.y,  m_vMin.z);
-    pData[17].m_vPosition = CVector3d( m_vMax.x,  m_vMax.y,  m_vMin.z);
-    pData[18].m_vPosition = CVector3d( m_vMax.x,  m_vMax.y,  m_vMax.z);
-    pData[19].m_vPosition = CVector3d( m_vMax.x,  m_vMin.y,  m_vMax.z);
+    pPositionData[16] = glm::vec3( m_vMax.x,  m_vMin.y,  m_vMin.z);
+    pPositionData[17] = glm::vec3( m_vMax.x,  m_vMax.y,  m_vMin.z);
+    pPositionData[18] = glm::vec3( m_vMax.x,  m_vMax.y,  m_vMax.z);
+    pPositionData[19] = glm::vec3( m_vMax.x,  m_vMin.y,  m_vMax.z);
     // Bottom
-    pData[20].m_vPosition = CVector3d( m_vMin.x,  m_vMin.y,  m_vMin.z);
-    pData[21].m_vPosition = CVector3d( m_vMin.x,  m_vMin.y,  m_vMax.z);
-    pData[22].m_vPosition = CVector3d( m_vMin.x,  m_vMax.y,  m_vMax.z);
-    pData[23].m_vPosition = CVector3d( m_vMin.x,  m_vMax.y,  m_vMin.z);
+    pPositionData[20] = glm::vec3( m_vMin.x,  m_vMin.y,  m_vMin.z);
+    pPositionData[21] = glm::vec3( m_vMin.x,  m_vMin.y,  m_vMax.z);
+    pPositionData[22] = glm::vec3( m_vMin.x,  m_vMax.y,  m_vMax.z);
+    pPositionData[23] = glm::vec3( m_vMin.x,  m_vMax.y,  m_vMin.z);
     
     pSource->m_pIB = new CIndexBuffer(pSource->m_iNumIndexes);
     unsigned short* pIBData = pSource->m_pIB->Get_Data();
@@ -106,14 +107,20 @@ CLightPoint::CLightPoint()
     pIBData[34] = 22;
     pIBData[35] = 23;
     
+    glm::u8vec4* pColorData = pSource->m_pVB->CreateOrReUse_ColorData();
+    
     for(unsigned int index = 0; index < pSource->m_iNumVertexes; ++index)
     {
-        pData[index].m_cColor = CColor4( 255, 255, 255, 255 );
+        pColorData[index] = glm::u8vec4( 255, 255, 255, 255 );
     }
+    
+    pSource->m_pVB->CommitToRAM();
+    pSource->m_pVB->CommitFromRAMToVRAM();
+    pSource->m_pIB->CommitFromRAMToVRAM();
     
     m_pMesh = new CMesh();
     m_pMesh->Set_Source(pSource);
-    m_pMesh->Get_VB()->Set_ShaderRef(m_pShader->Get_ProgramHandle());*/
+    m_pMesh->Get_VB()->Set_ShaderRef(m_pShader->Get_ProgramHandle());
 }
 
 CLightPoint::~CLightPoint()
@@ -124,23 +131,27 @@ CLightPoint::~CLightPoint()
 void CLightPoint::Update(void)
 {
     ILight::Update();
+    //m_vPosition.x = 16.0f;
+    //m_vPosition.z = 16.0f;
     m_vPosition.x = m_vLightAt.x + cosf(m_vRotation.y) * m_vDistanceToLightAt.x;
     m_vPosition.z = m_vLightAt.z + sinf(m_vRotation.y) * m_vDistanceToLightAt.y;
+    //m_vPosition.y = sinf(m_vRotation.y) * 16.0f;
 }
 
 void CLightPoint::Render()
 {
-    /*if(m_bIsVisible)
+    if(m_bIsVisible)
     {
-        glCullFace(GL_BACK);
         m_pShader->Enable();
         m_pShader->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD);
         ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
         m_pShader->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
         m_pShader->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
         m_pMesh->Get_VB()->Enable();
-        glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IB()->Get_Data());
+        m_pMesh->Get_IB()->Enable();
+        glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IB()->Get_DataFromVRAM());
+        m_pMesh->Get_IB()->Disable();
         m_pMesh->Get_VB()->Disable();
         m_pShader->Disable();
-    }*/
+    }
 }

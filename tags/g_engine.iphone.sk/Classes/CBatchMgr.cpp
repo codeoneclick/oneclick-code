@@ -50,9 +50,9 @@ void CBatchMgr::PushToBoundingBatch(CBoundingBox* _pNode)
 
 void CBatchMgr::PushToColliderBatch(ICollider *_pNode)
 {
-    CBatch* pBatch = m_lContainer[BATCH_COLLIDER_BOX];
-    CBatch::SSource tSource(_pNode->Get_Mesh(), _pNode->Get_WorldMatrix());
-    pBatch->Push(tSource);
+    //CBatch* pBatch = m_lContainer[BATCH_COLLIDER_BOX];
+    //CBatch::SSource tSource(_pNode->Get_Mesh(), _pNode->Get_WorldMatrix());
+    //pBatch->Push(tSource);
 }
 
 void CBatchMgr::PushToNodesBatch(INode *_pNode)

@@ -13,9 +13,9 @@
 
 ICamera::ICamera()
 {
-	m_vPosition = CVector3d(0.0f, 0.0f, 0.0f); 
-    m_vRotation = CVector3d(0.0f, 0.0f, 0.0f);
-    m_vUp = CVector3d(0.0f, 1.0f, 0.0f);
+	m_vPosition = glm::vec3(0.0f, 0.0f, 0.0f); 
+    m_vRotation = glm::vec3(0.0f, 0.0f, 0.0f);
+    m_vUp = glm::vec3(0.0f, 1.0f, 0.0f);
 }
 
 ICamera::~ICamera()
@@ -25,9 +25,9 @@ ICamera::~ICamera()
 
 void ICamera::Init(int _iScreenWidth, int _iScreenHeight, float _fFovY, float _fFarPlane, float _fNearPlane)
 {
-    m_fAspectRatio = static_cast<float>(CWindow::Get_Width()) / static_cast<float>(CWindow::Get_Height());
+    m_fAspectRatio = static_cast<float>(CWindow::Get_OffScreenWidth()) / static_cast<float>(CWindow::Get_OffScreenHeight());
     m_fFovY = _fFovY;
     m_fFarPlane = _fFarPlane;
     m_fNearPlane = _fNearPlane;
-    m_mProjection = Projection(m_fFovY, m_fAspectRatio, m_fNearPlane, m_fFarPlane); 
+    m_mProjection = glm::perspective(m_fFovY, m_fAspectRatio, m_fNearPlane, m_fFarPlane);; 
 }

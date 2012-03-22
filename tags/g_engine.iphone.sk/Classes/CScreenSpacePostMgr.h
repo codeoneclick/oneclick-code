@@ -39,6 +39,7 @@ public:
     
     void BindRenderBufferAsBuffer(void);
     void BindRenderBufferAsTexture(CScreenSpacePostMgr::E_POST_TEXTURE _ePostTexture);
+    void DiscardRenderBufferAsTexture(void);
     void Render_PostSimple(void);
     void Render_PostBloomExtract(void);
     void Render_PostBloomCombine(void);

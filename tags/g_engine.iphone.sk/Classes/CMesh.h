@@ -9,13 +9,9 @@
 #ifndef gEngine_CMesh_h
 #define gEngine_CMesh_h
 
-#include "CVector.h"
-#include <OpenGLES/ES2/gl.h>
-#include <OpenGLES/ES2/glext.h>
 #include "CVertexBuffer.h"
 #include "CIndexBuffer.h"
 #include "IResource.h"
-#include "CSkeleton.h"
 #include <vector>
 
 #define MAX_BONE_WEIGHTS 8
@@ -31,10 +27,10 @@ public:
 
     struct SVertex 
     {
-        CVector3d    m_vPosition;
-        CVector2d    m_vTexCoord;
-        CVector3d    m_vNormal;
-        CVector3d    m_vTangent;
+        glm::vec3    m_vPosition;
+        glm::vec2    m_vTexCoord;
+        glm::vec3    m_vNormal;
+        glm::vec3    m_vTangent;
         int         m_iNumBones;
         SBoneWeight m_tBoneWeights[MAX_BONE_WEIGHTS];
     };
@@ -46,8 +42,8 @@ public:
         CIndexBuffer*   m_pIB;
         int             m_iNumVertexes;
         int             m_iNumIndexes;
-        CVector3d       m_vMaxBound;
-        CVector3d       m_vMinBound;
+        glm::vec3       m_vMaxBound;
+        glm::vec3       m_vMinBound;
     }; 
 protected:
     SSource* m_pSource;
@@ -59,8 +55,8 @@ public:
     virtual void Set_Source(void* _pSource);
     int Get_NumIndexes() { return m_pSource->m_iNumIndexes; }
     int Get_NumVertexes() { return m_pSource->m_iNumVertexes; }
-    CVector3d Get_MaxBound(void) { return m_pSource->m_vMaxBound; }
-    CVector3d Get_MinBound(void) { return m_pSource->m_vMinBound; }
+    glm::vec3 Get_MaxBound(void) { return m_pSource->m_vMaxBound; }
+    glm::vec3 Get_MinBound(void) { return m_pSource->m_vMinBound; }
 };
 
 #endif

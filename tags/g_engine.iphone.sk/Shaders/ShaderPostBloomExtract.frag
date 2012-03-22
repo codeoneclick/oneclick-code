@@ -10,7 +10,7 @@ const char* ShaderPostBloomExtractF = STRINGIFY(
                                                    uniform sampler2D EXT_TEXTURE_04; 
 void main(void)
 {
-    mediump float fBloomTreshHold = 0.3;
+    mediump float fBloomTreshHold = 0.2;
     mediump vec4 vColor = texture2D(EXT_TEXTURE_01, OUT_TexCoord);
     vColor = clamp((vColor - fBloomTreshHold) / (1.0 - fBloomTreshHold), 0.0, 1.0);
     gl_FragColor = vColor;

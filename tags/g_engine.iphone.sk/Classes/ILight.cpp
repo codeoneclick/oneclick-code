@@ -8,13 +8,12 @@
 
 #include <iostream>
 #include "ILight.h"
-#include "CMatrix.h"
 
 ILight::ILight(void)
 {
-    m_vPosition = CVector3d(0.0f, 0.0f, 0.0f);
-    m_vLightAt  = CVector3d(0.0f, 0.0f, 0.0f);
-    m_vRotation = CVector3d(0.0f, 0.0f, 0.0f);
+    m_vPosition = glm::vec3(0.0f, 0.0f, 0.0f);
+    m_vLightAt  = glm::vec3(0.0f, 0.0f, 0.0f);
+    m_vRotation = glm::vec3(0.0f, 0.0f, 0.0f);
 }
 
 ILight::~ILight(void)
@@ -24,12 +23,15 @@ ILight::~ILight(void)
 
 void ILight::Update(void)
 {
-    CMatrix4x4 mRotationX = RotationX(m_vRotation.x);
-    CMatrix4x4 mRotationY = RotationY(m_vRotation.y);
-    CMatrix4x4 mRotationZ = RotationZ(m_vRotation.z);
-    CMatrix4x4 mRotation = mRotationX * mRotationY * mRotationZ;
-    CMatrix4x4 mTranslation = Translation(m_vPosition);
-    m_mWorld = mRotation * mTranslation;
+    glm::mat4x4 mRotationX = glm::rotate(glm::mat4(1.0f), m_vRotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
+    glm::mat4x4 mRotationY = glm::rotate(glm::mat4(1.0f), m_vRotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
+    glm::mat4x4 mRotationZ = glm::rotate(glm::mat4(1.0f), m_vRotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
+    
+    glm::mat4x4 mRotation = mRotationX * mRotationY * mRotationZ;
+    
+    glm::mat4x4 mTranslation = glm::translate(glm::mat4(1.0f), m_vPosition);
+    
+    m_mWorld = mTranslation * mRotation;
 }
 
 void ILight::Render(void)

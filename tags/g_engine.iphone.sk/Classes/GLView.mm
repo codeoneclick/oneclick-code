@@ -37,8 +37,8 @@ const bool ForceES1 = false;
         else 
         {
             NSLog(@"Using OpenGL ES 2.0");
-            CWindow::Set_Width(CGRectGetWidth(frame));
-            CWindow::Set_Height(CGRectGetHeight(frame));
+            CWindow::Set_ScreenWidth(CGRectGetWidth(frame));
+            CWindow::Set_ScreenHeight(CGRectGetHeight(frame));
             CGame::Instance()->Load();
         }
 
@@ -87,7 +87,7 @@ const bool ForceES1 = false;
     for (UITouch*touch in touches)
     {
         CGPoint TouchLocation = [touch locationInView:self];
-        CInput::Instance()->Set_State(CInput::E_STATE_TOUCH, CVector2d(TouchLocation.x, TouchLocation.y));
+        CInput::Instance()->Set_State(CInput::E_STATE_TOUCH, glm::vec2(TouchLocation.x, TouchLocation.y));
     }
 }
 - (void)touchesMoved:(NSSet*)touches withEvent:(UIEvent*)event
@@ -96,7 +96,7 @@ const bool ForceES1 = false;
     for (UITouch*touch in touches)
     {
         CGPoint TouchLocation = [touch locationInView:self];
-        CInput::Instance()->Set_State(CInput::E_STATE_MOVE, CVector2d(TouchLocation.x, TouchLocation.y));
+        CInput::Instance()->Set_State(CInput::E_STATE_MOVE, glm::vec2(TouchLocation.x, TouchLocation.y));
     }
 }
 - (void)touchesEnded:(NSSet*)touches withEvent:(UIEvent*)event 
@@ -105,7 +105,7 @@ const bool ForceES1 = false;
     for (UITouch*touch in touches)
     {
         CGPoint TouchLocation = [touch locationInView:self];
-        CInput::Instance()->Set_State(CInput::E_STATE_UNTOUCH, CVector2d(TouchLocation.x, TouchLocation.y));
+        CInput::Instance()->Set_State(CInput::E_STATE_UNTOUCH, glm::vec2(TouchLocation.x, TouchLocation.y));
     }
 }
 - (void)touchesCancelled:(NSSet*)touches withEvent:(UIEvent*)event 

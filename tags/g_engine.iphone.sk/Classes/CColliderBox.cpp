@@ -12,7 +12,7 @@
 #include "CSceneMgr.h"
 #include "CBatchMgr.h"
 
-CColliderBox::CColliderBox(const CVector3d &_vMax, const CVector3d &_vMin)
+CColliderBox::CColliderBox(const glm::vec3 &_vMax, const glm::vec3 &_vMin)
 {
     /*m_vMax = _vMax;
     m_vMin = _vMin;
@@ -116,13 +116,12 @@ CColliderBox::~CColliderBox()
 
 void CColliderBox::Render()
 {
-    if(m_bIsBatching)
+    /*if(m_bIsBatching)
     {
         CSceneMgr::Instance()->Get_BatchMgr()->PushToColliderBatch(this);
     }
     else
     {
-        glCullFace(GL_BACK);
         m_pShader->Enable();
         m_pShader->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD);
         ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
@@ -132,7 +131,7 @@ void CColliderBox::Render()
         glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IB()->Get_Data());
         m_pMesh->Get_VB()->Disable();
         m_pShader->Disable();
-    }
+    }*/
 }
 
 

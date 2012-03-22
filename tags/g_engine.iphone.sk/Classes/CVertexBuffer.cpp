@@ -15,6 +15,21 @@ const std::string CVertexBuffer::k_SLOT_NORMAL   = "IN_SLOT_Normal";
 const std::string CVertexBuffer::k_SLOT_TANGENT = "IN_SLOT_Tangent";
 const std::string CVertexBuffer::k_SLOT_COLOR   = "IN_SLOT_Color";
 
+glm::u8vec4 CVertexBuffer::CompressVector(const glm::vec3 &_vUncopressed)
+{
+    glm::vec3 vNormalized = glm::normalize(_vUncopressed);
+    glm::u8vec4 vCompressed;
+    vCompressed.x = static_cast<unsigned char>((vNormalized.x + 1.0f) * 0.5f * 255.0f);
+    vCompressed.y = static_cast<unsigned char>((vNormalized.y + 1.0f) * 0.5f * 255.0f);
+    vCompressed.z = static_cast<unsigned char>((vNormalized.z + 1.0f) * 0.5f * 255.0f);
+    vCompressed.w = 0;
+    
+    vNormalized.x = static_cast<float>(vCompressed.x / (255.0f * 0.5f) - 1.0f);
+    vNormalized.y = static_cast<float>(vCompressed.y / (255.0f * 0.5f) - 1.0f);
+    vNormalized.z = static_cast<float>(vCompressed.z / (255.0f * 0.5f) - 1.0f);
+    return vCompressed;
+}
+
 
 CVertexBuffer::CVertexBuffer(unsigned int _iNumVertexes)
 {
@@ -46,47 +61,47 @@ void CVertexBuffer::Set_ShaderRef(GLuint _iShaderHandler)
     m_iColorSlot    = glGetAttribLocation(m_iShaderHandle, k_SLOT_COLOR.c_str());
 }
 
-CVector3d* CVertexBuffer::CreateOrReUse_PositionData(void)
+glm::vec3* CVertexBuffer::CreateOrReUse_PositionData(void)
 {
     if(m_pData.m_pPositionData == NULL)
     {
-        m_pData.m_pPositionData = new CVector3d[m_iNumVertexes];
+        m_pData.m_pPositionData = new glm::vec3[m_iNumVertexes];
     }
     return m_pData.m_pPositionData;
 }
 
-CVector2d* CVertexBuffer::CreateOrReUse_TexCoordData(void)
+glm::vec2* CVertexBuffer::CreateOrReUse_TexCoordData(void)
 {
     if(m_pData.m_pTexCoordData == NULL)
     {
-        m_pData.m_pTexCoordData = new CVector2d[m_iNumVertexes];
+        m_pData.m_pTexCoordData = new glm::vec2[m_iNumVertexes];
     }
     return m_pData.m_pTexCoordData;
 }
 
-CByteVector3d* CVertexBuffer::CreateOrReUse_NormalData(void)
+glm::u8vec4* CVertexBuffer::CreateOrReUse_NormalData(void)
 {
     if(m_pData.m_pNormalData == NULL)
     {
-        m_pData.m_pNormalData = new CByteVector3d[m_iNumVertexes];
+        m_pData.m_pNormalData = new glm::u8vec4[m_iNumVertexes];
     }
     return m_pData.m_pNormalData;
 }
 
-CByteVector3d* CVertexBuffer::CreateOrReUse_TangentData(void)
+glm::u8vec4* CVertexBuffer::CreateOrReUse_TangentData(void)
 {
     if(m_pData.m_pTangentData == NULL)
     {
-        m_pData.m_pTangentData = new CByteVector3d[m_iNumVertexes];
+        m_pData.m_pTangentData = new glm::u8vec4[m_iNumVertexes];
     }
     return m_pData.m_pTangentData;
 }
 
-CColor4* CVertexBuffer::CreateOrReUse_ColorData(void)
+glm::u8vec4* CVertexBuffer::CreateOrReUse_ColorData(void)
 {
     if(m_pData.m_pColorData == NULL)
     {
-        m_pData.m_pColorData = new CColor4[m_iNumVertexes];
+        m_pData.m_pColorData = new glm::u8vec4[m_iNumVertexes];
     }
     return m_pData.m_pColorData;
 }
@@ -104,11 +119,11 @@ void CVertexBuffer::CommitToRAM(void)
     }
     if(m_pData.m_pNormalData != NULL)
     {
-        iBytesPerVertex += 3;
+        iBytesPerVertex += 4;
     }
     if(m_pData.m_pTangentData != NULL)
     {
-        iBytesPerVertex += 3;
+        iBytesPerVertex += 4;
     }
     if(m_pData.m_pColorData != NULL)
     {
@@ -122,28 +137,28 @@ void CVertexBuffer::CommitToRAM(void)
     {
         if(m_pData.m_pPositionData != NULL)
         {
-            memcpy(m_pSource + iPtrOffset, &m_pData.m_pPositionData[i].v[0], sizeof(CVector3d));
-            iPtrOffset += sizeof(CVector3d);
+            memcpy(m_pSource + iPtrOffset, &m_pData.m_pPositionData[i][0], sizeof(glm::vec3));
+            iPtrOffset += sizeof(glm::vec3);
         }
         if(m_pData.m_pTexCoordData != NULL)
         {
-            memcpy(m_pSource + iPtrOffset, &m_pData.m_pTexCoordData[i].v[0], sizeof(CVector2d));
-            iPtrOffset += sizeof(CVector2d);
+            memcpy(m_pSource + iPtrOffset, &m_pData.m_pTexCoordData[i][0], sizeof(glm::vec2));
+            iPtrOffset += sizeof(glm::vec2);
         }
         if(m_pData.m_pNormalData != NULL)
         {
-            memcpy(m_pSource + iPtrOffset, &m_pData.m_pNormalData[i].v[0], sizeof(CByteVector3d));
-            iPtrOffset += sizeof(CByteVector3d);
+            memcpy(m_pSource + iPtrOffset, &m_pData.m_pNormalData[i][0], sizeof(glm::u8vec4));
+            iPtrOffset += sizeof(glm::u8vec4);
         }
         if(m_pData.m_pTangentData != NULL)
         {
-            memcpy(m_pSource + iPtrOffset, &m_pData.m_pTangentData[i].v[0], sizeof(CByteVector3d));
-            iPtrOffset += sizeof(CByteVector3d);
+            memcpy(m_pSource + iPtrOffset, &m_pData.m_pTangentData[i][0], sizeof(glm::u8vec4));
+            iPtrOffset += sizeof(glm::u8vec4);
         }
         if(m_pData.m_pColorData != NULL)
         {
-            memcpy(m_pSource + iPtrOffset, &m_pData.m_pColorData[i].v[0], sizeof(CColor4));
-            iPtrOffset += sizeof(CColor4);
+            memcpy(m_pSource + iPtrOffset, &m_pData.m_pColorData[i][0], sizeof(glm::u8vec4));
+            iPtrOffset += sizeof(glm::u8vec4);
         }
         
         iPtrOffset += iPaddingSize;
@@ -152,8 +167,6 @@ void CVertexBuffer::CommitToRAM(void)
 
 void CVertexBuffer::Enable(void)
 {
-    glBindBuffer(GL_ARRAY_BUFFER, NULL);
-    
     if(m_bIsInVRAM)
     {
         unsigned char iBytesPerVertex = 0;
@@ -164,25 +177,25 @@ void CVertexBuffer::Enable(void)
             glVertexAttribPointer(m_iPositionSlot, 3, GL_FLOAT, GL_FALSE, m_iSize, (GLvoid*)iBytesPerVertex);
             iBytesPerVertex += 12;
         }
-        if(m_iTexcoordSlot >= 0 && m_pData.m_pTexCoordData != NULL /*m_eMode == E_VERTEX_BUFFER_MODE_VTN*/)
+        if(m_iTexcoordSlot >= 0 && m_pData.m_pTexCoordData != NULL)
         {
             glEnableVertexAttribArray(m_iTexcoordSlot);
             glVertexAttribPointer(m_iTexcoordSlot, 2, GL_FLOAT, GL_FALSE, m_iSize, (GLvoid*)iBytesPerVertex);
             iBytesPerVertex += 8;
         }
-        if(m_iNormalSlot >= 0 && m_pData.m_pNormalData != NULL/*m_eMode == E_VERTEX_BUFFER_MODE_VTN*/)
+        if(m_iNormalSlot >= 0 && m_pData.m_pNormalData != NULL)
         {
             glEnableVertexAttribArray(m_iNormalSlot);
-            glVertexAttribPointer(m_iNormalSlot,   3, GL_UNSIGNED_BYTE, GL_FALSE, m_iSize, (GLvoid*)iBytesPerVertex);
-            iBytesPerVertex += 3;
+            glVertexAttribPointer(m_iNormalSlot, 4, GL_UNSIGNED_BYTE, GL_FALSE, m_iSize, (GLvoid*)iBytesPerVertex);
+            iBytesPerVertex += 4;
         }
-        if(m_iTangentSlot >= 0 && m_pData.m_pTangentData != NULL /*m_eMode == E_VERTEX_BUFFER_MODE_VTN*/)
+        if(m_iTangentSlot >= 0 && m_pData.m_pTangentData != NULL)
         {
             glEnableVertexAttribArray(m_iTangentSlot);
-            glVertexAttribPointer(m_iTangentSlot,   3, GL_UNSIGNED_BYTE, GL_FALSE, m_iSize,(GLvoid*)iBytesPerVertex);
-            iBytesPerVertex += 3;
+            glVertexAttribPointer(m_iTangentSlot, 4, GL_UNSIGNED_BYTE, GL_FALSE, m_iSize,(GLvoid*)iBytesPerVertex);
+            iBytesPerVertex += 4;
         }
-        if(m_iColorSlot >= 0 && m_pData.m_pColorData != NULL /*m_eMode == E_VERTEX_BUFFER_MODE_VC*/)
+        if(m_iColorSlot >= 0 && m_pData.m_pColorData != NULL)
         {
             glEnableVertexAttribArray(m_iColorSlot);
             glVertexAttribPointer(m_iColorSlot,  4, GL_UNSIGNED_BYTE, GL_FALSE, m_iSize,(GLvoid*)iBytesPerVertex);
@@ -190,6 +203,8 @@ void CVertexBuffer::Enable(void)
         }
         return; 
     }
+    
+    glBindBuffer(GL_ARRAY_BUFFER, NULL);
     
     const GLvoid* pPositionSource = NULL;
     const GLvoid* pTexcoordSource = NULL;
@@ -201,22 +216,22 @@ void CVertexBuffer::Enable(void)
     if(m_pData.m_pPositionData != NULL)
     {
         pPositionSource = m_pSource + iBytesPerVertex;
-        iBytesPerVertex += sizeof(CVector3d);
+        iBytesPerVertex += sizeof(glm::vec3);
     }
     if(m_pData.m_pTexCoordData != NULL)
     {
         pTexcoordSource = m_pSource + iBytesPerVertex;
-        iBytesPerVertex += sizeof(CVector2d);
+        iBytesPerVertex += sizeof(glm::vec2);
     }
     if(m_pData.m_pNormalData != NULL)
     {
         pNormalSource = m_pSource + iBytesPerVertex;
-        iBytesPerVertex += sizeof(CByteVector3d);
+        iBytesPerVertex += sizeof(glm::u8vec4);
     }
     if(m_pData.m_pTangentData != NULL)
     {
         pTangentSource = m_pSource + iBytesPerVertex;
-        iBytesPerVertex += sizeof(CByteVector3d);
+        iBytesPerVertex += sizeof(glm::u8vec4);
     }
     if(m_pData.m_pColorData != NULL)
     {
@@ -235,12 +250,12 @@ void CVertexBuffer::Enable(void)
     }
     if(m_iNormalSlot >= 0 && m_pData.m_pNormalData != NULL)
     {
-        glVertexAttribPointer(m_iNormalSlot,   3, GL_UNSIGNED_BYTE, GL_FALSE, m_iSize, pNormalSource);
+        glVertexAttribPointer(m_iNormalSlot, 4, GL_UNSIGNED_BYTE, GL_FALSE, m_iSize, pNormalSource);
         glEnableVertexAttribArray(m_iNormalSlot);
     }
     if(m_iTangentSlot >= 0 && m_pData.m_pTangentData != NULL)
     {
-        glVertexAttribPointer(m_iTangentSlot,   3, GL_UNSIGNED_BYTE, GL_FALSE, m_iSize, pTangentSource);
+        glVertexAttribPointer(m_iTangentSlot, 4, GL_UNSIGNED_BYTE, GL_FALSE, m_iSize, pTangentSource);
         glEnableVertexAttribArray(m_iTangentSlot);
     }
     if(m_iColorSlot >= 0 && m_pData.m_pColorData != NULL)

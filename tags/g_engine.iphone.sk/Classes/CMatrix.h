@@ -8,7 +8,7 @@
 
 #ifndef gEngine_CMatrix_h
 #define gEngine_CMatrix_h
-
+/*
 #include "CVector.h"
 
 struct CMatrix4x4
@@ -232,7 +232,7 @@ inline CVector3d Unproject(const CVector3d& _vValue, const CMatrix4x4& _mView, c
     CVector3d vValueOut = CVector3d(vValueTemp.x, vValueTemp.y, vValueTemp.z);
     return vValueOut;
     
-    /*CVector4d vValueExt = CVector4d(_vValue.x, _vValue.y, _vValue.z, 1.0f);
+    CVector4d vValueExt = CVector4d(_vValue.x, _vValue.y, _vValue.z, 1.0f);
     CMatrix4x4 mInvertViewProjection = Inverse(_mView * _mProjection);
     vValueExt.x = (vValueExt.x - _pViewport[0]) * 2.0f / _pViewport[2] - 1.0f;
     vValueExt.y = (vValueExt.y - _pViewport[1]) * 2.0f / _pViewport[3] - 1.0f;
@@ -245,8 +245,8 @@ inline CVector3d Unproject(const CVector3d& _vValue, const CMatrix4x4& _mView, c
     vValueTemp.z /= vValueTemp.w;
     
     CVector3d vValueOut = CVector3d(vValueTemp.x, vValueTemp.y, vValueTemp.z);
-    return vValueOut;*/
-}
+    return vValueOut;
+}*/
 
 
 
