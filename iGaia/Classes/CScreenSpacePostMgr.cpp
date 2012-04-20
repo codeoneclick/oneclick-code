@@ -39,8 +39,8 @@ CScreenSpacePostMgr::CScreenSpacePostMgr(void)
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         if(i == E_OFFSCREEN_MODE_REFLECTION || i == E_OFFSCREEN_MODE_REFRACTION)
         {
-            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         }
         else 
         {
@@ -180,7 +180,7 @@ void CScreenSpacePostMgr::Render_PostSimple(void)
         m_pMesh->Get_VB()->Set_ShaderRef(m_pShaderPostSimple->Get_ProgramHandle());
     }
     m_pShaderPostSimple->Enable();
-    m_pShaderPostSimple->SetTexture(m_hOffScreenTextures[E_OFFSCREEN_MODE_BLOOM_COMBINE], CShader::k_TEXTURE_01);
+    m_pShaderPostSimple->SetTexture(m_hOffScreenTextures[E_OFFSCREEN_MODE_SIMPLE], CShader::k_TEXTURE_01);
     m_pMesh->Get_VB()->Enable();
     m_pMesh->Get_IB()->Enable();
     glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IB()->Get_DataFromVRAM());

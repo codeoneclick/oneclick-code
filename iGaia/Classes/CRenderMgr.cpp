@@ -34,7 +34,7 @@ void CRenderMgr::EndDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE _eMode)
 
 void CRenderMgr::DrawResult(void)
 {
-    m_pScreenSpacePostMgr->EnableOffScreenMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_EDGE_DETECT);
+    /*m_pScreenSpacePostMgr->EnableOffScreenMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_EDGE_DETECT);
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
     m_pScreenSpacePostMgr->Render_PostEdgeDetect();
     m_pScreenSpacePostMgr->DisableOffScreenMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_EDGE_DETECT);
@@ -52,7 +52,7 @@ void CRenderMgr::DrawResult(void)
     m_pScreenSpacePostMgr->EnableOffScreenMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_BLOOM_COMBINE);
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
     m_pScreenSpacePostMgr->Render_PostBloomCombine();
-    m_pScreenSpacePostMgr->DisableOffScreenMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_BLOOM_COMBINE);
+    m_pScreenSpacePostMgr->DisableOffScreenMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_BLOOM_COMBINE);*/
     
     m_pScreenSpacePostMgr->EnableScreenMode();
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );

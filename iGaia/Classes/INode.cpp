@@ -18,6 +18,7 @@ INode::INode()
     m_vScale    = glm::vec3(1.0f, 1.0f, 1.0f);
     m_vRotation = glm::vec3(0.0f, 0.0f, 0.0f);
     m_vPosition = glm::vec3(0.0f, 0.0f, 0.0f);
+    m_vTexCoordOffset = glm::vec2(0.0f, 0.0f);
     
     m_pTextures = new CTexture*[TEXTURES_MAX_COUNT];
     m_pTextures[0] = NULL;
@@ -39,6 +40,10 @@ INode::INode()
     m_bIsForRefraction = false;
     m_bIsEdgeDetect = false;
     m_bIsNormalDepth = false;
+    
+    m_pRigidBody = NULL;
+    m_pRaycastVehicle = NULL;
+
 }
 
 INode::~INode()
@@ -73,7 +78,7 @@ void INode::Set_Texture(const std::string &_sName, int index, IResource::E_THREA
         // TODO: unload
     }
     
-    m_pTextures[index] = static_cast<CTexture*>(CResourceMgr::Instance()->Load(_sName, IResource::E_MGR_TEXTURE, _eThread));;  
+    m_pTextures[index] = static_cast<CTexture*>(CResourceMgr::Instance()->Load(_sName, IResource::E_MGR_TEXTURE, _eThread, this));;
 }
 
 void INode::Set_Shader(IResource::E_SHADER _eShader)
@@ -132,8 +137,8 @@ void INode::Remove_Delegate(IDelegate *_pDelegate)
 void INode::Update()
 {
     glm::mat4x4 mRotationX = glm::rotate(glm::mat4(1.0f), m_vRotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
-    glm::mat4x4 mRotationY = glm::rotate(mRotationX, m_vRotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
-    glm::mat4x4 mRotationZ = glm::rotate(mRotationY, m_vRotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
+    glm::mat4x4 mRotationY = glm::rotate(mRotationX, m_vRotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
+    glm::mat4x4 mRotationZ = glm::rotate(mRotationY, m_vRotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
     
     m_mRotation = mRotationZ;
     

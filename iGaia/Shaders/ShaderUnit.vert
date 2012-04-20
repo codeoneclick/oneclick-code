@@ -9,6 +9,7 @@ const char* ShaderUnitV = STRINGIFY(
                                                     varying vec3   OUT_Light;
                                                     varying vec3   OUT_Normal;                                     
                                                     varying vec2   OUT_TexCoord;
+                                                    varying float  OUT_BlendFactor;
                                                     
                                                     uniform vec3   EXT_View;
                                                     uniform vec3   EXT_Light;
@@ -42,6 +43,10 @@ void main(void)
     OUT_Light = mTangentSpace * vLightDirection;
     
     OUT_TexCoord = IN_SLOT_TexCoord;
-   
+    
+    //const float LOG2 = 1.442695;
+	float fBlendLength = length(vWorldPosition.xyz - EXT_View);
+	float fBlendFactor = (8.0 - fBlendLength) / (8.0 - 16.0);//exp2( -16.0 * 16.0 * fFogCoord * fFogCoord * LOG2 );
+    OUT_BlendFactor = clamp(fBlendFactor, 0.0, 1.0);
 }
 );

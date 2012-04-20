@@ -14,16 +14,17 @@
 #include <map>
 #include "CParser_MDL.h"
 #include "IResourceMgr.h"
+#include "IResourceLoaderDelegate.h"
 
 class CMeshMgr : public IResourceMgr
 {
 private:
     CMesh::SSource* m_pStub;
 public:
-    CMeshMgr();
-    ~CMeshMgr();
+    CMeshMgr(void);
+    ~CMeshMgr(void);
     
-    virtual IResource* Load(std::string _sName, IResource::E_THREAD _eThread);
+    virtual IResource* Load(std::string _sName, IResource::E_THREAD _eThread, IResourceLoaderDelegate* _pResourceLoaderDelegate);
     virtual void Unload(std::string _sName);
 };
 

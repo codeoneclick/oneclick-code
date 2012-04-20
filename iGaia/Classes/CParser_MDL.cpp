@@ -112,7 +112,6 @@ void CParser_MDL::Load(const std::string& _sName)
 void CParser_MDL::Commit()
 {
     m_pSource->m_pVB = new CVertexBuffer(m_pSource->m_iNumVertexes);
-
     glm::vec3* pPositionData = m_pSource->m_pVB->CreateOrReUse_PositionData();
     glm::vec2* pTexCoordData = m_pSource->m_pVB->CreateOrReUse_TexCoordData();
     glm::u8vec4* pNormalData = m_pSource->m_pVB->CreateOrReUse_NormalData();
@@ -122,13 +121,9 @@ void CParser_MDL::Commit()
     {
         pPositionData[index] = m_pSource->m_pData[index].m_vPosition;
         pTexCoordData[index] = m_pSource->m_pData[index].m_vTexCoord;
-        pNormalData[index] = CVertexBuffer::CompressVector(m_pSource->m_pData[index].m_vNormal);
-        pTangentData[index] = CVertexBuffer::CompressVector(m_pSource->m_pData[index].m_vTangent);
+        pNormalData[index] = CVertexBuffer::CompressVEC3(m_pSource->m_pData[index].m_vNormal);
+        pTangentData[index] = CVertexBuffer::CompressVEC3(m_pSource->m_pData[index].m_vTangent);
     }
-    
-    //m_pSource->m_pVB->CommitToRAM();
-    //m_pSource->m_pVB->CommitFromRAMToVRAM();
-    //m_pSource->m_pIB->CommitFromRAMToVRAM();
 }
 
 

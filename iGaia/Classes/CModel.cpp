@@ -29,12 +29,33 @@ void CModel::Load(IResource::SResource _tResource)
     }
     else
     {
-        m_pMesh = static_cast<CMesh*>(CResourceMgr::Instance()->Load(_tResource.m_sName, IResource::E_MGR_MESH, _tResource.m_eThread));
+        m_pMesh = static_cast<CMesh*>(CResourceMgr::Instance()->Load(_tResource.m_sName, IResource::E_MGR_MESH, _tResource.m_eThread, this));
     }
     
     m_pMesh->Get_VB()->CommitToRAM();
     m_pMesh->Get_VB()->CommitFromRAMToVRAM();
     m_pMesh->Get_IB()->CommitFromRAMToVRAM();
+    
+    m_pShaderNormalDepth = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
+}
+
+void CModel::OnLoadDone(E_RESOURCE_TYPE _eType, IResource* pResource)
+{
+    switch (_eType)
+    {
+        case IResourceLoaderDelegate::E_RESOURCE_TYPE_MESH:
+            std::cout<<"[CModel::OnLoadDone] Resource Mesh loaded : "<<pResource->Get_Name()<<"\n";
+            m_pMesh = static_cast<CMesh*>(pResource);
+            m_pMesh->Get_VB()->CommitToRAM();
+            m_pMesh->Get_VB()->CommitFromRAMToVRAM();
+            m_pMesh->Get_IB()->CommitFromRAMToVRAM();
+            break;
+        case IResourceLoaderDelegate::E_RESOURCE_TYPE_TEXTURE:
+            std::cout<<"[CModel::OnLoadDone] Resource Texture loaded : "<<pResource->Get_Name()<<"\n";
+            break;
+        default:
+            break;
+    }
 }
 
 void CModel::OnTouchEvent(void)
@@ -54,6 +75,14 @@ void CModel::OnTouchEvent(void)
     for(size_t index = 0; index < m_lDelegates.size(); index++)
     {
         m_lDelegates[index]->OnTouchEvent(m_pDelegateTarget);
+    }
+}
+
+void CModel::OnPhysicEventUpdate(glm::vec3 _vPosition, glm::vec3 _vRotation, glm::vec3 _vScale)
+{
+    if(m_pDelegateTarget != NULL)
+    {
+        m_pDelegateTarget->OnPhysicEvent(this, _vPosition, _vRotation, _vScale);
     }
 }
 
@@ -77,6 +106,7 @@ void CModel::Render(E_RENDER_MODE _eMode)
             m_pShader->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
             m_pShader->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
             m_pShader->SetVector3(pCamera->Get_Position(), CShader::k_VECTOR_VIEW);
+            m_pShader->SetVector2(m_vTexCoordOffset, CShader::k_TEXCOORD_OFFSET);
             
             if(m_pLight != NULL)
             {
@@ -111,7 +141,29 @@ void CModel::Render(E_RENDER_MODE _eMode)
             
         }
             break;
+        case INode::E_RENDER_MODE_NORMAL_DEPTH:
+        {
+            m_pMesh->Get_VB()->Set_ShaderRef(m_pShaderNormalDepth->Get_ProgramHandle());
+            m_pShaderNormalDepth->Enable();
+            m_pShaderNormalDepth->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD); 
+            m_pShaderNormalDepth->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
+            m_pShaderNormalDepth->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
+            
+            char pStrTextureId[256];
+            for(unsigned int i = 0; i < TEXTURES_MAX_COUNT; ++i)
+            {
+                if( m_pTextures[i] == NULL )
+                {
+                    continue;
+                }
+                sprintf(pStrTextureId, "EXT_TEXTURE_0%i",i + 1);
+                std::string k_TEXTURE_ID = pStrTextureId;
+                m_pShader->SetTexture(m_pTextures[i]->Get_Handle(), k_TEXTURE_ID);
+            }
 
+            //m_pShaderNormalDepth->SetVector4(glm::vec4(0.0f, 1.0, 0.0, 0.1), CShader::k_VECTOR_CLIP_PLANE);
+        }
+            break;
         default:
             break;
     }
@@ -124,7 +176,7 @@ void CModel::Render(E_RENDER_MODE _eMode)
     m_pShader->Disable();
     glCullFace(GL_FRONT);
     
-    if(m_pBoundingBox != NULL)
+    if(m_pBoundingBox != NULL && INode::E_RENDER_MODE_SIMPLE == _eMode)
     {
         m_pBoundingBox->Render();
     }

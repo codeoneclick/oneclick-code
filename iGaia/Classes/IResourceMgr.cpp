@@ -55,6 +55,7 @@ void IResourceMgr::Update()
                 pResource->Set_Source(pParser->Get_Source());
                 m_lTaskPool.erase(pBTask);
                 delete pParser;
+                pResource->Get_ResourceLoaderDelegate()->OnLoadDone(pResource->Get_ResourceType(), pResource);
                 return;
             }
         }

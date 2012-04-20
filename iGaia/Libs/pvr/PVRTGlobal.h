@@ -4,7 +4,9 @@
 
  @Title        PVRTGlobal
 
- @Copyright    Copyright (C)  Imagination Technologies Limited.
+ @Version      
+
+ @Copyright    Copyright (c) Imagination Technologies Limited.
 
  @Platform     ANSI compatible
 
@@ -21,7 +23,10 @@
 #define PVRT_MAX(a,b)            (((a) > (b)) ? (a) : (b))
 #define PVRT_CLAMP(x, l, h)      (PVRT_MIN((h), PVRT_MAX((x), (l))))
 
-#if defined(_WIN32) && !defined(UNDER_CE) && !defined(__SYMBIAN32__)	/* Windows desktop */
+// avoid warning about unused parameter
+#define PVRT_UNREFERENCED_PARAMETER(x) ((void) x)
+
+#if defined(_WIN32) && !defined(UNDER_CE) && !defined(__SYMBIAN32__) && !defined(__BADA__) && !defined(__QT__)	/* Windows desktop */
 	#define _CRTDBG_MAP_ALLOC
 	#include <windows.h>
 	#include <crtdbg.h>
@@ -53,7 +58,7 @@
 	#define _RPT4(a,b,c,d,e,f)
 #else
 
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(__WINSCW__) && !defined(__BADA__) && !defined(__QT__)
 
 #else
 #if defined(__linux__) || defined(__APPLE__)
@@ -81,7 +86,7 @@
 	#include <string.h>
 	#define BYTE unsigned char
 	#define WORD unsigned short
-	#define DWORD unsigned long
+	#define DWORD unsigned int
 	typedef struct tagRGBQUAD {
 	BYTE    rgbBlue;
 	BYTE    rgbGreen;
@@ -118,14 +123,17 @@
 ** Integer types
 ****************************************************************************/
 
-typedef signed char        PVRTint8;
-typedef signed short       PVRTint16;
-typedef signed int         PVRTint32;
-typedef unsigned char      PVRTuint8;
-typedef unsigned short     PVRTuint16;
-typedef unsigned int       PVRTuint32;
+typedef char				PVRTchar8;
+typedef signed char			PVRTint8;
+typedef signed short		PVRTint16;
+typedef signed int			PVRTint32;
+typedef unsigned char		PVRTuint8;
+typedef unsigned short		PVRTuint16;
+typedef unsigned int		PVRTuint32;
 
-#if defined(__int64) || defined(_WIN32)
+typedef float				PVRTfloat32;
+
+#if !defined(__BADA__) && (defined(__int64) || defined(_WIN32))
 typedef signed __int64     PVRTint64;
 typedef unsigned __int64   PVRTuint64;
 #elif defined(TInt64)
@@ -136,6 +144,13 @@ typedef signed long long   PVRTint64;
 typedef unsigned long long PVRTuint64;
 #endif
 
+#if __SIZEOF_WCHAR_T__  == 4 || __WCHAR_MAX__ > 0x10000
+	#define PVRTSIZEOFWCHAR 4
+#else
+	#define PVRTSIZEOFWCHAR 2
+#endif
+
+PVRTSIZEASSERT(PVRTchar8,   1);
 PVRTSIZEASSERT(PVRTint8,   1);
 PVRTSIZEASSERT(PVRTuint8,  1);
 PVRTSIZEASSERT(PVRTint16,  2);
@@ -144,6 +159,35 @@ PVRTSIZEASSERT(PVRTint32,  4);
 PVRTSIZEASSERT(PVRTuint32, 4);
 PVRTSIZEASSERT(PVRTint64,  8);
 PVRTSIZEASSERT(PVRTuint64, 8);
+PVRTSIZEASSERT(PVRTfloat32, 4);
+
+/*!**************************************************************************
+@Enum   ETextureFilter
+@Brief  Enum values for defining texture filtering
+****************************************************************************/
+enum ETextureFilter
+{
+	eFilter_Nearest,
+	eFilter_Linear,
+	eFilter_None,
+
+	eFilter_Size,
+	eFilter_Default		= eFilter_Nearest,
+	eFilter_MipDefault	= eFilter_None
+};
+
+/*!**************************************************************************
+@Enum   ETextureWrap
+@Brief  Enum values for defining texture wrapping
+****************************************************************************/
+enum ETextureWrap
+{
+	eWrap_Clamp,
+	eWrap_Repeat,
+
+	eWrap_Size,
+	eWrap_Default = eWrap_Repeat
+};
 
 /****************************************************************************
 ** swap template function
@@ -168,6 +212,23 @@ template void PVRTswap<unsigned char>(unsigned char& a, unsigned char& b);
 #endif
 
 /*!***************************************************************************
+ @Function		PVRTClamp
+ @Input			val		Value to clamp
+ @Input			min		Minimum legal value
+ @Input			max		Maximum legal value
+ @Description	A clamp template function that clamps val between min and max.
+*****************************************************************************/
+template <typename T>
+inline T PVRTClamp(const T& val, const T& min, const T& max)
+{
+	if(val > max)
+		return max;
+	if(val < min)
+		return min;
+	return val;
+}
+
+/*!***************************************************************************
  @Function		PVRTByteSwap
  @Input			pBytes A number
  @Input			i32ByteNo Number of bytes in pBytes
@@ -185,9 +246,9 @@ inline void PVRTByteSwap(unsigned char* pBytes, int i32ByteNo)
  @Function		PVRTByteSwap32
  @Input			ui32Long A number
  @Returns		ui32Long with its endianness changed
- @Description	Converts the endianness of an unsigned long
+ @Description	Converts the endianness of an unsigned int
 *****************************************************************************/
-inline unsigned long PVRTByteSwap32(unsigned long ui32Long)
+inline unsigned int PVRTByteSwap32(unsigned int ui32Long)
 {
 	return ((ui32Long&0x000000FF)<<24) + ((ui32Long&0x0000FF00)<<8) + ((ui32Long&0x00FF0000)>>8) + ((ui32Long&0xFF000000) >> 24);
 }
@@ -229,3 +290,4 @@ inline bool PVRTIsLittleEndian()
 /*****************************************************************************
  End of file (Tools.h)
 *****************************************************************************/
+

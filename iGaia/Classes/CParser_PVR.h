@@ -19,22 +19,15 @@
 class CParser_PVR : public IParser
 {
 protected:
-    enum E_TEXTURE_FORMAT 
-    {
-        TextureFormatPvrtcRgb2,
-        TextureFormatPvrtcRgba2,
-        TextureFormatPvrtcRgb4,
-        TextureFormatPvrtcRgba4,
-    };
-    
     struct SDescription
     {
-        E_TEXTURE_FORMAT m_eFormat;
         GLenum m_glFormat;
         GLenum m_glType;
         int m_uiBPP;
         glm::vec2 m_vSize;
         unsigned int m_uiMIP;
+        char* m_pTextureData;
+        char* m_pHeaderData;
         bool m_bCompressed;
     };
     
@@ -42,7 +35,6 @@ private:
     CTexture::SSource* m_pSource;
     char* m_pData;
     SDescription* m_pDescription;
-    PVR_Texture_Header* m_pHeader;
 public:
     CParser_PVR();
     virtual ~CParser_PVR();

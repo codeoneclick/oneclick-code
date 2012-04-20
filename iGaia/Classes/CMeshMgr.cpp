@@ -22,7 +22,7 @@ CMeshMgr::~CMeshMgr()
     
 }
 
-IResource* CMeshMgr::Load(std::string _sName, IResource::E_THREAD _eThread)
+IResource* CMeshMgr::Load(std::string _sName, IResource::E_THREAD _eThread, IResourceLoaderDelegate* _pResourceLoaderDelegate)
 {
     CMesh* pMesh = NULL;
     
@@ -63,6 +63,9 @@ IResource* CMeshMgr::Load(std::string _sName, IResource::E_THREAD _eThread)
             }
             pMesh = new CMesh();
             pMesh->Set_Source(m_pStub);
+            pMesh->Set_Name(_sName);
+            pMesh->Set_ResourceLoaderDelegate(_pResourceLoaderDelegate);
+            pMesh->Set_ResourceType(IResourceLoaderDelegate::E_RESOURCE_TYPE_MESH);
             m_lContainer[_sName] = pMesh;
         }
     }

@@ -17,7 +17,7 @@ const int CGrass::k_ELEMENT_NUM_VERTEXES = 8;
 
 CGrass::CGrass(void)
 {
-    m_iWidth = 32;
+    /*m_iWidth = 32;
     m_iHeight = 32;
     
     m_pSingleElementIndexBuffer = new unsigned short[k_ELEMENT_NUM_INDEXES];
@@ -57,7 +57,7 @@ CGrass::CGrass(void)
     m_pSingleElementVertexBuffer.m_pTexCoordData[6] = glm::vec2(1.0f,1.0f);
     m_pSingleElementVertexBuffer.m_pTexCoordData[7] = glm::vec2(1.0f,0.0f);
     
-    m_pHeightMapSetter = NULL;
+    m_pHeightMapSetter = NULL;*/
 }
 
 CGrass::~CGrass(void)
@@ -67,7 +67,7 @@ CGrass::~CGrass(void)
 
 void CGrass::Load(IResource::SResource _tResource)
 {   
-    m_pHeightMapSetter = CSceneMgr::Instance()->Get_HeightMapSetterRef();
+    /*m_pHeightMapSetter = CSceneMgr::Instance()->Get_HeightMapSetterRef();
     std::vector<glm::vec3> pElementsSourceData;
     for(unsigned int i = 0; i < m_iWidth; ++i)
     {
@@ -120,11 +120,32 @@ void CGrass::Load(IResource::SResource _tResource)
     m_pMesh->Set_Source(pSource);
     m_pMesh->Get_VB()->CommitToRAM();
     m_pMesh->Get_VB()->CommitFromRAMToVRAM();
-    m_pMesh->Get_IB()->CommitFromRAMToVRAM();
+    m_pMesh->Get_IB()->CommitFromRAMToVRAM();*/
+}
+
+void CGrass::OnLoadDone(E_RESOURCE_TYPE _eType, IResource* pResource)
+{
+    switch (_eType)
+    {
+        case IResourceLoaderDelegate::E_RESOURCE_TYPE_MESH:
+            std::cout<<"[CModel::OnLoadDone] Resource Mesh loaded : "<<pResource->Get_Name()<<"\n";
+            break;
+        case IResourceLoaderDelegate::E_RESOURCE_TYPE_TEXTURE:
+            std::cout<<"[CModel::OnLoadDone] Resource Texture loaded : "<<pResource->Get_Name()<<"\n";
+            break;
+        default:
+            break;
+    }
 }
 
 void CGrass::OnTouchEvent(void)
 {
+    
+}
+
+void CGrass::OnPhysicEventUpdate(glm::vec3 _vPosition, glm::vec3 _vRotation, glm::vec3 _vScale)
+{
+    
 }
 
 void CGrass::Update()
@@ -134,7 +155,7 @@ void CGrass::Update()
 
 void CGrass::Render(INode::E_RENDER_MODE _eMode)
 {      
-    glDisable(GL_CULL_FACE);
+    /*glDisable(GL_CULL_FACE);
     ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
     
     switch (_eMode)
@@ -193,5 +214,5 @@ void CGrass::Render(INode::E_RENDER_MODE _eMode)
     m_pMesh->Get_VB()->Disable();
     m_pShader->Disable();
     
-    glEnable(GL_CULL_FACE);
+    glEnable(GL_CULL_FACE);*/
 }

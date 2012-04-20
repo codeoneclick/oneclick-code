@@ -17,6 +17,7 @@ CWater::CWater(void)
 {
     m_iWidth = 32;
     m_iHeight = 32;
+    m_fWaterHeight = -0.1f;
 }
 
 CWater::~CWater(void)
@@ -25,37 +26,7 @@ CWater::~CWater(void)
 }
 
 void CWater::Load(IResource::SResource _tResource)
-{   
-    /*CMesh::SSource* pSource = new CMesh::SSource();
-    pSource->m_iNumVertexes = k_ELEMENT_NUM_VERTEXES;
-    pSource->m_iNumIndexes  = k_ELEMENT_NUM_INDEXES;
-    
-    pSource->m_pVB = new CVertexBuffer(pSource->m_iNumVertexes);
-    glm::vec3* pPositionData = pSource->m_pVB->CreateOrReUse_PositionData();
-    glm::vec2* pTextCoordData = pSource->m_pVB->CreateOrReUse_TexCoordData();
-    
-    pPositionData = new glm::vec3[k_ELEMENT_NUM_VERTEXES];
-    pPositionData[0] = glm::vec3(-m_iWidth, 0.2f, -m_iHeight);
-    pPositionData[1] = glm::vec3(-m_iWidth, 0.2f,  m_iHeight);
-    pPositionData[2] = glm::vec3( m_iWidth, 0.2f, -m_iHeight);
-    pPositionData[3] = glm::vec3( m_iWidth, 0.2f,  m_iHeight);
-    
-    pTextCoordData[0] = glm::vec2(0.0f,0.0f);
-    pTextCoordData[1] = glm::vec2(0.0f,1.0f);
-    pTextCoordData[2] = glm::vec2(1.0f,0.0f);
-    pTextCoordData[3] = glm::vec2(1.0f,1.0f);
-    
-    pSource->m_pIB = new CIndexBuffer(pSource->m_iNumIndexes);
-    unsigned short* pIndexesBufferData = pSource->m_pIB->Get_Data();
-    
-    pIndexesBufferData[0] = 0;
-    pIndexesBufferData[1] = 1;
-    pIndexesBufferData[2] = 2;
-    
-    pIndexesBufferData[3] = 3;
-    pIndexesBufferData[4] = 2;
-    pIndexesBufferData[5] = 1;*/
-    
+{     
     CMesh::SSource* pSource = new CMesh::SSource();
     pSource->m_iNumVertexes = 4;
     pSource->m_iNumIndexes  = 6;
@@ -64,109 +35,28 @@ void CWater::Load(IResource::SResource _tResource)
     
     glm::vec3* pPositionData = pSource->m_pVB->CreateOrReUse_PositionData();
     glm::vec2* pTexCoordData = pSource->m_pVB->CreateOrReUse_TexCoordData();
-    glm::u8vec4* pNormalData = pSource->m_pVB->CreateOrReUse_NormalData();
-    
-    /*glm::u8vec4* pNormalData = m_pSource->m_pVB->CreateOrReUse_NormalData();
-    glm::u8vec4* pTangentData = m_pSource->m_pVB->CreateOrReUse_TangentData();
-    
-    for(unsigned int index = 0; index < m_pSource->m_iNumVertexes; index++)
-    {
-        pPositionData[index] = m_pSource->m_pData[index].m_vPosition;
-        pTexCoordData[index] = m_pSource->m_pData[index].m_vTexCoord;
-        pNormalData[index] = CVertexBuffer::CompressVector(m_pSource->m_pData[index].m_vNormal);*/
-
-    
-    glm::vec3 m_vMax = glm::vec3(m_iWidth, -0.1f, m_iHeight);
-    glm::vec3 m_vMin = glm::vec3(0.0f, -0.1f, 0.0f);
     
     memset(pPositionData, 0x0, pSource->m_iNumVertexes * sizeof(glm::vec3));
     
-    /*pPositionData[0] = glm::vec3( m_vMin.x,  m_vMin.y, m_vMax.z);
-    pPositionData[1] = glm::vec3( m_vMax.x,  m_vMin.y, m_vMax.z);
-    pPositionData[2] = glm::vec3( m_vMax.x,  m_vMax.y, m_vMax.z);
-    pPositionData[3] = glm::vec3( m_vMin.x,  m_vMax.y, m_vMax.z);*/
-    // Back
-    /*pPositionData[4] = glm::vec3( m_vMin.x,  m_vMin.y,  m_vMin.z);
-    pPositionData[5] = glm::vec3( m_vMin.x,  m_vMax.y,  m_vMin.z);
-    pPositionData[6] = glm::vec3( m_vMax.x,  m_vMax.y,  m_vMin.z);
-    pPositionData[7] = glm::vec3( m_vMax.x,  m_vMin.y,  m_vMin.z);*/
-    // Left
-    /*pPositionData[8] = glm::vec3( m_vMin.x,  m_vMax.y,  m_vMin.z);
-    pPositionData[9] = glm::vec3( m_vMin.x,  m_vMax.y,  m_vMax.z);
-    pPositionData[10] = glm::vec3( m_vMax.x,  m_vMax.y,  m_vMax.z);
-    pPositionData[11] = glm::vec3( m_vMax.x,  m_vMax.y,  m_vMin.z);
-    // Right*/
-    pPositionData[0] = glm::vec3( m_vMin.x,  m_vMin.y,  m_vMin.z );
-    pPositionData[1] = glm::vec3( m_vMax.x,  m_vMin.y,  m_vMin.z );
-    pPositionData[2] = glm::vec3( m_vMax.x,  m_vMin.y,  m_vMax.z );
-    pPositionData[3] = glm::vec3( m_vMin.x,  m_vMin.y,  m_vMax.z );
+    pPositionData[0] = glm::vec3( 0.0f,     m_fWaterHeight,  0.0f );
+    pPositionData[1] = glm::vec3( m_iWidth, m_fWaterHeight,  0.0f );
+    pPositionData[2] = glm::vec3( m_iWidth, m_fWaterHeight,  m_iHeight );
+    pPositionData[3] = glm::vec3( 0.0f,     m_fWaterHeight,  m_iHeight );
     
     pTexCoordData[0] = glm::vec2( 0.0f,  0.0f );
     pTexCoordData[1] = glm::vec2( 0.0f,  1.0f );
     pTexCoordData[2] = glm::vec2( 1.0f,  0.0f );
     pTexCoordData[3] = glm::vec2( 1.0f,  1.0f );
     
-    pNormalData[0] = CVertexBuffer::CompressVector(glm::vec3(0.0f, 1.0f, 0.0f));
-    pNormalData[1] = CVertexBuffer::CompressVector(glm::vec3(0.0f, 1.0f, 0.0f));
-    pNormalData[2] = CVertexBuffer::CompressVector(glm::vec3(0.0f, 1.0f, 0.0f));
-    pNormalData[3] = CVertexBuffer::CompressVector(glm::vec3(0.0f, 1.0f, 0.0f));
-
-    // Top
-    /*pPositionData[16] = glm::vec3( m_vMax.x,  m_vMin.y,  m_vMin.z);
-    pPositionData[17] = glm::vec3( m_vMax.x,  m_vMax.y,  m_vMin.z);
-    pPositionData[18] = glm::vec3( m_vMax.x,  m_vMax.y,  m_vMax.z);
-    pPositionData[19] = glm::vec3( m_vMax.x,  m_vMin.y,  m_vMax.z);
-    // Bottom
-    pPositionData[20] = glm::vec3( m_vMin.x,  m_vMin.y,  m_vMin.z);
-    pPositionData[21] = glm::vec3( m_vMin.x,  m_vMin.y,  m_vMax.z);
-    pPositionData[22] = glm::vec3( m_vMin.x,  m_vMax.y,  m_vMax.z);
-    pPositionData[23] = glm::vec3( m_vMin.x,  m_vMax.y,  m_vMin.z);*/
-    
     pSource->m_pIB = new CIndexBuffer(pSource->m_iNumIndexes);
     unsigned short* pIBData = pSource->m_pIB->Get_Data();
     
-    // Front
     pIBData[0] = 0;
     pIBData[1] = 1;
     pIBData[2] = 2;
     pIBData[3] = 0;
     pIBData[4] = 2;
     pIBData[5] = 3;
-    // Back
-    /*pIBData[6] = 4;
-    pIBData[7] = 5;
-    pIBData[8] = 6;
-    pIBData[9] = 4;
-    pIBData[10] = 6;
-    pIBData[11] = 7;
-    // Left
-    pIBData[12] = 8;
-    pIBData[13] = 9;
-    pIBData[14] = 10;
-    pIBData[15] = 8;
-    pIBData[16] = 10;
-    pIBData[17] = 11;
-    // Right
-    pIBData[18] = 12;
-    pIBData[19] = 13;
-    pIBData[20] = 14;
-    pIBData[21] = 12;
-    pIBData[22] = 14;
-    pIBData[23] = 15;
-    // Top
-    pIBData[24] = 16;
-    pIBData[25] = 17;
-    pIBData[26] = 18;
-    pIBData[27] = 16;
-    pIBData[28] = 18;
-    pIBData[29] = 19;
-    // Bottom
-    pIBData[30] = 20;
-    pIBData[31] = 21;
-    pIBData[32] = 22;
-    pIBData[33] = 20;
-    pIBData[34] = 22;
-    pIBData[35] = 23;*/
     
     pSource->m_pVB->CommitToRAM();
     pSource->m_pVB->CommitFromRAMToVRAM();
@@ -176,8 +66,29 @@ void CWater::Load(IResource::SResource _tResource)
     m_pMesh->Set_Source(pSource);
 }
 
+void CWater::OnLoadDone(E_RESOURCE_TYPE _eType, IResource* pResource)
+{
+    switch (_eType)
+    {
+        case IResourceLoaderDelegate::E_RESOURCE_TYPE_MESH:
+            std::cout<<"[CModel::OnLoadDone] Resource Mesh loaded : "<<pResource->Get_Name()<<"\n";
+            break;
+        case IResourceLoaderDelegate::E_RESOURCE_TYPE_TEXTURE:
+            std::cout<<"[CModel::OnLoadDone] Resource Texture loaded : "<<pResource->Get_Name()<<"\n";
+            break;
+        default:
+            break;
+    }
+}
+
 void CWater::OnTouchEvent(void)
 {
+    
+}
+
+void CWater::OnPhysicEventUpdate(glm::vec3 _vPosition, glm::vec3 _vRotation, glm::vec3 _vScale)
+{
+    
 }
 
 void CWater::Update()

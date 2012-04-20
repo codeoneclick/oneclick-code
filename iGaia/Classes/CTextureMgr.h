@@ -14,6 +14,7 @@
 #include <map>
 #include "CParser_PVR.h"
 #include "IResourceMgr.h"
+#include "IResourceLoaderDelegate.h"
 
 
 class CTextureMgr : public IResourceMgr
@@ -21,10 +22,10 @@ class CTextureMgr : public IResourceMgr
 private:
     CTexture::SSource* m_pStub;
 public:
-    CTextureMgr();
-    ~CTextureMgr();
+    CTextureMgr(void);
+    ~CTextureMgr(void);
     
-    virtual IResource* Load(std::string _sName, IResource::E_THREAD _eThread);
+    virtual IResource* Load(std::string _sName, IResource::E_THREAD _eThread, IResourceLoaderDelegate* _pResourceLoaderDelegate);
     virtual void Unload(std::string _sName);
 };
 

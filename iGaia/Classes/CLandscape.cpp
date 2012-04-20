@@ -38,7 +38,7 @@ void CLandscape::Load(IResource::SResource _tResource)
     m_pHeightMapSetter = new CHeightMapSetter();
     m_pMesh = m_pHeightMapSetter->Load_SourceData(_tResource.m_sName, m_iWidth, m_iHeight);
     
-    m_pNavigationMesh = new CNavigationMesh();
+    m_pNavigationMesh = new CNavigationMeshMgr();
     m_pNavigationMesh->Set_NavigationModel(this);
     m_pVisualNavigationMeshRef = m_pNavigationMesh->Get_VisualMesh();
     m_pVisualNavigationMeshShader = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_COLOR);
@@ -61,6 +61,21 @@ void CLandscape::Load(IResource::SResource _tResource)
     m_pShaderNormalDepth = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_NORMAL_DEPTH);
 }
 
+void CLandscape::OnLoadDone(E_RESOURCE_TYPE _eType, IResource* pResource)
+{
+    switch (_eType)
+    {
+        case IResourceLoaderDelegate::E_RESOURCE_TYPE_MESH:
+            std::cout<<"[CModel::OnLoadDone] Resource Mesh loaded : "<<pResource->Get_Name()<<"\n";
+            break;
+        case IResourceLoaderDelegate::E_RESOURCE_TYPE_TEXTURE:
+            std::cout<<"[CModel::OnLoadDone] Resource Texture loaded : "<<pResource->Get_Name()<<"\n";
+            break;
+        default:
+            break;
+    }
+}
+
 void CLandscape::OnTouchEvent(void)
 {
     CCollisionMgr::SRay3d tTouchRay = CSceneMgr::Instance()->Get_CollisionMgr()->Get_TouchRay();
@@ -80,6 +95,11 @@ void CLandscape::OnTouchEvent(void)
     {
         m_lDelegates[index]->OnTouchEvent(m_pDelegateTarget);
     }
+}
+
+void CLandscape::OnPhysicEventUpdate(glm::vec3 _vPosition, glm::vec3 _vRotation, glm::vec3 _vScale)
+{
+    
 }
 
 void CLandscape::Update()

@@ -12,7 +12,7 @@
 #include "INode.h"
 #include <map>
 #include "CHeightMapSetter.h"
-#include "CNavigationMesh.h"
+#include "CNavigationMeshMgr.h"
 
 class CLandscape : public INode
 {
@@ -24,7 +24,7 @@ protected:
     CShader* m_pVisualNavigationMeshShader;
     
     CHeightMapSetter* m_pHeightMapSetter;
-    CNavigationMesh* m_pNavigationMesh;
+    CNavigationMeshMgr* m_pNavigationMesh;
     
     bool m_bIsNavigationMeshDebug;
     
@@ -34,7 +34,9 @@ public:
     CLandscape(void);
     virtual ~CLandscape();
     virtual void Load(IResource::SResource _tResource);
+    virtual void OnLoadDone(E_RESOURCE_TYPE _eType, IResource* pResource);
     virtual void OnTouchEvent(void);
+    virtual void OnPhysicEventUpdate(glm::vec3 _vPosition, glm::vec3 _vRotation, glm::vec3 _vScale);
     virtual void Update(void);
     virtual void Render(E_RENDER_MODE _eMode);
     CHeightMapSetter* Get_HeightMapSetter(void) { return m_pHeightMapSetter; }
