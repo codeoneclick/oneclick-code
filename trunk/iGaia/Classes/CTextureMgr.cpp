@@ -25,7 +25,7 @@ CTextureMgr::~CTextureMgr()
     
 }
 
-IResource* CTextureMgr::Load(std::string _sName, IResource::E_THREAD _eThread)
+IResource* CTextureMgr::Load(std::string _sName, IResource::E_THREAD _eThread, IResourceLoaderDelegate* _pResourceLoaderDelegate)
 {
     CTexture* pTexture = NULL;
     
@@ -48,6 +48,7 @@ IResource* CTextureMgr::Load(std::string _sName, IResource::E_THREAD _eThread)
                 pTexture->Set_Source(pParser->Get_Source());
             }
             delete pParser;
+            m_lContainer[_sName] = pTexture;
         }
     }
     else if(_eThread == IResource::E_THREAD_BACKGROUND)
@@ -65,6 +66,9 @@ IResource* CTextureMgr::Load(std::string _sName, IResource::E_THREAD _eThread)
             }
             pTexture = new CTexture();
             pTexture->Set_Source(m_pStub);
+            pTexture->Set_Name(_sName);
+            pTexture->Set_ResourceLoaderDelegate(_pResourceLoaderDelegate);
+            pTexture->Set_ResourceType(IResourceLoaderDelegate::E_RESOURCE_TYPE_TEXTURE);
             m_lContainer[_sName] = pTexture;
         }
     }

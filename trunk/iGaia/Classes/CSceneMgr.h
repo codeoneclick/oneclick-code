@@ -12,13 +12,12 @@
 #include "INode.h"
 #include "ILight.h"
 #include "ICamera.h"
-#include "CBatchMgr.h"
 #include "CRenderMgr.h"
+#include "CPhysicMgr.h"
 #include "CCollisionMgr.h"
 #include "CEventMgr.h"
 #include "CHeightMapSetter.h"
-#include "IAnimator.h"
-#include "CNavigationMesh.h"
+#include "CNavigationMeshMgr.h"
 
 class CSceneMgr
 {
@@ -30,13 +29,11 @@ private:
     std::map<unsigned int, ILight*> m_lLights;
     ICamera* m_pCamera;
     
-    std::vector<IAnimator*> m_lAnimators;
-    
     CRenderMgr* m_pRenderMgr;
-    CBatchMgr* m_pBatchMgr;
     CCollisionMgr* m_pCollisionMgr;
+    CPhysicMgr* m_pPhysicMgr;
     
-    CNavigationMesh* m_pNavigationMeshRef;
+    CNavigationMeshMgr* m_pNavigationMeshMgrRef;
     CHeightMapSetter* m_pHeightMapSetterRef;
     
     void _DrawSimpleStep(void);
@@ -66,16 +63,13 @@ public:
     ICamera* CreateTargetCamera(float _fFov, float _fNearPlane, float _fFarPlane, INode* _pTarget);
     
     CRenderMgr* Get_RenderMgr(void) { return m_pRenderMgr; }
-    CBatchMgr* Get_BatchMgr(void) { return m_pBatchMgr; }
     CCollisionMgr* Get_CollisionMgr(void) { return m_pCollisionMgr; }
+    CPhysicMgr* Get_PhysicMgr(void) { return m_pPhysicMgr; }
     
-    CNavigationMesh* Get_NavigationMeshRef(void) { return m_pNavigationMeshRef; }
-    void Set_NavigationMeshRef(CNavigationMesh* _pNavigationMeshRef) { m_pNavigationMeshRef = _pNavigationMeshRef; }
+    CNavigationMeshMgr* Get_NavigationMeshRef(void) { return m_pNavigationMeshMgrRef; }
+    void Set_NavigationMeshRef(CNavigationMeshMgr* _pNavigationMeshMgrRef) { m_pNavigationMeshMgrRef = _pNavigationMeshMgrRef; }
     CHeightMapSetter* Get_HeightMapSetterRef(void) { return m_pHeightMapSetterRef; }
     void Set_HeightMapSetterRef(CHeightMapSetter* _pHeightMapSetterRef) { m_pHeightMapSetterRef = _pHeightMapSetterRef; }                                                         
-    
-    IAnimator* AddMoveAnimator(INode* _pNode, IAnimatorDelegate* _pAnimatorDelegateOwner, const glm::vec3& _vStartPosition, const glm::vec3&  _vEndPosition, float _fStep);
-    IAnimator* AddHeightMapMoveAnimator(INode *_pNode, IAnimatorDelegate *_pAnimatorDelegateOwner, glm::vec2 _vStartPosition, glm::vec2 _vEndPosition, float _fStep);
     
     unsigned char Get_UniqueColorId(INode* _pNode);
     

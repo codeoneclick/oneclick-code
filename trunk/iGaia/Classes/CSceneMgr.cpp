@@ -18,24 +18,21 @@
 #include "CCameraTarget.h"
 #include "CWindow.h"
 #include "CRenderMgr.h"
-#include "CBatchMgr.h"
 #include "CLightPoint.h"
-#include "CAnimatorMove.h"
-#include "CAnimatorMoveHeightMap.h"
 
 
 CSceneMgr* CSceneMgr::m_pInsatnce = NULL;
 const unsigned int CSceneMgr::k_MAX_LIGHTS = 8;
 
-CSceneMgr::CSceneMgr()
+CSceneMgr::CSceneMgr(void)
 {
     m_pCamera = NULL;
-    m_pNavigationMeshRef = NULL;
+    m_pNavigationMeshMgrRef = NULL;
     m_pHeightMapSetterRef = NULL;
     
     m_pRenderMgr = new CRenderMgr();
-    m_pBatchMgr = new CBatchMgr();
     m_pCollisionMgr = new CCollisionMgr();
+    m_pPhysicMgr = new CPhysicMgr();
     
     m_lLights[ILight::E_LIGHT_MODE_DIRECTION] = new CLightPoint();
     static_cast<CLightPoint*>(m_lLights[ILight::E_LIGHT_MODE_DIRECTION])->Set_Visible(false);
@@ -47,7 +44,7 @@ CSceneMgr::CSceneMgr()
     }
 }
 
-CSceneMgr::~CSceneMgr()
+CSceneMgr::~CSceneMgr(void)
 {
     
 }
@@ -212,22 +209,6 @@ unsigned char CSceneMgr::Get_UniqueColorId(INode *_pNode)
     return 0;
 }
 
-IAnimator* CSceneMgr::AddMoveAnimator(INode *_pNode, IAnimatorDelegate *_pAnimatorDelegateOwner, const glm::vec3 &_vStartPosition, const glm::vec3 &_vEndPosition, float _fStep)
-{
-    //IAnimator* pAnimator = new CAnimatorMove();
-    //((CAnimatorMove*)pAnimator)->Init(_pNode, _pAnimatorDelegateOwner, _vStartPosition, _vEndPosition, _fStep);
-    //m_lAnimators.push_back(pAnimator);
-    return NULL;
-}
-
-IAnimator* CSceneMgr::AddHeightMapMoveAnimator(INode *_pNode, IAnimatorDelegate *_pAnimatorDelegateOwner, glm::vec2 _vStartPosition, glm::vec2 _vEndPosition, float _fStep)
-{
-    IAnimator* pAnimator = new CAnimatorMoveHeightMap();
-    ((CAnimatorMoveHeightMap*)pAnimator)->Init(_pNode, _pAnimatorDelegateOwner, _vStartPosition,_vEndPosition,_fStep);
-    m_lAnimators.push_back(pAnimator);
-    return pAnimator;
-}
-
 void CSceneMgr::Update()
 {
     if(m_pCamera != NULL)
@@ -252,36 +233,9 @@ void CSceneMgr::Update()
         (*pBIterator)->Update();
         ++pBIterator;
     }
-    
-    std::vector<IAnimator*>::iterator pBeginAnimatorIterator = m_lAnimators.begin();
-    std::vector<IAnimator*>::iterator pEndAnimatorIterator = m_lAnimators.end();
-    
-    while (pBeginAnimatorIterator != pEndAnimatorIterator)
-    {
-        (*pBeginAnimatorIterator)->Update();
-        ++pBeginAnimatorIterator;
-    }
-    
-    pBeginAnimatorIterator = m_lAnimators.begin();
-    pEndAnimatorIterator = m_lAnimators.end();
-    
-    while (pBeginAnimatorIterator != pEndAnimatorIterator)
-    {
-        if((*pBeginAnimatorIterator)->Get_IsDone())
-        {
-            (*pBeginAnimatorIterator)->Remove();
-            IAnimator* pAnimator = (*pBeginAnimatorIterator);
-            m_lAnimators.erase(pBeginAnimatorIterator);
-            delete pAnimator;
-            break;
-        }
-        else
-        {
-            ++pBeginAnimatorIterator;
-        }
-    }
 
     m_pCollisionMgr->Update();
+    m_pPhysicMgr->Update();
 }
 
 void CSceneMgr::_DrawSimpleStep(void)
@@ -364,7 +318,7 @@ void CSceneMgr::_DrawNormalDepthStep(void)
     {
         if((*pBeginNodeIterator)->Get_NormalDepth())
         {
-            (*pBeginNodeIterator)->Update();
+            //(*pBeginNodeIterator)->Update();
             (*pBeginNodeIterator)->Render(INode::E_RENDER_MODE_NORMAL_DEPTH);
         }
         ++pBeginNodeIterator;

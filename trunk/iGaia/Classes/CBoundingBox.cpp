@@ -10,7 +10,6 @@
 #include "CBoundingBox.h"
 #include "CShaderComposite.h"
 #include "CSceneMgr.h"
-#include "CBatchMgr.h"
 
 const float CBoundingBox::k_MAX_VALUE = -4096.0f;
 const float CBoundingBox::k_MIN_VALUE = 4096.0f;
@@ -114,23 +113,15 @@ CBoundingBox::~CBoundingBox()
 
 void CBoundingBox::Render()
 {
-    if(m_bIsBatching)
-    {
-        CSceneMgr::Instance()->Get_BatchMgr()->PushToBoundingBatch(this);
-    }
-    else
-    {
-        m_pShader->Enable();
-        m_pShader->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD);
-        ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
-        m_pShader->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
-        m_pShader->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
-        m_pMesh->Get_VB()->Enable();
-        m_pMesh->Get_IB()->Enable();
-        glDrawElements(GL_LINES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IB()->Get_DataFromVRAM());
-        m_pMesh->Get_IB()->Disable();
-        m_pMesh->Get_VB()->Disable();
-        m_pShader->Disable();
-    }
-
+    m_pShader->Enable();
+    m_pShader->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD);
+    ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
+    m_pShader->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
+    m_pShader->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
+    m_pMesh->Get_VB()->Enable();
+    m_pMesh->Get_IB()->Enable();
+    glDrawElements(GL_LINES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IB()->Get_DataFromVRAM());
+    m_pMesh->Get_IB()->Disable();
+    m_pMesh->Get_VB()->Disable();
+    m_pShader->Disable();
 }

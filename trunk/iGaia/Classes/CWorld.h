@@ -11,18 +11,19 @@
 
 #include "CBuildingMgr.h"
 #include "CGameResourceMgr.h"
-#include "CGameUnitMgr.h"
+#include "CGameCharaterControllerMgr.h"
 #include "CLevel.h"
 #include "CSceneMgr.h"
+#include "CCharacterControllerPlayer.h"
 
 class CWorld
 {
 private:
     CBuildingMgr* m_pBuildingMgr;
     CGameResourceMgr* m_pGameResourceMgr;
-    CGameUnitMgr* m_pGameUnitMgr;
+    CGameCharaterControllerMgr* m_pCharaterControllerMgr;
     CLevel* m_pLevel;
-    CGameUnitHero* m_pHero;
+    CCharacterControllerPlayer* m_pCharacterControllerPlayer;
     ICamera* m_pCamera;
     ILight* m_pLight;
     bool m_bIsHeroUnderControl;
@@ -31,11 +32,11 @@ public:
     CWorld(void);
     ~CWorld(void);
     CLevel* Get_Level(void) { return m_pLevel; }
+    CGameCharaterControllerMgr* Get_GameCharaterControllerMgr(void) { return m_pCharaterControllerMgr; }
+    CCharacterControllerPlayer* Get_PlayerCharacterController(void) { return m_pCharacterControllerPlayer; }
     void Load(void);
     void Update(void);
     static CWorld* Instance(void);
-    bool Get_IsHeroUnderControl(void) { return m_bIsHeroUnderControl; }
-    void Set_IsHeroUnderControl(bool _bValue) { m_bIsHeroUnderControl = _bValue; }
 };
 
 #endif

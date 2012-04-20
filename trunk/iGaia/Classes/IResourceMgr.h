@@ -26,7 +26,7 @@ public:
     
     virtual void Update();
     virtual void Thread();
-    virtual IResource* Load(std::string _sName, IResource::E_THREAD _eThread) = 0;
+    virtual IResource* Load(std::string _sName, IResource::E_THREAD _eThread, IResourceLoaderDelegate* _pResourceLoaderDelegate) = 0;
     virtual void Unload(std::string _sName) = 0;
 };
 

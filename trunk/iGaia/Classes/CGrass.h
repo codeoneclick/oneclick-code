@@ -22,7 +22,7 @@ protected:
     static const int k_ELEMENT_NUM_VERTEXES;
     
     unsigned short* m_pSingleElementIndexBuffer;
-    CVertexBuffer::SVertex m_pSingleElementVertexBuffer;
+    //CVertexBuffer::SVertex m_pSingleElementVertexBuffer;
     
     unsigned int m_iWidth;
     unsigned int m_iHeight;
@@ -32,7 +32,9 @@ public:
     CGrass(void);
     virtual ~CGrass(void);
     virtual void Load(IResource::SResource _tResource);
+    virtual void OnLoadDone(E_RESOURCE_TYPE _eType,IResource* pResource);
     virtual void OnTouchEvent(void);
+    virtual void OnPhysicEventUpdate(glm::vec3 _vPosition, glm::vec3 _vRotation, glm::vec3 _vScale);
     virtual void Update(void);
     virtual void Render(E_RENDER_MODE _eMode);
 };

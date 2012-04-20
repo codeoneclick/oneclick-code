@@ -26,6 +26,7 @@ public:
     void Load(void);
     void Update(void);
     virtual void OnTouchEvent(IDelegate* _pDelegateOwner);
+    virtual void OnPhysicEvent(INode* _pNode, glm::vec3 _vPosition, glm::vec3 _vRotation, glm::vec3 _vScale);
     INode* Get_Model(void) { return m_pLandscape; }
 };
 

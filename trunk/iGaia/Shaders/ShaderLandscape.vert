@@ -10,10 +10,11 @@ const char* ShaderLandscapeV = STRINGIFY(
                                         varying vec2   OUT_SplattingTexCoord;                                     
                                         varying vec2   OUT_TexCoord;
                                         varying float  OUT_Clip;
-                                                    
+                                                   
                                         uniform vec3   EXT_View;
                                         uniform vec3   EXT_Light;
                                         uniform vec4   EXT_Clip_Plane;
+                                        uniform float  EXT_Timer;
                                                     
                                         uniform mat4   EXT_MATRIX_Projection;
                                         uniform mat4   EXT_MATRIX_View;                                          

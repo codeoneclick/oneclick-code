@@ -40,52 +40,95 @@ void CParser_PVR::Load(const std::string& _sName)
     m_pData = new char[iLength];
     pStream.read( m_pData,iLength );
     pStream.close();
-
+    
     m_pDescription = new SDescription();
-    m_pHeader = (PVR_Texture_Header*)m_pData;
-    
-    switch (m_pHeader->dwpfFlags & PVRTEX_PIXELTYPE) 
-    {
-        case OGL_PVRTC2:    
-            m_pDescription->m_eFormat = m_pHeader->dwAlphaBitMask ? TextureFormatPvrtcRgba2 : TextureFormatPvrtcRgb2;
-            break;
-        case OGL_PVRTC4:
-            m_pDescription->m_eFormat = m_pHeader->dwAlphaBitMask ? TextureFormatPvrtcRgba4 : TextureFormatPvrtcRgb4;
-            break;
-        default:
-            std::cout<<"[CParser_PVR::Load] Unsupported format for Texture Name : "<<_sName<<"\n";
-            m_eStatus = E_ERROR_STATUS;
-            return;
-            break;
+   
+    if(*(PVRTuint32*)m_pData != PVRTEX3_IDENT)
+	{
+        std::cout<<"[CParser_PVR::Load] OLD PVR format"<<std::endl;
+        PVR_Texture_Header* pHeader;
+        pHeader = (PVR_Texture_Header*)m_pData;
+        
+        switch (pHeader->dwpfFlags & PVRTEX_PIXELTYPE) 
+        {
+            case OGL_PVRTC2:
+                if(pHeader->dwAlphaBitMask)
+                {
+                    m_pDescription->m_uiBPP = 2;
+                    m_pDescription->m_glFormat = GL_COMPRESSED_RGBA_PVRTC_2BPPV1_IMG;
+                }
+                else
+                {
+                    m_pDescription->m_uiBPP = 2;
+                    m_pDescription->m_glFormat = GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG;
+                }
+                break;
+            case OGL_PVRTC4:
+                if(pHeader->dwAlphaBitMask)
+                {
+                    m_pDescription->m_uiBPP = 4;
+                    m_pDescription->m_glFormat = GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG;
+                }
+                else
+                {
+                    m_pDescription->m_uiBPP = 4;
+                    m_pDescription->m_glFormat = GL_COMPRESSED_RGB_PVRTC_4BPPV1_IMG;
+                }
+                break;
+            default:
+                std::cout<<"[CParser_PVR::Load] Unsupported format for Texture Name : "<<_sName<<"\n";
+                m_eStatus = E_ERROR_STATUS;
+                return;
+        }
+        m_pDescription->m_vSize.x = pHeader->dwWidth;
+        m_pDescription->m_vSize.y = pHeader->dwHeight;
+        m_pDescription->m_uiMIP = pHeader->dwMipMapCount ? pHeader->dwMipMapCount : 1;
+        m_pDescription->m_bCompressed = true;
+        m_pDescription->m_pTextureData = m_pData + pHeader->dwHeaderSize;
     }
-    
-    m_pDescription->m_vSize.x = m_pHeader->dwWidth;
-    m_pDescription->m_vSize.y = m_pHeader->dwHeight;
-    m_pDescription->m_uiMIP = m_pHeader->dwMipMapCount ? m_pHeader->dwMipMapCount : 1;
-    m_pDescription->m_bCompressed = true;
-    
-    switch (m_pDescription->m_eFormat) 
+    else
     {
-        case TextureFormatPvrtcRgba2:
-            m_pDescription->m_uiBPP = 2;
-            m_pDescription->m_glFormat = GL_COMPRESSED_RGBA_PVRTC_2BPPV1_IMG;
-            break;
-        case TextureFormatPvrtcRgb2:
-            m_pDescription->m_uiBPP = 2;
-            m_pDescription->m_glFormat = GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG;
-            break;
-        case TextureFormatPvrtcRgba4:
-            m_pDescription->m_uiBPP = 4;
-            m_pDescription->m_glFormat = GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG;
-            break;
-        case TextureFormatPvrtcRgb4:
-            m_pDescription->m_uiBPP = 4;
-            m_pDescription->m_glFormat = GL_COMPRESSED_RGB_PVRTC_4BPPV1_IMG;
-            break;
-        default:
-            m_pDescription->m_bCompressed = false;
-            break;
+        std::cout<<"[CParser_PVR::Load] NEW PVR format"<<std::endl;
+        PVRTextureHeaderV3* pHeader = (PVRTextureHeaderV3*)m_pData;
+        PVRTuint64 iPixelFormat = pHeader->u64PixelFormat;
+        
+        switch (iPixelFormat)
+		{
+            case 0:
+			 {
+                m_pDescription->m_uiBPP = 2;
+				 m_pDescription->m_glFormat = GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG;
+			 }
+                break;
+            case 1:
+			 {
+                m_pDescription->m_uiBPP = 2;
+				 m_pDescription->m_glFormat = GL_COMPRESSED_RGBA_PVRTC_2BPPV1_IMG;
+			 }
+                break;
+            case 2:
+			 {
+                m_pDescription->m_uiBPP = 4;
+                m_pDescription->m_glFormat = GL_COMPRESSED_RGB_PVRTC_4BPPV1_IMG;
+			 }
+            case 3:
+			 {
+                m_pDescription->m_uiBPP = 4;
+                m_pDescription->m_glFormat = GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG;
+			 }
+                break;
+            default:
+                std::cout<<"[CParser_PVR::Load] Unsupported format for Texture Name : "<<_sName<<"\n";
+                m_eStatus = E_ERROR_STATUS;
+                return;
+        }
+        m_pDescription->m_vSize.x = pHeader->u32Width;
+        m_pDescription->m_vSize.y = pHeader->u32Height;
+        m_pDescription->m_uiMIP = pHeader->u32MIPMapCount ? pHeader->u32MIPMapCount : 1;
+        m_pDescription->m_bCompressed = true;
+        m_pDescription->m_pTextureData = m_pData + PVRTEX3_HEADERSIZE + pHeader->u32MetaDataSize;
     }
+
     
     std::cout<<"[CParser_PVR::Load] Texture Name : "<<_sName<<" Texture Width : "<<m_pDescription->m_vSize.x<<" Texture Height : "<<m_pDescription->m_vSize.y<<" Texture MIPS : "<<m_pDescription->m_uiMIP<<"\n";
     m_eStatus = E_DONE_STATUS;
@@ -95,7 +138,7 @@ void CParser_PVR::Commit(void)
 {
     int iWidth  = m_pDescription->m_vSize.x;
     int iHeight = m_pDescription->m_vSize.y;
-    char* pData = m_pData + m_pHeader->dwHeaderSize;
+    char* pData = m_pDescription->m_pTextureData;
     
     m_pSource = new CTexture::SSource();
     m_pSource->m_iWidth  = m_pDescription->m_vSize.x;

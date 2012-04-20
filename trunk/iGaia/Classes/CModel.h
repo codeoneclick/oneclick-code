@@ -13,13 +13,17 @@
 
 class CModel : public INode
 {
+protected:
+    CShader* m_pShaderNormalDepth;
 public:
     CModel(void);
     virtual ~CModel();
     virtual void Load(IResource::SResource _tResource);
     virtual void OnTouchEvent(void);
+    virtual void OnPhysicEventUpdate(glm::vec3 _vPosition, glm::vec3 _vRotation, glm::vec3 _vScale);
     virtual void Update(void);
     virtual void Render(E_RENDER_MODE _eMode);
+    virtual void OnLoadDone(E_RESOURCE_TYPE _eType, IResource* pResource);
 };
 
 #endif

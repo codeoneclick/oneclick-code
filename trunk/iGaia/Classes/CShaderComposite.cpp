@@ -61,6 +61,12 @@
 #include "../Shaders/ShaderWater.vert"
 #include "../Shaders/ShaderWater.frag"
 
+#include "../Shaders/ShaderPreNormalDepthUnit.vert"
+#include "../Shaders/ShaderPreNormalDepthUnit.frag"
+
+#include "../Shaders/ShaderAnimTexCoordUnit.vert"
+#include "../Shaders/ShaderAnimTexCoordUnit.frag"
+
 CShaderComposite* CShaderComposite::m_pInstance = NULL;
 
 CShaderComposite::CShaderComposite()
@@ -135,6 +141,14 @@ CShaderComposite::CShaderComposite()
     pData = pParser->Load(ShaderWaterV, ShaderWaterF);
     pShader = new CShader(pData.s_pHandle);
     m_lContainer[IResource::E_SHADER_WATER] = pShader;
+    
+    pData = pParser->Load(ShaderPreNormalDepthUnitV, ShaderPreNormalDepthUnitF);
+    pShader = new CShader(pData.s_pHandle);
+    m_lContainer[IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT] = pShader;
+
+    pData = pParser->Load(ShaderAnimTexCoordUnitV, ShaderAnimTexCoordUnitF);
+    pShader = new CShader(pData.s_pHandle);
+    m_lContainer[IResource::E_SHADER_ANIM_TEXCOORD_UNIT] = pShader;
 
 }
 

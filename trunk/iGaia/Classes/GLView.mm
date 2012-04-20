@@ -53,7 +53,7 @@ const bool ForceES1 = false;
                                      selector:@selector(drawView:)];
         
         [displayLink addToRunLoop:[NSRunLoop currentRunLoop]
-                     forMode:NSDefaultRunLoopMode];
+                     forMode:NSRunLoopCommonModes];
 
         [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
         

@@ -25,6 +25,9 @@ const std::string CShader::k_TEXTURE_08         = "EXT_TEXTURE_08";
 const std::string CShader::k_VECTOR_VIEW        = "EXT_View";
 const std::string CShader::k_VECTOR_LIGHT       = "EXT_Light"; 
 const std::string CShader::k_VECTOR_CLIP_PLANE  = "EXT_Clip_Plane";
+const std::string CShader::k_TIMER              = "EXT_Timer";
+const std::string CShader::k_TEXCOORD_OFFSET    = "EXT_Texcoord_Offset";
+
 
 CShader::CShader(GLuint _hProgramHandle)
 {
@@ -43,11 +46,19 @@ CShader::CShader(GLuint _hProgramHandle)
     m_lUniformHandle[k_VECTOR_VIEW]       = glGetUniformLocation(m_hProgramHandle, k_VECTOR_VIEW.c_str());
     m_lUniformHandle[k_VECTOR_LIGHT]      = glGetUniformLocation(m_hProgramHandle, k_VECTOR_LIGHT.c_str());
     m_lUniformHandle[k_VECTOR_CLIP_PLANE] = glGetUniformLocation(m_hProgramHandle, k_VECTOR_CLIP_PLANE.c_str());
+    m_lUniformHandle[k_TIMER]             = glGetUniformLocation(m_hProgramHandle, k_TIMER.c_str());
+    m_lUniformHandle[k_TEXCOORD_OFFSET]   = glGetUniformLocation(m_hProgramHandle, k_TEXCOORD_OFFSET.c_str());
 }
 
 CShader::~CShader()
 {
     
+}
+
+void CShader::SetVector2(const glm::vec2 &_vValue, const std::string &_sName)
+{
+    GLint hHandle = m_lUniformHandle[_sName];
+    glUniform2fv(hHandle, 1, &_vValue[0]);
 }
 
 void CShader::SetVector3(const glm::vec3& _vValue, const std::string& _sName)
@@ -60,6 +71,12 @@ void CShader::SetVector4(const glm::vec4& _vValue, const std::string& _sName)
 {
     GLint hHandle = m_lUniformHandle[_sName];
     glUniform4fv(hHandle, 1, &_vValue[0]);
+}
+
+void CShader::SetFloat(const float _fValue, const std::string& _sName)
+{
+    GLint hHandle = m_lUniformHandle[_sName];
+    glUniform1f(hHandle, _fValue);
 }
 
 void CShader::SetMatrix(const glm::mat4x4& _mValue,const std::string& _sName)

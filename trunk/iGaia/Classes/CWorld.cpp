@@ -18,7 +18,7 @@ CWorld::CWorld(void)
 {
     m_pBuildingMgr = NULL;
     m_pGameResourceMgr = NULL;
-    m_pGameUnitMgr = NULL;
+    m_pCharaterControllerMgr = NULL;
     m_bIsHeroUnderControl = true;
 }
 
@@ -40,27 +40,27 @@ void CWorld::Load(void)
 {
     m_pBuildingMgr = new CBuildingMgr();
     m_pGameResourceMgr = new CGameResourceMgr();
-    m_pGameUnitMgr = new CGameUnitMgr();
+    m_pCharaterControllerMgr = new CGameCharaterControllerMgr();
     
     m_pLevel = new CLevel();
     m_pLevel->Load();
     
-    m_pGameUnitMgr->Add_Unit(CGameUnitMgr::E_UNIT_TYPE_HERO);
-    m_pHero = (CGameUnitHero*)m_pGameUnitMgr->Get_Unit(CGameUnitMgr::E_UNIT_TYPE_HERO);
-    m_pHero->Get_Model()->Set_Position(glm::vec3(0.0f, 0.0f, 0.0f));
+    m_pCharaterControllerMgr->Add_MainCharacterController();
+    m_pCharacterControllerPlayer = static_cast<CCharacterControllerPlayer*>(m_pCharaterControllerMgr->Get_MainCharacterController());
+    m_pCharacterControllerPlayer->Set_Position(glm::vec3(0.0f, 0.0f, 0.0f));
     
     m_pLight = CSceneMgr::Instance()->Get_Light(ILight::E_LIGHT_MODE_POINT, 0);
     m_pLight->Set_Position(glm::vec3(0.0f, 4.0f, 0.0f));
     m_pLight->Set_LightAt(glm::vec3(16.0f, 0.0f, 16.0f));
     static_cast<CLightPoint*>(m_pLight)->Set_Visible(true);
     
-    m_pHero->Get_Model()->Set_Light(m_pLight);
+    m_pCharacterControllerPlayer->Set_Light(m_pLight);
     m_pLevel->Get_Model()->Set_Light(m_pLight);
     
-    m_pCamera = CSceneMgr::Instance()->CreateFreeCamera(45.0f, 0.1f, 1024.0f);
+    m_pCamera = CSceneMgr::Instance()->CreateTargetCamera(45.0f, 0.1f, 1024.0f, m_pCharacterControllerPlayer->Get_TargetForCamera());//CSceneMgr::Instance()->CreateFreeCamera(45.0f, 0.1f, 1024.0f);
     CSceneMgr::Instance()->Set_Camera(m_pCamera);
     m_pCamera->Set_DistanceToLookAt(8.0f);
-    m_pCamera->Set_HeightFromLookAt(8.0f);
+    m_pCamera->Set_HeightFromLookAt(4.0f);
     glm::vec3 vCameraRotation = glm::vec3(0.0f, -MATH_PI / 4.0f, 0.0f);
     m_pCamera->Set_Rotation(vCameraRotation);
 }
@@ -69,7 +69,7 @@ void CWorld::Update(void)
 {
     m_pBuildingMgr->Update();
     m_pGameResourceMgr->Update();
-    m_pGameUnitMgr->Update();
+    m_pCharaterControllerMgr->Update();
     
     m_pLevel->Update();
     
@@ -78,7 +78,7 @@ void CWorld::Update(void)
     
     glm::vec3 vCameraPosition = m_pCamera->Get_Position();
     float fCameraHeight = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_HeightValueAtPoint(vCameraPosition.x, vCameraPosition.z);
-    m_pCamera->Set_HeightFromLookAt(8.0f + fCameraHeight);
+    m_pCamera->Set_HeightFromLookAt(4.0f + fCameraHeight);
     
     //CVector3d vLightPosition = CVector3d(m_pHero->Get_Model()->Get_Position().x, 8.0f, m_pHero->Get_Model()->Get_Position().z);
     //m_pLight->Set_Position(vLightPosition);

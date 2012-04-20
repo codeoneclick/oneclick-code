@@ -1,9 +1,10 @@
 const char* ShaderUnitF = STRINGIFY(
 
-                                                    varying highp   vec3   OUT_View;
-                                                    varying highp   vec3   OUT_Light;
-                                                    varying highp   vec3   OUT_Normal;                                     
-                                                    varying mediump vec2   OUT_TexCoord;
+                                                    varying lowp    vec3   OUT_View;
+                                                    varying lowp    vec3   OUT_Light;
+                                                    varying lowp    vec3   OUT_Normal;                                     
+                                                    varying lowp    vec2   OUT_TexCoord;
+                                                    varying lowp    float  OUT_BlendFactor;
                                                     uniform sampler2D EXT_TEXTURE_01;
                                                     uniform sampler2D EXT_TEXTURE_02;
                                                     uniform sampler2D EXT_TEXTURE_03;
@@ -24,6 +25,8 @@ void main(void)
     mediump vec3 vReflect = reflect(-vView, vNormalColor);
     vSpecularColor = vSpecularColor * pow(max(dot(vLight, vReflect),0.0),8.0);
     
-    gl_FragColor = texture2D(EXT_TEXTURE_01, OUT_TexCoord);//vDiffuseColor + vSpecularColor;
+    lowp vec4 vColor = texture2D(EXT_TEXTURE_01, OUT_TexCoord);
+    vColor = vec4(1.0 - OUT_BlendFactor);
+    gl_FragColor = texture2D(EXT_TEXTURE_01, OUT_TexCoord); //vDiffuseColor + vSpecularColor;
 }
 );

@@ -96,7 +96,7 @@ void CHeightMapSetter::Calculate_Normals(CVertexBuffer* _pVB,CIndexBuffer* _pIB)
         glm::vec3 vEdge_02 = vPoint_03 - vPoint_01;
         glm::vec3 vNormal = glm::cross(vEdge_01, vEdge_02);
         vNormal = glm::normalize(vNormal);
-        glm::u8vec4 vByteNormal = CVertexBuffer::CompressVector(vNormal);
+        glm::u8vec4 vByteNormal = CVertexBuffer::CompressVEC3(vNormal);
         pNormalData[pIBData[index]] = vByteNormal;
         pNormalData[pIBData[index + 1]] = vByteNormal;
         pNormalData[pIBData[index + 2]] = vByteNormal;
