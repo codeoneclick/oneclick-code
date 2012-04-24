@@ -27,6 +27,7 @@ const std::string CShader::k_VECTOR_LIGHT       = "EXT_Light";
 const std::string CShader::k_VECTOR_CLIP_PLANE  = "EXT_Clip_Plane";
 const std::string CShader::k_TIMER              = "EXT_Timer";
 const std::string CShader::k_TEXCOORD_OFFSET    = "EXT_Texcoord_Offset";
+const std::string CShader::k_MATRIX_BIAS        = "EXT_MATRIX_Bias";
 
 
 CShader::CShader(GLuint _hProgramHandle)
@@ -48,6 +49,7 @@ CShader::CShader(GLuint _hProgramHandle)
     m_lUniformHandle[k_VECTOR_CLIP_PLANE] = glGetUniformLocation(m_hProgramHandle, k_VECTOR_CLIP_PLANE.c_str());
     m_lUniformHandle[k_TIMER]             = glGetUniformLocation(m_hProgramHandle, k_TIMER.c_str());
     m_lUniformHandle[k_TEXCOORD_OFFSET]   = glGetUniformLocation(m_hProgramHandle, k_TEXCOORD_OFFSET.c_str());
+    m_lUniformHandle[k_MATRIX_BIAS]       = glGetUniformLocation(m_hProgramHandle, k_MATRIX_BIAS.c_str());
 }
 
 CShader::~CShader()

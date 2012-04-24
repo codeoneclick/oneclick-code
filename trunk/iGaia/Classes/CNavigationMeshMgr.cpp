@@ -193,17 +193,17 @@ void CNavigationMeshMgr::Create_VisualMesh(void)
         pSource->m_iNumVertexes = lVertexesData.size();
         pSource->m_iNumIndexes  = lIndexesData.size();
         
-        pSource->m_pIB = new CIndexBuffer(pSource->m_iNumIndexes);
-        unsigned short* pIndexesData = pSource->m_pIB->Get_Data();
+        pSource->m_pIndexBuffer = new CIndexBuffer(pSource->m_iNumIndexes);
+        unsigned short* pIndexesData = pSource->m_pIndexBuffer->Get_Data();
         for(unsigned int i = 0; i < pSource->m_iNumIndexes; ++i)
         {
             pIndexesData[i] = lIndexesData[i];
         }
         
-        pSource->m_pVB = new CVertexBuffer(pSource->m_iNumVertexes);
+        pSource->m_pVertexBuffer= new CVertexBuffer(pSource->m_iNumVertexes);
        
-        glm::vec3* pPositionData = pSource->m_pVB->CreateOrReUse_PositionData();
-        glm::u8vec4* pColorData = pSource->m_pVB->CreateOrReUse_ColorData();
+        glm::vec3* pPositionData = pSource->m_pVertexBuffer->CreateOrReUse_PositionData();
+        glm::u8vec4* pColorData = pSource->m_pVertexBuffer->CreateOrReUse_ColorData();
         for(unsigned int i = 0; i < pSource->m_iNumVertexes; i++)
         {
             pPositionData[i] = lVertexesData[i];
@@ -217,8 +217,8 @@ void CNavigationMeshMgr::Create_VisualMesh(void)
         m_pVisualMesh = new CMesh();
         m_pVisualMesh->Set_Source(pSource);
         m_pVisualMesh->Set_Name("navigation_mesh");
-        m_pVisualMesh->Get_VB()->CommitToRAM();
-        m_pVisualMesh->Get_VB()->CommitFromRAMToVRAM();
+        m_pVisualMesh->Get_VertexBufferRef()->CommitToRAM();
+        m_pVisualMesh->Get_VertexBufferRef()->CommitFromRAMToVRAM();
     }
     else
     {
@@ -229,7 +229,7 @@ void CNavigationMeshMgr::Create_VisualMesh(void)
 void CNavigationMeshMgr::Set_NavigationModel(INode *_pNode)
 {
     size_t iNumVertexes = _pNode->Get_Mesh()->Get_NumVertexes();
-    glm::vec3* pPositionData = _pNode->Get_Mesh()->Get_VB()->CreateOrReUse_PositionData();
+    glm::vec3* pPositionData = _pNode->Get_Mesh()->Get_VertexBufferRef()->CreateOrReUse_PositionData();
     float* pNavigationMeshVertexesData = new float[iNumVertexes * 3];
     
     float pBoundingBoxMin[3];
@@ -259,7 +259,7 @@ void CNavigationMeshMgr::Set_NavigationModel(INode *_pNode)
     
     size_t iNumIndexes = _pNode->Get_Mesh()->Get_NumIndexes();
     size_t iNumTriangles = iNumIndexes / 3;
-    unsigned short* pNodeIndexesData = _pNode->Get_Mesh()->Get_IB()->Get_Data();
+    unsigned short* pNodeIndexesData = _pNode->Get_Mesh()->Get_IndexBufferRef()->Get_Data();
     int* pNavigationMeshIndexesData = new int[iNumIndexes] ;
     
     for(size_t index =0; index < iNumIndexes; index+= 3)

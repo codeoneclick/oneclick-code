@@ -154,15 +154,16 @@ void CGrass::Update()
 }
 
 void CGrass::Render(INode::E_RENDER_MODE _eMode)
-{      
-    /*glDisable(GL_CULL_FACE);
+{
+    return;
+    glDisable(GL_CULL_FACE);
     ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
     
     switch (_eMode)
     {
         case INode::E_RENDER_MODE_SIMPLE:
         {
-            m_pMesh->Get_VB()->Set_ShaderRef(m_pShader->Get_ProgramHandle());
+            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShader->Get_ProgramHandle());
             m_pShader->Enable();
             m_pShader->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD);
             m_pShader->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
@@ -187,11 +188,6 @@ void CGrass::Render(INode::E_RENDER_MODE _eMode)
             }
         }
             break;
-        case INode::E_RENDER_MODE_EDGE_DETECT:
-        {
-            
-        }
-            break;
         case INode::E_RENDER_MODE_REFLECTION:
         {
             
@@ -202,17 +198,27 @@ void CGrass::Render(INode::E_RENDER_MODE _eMode)
             
         }
             break;
+        case INode::E_RENDER_MODE_SCREEN_NORMAL_MAP:
+        {
+            
+        }
+            break;
+        case INode::E_RENDER_MODE_SHADOW_MAP:
+        {
+            
+        }
+            break;
         default:
             break;
     }
     
             
-    m_pMesh->Get_VB()->Enable();
-    m_pMesh->Get_IB()->Enable();
-    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IB()->Get_DataFromVRAM());
-    m_pMesh->Get_IB()->Disable();
-    m_pMesh->Get_VB()->Disable();
+    m_pMesh->Get_VertexBufferRef()->Enable();
+    m_pMesh->Get_IndexBufferRef()->Enable();
+    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_DataFromVRAM());
+    m_pMesh->Get_IndexBufferRef()->Disable();
+    m_pMesh->Get_VertexBufferRef()->Disable();
     m_pShader->Disable();
     
-    glEnable(GL_CULL_FACE);*/
+    glEnable(GL_CULL_FACE);
 }

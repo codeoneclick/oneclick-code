@@ -12,6 +12,7 @@
 #include "CBuildingMgr.h"
 #include "CGameResourceMgr.h"
 #include "CGameCharaterControllerMgr.h"
+#include "CGameAIMgr.h"
 #include "CLevel.h"
 #include "CSceneMgr.h"
 #include "CCharacterControllerPlayer.h"
@@ -22,6 +23,7 @@ private:
     CBuildingMgr* m_pBuildingMgr;
     CGameResourceMgr* m_pGameResourceMgr;
     CGameCharaterControllerMgr* m_pCharaterControllerMgr;
+    CGameAIMgr* m_pGameAIMgr;
     CLevel* m_pLevel;
     CCharacterControllerPlayer* m_pCharacterControllerPlayer;
     ICamera* m_pCamera;
@@ -33,6 +35,7 @@ public:
     ~CWorld(void);
     CLevel* Get_Level(void) { return m_pLevel; }
     CGameCharaterControllerMgr* Get_GameCharaterControllerMgr(void) { return m_pCharaterControllerMgr; }
+    CGameAIMgr* Get_GameAIMgr(void) { return m_pGameAIMgr; }
     CCharacterControllerPlayer* Get_PlayerCharacterController(void) { return m_pCharacterControllerPlayer; }
     void Load(void);
     void Update(void);

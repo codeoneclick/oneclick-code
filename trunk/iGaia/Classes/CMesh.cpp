@@ -16,16 +16,16 @@ CMesh::CMesh()
 
 CMesh::~CMesh()
 {
-    delete   m_pSource->m_pIB;
-    delete[] m_pSource->m_pVB;
-    delete   m_pSource;
+    delete m_pSource->m_pIndexBuffer;
+    delete m_pSource->m_pVertexBuffer;
+    delete m_pSource;
 }
 
 void CMesh::Set_Source(void *_pSource)
 {
-    if(m_pSource != NULL && m_pSource->m_pVB != NULL)
+    if(m_pSource != NULL && m_pSource->m_pVertexBuffer != NULL)
     {
-        static_cast<SSource*>(_pSource)->m_pVB->Set_ShaderRef(m_pSource->m_pVB->Get_ShaderRef());
+        static_cast<SSource*>(_pSource)->m_pVertexBuffer->Set_ShaderRef(m_pSource->m_pVertexBuffer->Get_ShaderRef());
     }
     m_pSource = static_cast<SSource*>(_pSource);
 }

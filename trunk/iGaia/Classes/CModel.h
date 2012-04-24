@@ -14,7 +14,8 @@
 class CModel : public INode
 {
 protected:
-    CShader* m_pShaderNormalDepth;
+    CShader* m_pShaderScreenNormalMap;
+    CShader* m_pShaderShadowMap;
 public:
     CModel(void);
     virtual ~CModel();

@@ -12,8 +12,7 @@
 
 ICharacterController::ICharacterController(void)
 {
-    time_t seconds;
-    seconds = time (NULL);
+    
 }
 
 ICharacterController::~ICharacterController(void)
@@ -50,11 +49,24 @@ float ICharacterController::_GetRotationBetweenPoints(glm::vec3 _vPoint_01, glm:
     float fAngle_01 = 3.14f * (_vPoint_02.x - _vPoint_01.x) / fVectorLength;
     float fAngle_02 = 3.14f * (_vPoint_02.z - _vPoint_01.z) / fVectorLength;
     float fAngle_03 = 0.0f;
-    if (fAngle_01 > 0) 
+    if (fAngle_01 > 0.0f)
         fAngle_03 = fAngle_02 / 2.0f;
-    if (fAngle_01 < 0) 
+    if (fAngle_01 < 0.0f)
         fAngle_03 = -fAngle_02 / 2.0f - 3.14f;
-    return  -fAngle_03;
+    
+    //
+    
+    //glm::vec2 vPoint_03 = glm::vec2(0.0f, 1.0f);
+    glm::vec2 vPoint_01 = glm::vec2(_vPoint_01.x, _vPoint_01.z);
+    vPoint_01 = glm::normalize(vPoint_01);
+    glm::vec2 vPoint_02 = glm::vec2(_vPoint_02.x, _vPoint_02.z);
+    vPoint_02 = glm::normalize(vPoint_02);
+    float fDot = glm::dot(vPoint_01, vPoint_02);
+    float fTempAngle = acosf(fDot);
+    std::cout<<"[ICharacterController::_GetRotationBetweenPoints] DOT PRODUCT : "<<fDot<<::std::endl;
+    std::cout<<"[ICharacterController::_GetRotationBetweenPoints] DOT angle : "<<glm::degrees(fTempAngle)<<::std::endl;
+    std::cout<<"[ICharacterController::_GetRotationBetweenPoints] TRIANGLE angle : "<<glm::degrees(fAngle_03)<<::std::endl;
+    return -fAngle_03;
 }
 
 

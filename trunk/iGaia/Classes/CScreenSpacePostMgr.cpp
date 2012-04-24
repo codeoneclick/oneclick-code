@@ -24,9 +24,9 @@ CScreenSpacePostMgr::CScreenSpacePostMgr(void)
     m_pOffScreenSize[E_OFFSCREEN_MODE_BLOOM_COMBINE] = glm::vec2(CWindow::Get_OffScreenWidth(), CWindow::Get_OffScreenHeight());
     m_pOffScreenSize[E_OFFSCREEN_MODE_REFLECTION] = glm::vec2(k_REFLECTION_TEXTURE_SIZE, k_REFLECTION_TEXTURE_SIZE);
     m_pOffScreenSize[E_OFFSCREEN_MODE_REFRACTION] = glm::vec2(k_REFRACTION_TEXTURE_SIZE, k_REFRACTION_TEXTURE_SIZE);
-    m_pOffScreenSize[E_OFFSCREEN_MODE_PRE_EDGE_DETECT_COLOR] = glm::vec2(CWindow::Get_OffScreenWidth(), CWindow::Get_OffScreenHeight());
     m_pOffScreenSize[E_OFFSCREEN_MODE_EDGE_DETECT] = glm::vec2(CWindow::Get_OffScreenWidth(), CWindow::Get_OffScreenHeight());
-    m_pOffScreenSize[E_OFFSCREEN_MODE_NORMAL_DEPTH] = glm::vec2(CWindow::Get_OffScreenWidth(), CWindow::Get_OffScreenHeight());
+    m_pOffScreenSize[E_OFFSCREEN_MODE_SCREEN_NORMAL_MAP] = glm::vec2(CWindow::Get_OffScreenWidth(), CWindow::Get_OffScreenHeight());
+    m_pOffScreenSize[E_OFFSCREEN_MODE_SHADOW_MAP] = glm::vec2(CWindow::Get_OffScreenWidth(), CWindow::Get_OffScreenHeight());
     
     glGenTextures(E_OFFSCREEN_MODE_MAX, m_hOffScreenTextures);
     glGenFramebuffers(E_OFFSCREEN_MODE_MAX, m_hOffScreenFBOs);
@@ -97,10 +97,10 @@ CScreenSpacePostMgr::CScreenSpacePostMgr(void)
     pSource->m_iNumVertexes = 4;
     pSource->m_iNumIndexes  = 6;
     
-    pSource->m_pVB = new CVertexBuffer(pSource->m_iNumVertexes);
+    pSource->m_pVertexBuffer = new CVertexBuffer(pSource->m_iNumVertexes);
     
-    glm::vec3* pPositionData = pSource->m_pVB->CreateOrReUse_PositionData();
-    glm::vec2* pTexCoordData = pSource->m_pVB->CreateOrReUse_TexCoordData();
+    glm::vec3* pPositionData = pSource->m_pVertexBuffer->CreateOrReUse_PositionData();
+    glm::vec2* pTexCoordData = pSource->m_pVertexBuffer->CreateOrReUse_TexCoordData();
     
     unsigned i = 0;
     pPositionData[i] = glm::vec3(-1.0f,-1.0f,0.0f);
@@ -116,8 +116,8 @@ CScreenSpacePostMgr::CScreenSpacePostMgr(void)
     pTexCoordData[i] = glm::vec2(1.0f,1.0f);
     i++;
 
-    pSource->m_pIB = new CIndexBuffer(pSource->m_iNumIndexes);
-    unsigned short* pIBData = pSource->m_pIB->Get_Data();
+    pSource->m_pIndexBuffer = new CIndexBuffer(pSource->m_iNumIndexes);
+    unsigned short* pIBData = pSource->m_pIndexBuffer->Get_Data();
     
     i = 0;
     pIBData[i++] = 0;
@@ -131,9 +131,9 @@ CScreenSpacePostMgr::CScreenSpacePostMgr(void)
     m_pMesh = new CMesh();
     m_pMesh->Set_Source(pSource);
     
-    m_pMesh->Get_VB()->CommitToRAM();
-    m_pMesh->Get_VB()->CommitFromRAMToVRAM();
-    m_pMesh->Get_IB()->CommitFromRAMToVRAM();
+    m_pMesh->Get_VertexBufferRef()->CommitToRAM();
+    m_pMesh->Get_VertexBufferRef()->CommitFromRAMToVRAM();
+    m_pMesh->Get_IndexBufferRef()->CommitFromRAMToVRAM();
     
     m_pShaderPostSimple = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_TEXTURE);
     m_pShaderPostBloomExtract = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_BLOOM_EXTRACT);
@@ -175,85 +175,85 @@ void CScreenSpacePostMgr::DisableScreenMode(void)
 
 void CScreenSpacePostMgr::Render_PostSimple(void)
 {
-    if(m_pMesh->Get_VB() != NULL)
+    if(m_pMesh->Get_VertexBufferRef() != NULL)
     {
-        m_pMesh->Get_VB()->Set_ShaderRef(m_pShaderPostSimple->Get_ProgramHandle());
+        m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShaderPostSimple->Get_ProgramHandle());
     }
     m_pShaderPostSimple->Enable();
-    m_pShaderPostSimple->SetTexture(m_hOffScreenTextures[E_OFFSCREEN_MODE_SIMPLE], CShader::k_TEXTURE_01);
-    m_pMesh->Get_VB()->Enable();
-    m_pMesh->Get_IB()->Enable();
-    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IB()->Get_DataFromVRAM());
-    m_pMesh->Get_IB()->Disable();
-    m_pMesh->Get_VB()->Disable();
+    m_pShaderPostSimple->SetTexture(m_hOffScreenTextures[E_OFFSCREEN_MODE_EDGE_DETECT], CShader::k_TEXTURE_01);
+    m_pMesh->Get_VertexBufferRef()->Enable();
+    m_pMesh->Get_IndexBufferRef()->Enable();
+    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_DataFromVRAM());
+    m_pMesh->Get_IndexBufferRef()->Disable();
+    m_pMesh->Get_VertexBufferRef()->Disable();
     m_pShaderPostSimple->Disable();
 }
 
 void CScreenSpacePostMgr::Render_PostBloomExtract(void)
 {
-    if(m_pMesh->Get_VB() != NULL)
+    if(m_pMesh->Get_VertexBufferRef() != NULL)
     {
-        m_pMesh->Get_VB()->Set_ShaderRef(m_pShaderPostBloomExtract->Get_ProgramHandle());
+        m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShaderPostBloomExtract->Get_ProgramHandle());
     }
 
     m_pShaderPostBloomExtract->Enable();
     m_pShaderPostBloomExtract->SetTexture(m_hOffScreenTextures[E_OFFSCREEN_MODE_EDGE_DETECT], CShader::k_TEXTURE_01);
-    m_pMesh->Get_VB()->Enable();
-    m_pMesh->Get_IB()->Enable();
-    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IB()->Get_DataFromVRAM());
-    m_pMesh->Get_IB()->Disable();
-    m_pMesh->Get_VB()->Disable();
+    m_pMesh->Get_VertexBufferRef()->Enable();
+    m_pMesh->Get_IndexBufferRef()->Enable();
+    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_DataFromVRAM());
+    m_pMesh->Get_IndexBufferRef()->Disable();
+    m_pMesh->Get_VertexBufferRef()->Disable();
     m_pShaderPostBloomExtract->Disable();
 }
 
 void CScreenSpacePostMgr::Render_PostBloomCombine(void)
 {
-    if(m_pMesh->Get_VB() != NULL)
+    if(m_pMesh->Get_VertexBufferRef() != NULL)
     {
-        m_pMesh->Get_VB()->Set_ShaderRef(m_pShaderPostBloomCombine->Get_ProgramHandle());
+        m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShaderPostBloomCombine->Get_ProgramHandle());
     }
     m_pShaderPostBloomCombine->Enable();
     m_pShaderPostBloomCombine->SetTexture(m_hOffScreenTextures[E_OFFSCREEN_MODE_BLUR], CShader::k_TEXTURE_01);
     m_pShaderPostBloomCombine->SetTexture(m_hOffScreenTextures[E_OFFSCREEN_MODE_EDGE_DETECT], CShader::k_TEXTURE_02);
-    m_pMesh->Get_VB()->Enable();
-    m_pMesh->Get_IB()->Enable();
-    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IB()->Get_DataFromVRAM());
-    m_pMesh->Get_IB()->Disable();
-    m_pMesh->Get_VB()->Disable();
+    m_pMesh->Get_VertexBufferRef()->Enable();
+    m_pMesh->Get_IndexBufferRef()->Enable();
+    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_DataFromVRAM());
+    m_pMesh->Get_IndexBufferRef()->Disable();
+    m_pMesh->Get_VertexBufferRef()->Disable();
     m_pShaderPostBloomCombine->Disable();
 }
 
 void CScreenSpacePostMgr::Render_PostBlur(void)
 {
-    if(m_pMesh->Get_VB() != NULL)
+    if(m_pMesh->Get_VertexBufferRef() != NULL)
     {
-        m_pMesh->Get_VB()->Set_ShaderRef(m_pShaderPostBlur->Get_ProgramHandle());
+        m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShaderPostBlur->Get_ProgramHandle());
     }
     m_pShaderPostBlur->Enable();
     m_pShaderPostBlur->SetTexture(m_hOffScreenTextures[E_OFFSCREEN_MODE_BLOOM_EXTRACT], CShader::k_TEXTURE_01);
-    m_pMesh->Get_VB()->Enable();
-    m_pMesh->Get_IB()->Enable();
-    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IB()->Get_DataFromVRAM());
-    m_pMesh->Get_IB()->Disable();
-    m_pMesh->Get_VB()->Disable();
+    m_pMesh->Get_VertexBufferRef()->Enable();
+    m_pMesh->Get_IndexBufferRef()->Enable();
+    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_DataFromVRAM());
+    m_pMesh->Get_IndexBufferRef()->Disable();
+    m_pMesh->Get_VertexBufferRef()->Disable();
     m_pShaderPostBlur->Disable();
 }
 
 
 void CScreenSpacePostMgr::Render_PostEdgeDetect(void)
 {
-    if(m_pMesh->Get_VB() != NULL)
+    if(m_pMesh->Get_VertexBufferRef() != NULL)
     {
-        m_pMesh->Get_VB()->Set_ShaderRef(m_pShaderPostEdgeDetect->Get_ProgramHandle());
+        m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShaderPostEdgeDetect->Get_ProgramHandle());
     }
     m_pShaderPostEdgeDetect->Enable();
     m_pShaderPostEdgeDetect->SetTexture(m_hOffScreenTextures[E_OFFSCREEN_MODE_SIMPLE], CShader::k_TEXTURE_01);
-    m_pShaderPostEdgeDetect->SetTexture(m_hOffScreenTextures[E_OFFSCREEN_MODE_NORMAL_DEPTH], CShader::k_TEXTURE_02);
-    m_pMesh->Get_VB()->Enable();
-    m_pMesh->Get_IB()->Enable();
-    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IB()->Get_DataFromVRAM());
-    m_pMesh->Get_IB()->Disable();
-    m_pMesh->Get_VB()->Disable();
+    m_pShaderPostEdgeDetect->SetTexture(m_hOffScreenTextures[E_OFFSCREEN_MODE_SCREEN_NORMAL_MAP], CShader::k_TEXTURE_02);
+    m_pMesh->Get_VertexBufferRef()->Enable();
+    m_pMesh->Get_IndexBufferRef()->Enable();
+    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_DataFromVRAM());
+    m_pMesh->Get_IndexBufferRef()->Disable();
+    m_pMesh->Get_VertexBufferRef()->Disable();
     m_pShaderPostEdgeDetect->Disable();
 }
 

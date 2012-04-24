@@ -12,21 +12,26 @@ const char* ShaderUnitF = STRINGIFY(
                                        
 void main(void)
 {
-    mediump vec3 vLight = normalize(OUT_Light);
-    mediump vec3 vView = normalize(OUT_View);
+    lowp vec4 vDiffuseColor = texture2D(EXT_TEXTURE_01, OUT_TexCoord);
     
-    mediump vec4 vDiffuseColor = texture2D(EXT_TEXTURE_01, OUT_TexCoord);
-    mediump vec4 vSpecularColor = vec4(0.7, 0.7, 0.7, 1.0);
-    mediump vec3 vNormalColor = texture2D(EXT_TEXTURE_02, OUT_TexCoord).xyz;
-    vNormalColor = normalize(vNormalColor * 2.0 - 1.0);
+    if(vDiffuseColor.a < 0.5)
+    {
+        discard;
+    }
     
-    vDiffuseColor = vDiffuseColor * max(dot(vNormalColor, vLight), 0.33);
+    lowp float fOffsetA = 0.2;
+    lowp float fOffsetB = 0.4;
+    lowp float fOffsetC = 0.6;
+    lowp float fOffsetD = 0.8;
+ 
+    lowp float fDiffuseFactor = max(dot(OUT_Normal, OUT_Light), 0.0);
     
-    mediump vec3 vReflect = reflect(-vView, vNormalColor);
-    vSpecularColor = vSpecularColor * pow(max(dot(vLight, vReflect),0.0),8.0);
+    if (fDiffuseFactor < fOffsetA) fDiffuseFactor = 0.0;
+    else if (fDiffuseFactor < fOffsetB) fDiffuseFactor = fOffsetB;
+    else if (fDiffuseFactor < fOffsetC) fDiffuseFactor = fOffsetC;
+    else fDiffuseFactor = fOffsetD;
     
-    lowp vec4 vColor = texture2D(EXT_TEXTURE_01, OUT_TexCoord);
-    vColor = vec4(1.0 - OUT_BlendFactor);
-    gl_FragColor = texture2D(EXT_TEXTURE_01, OUT_TexCoord); //vDiffuseColor + vSpecularColor;
+    vDiffuseColor.rgb = vDiffuseColor.rgb * fDiffuseFactor + vDiffuseColor.rgb * 0.75;
+    gl_FragColor = vDiffuseColor;
 }
 );

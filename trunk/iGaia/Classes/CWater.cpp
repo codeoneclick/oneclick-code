@@ -31,10 +31,10 @@ void CWater::Load(IResource::SResource _tResource)
     pSource->m_iNumVertexes = 4;
     pSource->m_iNumIndexes  = 6;
     
-    pSource->m_pVB = new CVertexBuffer(pSource->m_iNumVertexes);
+    pSource->m_pVertexBuffer = new CVertexBuffer(pSource->m_iNumVertexes);
     
-    glm::vec3* pPositionData = pSource->m_pVB->CreateOrReUse_PositionData();
-    glm::vec2* pTexCoordData = pSource->m_pVB->CreateOrReUse_TexCoordData();
+    glm::vec3* pPositionData = pSource->m_pVertexBuffer->CreateOrReUse_PositionData();
+    glm::vec2* pTexCoordData = pSource->m_pVertexBuffer->CreateOrReUse_TexCoordData();
     
     memset(pPositionData, 0x0, pSource->m_iNumVertexes * sizeof(glm::vec3));
     
@@ -48,8 +48,8 @@ void CWater::Load(IResource::SResource _tResource)
     pTexCoordData[2] = glm::vec2( 1.0f,  0.0f );
     pTexCoordData[3] = glm::vec2( 1.0f,  1.0f );
     
-    pSource->m_pIB = new CIndexBuffer(pSource->m_iNumIndexes);
-    unsigned short* pIBData = pSource->m_pIB->Get_Data();
+    pSource->m_pIndexBuffer = new CIndexBuffer(pSource->m_iNumIndexes);
+    unsigned short* pIBData = pSource->m_pIndexBuffer->Get_Data();
     
     pIBData[0] = 0;
     pIBData[1] = 1;
@@ -58,9 +58,9 @@ void CWater::Load(IResource::SResource _tResource)
     pIBData[4] = 2;
     pIBData[5] = 3;
     
-    pSource->m_pVB->CommitToRAM();
-    pSource->m_pVB->CommitFromRAMToVRAM();
-    pSource->m_pIB->CommitFromRAMToVRAM();
+    pSource->m_pVertexBuffer->CommitToRAM();
+    pSource->m_pVertexBuffer->CommitFromRAMToVRAM();
+    pSource->m_pIndexBuffer->CommitFromRAMToVRAM();
     
     m_pMesh = new CMesh();
     m_pMesh->Set_Source(pSource);
@@ -105,7 +105,7 @@ void CWater::Render(INode::E_RENDER_MODE _eMode)
     {
         case INode::E_RENDER_MODE_SIMPLE:
         {
-            m_pMesh->Get_VB()->Set_ShaderRef(m_pShader->Get_ProgramHandle());
+            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShader->Get_ProgramHandle());
             m_pShader->Enable();
             m_pShader->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD);
             m_pShader->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
@@ -131,11 +131,6 @@ void CWater::Render(INode::E_RENDER_MODE _eMode)
             m_pShader->SetTexture(CSceneMgr::Instance()->Get_RenderMgr()->Get_OffScreenTexture(CScreenSpacePostMgr::E_OFFSCREEN_MODE_REFRACTION), CShader::k_TEXTURE_02);
         }
             break;
-        case INode::E_RENDER_MODE_EDGE_DETECT:
-        {
-            
-        }
-            break;
         case INode::E_RENDER_MODE_REFLECTION:
         {
             
@@ -146,15 +141,20 @@ void CWater::Render(INode::E_RENDER_MODE _eMode)
             
         }
             break;
+        case INode::E_RENDER_MODE_SHADOW_MAP:
+        {
+            
+        }
+            break;
         default:
             break;
     }
     
-    m_pMesh->Get_VB()->Enable();
-    m_pMesh->Get_IB()->Enable();
-    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IB()->Get_DataFromVRAM());
-    m_pMesh->Get_IB()->Disable();
-    m_pMesh->Get_VB()->Disable();
+    m_pMesh->Get_VertexBufferRef()->Enable();
+    m_pMesh->Get_IndexBufferRef()->Enable();
+    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_DataFromVRAM());
+    m_pMesh->Get_IndexBufferRef()->Disable();
+    m_pMesh->Get_VertexBufferRef()->Disable();
     
     m_pShader->Disable();
     glEnable(GL_CULL_FACE);
