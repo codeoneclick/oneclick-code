@@ -26,7 +26,7 @@ void main(void)
     OUT_TexCoord_04.zw = IN_SLOT_TexCoord + ox + oy;*/
     
     lowp float fThickness = 1.0;
-    lowp vec2 vEdgeOffset = vec2(1.0 / 640.0, 1.0 / 480.0);
+    lowp vec2 vEdgeOffset = vec2(1.0 / 480.0, 1.0 / 320.0);
     OUT_TexCoord_01.xy = IN_SLOT_TexCoord + vec2(-1.0, -1.0) * vEdgeOffset;
     OUT_TexCoord_01.zw = IN_SLOT_TexCoord + vec2( 1.0,  1.0) * vEdgeOffset;
     OUT_TexCoord_02.xy = IN_SLOT_TexCoord + vec2(-1.0,  1.0) * vEdgeOffset;

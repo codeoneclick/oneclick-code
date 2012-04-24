@@ -117,7 +117,7 @@ void main(void)
     normalDelta = clamp((normalDelta - 0.2) * 1.0, 0.0, 1.0);
     depthDelta = clamp((depthDelta - 0.04) * 10.0, 0.0, 1.0);
     
-    lowp float edgeAmount = clamp(normalDelta + depthDelta, 0.0, 1.0) * 1.0;
+    lowp float edgeAmount = clamp(normalDelta + depthDelta, 0.0, 1.0);
     
     gl_FragColor = texture2D(EXT_TEXTURE_01, OUT_TexCoord) * (1.0 - edgeAmount);
 }

@@ -33,6 +33,7 @@ CSceneMgr::CSceneMgr(void)
     m_pRenderMgr = new CRenderMgr();
     m_pCollisionMgr = new CCollisionMgr();
     m_pPhysicMgr = new CPhysicMgr();
+    m_pParticleMgr = new CParticleMgr();
     
     m_lLights[ILight::E_LIGHT_MODE_DIRECTION] = new CLightPoint();
     static_cast<CLightPoint*>(m_lLights[ILight::E_LIGHT_MODE_DIRECTION])->Set_Visible(false);
@@ -236,6 +237,11 @@ void CSceneMgr::Update()
 
     m_pCollisionMgr->Update();
     m_pPhysicMgr->Update();
+    
+    if(m_pParticleMgr != NULL)
+    {
+        m_pParticleMgr->Update();
+    }
 }
 
 void CSceneMgr::_DrawSimpleStep(void)
@@ -259,6 +265,11 @@ void CSceneMgr::_DrawSimpleStep(void)
         ++pMapBIterator;
     }
     
+    if(m_pParticleMgr != NULL)
+    {
+        m_pParticleMgr->Render();
+    }
+    
     m_pRenderMgr->EndDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_SIMPLE);
 }
 
@@ -278,7 +289,7 @@ void CSceneMgr::_DrawReflectionStep(void)
     
     while (pBeginNodeIterator != pEndNodeIterator)
     {
-        if((*pBeginNodeIterator)->Get_ForReflection())
+        if((*pBeginNodeIterator)->Get_RenderModeReflectionEnable())
         {
             (*pBeginNodeIterator)->Update();
             (*pBeginNodeIterator)->Render(INode::E_RENDER_MODE_REFLECTION);
@@ -297,7 +308,7 @@ void CSceneMgr::_DrawRefractionStep(void)
     
     while (pBeginNodeIterator != pEndNodeIterator)
     {
-        if((*pBeginNodeIterator)->Get_ForRefraction())
+        if((*pBeginNodeIterator)->Get_RenderModeRefractionEnable())
         {
             (*pBeginNodeIterator)->Update();
             (*pBeginNodeIterator)->Render(INode::E_RENDER_MODE_REFRACTION);
@@ -307,42 +318,58 @@ void CSceneMgr::_DrawRefractionStep(void)
     m_pRenderMgr->EndDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_REFRACTION);
 }
 
-void CSceneMgr::_DrawNormalDepthStep(void)
+void CSceneMgr::_DrawScreenNormalMapStep(void)
 {
     std::vector<INode*>::iterator pBeginNodeIterator = m_lContainer.begin();
     std::vector<INode*>::iterator pEndNodeIterator = m_lContainer.end();
     pBeginNodeIterator = m_lContainer.begin();
     pEndNodeIterator = m_lContainer.end();
-    m_pRenderMgr->BeginDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_NORMAL_DEPTH);
+    m_pRenderMgr->BeginDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_SCREEN_NORMAL_MAP);
     while (pBeginNodeIterator != pEndNodeIterator)
     {
-        if((*pBeginNodeIterator)->Get_NormalDepth())
+        if((*pBeginNodeIterator)->Get_RenderModeScreenNormalEnable())
         {
-            //(*pBeginNodeIterator)->Update();
-            (*pBeginNodeIterator)->Render(INode::E_RENDER_MODE_NORMAL_DEPTH);
+            (*pBeginNodeIterator)->Render(INode::E_RENDER_MODE_SCREEN_NORMAL_MAP);
         }
         ++pBeginNodeIterator;
     }
-    m_pRenderMgr->EndDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_NORMAL_DEPTH);
+    m_pRenderMgr->EndDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_SCREEN_NORMAL_MAP);
+}
+
+void CSceneMgr::_DrawShadowMapStep(void)
+{
+    std::vector<INode*>::iterator pBeginNodeIterator = m_lContainer.begin();
+    std::vector<INode*>::iterator pEndNodeIterator = m_lContainer.end();
+    m_pRenderMgr->BeginDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_SHADOW_MAP);
+    
+    glm::vec3 vCameraPosition = m_pCamera->Get_Position();
+    vCameraPosition = glm::vec3(8.0f, 8.0f, 8.0f);//m_pGlobalLight->Get_Position();
+    
+    glm::vec3 vCameraLookAt = m_pCamera->Get_LookAt();
+    vCameraLookAt = glm::vec3(0.0f, 0.0f, 0.0f);
+    m_pCamera->Set_View(glm::lookAt(vCameraPosition, vCameraLookAt, glm::vec3(0.0f,-1.0f,0.0f)));
+    
+    while (pBeginNodeIterator != pEndNodeIterator)
+    {
+        if((*pBeginNodeIterator)->Get_RenderModeShadowMapEnable())
+        {
+            (*pBeginNodeIterator)->Update();
+            (*pBeginNodeIterator)->Render(INode::E_RENDER_MODE_SHADOW_MAP);
+        }
+        ++pBeginNodeIterator;
+    }
+    m_pCamera->Set_View(glm::lookAt(m_pCamera->Get_Position(), m_pCamera->Get_LookAt(), glm::vec3(0.0f,1.0f,0.0f))); 
+    m_pRenderMgr->EndDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_SHADOW_MAP);
 }
 
 void CSceneMgr::Render(void)
 {   _DrawReflectionStep();
     _DrawRefractionStep();
+    _DrawShadowMapStep();
     _DrawSimpleStep();
-    _DrawNormalDepthStep();
+    _DrawScreenNormalMapStep();
     m_pRenderMgr->DrawResult();
 }
-
-
-
-
-
-
-
-
-
-
 
 
 

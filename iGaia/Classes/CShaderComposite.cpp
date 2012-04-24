@@ -67,6 +67,9 @@
 #include "../Shaders/ShaderAnimTexCoordUnit.vert"
 #include "../Shaders/ShaderAnimTexCoordUnit.frag"
 
+#include "../Shaders/ShaderPreShadowMap.vert"
+#include "../Shaders/ShaderPreShadowMap.frag"
+
 CShaderComposite* CShaderComposite::m_pInstance = NULL;
 
 CShaderComposite::CShaderComposite()
@@ -149,7 +152,10 @@ CShaderComposite::CShaderComposite()
     pData = pParser->Load(ShaderAnimTexCoordUnitV, ShaderAnimTexCoordUnitF);
     pShader = new CShader(pData.s_pHandle);
     m_lContainer[IResource::E_SHADER_ANIM_TEXCOORD_UNIT] = pShader;
-
+    
+    pData = pParser->Load(ShaderPreShadowMapV, ShaderPreShadowMapF);
+    pShader = new CShader(pData.s_pHandle);
+    m_lContainer[IResource::E_SHADER_SHADOW_MAP] = pShader;
 }
 
 CShaderComposite::~CShaderComposite()

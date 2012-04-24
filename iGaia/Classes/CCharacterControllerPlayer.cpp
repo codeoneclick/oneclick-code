@@ -37,34 +37,44 @@ CCharacterControllerPlayer::~CCharacterControllerPlayer(void)
 
 void CCharacterControllerPlayer::Load(void)
 {
-    m_pBodyModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("base_model.mdl", false, IResource::E_THREAD_BACKGROUND);
-    m_pBodyModel->Set_Texture("model_01.pvr");
-    m_pBodyModel->Set_Scale(glm::vec3(0.01f, 0.01f, 0.01f));
-    m_pBodyModel->Set_Shader(IResource::E_SHADER_UNIT);
-    m_pBodyModel->Create_BoundingBox();
-    m_pBodyModel->Set_NormalDepth(true);
     
+    glm::vec3 vScale = glm::vec3(0.2f, 0.2f, 0.2f);
     m_pTowerModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("tower_model.mdl", false, IResource::E_THREAD_BACKGROUND);
     m_pTowerModel->Set_Texture("model_01.pvr");
-    m_pTowerModel->Set_Scale(glm::vec3(0.01f, 0.01f, 0.01f));
+    m_pTowerModel->Set_Scale(vScale);
     m_pTowerModel->Set_Shader(IResource::E_SHADER_UNIT);
     m_pTowerModel->Create_BoundingBox();
-    m_pTowerModel->Set_NormalDepth(true);
+    m_pTowerModel->Set_RenderModeScreenNormalEnable(true);
+    //m_pTowerModel->Set_RenderModeShadowMapEnable(true);
 
     
     m_pLeftTrackModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("left_track_model.mdl", false, IResource::E_THREAD_BACKGROUND);
-    m_pLeftTrackModel->Set_Texture("model_01.pvr");
-    m_pLeftTrackModel->Set_Scale(glm::vec3(0.01f, 0.01f, 0.01f));
+    m_pLeftTrackModel->Set_Texture("model_02.pvr");
+    m_pLeftTrackModel->Set_Scale(vScale);
     m_pLeftTrackModel->Set_Shader(IResource::E_SHADER_ANIM_TEXCOORD_UNIT);
     m_pLeftTrackModel->Create_BoundingBox();
-    m_pLeftTrackModel->Set_NormalDepth(true);
+    m_pLeftTrackModel->Set_RenderModeScreenNormalEnable(true);
+    //m_pLeftTrackModel->Set_RenderModeShadowMapEnable(true);
 
     m_pRightTrackModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("right_track_model.mdl", false, IResource::E_THREAD_BACKGROUND);
-    m_pRightTrackModel->Set_Texture("model_01.pvr");
-    m_pRightTrackModel->Set_Scale(glm::vec3(0.01f, 0.01f, 0.01f));
+    m_pRightTrackModel->Set_Texture("model_02.pvr");
+    m_pRightTrackModel->Set_Scale(vScale);
     m_pRightTrackModel->Set_Shader(IResource::E_SHADER_ANIM_TEXCOORD_UNIT);
     m_pRightTrackModel->Create_BoundingBox();
-    m_pRightTrackModel->Set_NormalDepth(true);
+    m_pRightTrackModel->Set_RenderModeScreenNormalEnable(true);
+    //m_pRightTrackModel->Set_RenderModeShadowMapEnable(true);
+    
+    m_pBodyModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("base_model.mdl", false, IResource::E_THREAD_BACKGROUND);
+    m_pBodyModel->Set_Texture("model_01.pvr");
+    m_pBodyModel->Set_Scale(vScale);
+    m_pBodyModel->Set_Shader(IResource::E_SHADER_UNIT);
+    m_pBodyModel->Create_BoundingBox();
+    m_pBodyModel->Set_RenderModeScreenNormalEnable(true);
+    //m_pBodyModel->Set_RenderModeShadowMapEnable(true);
+    
+    m_pExplosionEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitter();
+    m_pExplosionEmitter->Set_Shader(IResource::E_SHADER_UNIT);
+    m_pExplosionEmitter->Set_Texture("model_02.pvr");
 
     CSceneMgr::Instance()->AddEventListener(m_pBodyModel, CEventMgr::E_EVENT_TOUCH);
     CSceneMgr::Instance()->Get_PhysicMgr()->Add_CollisionModelAsVehicle(m_pBodyModel, 2000, glm::vec3(2.0f, 2.0f, 2.0f));
@@ -166,7 +176,7 @@ void CCharacterControllerPlayer::OnPhysicEvent(INode* _pNode, glm::vec3 _vPositi
 void CCharacterControllerPlayer::Update(void)
 {
     static float fOffsetValue = 0.0f;
-    fOffsetValue += 0.1f;
+    fOffsetValue -= 0.1f;
     glm::vec2 vTexCoordOffset = glm::vec2(fOffsetValue, 0.0f);
     m_pLeftTrackModel->Set_TexCoordOffset(vTexCoordOffset);
     m_pRightTrackModel->Set_TexCoordOffset(vTexCoordOffset);

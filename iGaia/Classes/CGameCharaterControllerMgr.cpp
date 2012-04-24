@@ -9,6 +9,7 @@
 #include <iostream>
 #include "CGameCharaterControllerMgr.h"
 #include "CCharacterControllerPlayer.h"
+#include "CCharacterControllerEnemy.h"
 
 CGameCharaterControllerMgr::CGameCharaterControllerMgr(void)
 {
@@ -20,16 +21,20 @@ CGameCharaterControllerMgr::~CGameCharaterControllerMgr(void)
     
 }
 
-void CGameCharaterControllerMgr::Add_MainCharacterController(void)
+ICharacterController* CGameCharaterControllerMgr::Add_MainCharacterController(void)
 {
     m_pCharacterControllerPlayer = new CCharacterControllerPlayer();
     m_pCharacterControllerPlayer->Load();
     m_lContainer.push_back(m_pCharacterControllerPlayer);
+    return m_pCharacterControllerPlayer;
 }
 
-void CGameCharaterControllerMgr::Add_EnemyCharacterController(void)
+ICharacterController* CGameCharaterControllerMgr::Add_EnemyCharacterController(void)
 {
-    
+    CCharacterControllerEnemy* pCharacterController = new CCharacterControllerEnemy();
+    pCharacterController->Load();
+    m_lContainer.push_back(pCharacterController);
+    return pCharacterController;
 }
 
 void CGameCharaterControllerMgr::Remove_MainCharacterController(void)

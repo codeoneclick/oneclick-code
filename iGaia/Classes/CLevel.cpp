@@ -36,10 +36,9 @@ void CLevel::Load(void)
     m_pLandscape->Set_Position(glm::vec3(0.0f, 0.0f, 0.0f));
     m_pLandscape->Set_DelegateTarget(this);
     m_pLandscape->Add_Delegate(this);
-    m_pLandscape->Set_ForReflection(true);
-    m_pLandscape->Set_ForRefraction(true);
-    m_pLandscape->Set_EdgeDetect(true);
-    m_pLandscape->Set_NormalDepth(true);
+    m_pLandscape->Set_RenderModeReflectionEnable(true);
+    m_pLandscape->Set_RenderModeRefractionEnable(true);
+    m_pLandscape->Set_RenderModeScreenNormalEnable(true);
     
     m_pWater = (CWater*)CSceneMgr::Instance()->AddWaterModel("water");
     m_pWater->Set_Shader(IResource::E_SHADER_WATER);

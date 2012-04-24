@@ -36,10 +36,10 @@ INode::INode()
     
     m_pLight = NULL;
     
-    m_bIsForReflection = false;
-    m_bIsForRefraction = false;
-    m_bIsEdgeDetect = false;
-    m_bIsNormalDepth = false;
+    m_bIsRenderModeReflectionEnable = false;
+    m_bIsRenderModeRefractionEnable = false;
+    m_bIsRenderModeScreenNormalEnable = false;
+    m_bIsRenderModeShadowMapEnable = false;
     
     m_pRigidBody = NULL;
     m_pRaycastVehicle = NULL;
@@ -84,9 +84,9 @@ void INode::Set_Texture(const std::string &_sName, int index, IResource::E_THREA
 void INode::Set_Shader(IResource::E_SHADER _eShader)
 {
     m_pShader = CShaderComposite::Instance()->Get_Shader(_eShader);
-    if(m_pMesh->Get_VB() != NULL)
+    if(m_pMesh->Get_VertexBufferRef() != NULL)
     {
-        m_pMesh->Get_VB()->Set_ShaderRef(m_pShader->Get_ProgramHandle());
+        m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShader->Get_ProgramHandle());
     }
 }
 
@@ -151,7 +151,7 @@ void INode::Update()
     if(m_pBoundingBox != NULL)
     {
         m_pBoundingBox->Set_WorldMatrix(m_mWorld);
-        m_pBoundingBox->Set_MaxMinPoints(m_pMesh->Get_MaxBound(), m_pMesh->Get_MinBound());
+        //m_pBoundingBox->Set_MaxMinPoints(m_pMesh->Get_MaxBound(), m_pMesh->Get_MinBound());
     }
 }
 

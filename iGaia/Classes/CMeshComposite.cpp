@@ -17,8 +17,8 @@ CMeshComposite::CMeshComposite()
     pSource->m_iNumVertexes = 4;
     pSource->m_iNumIndexes  = 6;
     
-    pSource->m_pIB = new CIndexBuffer(pSource->m_iNumIndexes);
-    unsigned short* pIBData = pSource->m_pIB->Get_Data();
+    pSource->m_pIndexBuffer = new CIndexBuffer(pSource->m_iNumIndexes);
+    unsigned short* pIBData = pSource->m_pIndexBuffer->Get_Data();
     pIBData[0] = 0;
     pIBData[1] = 1;
     pIBData[2] = 2;
@@ -26,11 +26,11 @@ CMeshComposite::CMeshComposite()
     pIBData[4] = 3;
     pIBData[5] = 0;
     
-    pSource->m_pVB = new CVertexBuffer(pSource->m_iNumVertexes);
+    pSource->m_pVertexBuffer = new CVertexBuffer(pSource->m_iNumVertexes);
     
-    glm::vec3* pPositionData = pSource->m_pVB->CreateOrReUse_PositionData();
-    glm::vec2* pTexCoordData = pSource->m_pVB->CreateOrReUse_TexCoordData();
-    glm::u8vec4* pNormalData = pSource->m_pVB->CreateOrReUse_NormalData();
+    glm::vec3* pPositionData = pSource->m_pVertexBuffer->CreateOrReUse_PositionData();
+    glm::vec2* pTexCoordData = pSource->m_pVertexBuffer->CreateOrReUse_TexCoordData();
+    glm::u8vec4* pNormalData = pSource->m_pVertexBuffer->CreateOrReUse_NormalData();
     
     
     pPositionData[0] = glm::vec3(-0.5f, -0.5f, 0.0f);
@@ -43,8 +43,8 @@ CMeshComposite::CMeshComposite()
     pTexCoordData[2] = glm::vec2(1.0f, 1.0f);
     pTexCoordData[3] = glm::vec2(1.0f, 0.0f);
     
-    pSource->m_pVB->CommitToRAM();
-    pSource->m_pVB->CommitFromRAMToVRAM();
+    pSource->m_pVertexBuffer->CommitToRAM();
+    pSource->m_pVertexBuffer->CommitFromRAMToVRAM();
 
     CMesh* pMesh = new CMesh();
     pMesh->Set_Source(pSource);
@@ -56,11 +56,11 @@ CMeshComposite::CMeshComposite()
     pSource->m_iNumVertexes = 24;
     pSource->m_iNumIndexes  = 36;
     
-    pSource->m_pVB = new CVertexBuffer(pSource->m_iNumVertexes);
+    pSource->m_pVertexBuffer = new CVertexBuffer(pSource->m_iNumVertexes);
     
-    pPositionData = pSource->m_pVB->CreateOrReUse_PositionData();
-    pTexCoordData = pSource->m_pVB->CreateOrReUse_TexCoordData();
-    pNormalData = pSource->m_pVB->CreateOrReUse_NormalData();
+    pPositionData = pSource->m_pVertexBuffer->CreateOrReUse_PositionData();
+    pTexCoordData = pSource->m_pVertexBuffer->CreateOrReUse_TexCoordData();
+    pNormalData = pSource->m_pVertexBuffer->CreateOrReUse_NormalData();
     
     glm::vec3 m_vMin = glm::vec3( -0.5f, -0.5f, -0.5f);
     glm::vec3 m_vMax = glm::vec3(  0.5f,  0.5f,  0.5f);
@@ -127,11 +127,11 @@ CMeshComposite::CMeshComposite()
     pTexCoordData[22] = glm::vec2(0.0f, 1.0f);
     pTexCoordData[23] = glm::vec2(0.0f, 0.0f);
     
-    pSource->m_pVB->CommitToRAM();
-    pSource->m_pVB->CommitFromRAMToVRAM();
+    pSource->m_pVertexBuffer->CommitToRAM();
+    pSource->m_pVertexBuffer->CommitFromRAMToVRAM();
     
-    pSource->m_pIB = new CIndexBuffer(pSource->m_iNumIndexes);
-    pIBData = pSource->m_pIB->Get_Data();
+    pSource->m_pIndexBuffer = new CIndexBuffer(pSource->m_iNumIndexes);
+    pIBData = pSource->m_pIndexBuffer->Get_Data();
     
     // Front
     pIBData[0] = 0;

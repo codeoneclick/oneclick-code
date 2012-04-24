@@ -18,6 +18,7 @@
 #include "CEventMgr.h"
 #include "CHeightMapSetter.h"
 #include "CNavigationMeshMgr.h"
+#include "CParticleMgr.h"
 
 class CSceneMgr
 {
@@ -27,11 +28,13 @@ private:
     
     std::vector<INode*> m_lContainer;
     std::map<unsigned int, ILight*> m_lLights;
+    ILight* m_pGlobalLight;
     ICamera* m_pCamera;
     
     CRenderMgr* m_pRenderMgr;
     CCollisionMgr* m_pCollisionMgr;
     CPhysicMgr* m_pPhysicMgr;
+    CParticleMgr* m_pParticleMgr;
     
     CNavigationMeshMgr* m_pNavigationMeshMgrRef;
     CHeightMapSetter* m_pHeightMapSetterRef;
@@ -39,7 +42,8 @@ private:
     void _DrawSimpleStep(void);
     void _DrawReflectionStep(void);
     void _DrawRefractionStep(void);
-    void _DrawNormalDepthStep(void);
+    void _DrawScreenNormalMapStep(void);
+    void _DrawShadowMapStep(void);
 public:
     CSceneMgr(void);
     ~CSceneMgr(void);
@@ -49,6 +53,9 @@ public:
     ILight* Get_Light(ILight::E_LIGHT_MODE _eMode, unsigned int _iIndex = 0);
     ICamera* Get_Camera(void) { return m_pCamera; }
     void Set_Camera(ICamera* _pCamera) { m_pCamera = _pCamera; }
+    
+    void Set_GlobalLight(ILight* _pLight) { m_pGlobalLight = _pLight; }
+    ILight* Get_GlobalLight(void) { return m_pGlobalLight; }
     
     INode* AddModel(IResource::E_STANDART_MODEL _eModel, bool _isBatching);
     INode* AddCustomModel(const std::string& _sName, bool _isBatching = false, IResource::E_THREAD _eThread = IResource::E_THREAD_MAIN);
@@ -65,6 +72,7 @@ public:
     CRenderMgr* Get_RenderMgr(void) { return m_pRenderMgr; }
     CCollisionMgr* Get_CollisionMgr(void) { return m_pCollisionMgr; }
     CPhysicMgr* Get_PhysicMgr(void) { return m_pPhysicMgr; }
+    CParticleMgr* Get_ParticleMgr(void) { return m_pParticleMgr; }
     
     CNavigationMeshMgr* Get_NavigationMeshRef(void) { return m_pNavigationMeshMgrRef; }
     void Set_NavigationMeshRef(CNavigationMeshMgr* _pNavigationMeshMgrRef) { m_pNavigationMeshMgrRef = _pNavigationMeshMgrRef; }

@@ -24,9 +24,9 @@ CLightPoint::CLightPoint()
     pSource->m_iNumVertexes = 24;
     pSource->m_iNumIndexes  = 36;
     
-    pSource->m_pVB = new CVertexBuffer(pSource->m_iNumVertexes);
+    pSource->m_pVertexBuffer = new CVertexBuffer(pSource->m_iNumVertexes);
     
-    glm::vec3* pPositionData = pSource->m_pVB->CreateOrReUse_PositionData();
+    glm::vec3* pPositionData = pSource->m_pVertexBuffer->CreateOrReUse_PositionData();
     
     m_vMax = glm::vec3(k_Size.x / 2.0f, k_Size.y / 2.0f, k_Size.z / 2.0f);
     m_vMin = glm::vec3(-k_Size.x / 2.0f, -k_Size.y / 2.0f, -k_Size.z / 2.0f);
@@ -61,8 +61,8 @@ CLightPoint::CLightPoint()
     pPositionData[22] = glm::vec3( m_vMin.x,  m_vMax.y,  m_vMax.z);
     pPositionData[23] = glm::vec3( m_vMin.x,  m_vMax.y,  m_vMin.z);
     
-    pSource->m_pIB = new CIndexBuffer(pSource->m_iNumIndexes);
-    unsigned short* pIBData = pSource->m_pIB->Get_Data();
+    pSource->m_pIndexBuffer = new CIndexBuffer(pSource->m_iNumIndexes);
+    unsigned short* pIBData = pSource->m_pIndexBuffer->Get_Data();
     
     // Front
     pIBData[0] = 0;
@@ -107,20 +107,20 @@ CLightPoint::CLightPoint()
     pIBData[34] = 22;
     pIBData[35] = 23;
     
-    glm::u8vec4* pColorData = pSource->m_pVB->CreateOrReUse_ColorData();
+    glm::u8vec4* pColorData = pSource->m_pVertexBuffer->CreateOrReUse_ColorData();
     
     for(unsigned int index = 0; index < pSource->m_iNumVertexes; ++index)
     {
         pColorData[index] = glm::u8vec4( 255, 255, 255, 255 );
     }
     
-    pSource->m_pVB->CommitToRAM();
-    pSource->m_pVB->CommitFromRAMToVRAM();
-    pSource->m_pIB->CommitFromRAMToVRAM();
+    pSource->m_pVertexBuffer->CommitToRAM();
+    pSource->m_pVertexBuffer->CommitFromRAMToVRAM();
+    pSource->m_pIndexBuffer->CommitFromRAMToVRAM();
     
     m_pMesh = new CMesh();
     m_pMesh->Set_Source(pSource);
-    m_pMesh->Get_VB()->Set_ShaderRef(m_pShader->Get_ProgramHandle());
+    m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShader->Get_ProgramHandle());
 }
 
 CLightPoint::~CLightPoint()
@@ -147,11 +147,11 @@ void CLightPoint::Render()
         ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
         m_pShader->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
         m_pShader->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
-        m_pMesh->Get_VB()->Enable();
-        m_pMesh->Get_IB()->Enable();
-        glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IB()->Get_DataFromVRAM());
-        m_pMesh->Get_IB()->Disable();
-        m_pMesh->Get_VB()->Disable();
+        m_pMesh->Get_VertexBufferRef()->Enable();
+        m_pMesh->Get_IndexBufferRef()->Enable();
+        glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_DataFromVRAM());
+        m_pMesh->Get_IndexBufferRef()->Disable();
+        m_pMesh->Get_VertexBufferRef()->Disable();
         m_pShader->Disable();
     }
 }

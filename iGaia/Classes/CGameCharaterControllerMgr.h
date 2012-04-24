@@ -24,8 +24,8 @@ private:
 public:
     CGameCharaterControllerMgr(void);
     ~CGameCharaterControllerMgr(void);
-    void Add_MainCharacterController(void);
-    void Add_EnemyCharacterController(void);
+    ICharacterController* Add_MainCharacterController(void);
+    ICharacterController* Add_EnemyCharacterController(void);
     void Remove_MainCharacterController(void);
     void Remove_EnemyCharacterController(ICharacterController* _pCharacterController);
     void Reset_MainCharacterController(void);

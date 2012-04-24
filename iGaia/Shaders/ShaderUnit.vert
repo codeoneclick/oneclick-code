@@ -24,29 +24,15 @@ void main(void)
     vec4 vWorldPosition = EXT_MATRIX_World * vec4(IN_SLOT_Position, 1.0);
     gl_Position = EXT_MATRIX_Projection * EXT_MATRIX_View * vWorldPosition;
     
-    vec3 vNormal = IN_SLOT_Normal.xyz / 127.0 - 1.0;
-    vec3 vTangent = IN_SLOT_Tangent.xyz / 127.0 - 1.0;
-    vec3 vBinormal = cross(vNormal, vTangent);
-    
-    vNormal = mat3(EXT_MATRIX_World) * vNormal;
-    vTangent = mat3(EXT_MATRIX_World) * vTangent; 
-    vBinormal = mat3(EXT_MATRIX_World) * vBinormal;
-    
-    mat3 mTangentSpace = mat3(vTangent.x, vBinormal.x, vNormal.x,
-                              vTangent.y, vBinormal.y, vNormal.y,
-                              vTangent.z, vBinormal.z, vNormal.z);
+    OUT_Normal = IN_SLOT_Normal.xyz / 127.0 - 1.0;
 
-    vec3 vLightDirection = EXT_Light - vec3(vWorldPosition);
-    vec3 vViewDirection = EXT_View - vec3(vWorldPosition);
-    
-    OUT_View = mTangentSpace * vViewDirection;
-    OUT_Light = mTangentSpace * vLightDirection;
+    OUT_Light = normalize(EXT_Light - vec3(vWorldPosition));
+    OUT_View = normalize(EXT_View - vec3(vWorldPosition));
     
     OUT_TexCoord = IN_SLOT_TexCoord;
     
-    //const float LOG2 = 1.442695;
 	float fBlendLength = length(vWorldPosition.xyz - EXT_View);
-	float fBlendFactor = (8.0 - fBlendLength) / (8.0 - 16.0);//exp2( -16.0 * 16.0 * fFogCoord * fFogCoord * LOG2 );
+	float fBlendFactor = (8.0 - fBlendLength) / (8.0 - 16.0);
     OUT_BlendFactor = clamp(fBlendFactor, 0.0, 1.0);
 }
 );

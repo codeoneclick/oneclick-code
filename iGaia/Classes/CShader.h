@@ -55,6 +55,7 @@ public:
     static const std::string k_TEXTURE_08;
     static const std::string k_TIMER;
     static const std::string k_TEXCOORD_OFFSET;
+    static const std::string k_MATRIX_BIAS;
 };
 
 

@@ -27,10 +27,10 @@ CMesh* CBoundingBox::Get_BoundingBoxMesh(void)
         pSource->m_iNumVertexes = 8;
         pSource->m_iNumIndexes  = 24;
     
-        pSource->m_pVB = new CVertexBuffer(pSource->m_iNumVertexes);
+        pSource->m_pVertexBuffer = new CVertexBuffer(pSource->m_iNumVertexes);
         
-        glm::vec3* pPositionData = pSource->m_pVB->CreateOrReUse_PositionData();
-        glm::u8vec4* pColorData = pSource->m_pVB->CreateOrReUse_ColorData();
+        glm::vec3* pPositionData = pSource->m_pVertexBuffer->CreateOrReUse_PositionData();
+        glm::u8vec4* pColorData = pSource->m_pVertexBuffer->CreateOrReUse_ColorData();
     
         pPositionData[0] = glm::vec3( m_vMin.x,  m_vMin.y, m_vMax.z);
         pPositionData[1] = glm::vec3( m_vMax.x,  m_vMin.y, m_vMax.z);
@@ -47,8 +47,8 @@ CMesh* CBoundingBox::Get_BoundingBoxMesh(void)
             pColorData[i] = glm::u8vec4(0, 255, 0, 255);
         }
     
-        pSource->m_pIB = new CIndexBuffer(pSource->m_iNumIndexes);
-        unsigned short* pIBData = pSource->m_pIB->Get_Data();
+        pSource->m_pIndexBuffer = new CIndexBuffer(pSource->m_iNumIndexes);
+        unsigned short* pIBData = pSource->m_pIndexBuffer->Get_Data();
     
         pIBData[0] = 0;
         pIBData[1] = 1;
@@ -79,9 +79,9 @@ CMesh* CBoundingBox::Get_BoundingBoxMesh(void)
     
         m_pMesh = new CMesh();
         m_pMesh->Set_Source(pSource);
-        m_pMesh->Get_VB()->CommitToRAM();
-        m_pMesh->Get_VB()->CommitFromRAMToVRAM();
-        m_pMesh->Get_IB()->CommitFromRAMToVRAM();
+        m_pMesh->Get_VertexBufferRef()->CommitToRAM();
+        m_pMesh->Get_VertexBufferRef()->CommitFromRAMToVRAM();
+        m_pMesh->Get_IndexBufferRef()->CommitFromRAMToVRAM();
     }
     return m_pMesh;
 }
@@ -97,7 +97,7 @@ CBoundingBox::CBoundingBox(const glm::vec3 &_vMax, const glm::vec3 &_vMin)
     m_pShader = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_COLOR);
     Get_BoundingBoxMesh();
     
-    m_pMesh->Get_VB()->Set_ShaderRef(m_pShader->Get_ProgramHandle());
+    m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShader->Get_ProgramHandle());
 }
 
 void CBoundingBox::Set_WorldMatrix(const glm::mat4x4& _mWorld)
@@ -118,10 +118,12 @@ void CBoundingBox::Render()
     ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
     m_pShader->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
     m_pShader->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
-    m_pMesh->Get_VB()->Enable();
-    m_pMesh->Get_IB()->Enable();
-    glDrawElements(GL_LINES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IB()->Get_DataFromVRAM());
-    m_pMesh->Get_IB()->Disable();
-    m_pMesh->Get_VB()->Disable();
+    m_pMesh->Get_VertexBufferRef()->Enable();
+    m_pMesh->Get_IndexBufferRef()->Enable();
+    glDrawElements(GL_LINES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_DataFromVRAM());
+    m_pMesh->Get_IndexBufferRef()->Disable();
+    m_pMesh->Get_VertexBufferRef()->Disable();
     m_pShader->Disable();
 }
+
+

@@ -10,6 +10,7 @@
 #define iGaia_CCharacterControllerPlayer_h
 
 #include "ICharacterController.h"
+#include "CParticleEmitter.h"
 
 class CCharacterControllerPlayer : public ICharacterController
 {
@@ -21,6 +22,7 @@ protected:
     glm::vec3 m_vTowerModelTarget;
     E_CHARACTER_CONTROLLER_STATE m_eLeftTrackState;
     E_CHARACTER_CONTROLLER_STATE m_eRightTrackState;
+    CParticleEmitter* m_pExplosionEmitter;
 public:
     CCharacterControllerPlayer(void);
     ~CCharacterControllerPlayer(void);

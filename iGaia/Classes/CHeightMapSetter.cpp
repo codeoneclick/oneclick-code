@@ -34,7 +34,7 @@ CMesh* CHeightMapSetter::Load_SourceData(const std::string _sName, int _iWidth, 
         pMesh->Set_Source(pParser->Get_Source());
     }
 
-    glm::vec3* pPositionData = pMesh->Get_VB()->CreateOrReUse_PositionData();
+    glm::vec3* pPositionData = pMesh->Get_VertexBufferRef()->CreateOrReUse_PositionData();
     m_pSource = new float[m_iWidth * m_iHeight];
     for(unsigned int i = 0; i < m_iWidth; ++i)
     {
@@ -51,8 +51,8 @@ CMesh* CHeightMapSetter::Load_SourceData(const std::string _sName, int _iWidth, 
 
 float CHeightMapSetter::Get_HeightValueAtPoint(float _fX, float _fZ)
 {
-    int roundPositionX = (int) _fX;
-    int roundPositionZ = (int) _fZ;
+    int roundPositionX = static_cast<int>(_fX);
+    int roundPositionZ = static_cast<int>(_fZ);
     
     float remainPositionX = _fX - roundPositionX;
     float remainPositionZ = _fZ - roundPositionZ;

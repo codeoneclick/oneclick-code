@@ -43,7 +43,7 @@ void CParser_MDL::Load(const std::string& _sName)
     m_pSource = new CMesh::SSource();
     m_pSource->m_iNumVertexes = iNumVertexes;
     m_pSource->m_iNumIndexes = iNumIndexes;
-    m_pSource->m_pIB  = new CIndexBuffer(m_pSource->m_iNumIndexes);
+    m_pSource->m_pIndexBuffer  = new CIndexBuffer(m_pSource->m_iNumIndexes);
 	m_pSource->m_pData = new CMesh::SVertex[m_pSource->m_iNumVertexes];
     
     m_pSource->m_vMaxBound = glm::vec3( -4096.0f, -4096.0f, -4096.0f );
@@ -98,10 +98,10 @@ void CParser_MDL::Load(const std::string& _sName)
     std::cout<<"[CParser_MDL] Index block size: "<<iBlockSize;*/
     
     //int iNum = 0;
-    unsigned short* pIBData = m_pSource->m_pIB->Get_Data();
+    unsigned short* pIndexBufferData = m_pSource->m_pIndexBuffer->Get_Data();
     for(int i = 0; i < m_pSource->m_iNumIndexes; i++)
     {
-        fread(&pIBData[i], sizeof(unsigned short),1, pFile);
+        fread(&pIndexBufferData[i], sizeof(unsigned short),1, pFile);
         //std::cout<<"Index : "<<pIBData[i]<<"  Num : "<<iNum++<<"\n";
     }
     fclose(pFile);
@@ -111,11 +111,11 @@ void CParser_MDL::Load(const std::string& _sName)
 
 void CParser_MDL::Commit()
 {
-    m_pSource->m_pVB = new CVertexBuffer(m_pSource->m_iNumVertexes);
-    glm::vec3* pPositionData = m_pSource->m_pVB->CreateOrReUse_PositionData();
-    glm::vec2* pTexCoordData = m_pSource->m_pVB->CreateOrReUse_TexCoordData();
-    glm::u8vec4* pNormalData = m_pSource->m_pVB->CreateOrReUse_NormalData();
-    glm::u8vec4* pTangentData = m_pSource->m_pVB->CreateOrReUse_TangentData();
+    m_pSource->m_pVertexBuffer = new CVertexBuffer(m_pSource->m_iNumVertexes);
+    glm::vec3* pPositionData = m_pSource->m_pVertexBuffer->CreateOrReUse_PositionData();
+    glm::vec2* pTexCoordData = m_pSource->m_pVertexBuffer->CreateOrReUse_TexCoordData();
+    glm::u8vec4* pNormalData = m_pSource->m_pVertexBuffer->CreateOrReUse_NormalData();
+    glm::u8vec4* pTangentData = m_pSource->m_pVertexBuffer->CreateOrReUse_TangentData();
     
     for(unsigned int index = 0; index < m_pSource->m_iNumVertexes; index++)
     {

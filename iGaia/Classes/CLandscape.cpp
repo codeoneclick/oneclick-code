@@ -42,20 +42,20 @@ void CLandscape::Load(IResource::SResource _tResource)
     m_pNavigationMesh->Set_NavigationModel(this);
     m_pVisualNavigationMeshRef = m_pNavigationMesh->Get_VisualMesh();
     m_pVisualNavigationMeshShader = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_COLOR);
-    m_pVisualNavigationMeshRef->Get_VB()->Set_ShaderRef(m_pVisualNavigationMeshShader->Get_ProgramHandle());
+    m_pVisualNavigationMeshRef->Get_VertexBufferRef()->Set_ShaderRef(m_pVisualNavigationMeshShader->Get_ProgramHandle());
     CSceneMgr::Instance()->Set_NavigationMeshRef(m_pNavigationMesh);
     CSceneMgr::Instance()->Set_HeightMapSetterRef(m_pHeightMapSetter);
     
-    glm::u8vec4* pColorData = m_pMesh->Get_VB()->CreateOrReUse_ColorData();
+    glm::u8vec4* pColorData = m_pMesh->Get_VertexBufferRef()->CreateOrReUse_ColorData();
     unsigned char iUniqueColorId = CSceneMgr::Instance()->Get_UniqueColorId(this);
     for(unsigned int i = 0; i < m_pMesh->Get_NumVertexes(); ++i)
     {
         pColorData[i] = glm::u8vec4(iUniqueColorId, iUniqueColorId, iUniqueColorId, 255);
     }
     
-    m_pMesh->Get_VB()->CommitToRAM();
-    m_pMesh->Get_VB()->CommitFromRAMToVRAM();
-    m_pMesh->Get_IB()->CommitFromRAMToVRAM();
+    m_pMesh->Get_VertexBufferRef()->CommitToRAM();
+    m_pMesh->Get_VertexBufferRef()->CommitFromRAMToVRAM();
+    m_pMesh->Get_IndexBufferRef()->CommitFromRAMToVRAM();
     
     m_pShaderPreEdgeDetect = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_COLOR);
     m_pShaderNormalDepth = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_NORMAL_DEPTH);
@@ -81,7 +81,7 @@ void CLandscape::OnTouchEvent(void)
     CCollisionMgr::SRay3d tTouchRay = CSceneMgr::Instance()->Get_CollisionMgr()->Get_TouchRay();
     glm::vec3 vCollisionPoint;
      
-    if(!CSceneMgr::Instance()->Get_CollisionMgr()->Get_CollisionPoint(m_pMesh->Get_VB(), m_pMesh->Get_IB(), tTouchRay, &vCollisionPoint))
+    if(!CSceneMgr::Instance()->Get_CollisionMgr()->Get_CollisionPoint(m_pMesh->Get_VertexBufferRef(), m_pMesh->Get_IndexBufferRef(), tTouchRay, &vCollisionPoint))
     {
         return;
     }
@@ -116,7 +116,12 @@ void CLandscape::Render(INode::E_RENDER_MODE _eMode)
     {
         case INode::E_RENDER_MODE_SIMPLE:
         {
-            m_pMesh->Get_VB()->Set_ShaderRef(m_pShader->Get_ProgramHandle());
+            glm::mat4x4 mBiasMatrix = glm::mat4x4(0.5f, 0.0f, 0.0f, 0.0f,
+                                                  0.0f, 0.5f, 0.0f, 0.0f,
+                                                  0.0f, 0.0f, 0.5f, 0.0f,
+                                                  0.5f, 0.5f, 0.5f, 1.0f);
+
+            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShader->Get_ProgramHandle());
             m_pShader->Enable();
             m_pShader->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD); 
             m_pShader->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
@@ -139,21 +144,14 @@ void CLandscape::Render(INode::E_RENDER_MODE _eMode)
             }
             
             m_pShader->SetTexture(m_pHeightMapSetter->Get_SplattingTexture(), CShader::k_TEXTURE_07);
+            m_pShader->SetTexture(CSceneMgr::Instance()->Get_RenderMgr()->Get_OffScreenTexture(CScreenSpacePostMgr::E_OFFSCREEN_MODE_SHADOW_MAP), CShader::k_TEXTURE_08);
+            m_pShader->SetMatrix(mBiasMatrix, CShader::k_MATRIX_BIAS);
             m_pShader->SetVector4(glm::vec4(0.0f, 1.0, 0.0, 0.1), CShader::k_VECTOR_CLIP_PLANE);
-        }
-            break;
-        case INode::E_RENDER_MODE_EDGE_DETECT:
-        {
-            m_pMesh->Get_VB()->Set_ShaderRef(m_pShaderPreEdgeDetect->Get_ProgramHandle());
-            m_pShaderPreEdgeDetect->Enable();
-            m_pShaderPreEdgeDetect->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD); 
-            m_pShaderPreEdgeDetect->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
-            m_pShaderPreEdgeDetect->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
         }
             break;
         case INode::E_RENDER_MODE_REFLECTION:
         {
-            m_pMesh->Get_VB()->Set_ShaderRef(m_pShader->Get_ProgramHandle());
+            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShader->Get_ProgramHandle());
             m_pShader->Enable();
             m_pShader->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD); 
             m_pShader->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
@@ -181,7 +179,7 @@ void CLandscape::Render(INode::E_RENDER_MODE _eMode)
             break;
         case INode::E_RENDER_MODE_REFRACTION:
         {
-            m_pMesh->Get_VB()->Set_ShaderRef(m_pShader->Get_ProgramHandle());
+            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShader->Get_ProgramHandle());
             m_pShader->Enable();
             m_pShader->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD); 
             m_pShader->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
@@ -207,9 +205,9 @@ void CLandscape::Render(INode::E_RENDER_MODE _eMode)
             m_pShader->SetVector4(glm::vec4(0.0f, -1.0, 0.0, 0.1), CShader::k_VECTOR_CLIP_PLANE);
         }
             break;
-        case INode::E_RENDER_MODE_NORMAL_DEPTH:
+        case INode::E_RENDER_MODE_SCREEN_NORMAL_MAP:
         {
-            m_pMesh->Get_VB()->Set_ShaderRef(m_pShaderNormalDepth->Get_ProgramHandle());
+            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShaderNormalDepth->Get_ProgramHandle());
             m_pShaderNormalDepth->Enable();
             m_pShaderNormalDepth->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD); 
             m_pShaderNormalDepth->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
@@ -217,15 +215,20 @@ void CLandscape::Render(INode::E_RENDER_MODE _eMode)
             m_pShaderNormalDepth->SetVector4(glm::vec4(0.0f, 1.0, 0.0, 0.1), CShader::k_VECTOR_CLIP_PLANE);
         }
             break;
+        case INode::E_RENDER_MODE_SHADOW_MAP:
+        {
+            
+        }
+            break;
         default:
             break;
     }
     
-    m_pMesh->Get_VB()->Enable();
-    m_pMesh->Get_IB()->Enable();
-    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IB()->Get_DataFromVRAM());
-    m_pMesh->Get_IB()->Disable();
-    m_pMesh->Get_VB()->Disable();
+    m_pMesh->Get_VertexBufferRef()->Enable();
+    m_pMesh->Get_IndexBufferRef()->Enable();
+    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_DataFromVRAM());
+    m_pMesh->Get_IndexBufferRef()->Disable();
+    m_pMesh->Get_VertexBufferRef()->Disable();
     m_pShader->Disable();
     glCullFace(GL_FRONT);
 
@@ -239,9 +242,9 @@ void CLandscape::Render(INode::E_RENDER_MODE _eMode)
         m_pVisualNavigationMeshShader->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
         m_pVisualNavigationMeshShader->SetVector3(pCamera->Get_Position(), CShader::k_VECTOR_VIEW);
         
-        m_pVisualNavigationMeshRef->Get_VB()->Enable();
-        glDrawElements(GL_TRIANGLES, m_pVisualNavigationMeshRef->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*)m_pVisualNavigationMeshRef->Get_IB()->Get_Data());
-        m_pVisualNavigationMeshRef->Get_VB()->Disable();
+        m_pVisualNavigationMeshRef->Get_VertexBufferRef()->Enable();
+        glDrawElements(GL_TRIANGLES, m_pVisualNavigationMeshRef->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*)m_pVisualNavigationMeshRef->Get_IndexBufferRef()->Get_Data());
+        m_pVisualNavigationMeshRef->Get_VertexBufferRef()->Disable();
         m_pVisualNavigationMeshShader->Disable();
     }
     

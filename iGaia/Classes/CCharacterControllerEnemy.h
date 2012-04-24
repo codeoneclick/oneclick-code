@@ -14,13 +14,20 @@
 
 class CCharacterControllerEnemy : public ICharacterController
 {
+public:
+    enum E_AI_STATE { E_AI_STATE_NONE = 0, E_AI_STATE_STAND, E_AI_STATE_MOVE, E_AI_STATE_CHASE, E_AI_STATE_CHASE_ATTACK, E_AI_STATE_BACK, E_AI_STATE_BACK_ATTACK };
 protected:
     CModel* m_pBodyModel;
     CModel* m_pTowerModel;
     CModel* m_pLeftTrackModel;
     CModel* m_pRightTrackModel;
-    E_CHARACTER_CONTROLLER_STATE m_eLeftTrackState;
-    E_CHARACTER_CONTROLLER_STATE m_eRightTrackState;
+    E_AI_STATE m_eState;
+    long m_iAIStateDuration;
+    long m_iAIStateTimeStamp;
+    glm::vec3 m_vTargetPoint;
+    
+    long _Get_TimeStamp(void);
+    bool _IsStateTimeElapsed(void);
 public:
     CCharacterControllerEnemy(void);
     ~CCharacterControllerEnemy(void);
@@ -32,8 +39,9 @@ public:
     virtual void Set_Rotation(const glm::vec3& _vRotation);
     virtual void Set_Light(ILight* _pLight);
     INode* Get_TargetForCamera(void) { return m_pBodyModel; }
-    void Set_LeftTrackState(E_CHARACTER_CONTROLLER_STATE _eState) { m_eLeftTrackState = _eState; }
-    void Set_RightTrackState(E_CHARACTER_CONTROLLER_STATE _eState) { m_eRightTrackState = _eState; }
+    void Set_AIState(E_AI_STATE _eState, long _iAIStateDuration);
+    E_AI_STATE Get_AIState(void) { return m_eState; }
+    void Set_AITargetPoint(glm::vec3 _vPoint) { m_vTargetPoint = _vPoint; }
 };
 
 #endif /* defined(__iGaia__CCharaterControllerEnemy__) */
