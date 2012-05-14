@@ -47,6 +47,10 @@ void CLevel::Load(void)
     //m_pGrass = (CGrass*)CSceneMgr::Instance()->AddLandscapeGrassModel("grass");
     //m_pGrass->Set_Shader(IResource::E_SHADER_LAMBERT);
     //m_pGrass->Set_Texture("mod_03.pvr", 0, IResource::E_THREAD_BACKGROUND);
+    
+    m_pSkyBox = (CSkyBox*)CSceneMgr::Instance()->AddSkyBoxModel("skybox");
+    m_pSkyBox->Set_Shader(IResource::E_SHADER_TEXTURE_CUBE);
+    m_pSkyBox->Set_Texture("Skybox.pvr");
 }
 
 void CLevel::OnTouchEvent(IDelegate* _pDelegateOwner)

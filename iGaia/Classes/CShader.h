@@ -32,6 +32,7 @@ public:
     
     void SetMatrix(const glm::mat4x4& _mValue, const std::string& _sName);
     void SetTexture(GLuint _hTextureHandle, const std::string& _sName);
+    void SetTextureCube(GLuint _hTextureHandle, const std::string& _sName);
     void SetVector2(const glm::vec2& _vValue, const std::string& _sName);
     void SetVector3(const glm::vec3& _vValue, const std::string& _sName);
     void SetVector4(const glm::vec4& _vValue, const std::string& _sName);
@@ -56,6 +57,7 @@ public:
     static const std::string k_TIMER;
     static const std::string k_TEXCOORD_OFFSET;
     static const std::string k_MATRIX_BIAS;
+    static const std::string k_TEXTURE_CUBE;
 };
 
 

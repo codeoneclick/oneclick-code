@@ -19,6 +19,8 @@ class ICharacterController : public IDelegate
 {
 public:
     enum E_CHARACTER_CONTROLLER_STATE { E_CHARACTER_CONTROLLER_STATE_NONE = 0, E_CHARACTER_CONTROLLER_STATE_INC_MOVE, E_CHARACTER_CONTROLLER_STATE_DEC_MOVE };
+    enum E_CHARACTER_CONTROLLER_MOVE_STATE { E_CHARACTER_CONTROLLER_MOVE_STATE_NONE = 0, E_CHARACTER_CONTROLLER_MOVE_STATE_FORWARD, E_CHARACTER_CONTROLLER_MOVE_STATE_BACKWARD };
+    enum E_CHARACTER_CONTROLLER_STEER_STATE { E_CHARACTER_CONTROLLER_STEER_STATE_NONE = 0, E_CHARACTER_CONTROLLER_STEER_STATE_LEFT, E_CHARACTER_CONTROLLER_STEER_STATE_RIGHT };
 protected:
     glm::vec3 m_vPosition;
     glm::vec3 m_vRotation;
@@ -31,6 +33,8 @@ protected:
     float m_fRightTrackMoveSpeed;
     float m_fMoveSpeed;
     float m_fSteerSpeed;
+    E_CHARACTER_CONTROLLER_MOVE_STATE m_eMoveState;
+    E_CHARACTER_CONTROLLER_STEER_STATE m_eSteerState;
 public:
     ICharacterController(void);
     ~ICharacterController(void);
@@ -45,6 +49,8 @@ public:
     void MoveBackward(void);
     void SteerRight(void);
     void SteerLeft(void);
+    void Set_MoveState(E_CHARACTER_CONTROLLER_MOVE_STATE _eMoveState) { m_eMoveState = _eMoveState; }
+    void Set_SteerState(E_CHARACTER_CONTROLLER_STEER_STATE _eSteerState) { m_eSteerState = _eSteerState; }
 };
 
 

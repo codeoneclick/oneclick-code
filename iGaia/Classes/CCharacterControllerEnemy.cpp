@@ -210,8 +210,8 @@ void CCharacterControllerEnemy::Update(void)
             
             float fTowerTargetAngle = _GetRotationBetweenPoints(m_vPosition, m_vTargetPoint);
             m_pTowerModel->Set_Rotation(glm::vec3(m_vRotation.x, glm::degrees(fTowerTargetAngle - 1.57f), m_vRotation.z));
-            std::cout<<"[CCharacterControllerEnemy::Update]"<<"state -> AI_STATE_MOVE"<<" To Point : "<<m_vTargetPoint.x<<" , "<<m_vTargetPoint.z<<std::endl;
-            std::cout<<"[CCharacterControllerEnemy::Update]"<<"state -> AI_STATE_MOVE"<<" From Point : "<<m_vPosition.x<<" , "<<m_vPosition.z<<std::endl;
+            //std::cout<<"[CCharacterControllerEnemy::Update]"<<"state -> AI_STATE_MOVE"<<" To Point : "<<m_vTargetPoint.x<<" , "<<m_vTargetPoint.z<<std::endl;
+            //std::cout<<"[CCharacterControllerEnemy::Update]"<<"state -> AI_STATE_MOVE"<<" From Point : "<<m_vPosition.x<<" , "<<m_vPosition.z<<std::endl;
         }
             break;
         default:

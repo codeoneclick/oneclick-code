@@ -45,6 +45,8 @@ public:
     const void Set_Projection(glm::mat4x4 _mProjection) { m_mProjection = _mProjection; }
     const void Set_View(glm::mat4x4 _mView) { m_mView = _mView; }
     
+    glm::mat4x4 Get_BillboardMatrix(glm::vec3 _vPosition);
+    
     void Set_FovY(float _fFovY) { m_fFovY = _fFovY; }
     void Set_FarPlane(float _fFarPlane) { m_fFarPlane = _fFarPlane; }
     void Set_NearPlane(float _fNearPlane) { m_fNearPlane = _fNearPlane; }

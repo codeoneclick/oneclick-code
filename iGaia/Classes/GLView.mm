@@ -53,7 +53,7 @@ const bool ForceES1 = false;
                                      selector:@selector(drawView:)];
         
         [displayLink addToRunLoop:[NSRunLoop currentRunLoop]
-                     forMode:NSRunLoopCommonModes];
+                     forMode:NSDefaultRunLoopMode];
 
         [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
         
@@ -73,10 +73,7 @@ const bool ForceES1 = false;
 
 - (void) drawView: (CADisplayLink*) displayLink
 {
-    if (displayLink != nil) 
-    {
-        CGame::Instance()->Update();
-    }
+    CGame::Instance()->Update();
     CGame::Instance()->Render();
     [m_context presentRenderbuffer:GL_RENDERBUFFER];
 }

@@ -104,6 +104,8 @@ void main(void)
     lowp vec4 vMainColor = texture2D(EXT_TEXTURE_01, OUT_TexCoord) * vec4(1.0 - fEdgeNormal * fEdgeDepth) ;
     gl_FragColor = vMainColor;*/
     
+    
+    
     lowp vec4 n1 = texture2D(EXT_TEXTURE_02, OUT_TexCoord_01.xy);
     lowp vec4 n2 = texture2D(EXT_TEXTURE_02, OUT_TexCoord_01.zw);
     lowp vec4 n3 = texture2D(EXT_TEXTURE_02, OUT_TexCoord_02.xy);
@@ -114,10 +116,16 @@ void main(void)
     lowp float normalDelta = dot(diagonalDelta.xyz, vec3(1.0));
     lowp float depthDelta = diagonalDelta.w;
     
-    normalDelta = clamp((normalDelta - 0.2) * 1.0, 0.0, 1.0);
-    depthDelta = clamp((depthDelta - 0.04) * 10.0, 0.0, 1.0);
+    normalDelta = clamp((normalDelta - 0.2), 0.0, 1.0);
+    //depthDelta = clamp((depthDelta - 0.04) * 10.0, 0.0, 1.0);
     
-    lowp float edgeAmount = clamp(normalDelta + depthDelta, 0.0, 1.0);
+    lowp float edgeAmount = clamp(normalDelta, 0.0, 1.0);
+    
+    lowp vec4 vOriginalColor = texture2D(EXT_TEXTURE_02, OUT_TexCoord);
+    if(vOriginalColor.r > 0.85 && vOriginalColor.g > 0.85 && vOriginalColor.b > 0.85)
+    {
+        edgeAmount = 0.0;
+    }
     
     gl_FragColor = texture2D(EXT_TEXTURE_01, OUT_TexCoord) * (1.0 - edgeAmount);
 }

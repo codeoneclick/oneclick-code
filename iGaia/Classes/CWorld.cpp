@@ -67,8 +67,8 @@ void CWorld::Load(void)
     
     m_pCamera = CSceneMgr::Instance()->CreateTargetCamera(45.0f, 0.1f, 1024.0f, m_pCharacterControllerPlayer->Get_TargetForCamera());//CSceneMgr::Instance()->CreateFreeCamera(45.0f, 0.1f, 1024.0f);
     CSceneMgr::Instance()->Set_Camera(m_pCamera);
-    m_pCamera->Set_DistanceToLookAt(2.0f);
-    m_pCamera->Set_HeightFromLookAt(1.0f);
+    m_pCamera->Set_DistanceToLookAt(6.0f);
+    m_pCamera->Set_HeightFromLookAt(6.0f);
     glm::vec3 vCameraRotation = glm::vec3(0.0f, -MATH_PI / 4.0f, 0.0f);
     m_pCamera->Set_Rotation(vCameraRotation);
 }
@@ -87,7 +87,7 @@ void CWorld::Update(void)
     
     glm::vec3 vCameraPosition = m_pCamera->Get_Position();
     float fCameraHeight = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_HeightValueAtPoint(vCameraPosition.x, vCameraPosition.z);
-    m_pCamera->Set_HeightFromLookAt(1.0f + fCameraHeight);
+    m_pCamera->Set_HeightFromLookAt(4.0f + fCameraHeight);
     glm::vec3 vCameraRotation = m_pCamera->Get_Rotation();
     vCameraRotation.y = glm::radians(m_pCharacterControllerPlayer->Get_Rotation().y) - 1.57f;
     m_pCamera->Set_Rotation(vCameraRotation);

@@ -33,6 +33,7 @@
     self.view = m_pGLView;
     [m_pGLView release];
     m_pInGameMenu = [[CInGameMenu alloc] initWithFrame:CGRectMake(0, 0, screenBounds.size.height, screenBounds.size.width)];
+    m_pInGameMenu.m_pGLView = m_pGLView;
     [self.view addSubview:m_pInGameMenu];
 }
 

@@ -48,10 +48,14 @@ CScreenSpacePostMgr::CScreenSpacePostMgr(void)
             glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         }
         
-        if(i == E_OFFSCREEN_MODE_REFLECTION || i == E_OFFSCREEN_MODE_SIMPLE)
+        if(i == E_OFFSCREEN_MODE_REFLECTION || i == E_OFFSCREEN_MODE_SIMPLE )
         {
             m_pOffScreenClearColor[i] = glm::vec4(1.0,1.0,1.0,1.0);
             
+        }
+        else if(i == E_OFFSCREEN_MODE_SCREEN_NORMAL_MAP)
+        {
+            m_pOffScreenClearColor[i] = glm::vec4(1.0,0.0,0.0,1.0);
         }
         else
         {

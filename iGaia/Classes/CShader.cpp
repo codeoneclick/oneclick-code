@@ -28,6 +28,7 @@ const std::string CShader::k_VECTOR_CLIP_PLANE  = "EXT_Clip_Plane";
 const std::string CShader::k_TIMER              = "EXT_Timer";
 const std::string CShader::k_TEXCOORD_OFFSET    = "EXT_Texcoord_Offset";
 const std::string CShader::k_MATRIX_BIAS        = "EXT_MATRIX_Bias";
+const std::string CShader::k_TEXTURE_CUBE       = "EXT_TEXTURE_CUBE";
 
 
 CShader::CShader(GLuint _hProgramHandle)
@@ -50,6 +51,7 @@ CShader::CShader(GLuint _hProgramHandle)
     m_lUniformHandle[k_TIMER]             = glGetUniformLocation(m_hProgramHandle, k_TIMER.c_str());
     m_lUniformHandle[k_TEXCOORD_OFFSET]   = glGetUniformLocation(m_hProgramHandle, k_TEXCOORD_OFFSET.c_str());
     m_lUniformHandle[k_MATRIX_BIAS]       = glGetUniformLocation(m_hProgramHandle, k_MATRIX_BIAS.c_str());
+    m_lUniformHandle[k_TEXTURE_CUBE]      = glGetUniformLocation(m_hProgramHandle, k_TEXTURE_CUBE.c_str());
 }
 
 CShader::~CShader()
@@ -84,6 +86,13 @@ void CShader::SetFloat(const float _fValue, const std::string& _sName)
 void CShader::SetMatrix(const glm::mat4x4& _mValue,const std::string& _sName)
 {
     glUniformMatrix4fv(m_lUniformHandle[_sName], 1, 0, &_mValue[0][0]);
+}
+
+void CShader::SetTextureCube(GLuint _hTextureHandle, const std::string &_sName)
+{
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, _hTextureHandle);
+    glUniform1i(m_lUniformHandle[_sName], 0);
 }
 
 void CShader::SetTexture(GLuint _hTextureHandle, const std::string& _sName)

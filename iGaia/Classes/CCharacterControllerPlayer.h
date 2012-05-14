@@ -22,6 +22,8 @@ protected:
     glm::vec3 m_vTowerModelTarget;
     E_CHARACTER_CONTROLLER_STATE m_eLeftTrackState;
     E_CHARACTER_CONTROLLER_STATE m_eRightTrackState;
+    float m_fLeftTrackMoveOffset;
+    float m_fRightTrackMoveOffset;
     CParticleEmitter* m_pExplosionEmitter;
 public:
     CCharacterControllerPlayer(void);
@@ -34,6 +36,8 @@ public:
     virtual void Set_Rotation(const glm::vec3& _vRotation);
     virtual void Set_Light(ILight* _pLight);
     INode* Get_TargetForCamera(void) { return m_pBodyModel; }
+    void Set_LeftTrackMoveOffset(float _fOffset) { m_fLeftTrackMoveOffset = _fOffset; }
+    void Set_RightTrackMoveOffset(float _fOffset) { m_fRightTrackMoveOffset = _fOffset; }
     void Set_LeftTrackState(E_CHARACTER_CONTROLLER_STATE _eState) { m_eLeftTrackState = _eState; }
     void Set_RightTrackState(E_CHARACTER_CONTROLLER_STATE _eState) { m_eRightTrackState = _eState; }
 };

@@ -31,7 +31,7 @@ void CGameAIMgr::Remove_AICharacterController(ICharacterController *_pCharacterC
 
 float CGameAIMgr::_Get_RandomFromRange(float _fMin, float _fMax)
 {
-    float fRange = (_fMax - _fMin) + 1.0f;
+    float fRange = _fMax - _fMin;
     return _fMin + float(fRange * rand() / (RAND_MAX + 1.0f)); 
 }
 

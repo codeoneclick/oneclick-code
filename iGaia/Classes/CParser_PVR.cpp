@@ -85,6 +85,7 @@ void CParser_PVR::Load(const std::string& _sName)
         m_pDescription->m_uiMIP = pHeader->dwMipMapCount ? pHeader->dwMipMapCount : 1;
         m_pDescription->m_bCompressed = true;
         m_pDescription->m_pTextureData = m_pData + pHeader->dwHeaderSize;
+        m_pDescription->m_iNumFaces = 1;
     }
     else
     {
@@ -127,6 +128,7 @@ void CParser_PVR::Load(const std::string& _sName)
         m_pDescription->m_uiMIP = pHeader->u32MIPMapCount ? pHeader->u32MIPMapCount : 1;
         m_pDescription->m_bCompressed = true;
         m_pDescription->m_pTextureData = m_pData + PVRTEX3_HEADERSIZE + pHeader->u32MetaDataSize;
+        m_pDescription->m_iNumFaces = pHeader->u32NumFaces;
     }
 
     
@@ -145,30 +147,54 @@ void CParser_PVR::Commit(void)
     m_pSource->m_iHeight = m_pDescription->m_vSize.y;
     
     glGenTextures( 1, &m_pSource->m_hTextureHanlde );
-    glBindTexture( GL_TEXTURE_2D, m_pSource->m_hTextureHanlde );
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     
-    if (m_pDescription->m_bCompressed) 
+    GLenum iTextureTarget = GL_TEXTURE_2D;
+    
+    if(m_pDescription->m_iNumFaces > 1)
     {
-        for (int level = 0; iWidth > 0 && iHeight > 0; ++level) 
-        {
-            GLsizei iSize = std::max(32, iWidth * iHeight * m_pDescription->m_uiBPP / 8);
-            glCompressedTexImage2D(GL_TEXTURE_2D, level, m_pDescription->m_glFormat, iWidth, iHeight, 0, iSize, pData);
-            pData += iSize;
-            iWidth >>= 1; iHeight >>= 1;
-        }
-    } 
-    else
-    {       
-        glTexImage2D(GL_TEXTURE_2D, 0, m_pDescription->m_glFormat, iWidth, iHeight, 0, m_pDescription->m_glFormat, m_pDescription->m_glType, pData);
-        //glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
-        glHint(GL_GENERATE_MIPMAP_HINT, GL_FASTEST);
-        glGenerateMipmap(GL_TEXTURE_2D);
+        iTextureTarget = GL_TEXTURE_CUBE_MAP;
     }
-
+    
+    glBindTexture(iTextureTarget, m_pSource->m_hTextureHanlde );
+    /*if(iTextureTarget == GL_TEXTURE_2D)
+    {
+        glTexParameteri(iTextureTarget, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(iTextureTarget, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    }
+    else
+    {
+        glTexParameteri(iTextureTarget, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(iTextureTarget, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    }*/
+    
+    glTexParameteri(iTextureTarget, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+    glTexParameteri(iTextureTarget, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    
+    if(iTextureTarget == GL_TEXTURE_CUBE_MAP)
+    {
+        iTextureTarget = GL_TEXTURE_CUBE_MAP_POSITIVE_X;
+    }
+    
+    for(unsigned int iFaces = 0; iFaces < m_pDescription->m_iNumFaces; iFaces++)
+    {
+        if (m_pDescription->m_bCompressed)
+        {
+            for (int level = 0; iWidth > 0 && iHeight > 0; ++level)
+            {
+                GLsizei iSize = std::max(32, iWidth * iHeight * m_pDescription->m_uiBPP / 8);
+                glCompressedTexImage2D(iTextureTarget + iFaces, level, m_pDescription->m_glFormat, iWidth, iHeight, 0, iSize, pData);
+                pData += iSize;
+                iWidth >>= 1; iHeight >>= 1;
+            }
+        } 
+        else
+        {       
+            glTexImage2D(iTextureTarget + iFaces, 0, m_pDescription->m_glFormat, iWidth, iHeight, 0, m_pDescription->m_glFormat, m_pDescription->m_glType, pData);
+            //glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
+            glHint(GL_GENERATE_MIPMAP_HINT, GL_FASTEST);
+            glGenerateMipmap(iTextureTarget + iFaces);
+        }
+    }
 }
 
 

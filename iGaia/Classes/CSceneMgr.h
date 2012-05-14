@@ -29,6 +29,7 @@ private:
     std::vector<INode*> m_lContainer;
     std::map<unsigned int, ILight*> m_lLights;
     ILight* m_pGlobalLight;
+    INode* m_pSkyBox;
     ICamera* m_pCamera;
     
     CRenderMgr* m_pRenderMgr;
@@ -62,6 +63,7 @@ public:
     INode* AddLandscapeModel(const std::string& _sName, bool _isBatching = false);
     INode* AddLandscapeGrassModel(const std::string& _sName, bool _isBatching = false);
     INode* AddWaterModel(const std::string& _sName, bool _isBatching = false);
+    INode* AddSkyBoxModel(const std::string& _sName, bool _isBatching = false);
     
     void AddEventListener(INode* _pNode, CEventMgr::E_EVENT _eEvent);
     void RemoveEventListener(INode* _pNode, CEventMgr::E_EVENT _eEvent);
