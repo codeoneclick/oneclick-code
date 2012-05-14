@@ -12,6 +12,7 @@
 #include "CLandscape.h"
 #include "CGrass.h"
 #include "CWater.h"
+#include "CSkyBox.h"
 #include "CRenderMgr.h"
 #include "CCollisionMgr.h"
 #include "CCameraFree.h"
@@ -29,6 +30,7 @@ CSceneMgr::CSceneMgr(void)
     m_pCamera = NULL;
     m_pNavigationMeshMgrRef = NULL;
     m_pHeightMapSetterRef = NULL;
+    m_pSkyBox = NULL;
     
     m_pRenderMgr = new CRenderMgr();
     m_pCollisionMgr = new CCollisionMgr();
@@ -121,6 +123,19 @@ INode* CSceneMgr::AddWaterModel(const std::string &_sName, bool _isBatching)
     INode* pNode = new CWater();
     pNode->Load(tResource);
     m_lContainer.push_back(pNode);
+    return pNode;
+}
+
+INode* CSceneMgr::AddSkyBoxModel(const std::string &_sName, bool _isBatching)
+{
+    IResource::SResource tResource;
+    tResource.m_sName = _sName;
+    tResource.m_eThread = IResource::E_THREAD_MAIN;
+    tResource.m_eModel = IResource::E_STANDART_MODEL_NONE;
+    tResource.m_bIsBatching = _isBatching;
+    INode* pNode = new CSkyBox();
+    pNode->Load(tResource);
+    m_pSkyBox = pNode;
     return pNode;
 }
 
@@ -242,6 +257,12 @@ void CSceneMgr::Update()
     {
         m_pParticleMgr->Update();
     }
+    
+    if(m_pSkyBox != NULL)
+    {
+        m_pSkyBox->Set_Position(m_pCamera->Get_Position());
+        m_pSkyBox->Update();
+    }
 }
 
 void CSceneMgr::_DrawSimpleStep(void)
@@ -249,6 +270,11 @@ void CSceneMgr::_DrawSimpleStep(void)
     std::vector<INode*>::iterator pBeginNodeIterator = m_lContainer.begin();
     std::vector<INode*>::iterator pEndNodeIterator = m_lContainer.end();
     m_pRenderMgr->BeginDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_SIMPLE);
+    
+    if(m_pSkyBox != NULL)
+    {
+        m_pSkyBox->Render(INode::E_RENDER_MODE_SIMPLE);
+    }
     
     while (pBeginNodeIterator != pEndNodeIterator)
     {
@@ -267,7 +293,7 @@ void CSceneMgr::_DrawSimpleStep(void)
     
     if(m_pParticleMgr != NULL)
     {
-        m_pParticleMgr->Render();
+        m_pParticleMgr->Render(INode::E_RENDER_MODE_SIMPLE);
     }
     
     m_pRenderMgr->EndDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_SIMPLE);
@@ -333,6 +359,12 @@ void CSceneMgr::_DrawScreenNormalMapStep(void)
         }
         ++pBeginNodeIterator;
     }
+    
+    if(m_pParticleMgr != NULL)
+    {
+        //m_pParticleMgr->Render(INode::E_RENDER_MODE_SCREEN_NORMAL_MAP);
+    }
+    
     m_pRenderMgr->EndDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_SCREEN_NORMAL_MAP);
 }
 

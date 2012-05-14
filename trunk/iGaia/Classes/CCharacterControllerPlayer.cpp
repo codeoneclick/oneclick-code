@@ -19,13 +19,13 @@ CCharacterControllerPlayer::CCharacterControllerPlayer(void)
     m_pLeftTrackModel = NULL;
     m_pRightTrackModel = NULL;
     
-    m_fMaxMoveSpeed = 0.05f;
+    m_fMaxMoveSpeed = 0.2f;
     m_fMoveAcceleration = 0.01f;
     
     m_fMoveSpeed = 0.0f;
     m_fLeftTrackMoveSpeed = 0.0f;
     m_fRightTrackMoveSpeed = 0.0f;
-    m_fSteerSpeed = 1.0f;
+    m_fSteerSpeed = 2.0f;
     
     m_vTowerModelTarget = glm::vec3(0.0f, 0.0f, 0.0f);
 }
@@ -38,7 +38,7 @@ CCharacterControllerPlayer::~CCharacterControllerPlayer(void)
 void CCharacterControllerPlayer::Load(void)
 {
     
-    glm::vec3 vScale = glm::vec3(0.2f, 0.2f, 0.2f);
+    glm::vec3 vScale = glm::vec3(1.0f, 1.0f, 1.0f);
     m_pTowerModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("tower_model.mdl", false, IResource::E_THREAD_BACKGROUND);
     m_pTowerModel->Set_Texture("model_01.pvr");
     m_pTowerModel->Set_Scale(vScale);
@@ -74,7 +74,8 @@ void CCharacterControllerPlayer::Load(void)
     
     m_pExplosionEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitter();
     m_pExplosionEmitter->Set_Shader(IResource::E_SHADER_UNIT);
-    m_pExplosionEmitter->Set_Texture("model_02.pvr");
+    m_pExplosionEmitter->Set_Texture("fire.pvr");
+    m_pExplosionEmitter->Set_Position(glm::vec3(0.0f, 0.33f, 0.0f));
 
     CSceneMgr::Instance()->AddEventListener(m_pBodyModel, CEventMgr::E_EVENT_TOUCH);
     CSceneMgr::Instance()->Get_PhysicMgr()->Add_CollisionModelAsVehicle(m_pBodyModel, 2000, glm::vec3(2.0f, 2.0f, 2.0f));
@@ -251,13 +252,13 @@ void CCharacterControllerPlayer::Update(void)
             break;
     }
     
-    m_fMoveSpeed = m_fLeftTrackMoveSpeed + m_fRightTrackMoveSpeed;
+    m_fMoveSpeed = fabs(m_fLeftTrackMoveSpeed + m_fRightTrackMoveSpeed);
     
-    if(m_fMoveSpeed > 0.0f)
+    if((m_fLeftTrackMoveSpeed + m_fRightTrackMoveSpeed) > 0.0f)
     {
         MoveForward();
     }
-    else if (m_fMoveSpeed < 0.0f)
+    else if ((m_fLeftTrackMoveSpeed + m_fRightTrackMoveSpeed) < 0.0f)
     {
         MoveBackward();
     }
@@ -270,6 +271,38 @@ void CCharacterControllerPlayer::Update(void)
     {
         SteerRight();
     }
+    
+    m_fMoveSpeed = m_fMaxMoveSpeed;
+    
+    switch (m_eMoveState)
+    {
+        case ICharacterController::E_CHARACTER_CONTROLLER_MOVE_STATE_NONE:
+            
+            break;
+        case ICharacterController::E_CHARACTER_CONTROLLER_MOVE_STATE_FORWARD:
+            MoveForward();
+            break;
+        case ICharacterController::E_CHARACTER_CONTROLLER_MOVE_STATE_BACKWARD:
+            MoveBackward();
+            break;
+        default:
+            break;
+    }
+    
+    switch (m_eSteerState)
+    {
+        case ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_NONE:
+            
+            break;
+        case ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_LEFT:
+            SteerLeft();
+            break;
+        case ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_RIGHT:
+            SteerRight();
+            break;
+        default:
+            break;
+    }
 
     m_vPosition.y = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_HeightValueAtPoint(m_vPosition.x, m_vPosition.z);
     Set_Position(m_vPosition);
@@ -277,6 +310,8 @@ void CCharacterControllerPlayer::Update(void)
     m_vRotation.x = -glm::degrees(vRotationOnHeightMap.x);
     m_vRotation.z = glm::degrees(vRotationOnHeightMap.y);
     Set_Rotation(m_vRotation);
+    
+    //m_pExplosionEmitter->Set_Position(m_vPosition);
     
     float fTowerTargetAngle = _GetRotationBetweenPoints(m_vPosition, m_vTowerModelTarget);
     m_pTowerModel->Set_Rotation(glm::vec3(m_vRotation.x, glm::degrees(fTowerTargetAngle + 1.57f), m_vRotation.z));

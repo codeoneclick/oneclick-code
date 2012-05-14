@@ -31,3 +31,34 @@ void ICamera::Init(int _iScreenWidth, int _iScreenHeight, float _fFovY, float _f
     m_fNearPlane = _fNearPlane;
     m_mProjection = glm::perspective(m_fFovY, m_fAspectRatio, m_fNearPlane, m_fFarPlane);; 
 }
+
+glm::mat4x4 ICamera::Get_BillboardMatrix(glm::vec3 _vPosition)
+{
+    glm::vec3 vLook = m_vPosition - _vPosition;
+    vLook = glm::normalize(vLook);
+    glm::vec3 vUp = glm::vec3(0.0f, 1.0f, 0.0);
+    glm::vec3 vRight = glm::cross(vLook, vUp);
+    vRight = glm::normalize(vRight);
+    vLook = glm::cross(vRight, vUp);
+
+    glm::mat4x4 mBillboardMatrix; 
+    
+    mBillboardMatrix[0][0] = vRight.x;
+    mBillboardMatrix[0][1] = vRight.y;
+    mBillboardMatrix[0][2] = vRight.z;
+    mBillboardMatrix[0][3] = 0.0f;
+    mBillboardMatrix[1][0] = vUp.x;
+    mBillboardMatrix[1][1] = vUp.y;
+    mBillboardMatrix[1][2] = vUp.z;
+    mBillboardMatrix[1][3] = 0.0f;
+    mBillboardMatrix[2][0] = vLook.x;
+    mBillboardMatrix[2][1] = vLook.y;
+    mBillboardMatrix[2][2] = vLook.z;
+    mBillboardMatrix[2][3] = 0.0f;
+    
+    mBillboardMatrix[3][0] = _vPosition.x;
+    mBillboardMatrix[3][1] = _vPosition.y;
+    mBillboardMatrix[3][2] = _vPosition.z;
+    mBillboardMatrix[3][3] = 1.0f;
+    return mBillboardMatrix;
+}

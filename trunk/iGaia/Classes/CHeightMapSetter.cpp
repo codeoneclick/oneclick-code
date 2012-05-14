@@ -40,6 +40,33 @@ CMesh* CHeightMapSetter::Load_SourceData(const std::string _sName, int _iWidth, 
     {
         for(unsigned int j = 0; j < m_iHeight; ++j)
         {
+            float fHeight = pPositionData[i + ((m_iWidth - 1) - j) * m_iWidth].y;
+            /*if(fHeight < -0.2f)
+            {
+                fHeight = -0.2f;
+            }
+            else if(fHeight < 0.0f)
+            {
+                fHeight = 0.0f;
+            }
+            else if(fHeight < 0.2f)
+            {
+                fHeight = 0.2f;
+            }
+            else if(fHeight < 0.4f)
+            {
+                fHeight = 0.4f;
+            }
+            else if(fHeight < 0.6f)
+            {
+                fHeight = 0.6f;
+            }
+            else
+            {
+                fHeight = 0.8f;
+            }*/
+            
+            pPositionData[i + ((m_iWidth - 1) - j) * m_iWidth].y = fHeight;
             m_pSource[i + j * m_iHeight] = pPositionData[i + ((m_iWidth - 1) - j) * m_iWidth].y;
         }
     }
@@ -75,8 +102,8 @@ float CHeightMapSetter::Get_HeightValueAtPoint(float _fX, float _fZ)
         mainHeight = height_11 + (height_22 - height_12)*remainPositionX + (height_12 - height_11)*remainPositionZ;
     }
     
-    float height = (1 - remainPositionX) * ((1 - remainPositionZ) * height_11 + remainPositionZ * height_12) + remainPositionX * ((1 - remainPositionZ) * height_21 + remainPositionZ * height_22);
-    return height;
+    //float height = (1 - remainPositionX) * ((1 - remainPositionZ) * height_11 + remainPositionZ * height_12) + remainPositionX * ((1 - remainPositionZ) * height_21 + remainPositionZ * height_22);
+    return mainHeight;
 }
 
 
@@ -137,12 +164,5 @@ void CHeightMapSetter::Create_SplattingTexture(void)
     }
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_iWidth, m_iHeight, 0, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, pTextureData);
 }
-
-
-
-
-
-
-
 
 

@@ -29,6 +29,7 @@ protected:
         char* m_pTextureData;
         char* m_pHeaderData;
         bool m_bCompressed;
+        unsigned int m_iNumFaces;
     };
     
 private:
@@ -36,11 +37,11 @@ private:
     char* m_pData;
     SDescription* m_pDescription;
 public:
-    CParser_PVR();
-    virtual ~CParser_PVR();
+    CParser_PVR(void);
+    virtual ~CParser_PVR(void);
     virtual void* Get_Source() { return m_pSource; }
     virtual void Load(const std::string& _sName);
-    virtual void Commit();
+    virtual void Commit(void);
 };
 
 #endif

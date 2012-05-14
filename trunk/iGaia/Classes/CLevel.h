@@ -12,6 +12,7 @@
 #include "CLandscape.h"
 #include "CGrass.h"
 #include "CWater.h"
+#include "CSkyBox.h"
 #include "IDelegate.h"
 
 class CLevel : public IDelegate
@@ -20,6 +21,7 @@ private:
     CLandscape* m_pLandscape;
     CGrass* m_pGrass;
     CWater* m_pWater;
+    CSkyBox* m_pSkyBox;
 public:
     CLevel(void);
     ~CLevel(void);

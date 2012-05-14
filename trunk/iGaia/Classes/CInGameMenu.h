@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "GLView.h"
 
 #define k_MOVE_LEFT_TRACK_NONE  0
 #define k_MOVE_RIGHT_TRACK_NONE 1
@@ -19,4 +20,5 @@
 
 @interface CInGameMenu : UIView<UIScrollViewDelegate>
 -(void)OnMoveBtnAction:(UIButton*)sender;
+@property(nonatomic, assign) GLView* m_pGLView;
 @end

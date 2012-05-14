@@ -12,26 +12,26 @@ const char* ShaderUnitF = STRINGIFY(
                                        
 void main(void)
 {
-    lowp vec4 vDiffuseColor = texture2D(EXT_TEXTURE_01, OUT_TexCoord);
+    highp vec4 vDiffuseColor = texture2D(EXT_TEXTURE_01, OUT_TexCoord);
     
-    if(vDiffuseColor.a < 0.5)
+    /*if(vDiffuseColor.a == 0.0)
     {
         discard;
-    }
+    }*/
     
-    lowp float fOffsetA = 0.2;
-    lowp float fOffsetB = 0.4;
-    lowp float fOffsetC = 0.6;
-    lowp float fOffsetD = 0.8;
+    lowp float fOffsetA = 0.33;
+    lowp float fOffsetB = 0.66;
+    lowp float fOffsetC = 0.99;
+    //lowp float fOffsetD = 0.8;
  
-    lowp float fDiffuseFactor = max(dot(OUT_Normal, OUT_Light), 0.0);
+    /*lowp float fDiffuseFactor = max(dot(OUT_Normal, OUT_Light), 0.0);
     
     if (fDiffuseFactor < fOffsetA) fDiffuseFactor = 0.0;
     else if (fDiffuseFactor < fOffsetB) fDiffuseFactor = fOffsetB;
-    else if (fDiffuseFactor < fOffsetC) fDiffuseFactor = fOffsetC;
-    else fDiffuseFactor = fOffsetD;
+    else fDiffuseFactor = fOffsetC;
+    //else fDiffuseFactor = fOffsetD;
     
-    vDiffuseColor.rgb = vDiffuseColor.rgb * fDiffuseFactor + vDiffuseColor.rgb * 0.75;
+    vDiffuseColor.rgb = vDiffuseColor.rgb * fDiffuseFactor + vDiffuseColor.rgb * 0.75;*/
     gl_FragColor = vDiffuseColor;
 }
 );

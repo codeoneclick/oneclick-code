@@ -12,7 +12,8 @@
 
 ICharacterController::ICharacterController(void)
 {
-    
+    m_eMoveState = E_CHARACTER_CONTROLLER_MOVE_STATE_NONE;
+    m_eSteerState = E_CHARACTER_CONTROLLER_STEER_STATE_NONE;
 }
 
 ICharacterController::~ICharacterController(void)
@@ -63,9 +64,9 @@ float ICharacterController::_GetRotationBetweenPoints(glm::vec3 _vPoint_01, glm:
     vPoint_02 = glm::normalize(vPoint_02);
     float fDot = glm::dot(vPoint_01, vPoint_02);
     float fTempAngle = acosf(fDot);
-    std::cout<<"[ICharacterController::_GetRotationBetweenPoints] DOT PRODUCT : "<<fDot<<::std::endl;
-    std::cout<<"[ICharacterController::_GetRotationBetweenPoints] DOT angle : "<<glm::degrees(fTempAngle)<<::std::endl;
-    std::cout<<"[ICharacterController::_GetRotationBetweenPoints] TRIANGLE angle : "<<glm::degrees(fAngle_03)<<::std::endl;
+    //std::cout<<"[ICharacterController::_GetRotationBetweenPoints] DOT PRODUCT : "<<fDot<<::std::endl;
+    //std::cout<<"[ICharacterController::_GetRotationBetweenPoints] DOT angle : "<<glm::degrees(fTempAngle)<<::std::endl;
+    //std::cout<<"[ICharacterController::_GetRotationBetweenPoints] TRIANGLE angle : "<<glm::degrees(fAngle_03)<<::std::endl;
     return -fAngle_03;
 }
 

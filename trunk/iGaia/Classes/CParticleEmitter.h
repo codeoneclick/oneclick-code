@@ -28,6 +28,7 @@ protected:
     float _Get_RandomFromRange(float _fMin, float _fMax);
     unsigned int m_iNumParticles;
     SParticle* m_pParticles;
+    CShader* m_pShaderScreenNormalMap;
 public:
     CParticleEmitter(void);
     ~CParticleEmitter(void);

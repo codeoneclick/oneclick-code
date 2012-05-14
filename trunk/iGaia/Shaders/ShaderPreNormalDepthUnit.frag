@@ -8,14 +8,14 @@ const char* ShaderPreNormalDepthUnitF = STRINGIFY(
 void main(void)
 {
     lowp float fAlpha = texture2D(EXT_TEXTURE_01, OUT_TexCoord).a;
-    if(fAlpha < 0.5)
+    /*if(fAlpha < 0.5)
     {
         discard;
     }
     else
     {
         fAlpha = 1.0;
-    }
+    }*/
     
     gl_FragColor = vec4(1.0, 1.0, 1.0, fAlpha);
 }

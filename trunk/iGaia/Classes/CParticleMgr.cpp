@@ -52,14 +52,14 @@ void CParticleMgr::Update(void)
     }
 }
 
-void CParticleMgr::Render(void)
+void CParticleMgr::Render(INode::E_RENDER_MODE _eMode)
 {
     std::vector<CParticleEmitter*>::iterator pBeginIterator = m_lContainer.begin();
     std::vector<CParticleEmitter*>::iterator pEndIterator = m_lContainer.end();
     
     while(pBeginIterator != pEndIterator)
     {
-        (*pBeginIterator)->Render(INode::E_RENDER_MODE_SIMPLE);
+        (*pBeginIterator)->Render(_eMode);
         ++pBeginIterator;
     }
 }

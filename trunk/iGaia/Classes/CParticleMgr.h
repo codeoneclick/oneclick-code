@@ -21,7 +21,7 @@ public:
     CParticleEmitter* Add_ParticleEmitter(void);
     void Remove_ParticleEmitter(CParticleEmitter* _pParticleEmitter);
     void Update(void);
-    void Render(void);
+    void Render(INode::E_RENDER_MODE _eMode);
 };
 
 #endif /* defined(__iGaia__CParticleMgr__) */

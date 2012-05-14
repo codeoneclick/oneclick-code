@@ -22,6 +22,7 @@ CCameraTarget::~CCameraTarget()
 void CCameraTarget::Update()
 {
     m_vLookAt = m_pTarget->Get_Position();
+    m_vLookAt.y += 2.0f;
     m_vPosition.y = m_fHeightFromLookAt;
     m_vPosition.x = m_vLookAt.x + cos(-m_vRotation.y) * -m_fDistanceToLookAt;
     m_vPosition.z = m_vLookAt.z + sin(-m_vRotation.y) * -m_fDistanceToLookAt;
