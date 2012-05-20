@@ -1,4 +1,4 @@
-const char* ShaderUnitF = STRINGIFY(
+const char* ShaderShadowPlaneF = STRINGIFY(
 
                                                     varying lowp    vec3   OUT_View;
                                                     varying lowp    vec3   OUT_Light;
@@ -14,7 +14,7 @@ void main(void)
 {
     lowp vec4 vDiffuseColor = texture2D(EXT_TEXTURE_01, OUT_TexCoord);
     
-    lowp float fOffsetA = 0.33;
+    /*lowp float fOffsetA = 0.33;
     lowp float fOffsetB = 0.66;
     lowp float fOffsetC = 0.99;
  
@@ -24,7 +24,9 @@ void main(void)
     else if (fDiffuseFactor < fOffsetB) fDiffuseFactor = fOffsetB;
     else fDiffuseFactor = fOffsetC;
     
-    vDiffuseColor.rgb = vDiffuseColor.rgb * fDiffuseFactor + vDiffuseColor.rgb * 0.75;
+    vDiffuseColor.rgb = vDiffuseColor.rgb * fDiffuseFactor + vDiffuseColor.rgb * 0.75;*/
+    vDiffuseColor.rgb = vDiffuseColor.rgb / 4.0;
+    vDiffuseColor.a = vDiffuseColor.a * 4.0;
     gl_FragColor = vDiffuseColor;
 }
 );

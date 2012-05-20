@@ -35,7 +35,7 @@ public:
     void Set_WorldMatrix(const glm::mat4x4 &_mWorld);
     glm::mat4x4 Get_WorldMatrix(void) { return m_mWorld; }
     CMesh* Get_Mesh(void) { return m_pMesh; }
-    void Set_MaxMinPoints(const glm::vec3 &_vMax, const glm::vec3 &_vMin) { m_vMax = _vMax; m_vMin = _vMin; }
+    void Set_MaxMinPoints(const glm::vec3 &_vMax, const glm::vec3 &_vMin);
     void Set_Batching(bool _bValue) { m_bIsBatching = _bValue; }
     
     void Render(void);

@@ -7,9 +7,7 @@
 //
 
 #include "CSkyBox.h"
-
 #include "CSceneMgr.h"
-
 
 CSkyBox::CSkyBox(void)
 {
@@ -67,10 +65,10 @@ void CSkyBox::Load(IResource::SResource _tResource)
     pPositionData[23] = glm::vec3( m_vMin.x,  m_vMax.y,  m_vMin.z);
     
     // Front
-    pTexCoordData[0] = glm::vec2(1.0f, 0.0f);
-    pTexCoordData[1] = glm::vec2(1.0f, 1.0f);
-    pTexCoordData[2] = glm::vec2(0.0f, 1.0f);
-    pTexCoordData[3] = glm::vec2(0.0f, 0.0f);
+    pTexCoordData[0] = glm::vec2(0.0f, 0.0f);
+    pTexCoordData[1] = glm::vec2(1.0f, 0.0f);
+    pTexCoordData[2] = glm::vec2(1.0f, 1.0f);
+    pTexCoordData[3] = glm::vec2(0.0f, 1.0f);
     // Back
     pTexCoordData[4] = glm::vec2(1.0f, 0.0f);
     pTexCoordData[5] = glm::vec2(1.0f, 1.0f);
@@ -82,20 +80,20 @@ void CSkyBox::Load(IResource::SResource _tResource)
     pTexCoordData[10] = glm::vec2(0.0f, 1.0f);
     pTexCoordData[11] = glm::vec2(0.0f, 0.0f);
     // Right
-    pTexCoordData[12] = glm::vec2(1.0f, 0.0f);
-    pTexCoordData[13] = glm::vec2(1.0f, 1.0f);
-    pTexCoordData[14] = glm::vec2(0.0f, 1.0f);
-    pTexCoordData[15] = glm::vec2(0.0f, 0.0f);
+    pTexCoordData[12] = glm::vec2(0.0f, 0.0f);
+    pTexCoordData[13] = glm::vec2(1.0f, 0.0f);
+    pTexCoordData[14] = glm::vec2(1.0f, 1.0f);
+    pTexCoordData[15] = glm::vec2(0.0f, 1.0f);
     // Top
     pTexCoordData[16] = glm::vec2(1.0f, 0.0f);
     pTexCoordData[17] = glm::vec2(1.0f, 1.0f);
     pTexCoordData[18] = glm::vec2(0.0f, 1.0f);
     pTexCoordData[19] = glm::vec2(0.0f, 0.0f);
     // Bottom
-    pTexCoordData[20] = glm::vec2(1.0f, 0.0f);
-    pTexCoordData[21] = glm::vec2(1.0f, 1.0f);
-    pTexCoordData[22] = glm::vec2(0.0f, 1.0f);
-    pTexCoordData[23] = glm::vec2(0.0f, 0.0f);
+    pTexCoordData[20] = glm::vec2(0.0f, 0.0f);
+    pTexCoordData[21] = glm::vec2(1.0f, 0.0f);
+    pTexCoordData[22] = glm::vec2(1.0f, 1.0f);
+    pTexCoordData[23] = glm::vec2(0.0f, 1.0f);
     
     pSource->m_pIndexBuffer = new CIndexBuffer(pSource->m_iNumIndexes);
     unsigned short* pIndexBufferData = pSource->m_pIndexBuffer->Get_Data();
@@ -197,7 +195,7 @@ void CSkyBox::Render(INode::E_RENDER_MODE _eMode)
                 m_pShader->SetVector3(m_pLight->Get_Position(), CShader::k_VECTOR_LIGHT);
             }
             
-            /*char pStrTextureId[256];
+            char pStrTextureId[256];
             for(unsigned int i = 0; i < TEXTURES_MAX_COUNT; ++i)
             {
                 if( m_pTextures[i] == NULL )
@@ -207,8 +205,8 @@ void CSkyBox::Render(INode::E_RENDER_MODE _eMode)
                 sprintf(pStrTextureId, "EXT_TEXTURE_0%i",i + 1);
                 std::string k_TEXTURE_ID = pStrTextureId;
                 m_pShader->SetTexture(m_pTextures[i]->Get_Handle(), k_TEXTURE_ID);
-            }*/
-            m_pShader->SetTextureCube(m_pTextures[0]->Get_Handle(),CShader::k_TEXTURE_CUBE);
+            }
+            //m_pShader->SetTextureCube(m_pTextures[0]->Get_Handle(),CShader::k_TEXTURE_CUBE);
         }
             break;
         case INode::E_RENDER_MODE_REFLECTION:

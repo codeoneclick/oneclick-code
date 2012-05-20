@@ -73,6 +73,9 @@
 #include "../Shaders/ShaderTextureCube.vert"
 #include "../Shaders/ShaderTextureCube.frag"
 
+#include "../Shaders/ShaderShadowPlane.vert"
+#include "../Shaders/ShaderShadowPlane.frag"
+
 CShaderComposite* CShaderComposite::m_pInstance = NULL;
 
 CShaderComposite::CShaderComposite()
@@ -163,6 +166,10 @@ CShaderComposite::CShaderComposite()
     pData = pParser->Load(ShaderTextureCubeV, ShaderTextureCubeF);
     pShader = new CShader(pData.s_pHandle);
     m_lContainer[IResource::E_SHADER_TEXTURE_CUBE] = pShader;
+    
+    pData = pParser->Load(ShaderShadowPlaneV, ShaderShadowPlaneF);
+    pShader = new CShader(pData.s_pHandle);
+    m_lContainer[IResource::E_SHADER_SHADOW_PLANE] = pShader;
 }
 
 CShaderComposite::~CShaderComposite()

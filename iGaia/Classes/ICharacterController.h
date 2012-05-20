@@ -10,6 +10,7 @@
 #define iGaia_ICharacterController_h
 
 #include "CModel.h"
+#include "CShadowPlane.h"
 #include "CSceneMgr.h"
 #include "IDelegate.h"
 #include "CLandscape.h"
@@ -45,10 +46,10 @@ public:
     glm::vec3 Get_Position(void) { return m_vPosition; }
     glm::vec3 Get_Rotation(void) { return m_vRotation; }
     virtual void Set_Light(ILight* _pLight) = 0;
-    void MoveForward(void);
-    void MoveBackward(void);
-    void SteerRight(void);
-    void SteerLeft(void);
+    bool MoveForward(void);
+    bool MoveBackward(void);
+    bool SteerRight(void);
+    bool SteerLeft(void);
     void Set_MoveState(E_CHARACTER_CONTROLLER_MOVE_STATE _eMoveState) { m_eMoveState = _eMoveState; }
     void Set_SteerState(E_CHARACTER_CONTROLLER_STEER_STATE _eSteerState) { m_eSteerState = _eSteerState; }
 };

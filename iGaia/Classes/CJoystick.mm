@@ -17,10 +17,10 @@
     if (self)
     {
         [self setBackgroundColor:[UIColor clearColor]];
-        m_iMaxOffsetX = 64;
-        m_iMinOffsetX = 32;
-        m_iMaxOffsetY = 64;
-        m_iMinOffsetY = 32;
+        m_iMaxOffsetX = 80;
+        m_iMinOffsetX = 48;
+        m_iMaxOffsetY = 80;
+        m_iMinOffsetY = 48;
         
         m_pBackground = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
         [m_pBackground setImage:[UIImage imageNamed:@"joystick.png"]];

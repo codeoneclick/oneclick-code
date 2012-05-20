@@ -136,11 +136,9 @@ void INode::Remove_Delegate(IDelegate *_pDelegate)
 
 void INode::Update()
 {
-    glm::mat4x4 mRotationX = glm::rotate(glm::mat4(1.0f), m_vRotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
-    glm::mat4x4 mRotationY = glm::rotate(mRotationX, m_vRotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
-    glm::mat4x4 mRotationZ = glm::rotate(mRotationY, m_vRotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
-    
-    m_mRotation = mRotationZ;
+    m_mRotation = glm::rotate(glm::mat4(1.0f), m_vRotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
+    m_mRotation = glm::rotate(m_mRotation, m_vRotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
+    m_mRotation = glm::rotate(m_mRotation, m_vRotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
     
     m_mTranslation = glm::translate(glm::mat4(1.0f), m_vPosition);
     
@@ -151,7 +149,6 @@ void INode::Update()
     if(m_pBoundingBox != NULL)
     {
         m_pBoundingBox->Set_WorldMatrix(m_mWorld);
-        //m_pBoundingBox->Set_MaxMinPoints(m_pMesh->Get_MaxBound(), m_pMesh->Get_MinBound());
     }
 }
 

@@ -113,6 +113,7 @@ public:
     glm::mat4x4 Get_WorldMatrix(void) { return m_mWorld; }
     
     void Set_TexCoordOffset(glm::vec2 _vOffset) { m_vTexCoordOffset = _vOffset; }
+    glm::vec2 Get_TexCoordOffset(void) { return m_vTexCoordOffset; }
     
     void Add_Delegate(IDelegate* _pDelegate);
     void Remove_Delegate(IDelegate* _pDelegate);

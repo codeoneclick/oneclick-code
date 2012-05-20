@@ -49,33 +49,34 @@ bool CCharacterControllerEnemy::_IsStateTimeElapsed(void)
 }
 
 void CCharacterControllerEnemy::Load(void)
-{    
+{
+    glm::vec3 vScale = glm::vec3(1.0f, 1.0f, 1.0f);
     m_pTowerModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("tower_model.mdl", false, IResource::E_THREAD_BACKGROUND);
     m_pTowerModel->Set_Texture("model_01.pvr");
-    m_pTowerModel->Set_Scale(glm::vec3(0.1f, 0.1f, 0.1f));
+    m_pTowerModel->Set_Scale(vScale);
     m_pTowerModel->Set_Shader(IResource::E_SHADER_UNIT);
-    m_pTowerModel->Create_BoundingBox();
+    //m_pTowerModel->Create_BoundingBox();
     m_pTowerModel->Set_RenderModeScreenNormalEnable(true);
     
     m_pLeftTrackModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("left_track_model.mdl", false, IResource::E_THREAD_BACKGROUND);
     m_pLeftTrackModel->Set_Texture("model_02.pvr");
-    m_pLeftTrackModel->Set_Scale(glm::vec3(0.1f, 0.1f, 0.1f));
+    m_pLeftTrackModel->Set_Scale(vScale);
     m_pLeftTrackModel->Set_Shader(IResource::E_SHADER_ANIM_TEXCOORD_UNIT);
-    m_pLeftTrackModel->Create_BoundingBox();
+    //m_pLeftTrackModel->Create_BoundingBox();
     m_pLeftTrackModel->Set_RenderModeScreenNormalEnable(true);
     
     m_pRightTrackModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("right_track_model.mdl", false, IResource::E_THREAD_BACKGROUND);
     m_pRightTrackModel->Set_Texture("model_02.pvr");
-    m_pRightTrackModel->Set_Scale(glm::vec3(0.1f, 0.1f, 0.1f));
+    m_pRightTrackModel->Set_Scale(vScale);
     m_pRightTrackModel->Set_Shader(IResource::E_SHADER_ANIM_TEXCOORD_UNIT);
-    m_pRightTrackModel->Create_BoundingBox();
+    //m_pRightTrackModel->Create_BoundingBox();
     m_pRightTrackModel->Set_RenderModeScreenNormalEnable(true);
     
     m_pBodyModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("base_model.mdl", false, IResource::E_THREAD_BACKGROUND);
     m_pBodyModel->Set_Texture("model_01.pvr");
-    m_pBodyModel->Set_Scale(glm::vec3(0.1f, 0.1f, 0.1f));
+    m_pBodyModel->Set_Scale(vScale);
     m_pBodyModel->Set_Shader(IResource::E_SHADER_UNIT);
-    m_pBodyModel->Create_BoundingBox();
+    //m_pBodyModel->Create_BoundingBox();
     m_pBodyModel->Set_RenderModeScreenNormalEnable(true);
     
     CSceneMgr::Instance()->AddEventListener(m_pBodyModel, CEventMgr::E_EVENT_TOUCH);
@@ -201,7 +202,7 @@ void CCharacterControllerEnemy::Update(void)
                 m_eState = E_AI_STATE_NONE;
             }
             
-            m_vPosition.y = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_HeightValueAtPoint(m_vPosition.x, m_vPosition.z);
+            m_vPosition.y = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_HeightValue(m_vPosition.x, m_vPosition.z);
             Set_Position(m_vPosition);
             glm::vec2 vRotationOnHeightMap = _Get_RotationOnHeightmap(m_vPosition);
             m_vRotation.x = -glm::degrees(vRotationOnHeightMap.x);

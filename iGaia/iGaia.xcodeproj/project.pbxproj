@@ -199,10 +199,13 @@
 		93FB5AB11517CF9800E096A9 /* vector_query.inl in Resources */ = {isa = PBXBuildFile; fileRef = 93FB5A451517CF9800E096A9 /* vector_query.inl */; };
 		93FB5AB21517CF9800E096A9 /* verbose_operator.inl in Resources */ = {isa = PBXBuildFile; fileRef = 93FB5A471517CF9800E096A9 /* verbose_operator.inl */; };
 		93FB5AB31517CF9800E096A9 /* wrap.inl in Resources */ = {isa = PBXBuildFile; fileRef = 93FB5A491517CF9800E096A9 /* wrap.inl */; };
+		A10074FE156130A8000E324E /* clouds.pvr in Resources */ = {isa = PBXBuildFile; fileRef = A10074FD156130A8000E324E /* clouds.pvr */; };
 		A11AA3CA1547218800113AA3 /* smoke.pvr in Resources */ = {isa = PBXBuildFile; fileRef = A11AA3C91547218800113AA3 /* smoke.pvr */; };
+		A11D250A1562975C00BA650F /* CShadowPlane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A11D25081562975A00BA650F /* CShadowPlane.cpp */; };
 		A1207C6D153C02C60021A0C7 /* model_01.pvr in Resources */ = {isa = PBXBuildFile; fileRef = A1207C6C153C02C60021A0C7 /* model_01.pvr */; };
 		A12156B2152EDE9C002E1942 /* IResourceLoaderDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A12156B1152EDE9C002E1942 /* IResourceLoaderDelegate.cpp */; };
 		A12D2F2A1541582800955C6B /* CCharacterControllerEnemy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A12D2F281541582800955C6B /* CCharacterControllerEnemy.cpp */; };
+		A13F9EB91568D743009DCBB4 /* CDecal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A13F9EB71568D743009DCBB4 /* CDecal.cpp */; };
 		A153D5C2153DA3D000FBFFD5 /* CInGameMenu.mm in Sources */ = {isa = PBXBuildFile; fileRef = A153D5C1153DA3D000FBFFD5 /* CInGameMenu.mm */; };
 		A153D5C8153DA75000FBFFD5 /* btn.png in Resources */ = {isa = PBXBuildFile; fileRef = A153D5C7153DA75000FBFFD5 /* btn.png */; };
 		A15E532515386D7100AB572D /* CNavigationMeshMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A15E532315386D7100AB572D /* CNavigationMeshMgr.cpp */; };
@@ -377,6 +380,8 @@
 		A1BAD24815418C4A00B4149D /* CGameAIMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1BAD24615418C4A00B4149D /* CGameAIMgr.cpp */; };
 		A1C7ADE91547E5010047264E /* fire.pvr in Resources */ = {isa = PBXBuildFile; fileRef = A1C7ADE81547E5010047264E /* fire.pvr */; };
 		A1C7ADEC1548441A0047264E /* Treads.png in Resources */ = {isa = PBXBuildFile; fileRef = A1C7ADEB1548441A0047264E /* Treads.png */; };
+		A1E1ED321563CC01009FD066 /* ShaderShadowPlane.frag in Sources */ = {isa = PBXBuildFile; fileRef = A1E1ED301563CC01009FD066 /* ShaderShadowPlane.frag */; };
+		A1E1ED331563CC01009FD066 /* ShaderShadowPlane.vert in Sources */ = {isa = PBXBuildFile; fileRef = A1E1ED311563CC01009FD066 /* ShaderShadowPlane.vert */; };
 		A1ED8E8915591C6B00B82AE3 /* joystick.png in Resources */ = {isa = PBXBuildFile; fileRef = A1ED8E8815591C6B00B82AE3 /* joystick.png */; };
 		A1F690471557CCAC00A2920A /* CJoystick.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1F690461557CCAC00A2920A /* CJoystick.mm */; };
 		CE8DFA9314587B0C00AE7288 /* CGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE8DFA9214587B0C00AE7288 /* CGame.cpp */; };
@@ -803,7 +808,10 @@
 		93FB5A4B1517CF9800E096A9 /* xstream.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = xstream.hpp; sourceTree = "<group>"; };
 		93FDE98B1523344300FFBC1B /* ShaderPreReflection.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderPreReflection.frag; path = Shaders/ShaderPreReflection.frag; sourceTree = "<group>"; };
 		93FDE98C1523344300FFBC1B /* ShaderPreReflection.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderPreReflection.vert; path = Shaders/ShaderPreReflection.vert; sourceTree = "<group>"; };
+		A10074FD156130A8000E324E /* clouds.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = clouds.pvr; path = Resources/Textures/clouds.pvr; sourceTree = "<group>"; };
 		A11AA3C91547218800113AA3 /* smoke.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = smoke.pvr; path = Resources/Textures/smoke.pvr; sourceTree = "<group>"; };
+		A11D25081562975A00BA650F /* CShadowPlane.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CShadowPlane.cpp; sourceTree = "<group>"; };
+		A11D25091562975B00BA650F /* CShadowPlane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CShadowPlane.h; sourceTree = "<group>"; };
 		A1207C6C153C02C60021A0C7 /* model_01.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = model_01.pvr; path = Resources/Textures/model_01.pvr; sourceTree = "<group>"; };
 		A12156AF152EDE83002E1942 /* IResourceLoaderDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IResourceLoaderDelegate.h; sourceTree = "<group>"; };
 		A12156B1152EDE9C002E1942 /* IResourceLoaderDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IResourceLoaderDelegate.cpp; sourceTree = "<group>"; };
@@ -811,6 +819,8 @@
 		A12D2F291541582800955C6B /* CCharacterControllerEnemy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCharacterControllerEnemy.h; sourceTree = "<group>"; };
 		A13D5A0E15378A56004C4363 /* ShaderPreNormalDepthUnit.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderPreNormalDepthUnit.frag; path = Shaders/ShaderPreNormalDepthUnit.frag; sourceTree = "<group>"; };
 		A13D5A0F15378A56004C4363 /* ShaderPreNormalDepthUnit.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderPreNormalDepthUnit.vert; path = Shaders/ShaderPreNormalDepthUnit.vert; sourceTree = "<group>"; };
+		A13F9EB71568D743009DCBB4 /* CDecal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CDecal.cpp; sourceTree = "<group>"; };
+		A13F9EB81568D743009DCBB4 /* CDecal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDecal.h; sourceTree = "<group>"; };
 		A153D5C0153DA3D000FBFFD5 /* CInGameMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CInGameMenu.h; sourceTree = "<group>"; };
 		A153D5C1153DA3D000FBFFD5 /* CInGameMenu.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CInGameMenu.mm; sourceTree = "<group>"; };
 		A153D5C7153DA75000FBFFD5 /* btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = btn.png; path = Resources/Textures/btn.png; sourceTree = "<group>"; };
@@ -1196,6 +1206,8 @@
 		A1BAD24715418C4A00B4149D /* CGameAIMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGameAIMgr.h; sourceTree = "<group>"; };
 		A1C7ADE81547E5010047264E /* fire.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = fire.pvr; path = Resources/Textures/fire.pvr; sourceTree = "<group>"; };
 		A1C7ADEB1548441A0047264E /* Treads.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Treads.png; path = Resources/Textures/Treads.png; sourceTree = "<group>"; };
+		A1E1ED301563CC01009FD066 /* ShaderShadowPlane.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderShadowPlane.frag; path = Shaders/ShaderShadowPlane.frag; sourceTree = "<group>"; };
+		A1E1ED311563CC01009FD066 /* ShaderShadowPlane.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderShadowPlane.vert; path = Shaders/ShaderShadowPlane.vert; sourceTree = "<group>"; };
 		A1ED8E8815591C6B00B82AE3 /* joystick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = joystick.png; path = Resources/Textures/joystick.png; sourceTree = "<group>"; };
 		A1F690451557CCAC00A2920A /* CJoystick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CJoystick.h; sourceTree = "<group>"; };
 		A1F690461557CCAC00A2920A /* CJoystick.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CJoystick.mm; sourceTree = "<group>"; };
@@ -1549,6 +1561,8 @@
 		935D65061504AE0B00FBE552 /* CustomEffect */ = {
 			isa = PBXGroup;
 			children = (
+				A1E1ED301563CC01009FD066 /* ShaderShadowPlane.frag */,
+				A1E1ED311563CC01009FD066 /* ShaderShadowPlane.vert */,
 				A1A3BB1C153D5F2C003AE14D /* ShaderAnimTexCoordUnit.frag */,
 				A1A3BB1D153D5F2C003AE14D /* ShaderAnimTexCoordUnit.vert */,
 				A13D5A0E15378A56004C4363 /* ShaderPreNormalDepthUnit.frag */,
@@ -1595,13 +1609,13 @@
 				A166A16A1546DF2000E659D5 /* ParticleEmitters */,
 				93F814F514D01DF8005D6699 /* CLightPoint.h */,
 				93F814F714D01E08005D6699 /* CLightPoint.cpp */,
-				93AA2A79148831D00073F016 /* ILight.cpp */,
 				93AA2A7814882E0B0073F016 /* ILight.h */,
+				93AA2A79148831D00073F016 /* ILight.cpp */,
 				9303B33914AC9001005ED3BF /* Cameras */,
-				93243D57147553AB00ED7443 /* CModel.h */,
-				93243D59147553B500ED7443 /* CModel.cpp */,
 				93B6BB6F14840FC700E34B78 /* INode.h */,
 				93B6BB7114840FD500E34B78 /* INode.cpp */,
+				93243D57147553AB00ED7443 /* CModel.h */,
+				93243D59147553B500ED7443 /* CModel.cpp */,
 				93CE485E14B458D500C5F031 /* CBoundingBox.h */,
 				93CE485F14B458E000C5F031 /* CBoundingBox.cpp */,
 				93AE336314C4446D00F1A516 /* CLandscape.h */,
@@ -1612,6 +1626,10 @@
 				932D540A151B662F00C77E95 /* CWater.cpp */,
 				A1AF6F761549383200703E2E /* CSkyBox.h */,
 				A1AF6F751549383200703E2E /* CSkyBox.cpp */,
+				A11D25091562975B00BA650F /* CShadowPlane.h */,
+				A11D25081562975A00BA650F /* CShadowPlane.cpp */,
+				A13F9EB81568D743009DCBB4 /* CDecal.h */,
+				A13F9EB71568D743009DCBB4 /* CDecal.cpp */,
 			);
 			name = Nodes;
 			sourceTree = "<group>";
@@ -2488,6 +2506,7 @@
 		CE91921914573F630021A0DC /* Textures */ = {
 			isa = PBXGroup;
 			children = (
+				A10074FD156130A8000E324E /* clouds.pvr */,
 				A1ED8E8815591C6B00B82AE3 /* joystick.png */,
 				A1AF6F731549380400703E2E /* Skybox.pvr */,
 				A1C7ADEB1548441A0047264E /* Treads.png */,
@@ -2708,6 +2727,7 @@
 				A1C7ADEC1548441A0047264E /* Treads.png in Resources */,
 				A1AF6F741549380400703E2E /* Skybox.pvr in Resources */,
 				A1ED8E8915591C6B00B82AE3 /* joystick.png in Resources */,
+				A10074FE156130A8000E324E /* clouds.pvr in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2947,6 +2967,10 @@
 				A1AF6F7E1549476D00703E2E /* ShaderTextureCube.frag in Sources */,
 				A1AF6F7F1549476D00703E2E /* ShaderTextureCube.vert in Sources */,
 				A1F690471557CCAC00A2920A /* CJoystick.mm in Sources */,
+				A11D250A1562975C00BA650F /* CShadowPlane.cpp in Sources */,
+				A1E1ED321563CC01009FD066 /* ShaderShadowPlane.frag in Sources */,
+				A1E1ED331563CC01009FD066 /* ShaderShadowPlane.vert in Sources */,
+				A13F9EB91568D743009DCBB4 /* CDecal.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

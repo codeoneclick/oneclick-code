@@ -17,7 +17,7 @@ public:
 public:
     IResourceLoaderDelegate(void);
     virtual ~IResourceLoaderDelegate(void);
-    virtual void OnLoadDone(E_RESOURCE_TYPE _eType, IResource* pResource) = 0;
+    virtual void OnResourceLoadDone(E_RESOURCE_TYPE _eType, IResource* _pResource) = 0;
 };
 
 

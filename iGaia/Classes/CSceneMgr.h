@@ -30,6 +30,9 @@ private:
     std::map<unsigned int, ILight*> m_lLights;
     ILight* m_pGlobalLight;
     INode* m_pSkyBox;
+    INode* m_pLandscape;
+    INode* m_pWater;
+    INode* m_pGrass;
     ICamera* m_pCamera;
     
     CRenderMgr* m_pRenderMgr;

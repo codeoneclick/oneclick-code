@@ -22,7 +22,7 @@ protected:
     static const int k_ELEMENT_NUM_VERTEXES;
     
     unsigned short* m_pSingleElementIndexBuffer;
-    //CVertexBuffer::SVertex m_pSingleElementVertexBuffer;
+    CVertexBuffer*  m_pSingleElementVertexBuffer;
     
     unsigned int m_iWidth;
     unsigned int m_iHeight;

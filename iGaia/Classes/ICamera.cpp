@@ -29,7 +29,13 @@ void ICamera::Init(int _iScreenWidth, int _iScreenHeight, float _fFovY, float _f
     m_fFovY = _fFovY;
     m_fFarPlane = _fFarPlane;
     m_fNearPlane = _fNearPlane;
-    m_mProjection = glm::perspective(m_fFovY, m_fAspectRatio, m_fNearPlane, m_fFarPlane);; 
+    m_mProjection = glm::perspective(m_fFovY, m_fAspectRatio, m_fNearPlane, m_fFarPlane);
+}
+
+void ICamera::Set_FovY(float _fFovY)
+{
+    m_fFovY = _fFovY;
+    m_mProjection = glm::perspective(m_fFovY, m_fAspectRatio, m_fNearPlane, m_fFarPlane);
 }
 
 glm::mat4x4 ICamera::Get_BillboardMatrix(glm::vec3 _vPosition)

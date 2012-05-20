@@ -13,6 +13,7 @@
 #include "CGrass.h"
 #include "CWater.h"
 #include "CSkyBox.h"
+#include "CShadowPlane.h"
 #include "CRenderMgr.h"
 #include "CCollisionMgr.h"
 #include "CCameraFree.h"
@@ -31,6 +32,9 @@ CSceneMgr::CSceneMgr(void)
     m_pNavigationMeshMgrRef = NULL;
     m_pHeightMapSetterRef = NULL;
     m_pSkyBox = NULL;
+    m_pLandscape = NULL;
+    m_pWater = NULL;
+    m_pGrass = NULL;
     
     m_pRenderMgr = new CRenderMgr();
     m_pCollisionMgr = new CCollisionMgr();
@@ -95,7 +99,8 @@ INode* CSceneMgr::AddLandscapeModel(const std::string &_sName, bool _isBatching)
     tResource.m_eModel = IResource::E_STANDART_MODEL_NONE;
     tResource.m_bIsBatching = _isBatching;
     INode* pNode = new CLandscape();
-    m_lContainer.push_back(pNode);
+    m_pLandscape = pNode;
+    //m_lContainer.push_back(pNode);
     pNode->Load(tResource);
     return pNode;
 }
@@ -108,7 +113,8 @@ INode* CSceneMgr::AddLandscapeGrassModel(const std::string &_sName, bool _isBatc
     tResource.m_eModel = IResource::E_STANDART_MODEL_NONE;
     tResource.m_bIsBatching = _isBatching;
     INode* pNode = new CGrass();
-    m_lContainer.push_back(pNode);
+    m_pGrass = pNode;
+    //m_lContainer.push_back(pNode);
     pNode->Load(tResource);
     return pNode;
 }
@@ -121,8 +127,9 @@ INode* CSceneMgr::AddWaterModel(const std::string &_sName, bool _isBatching)
     tResource.m_eModel = IResource::E_STANDART_MODEL_NONE;
     tResource.m_bIsBatching = _isBatching;
     INode* pNode = new CWater();
+    m_pWater = pNode;
     pNode->Load(tResource);
-    m_lContainer.push_back(pNode);
+    //m_lContainer.push_back(pNode);
     return pNode;
 }
 
@@ -263,6 +270,21 @@ void CSceneMgr::Update()
         m_pSkyBox->Set_Position(m_pCamera->Get_Position());
         m_pSkyBox->Update();
     }
+    
+    if(m_pLandscape != NULL)
+    {
+        m_pLandscape->Update();
+    }
+    
+    if(m_pWater != NULL)
+    {
+        m_pWater->Update();
+    }
+    
+    if(m_pGrass != NULL)
+    {
+        m_pGrass->Update();
+    }
 }
 
 void CSceneMgr::_DrawSimpleStep(void)
@@ -276,24 +298,44 @@ void CSceneMgr::_DrawSimpleStep(void)
         m_pSkyBox->Render(INode::E_RENDER_MODE_SIMPLE);
     }
     
+    if(m_pLandscape != NULL)
+    {
+        m_pLandscape->Render(INode::E_RENDER_MODE_SIMPLE);
+    }
+
+    if(m_pWater != NULL)
+    {
+        m_pWater->Render(INode::E_RENDER_MODE_SIMPLE);
+    }
+    
+    if(m_pGrass != NULL)
+    {
+        m_pGrass->Render(INode::E_RENDER_MODE_SIMPLE);
+    }
+    
     while (pBeginNodeIterator != pEndNodeIterator)
     {
         (*pBeginNodeIterator)->Render(INode::E_RENDER_MODE_SIMPLE);
         ++pBeginNodeIterator;
     }
     
-    std::map<unsigned int, ILight*>::iterator pMapBIterator = m_lLights.begin();
+    /*std::map<unsigned int, ILight*>::iterator pMapBIterator = m_lLights.begin();
     std::map<unsigned int, ILight*>::iterator pMapEIterator = m_lLights.end();
     
     while (pMapBIterator != pMapEIterator)
     {
         (*pMapBIterator).second->Render();
         ++pMapBIterator;
+    }*/
+    
+    if(m_pParticleMgr != NULL)
+    {
+        m_pParticleMgr->Render(INode::E_RENDER_MODE_SIMPLE, CParticleMgr::E_PARTICLE_MODE_STEP_EMITTER);
     }
     
     if(m_pParticleMgr != NULL)
     {
-        m_pParticleMgr->Render(INode::E_RENDER_MODE_SIMPLE);
+        m_pParticleMgr->Render(INode::E_RENDER_MODE_SIMPLE, CParticleMgr::E_PARTICLE_MODE_STEP_SHADOW);
     }
     
     m_pRenderMgr->EndDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_SIMPLE);
@@ -311,7 +353,31 @@ void CSceneMgr::_DrawReflectionStep(void)
     
     glm::vec3 vCameraLookAt = m_pCamera->Get_LookAt();
     vCameraLookAt.y = -vCameraLookAt.y + fWaterLevel * 2.0f;
-    m_pCamera->Set_View(glm::lookAt(vCameraPosition, vCameraLookAt, glm::vec3(0.0f,-1.0f,0.0f)));    
+    m_pCamera->Set_View(glm::lookAt(vCameraPosition, vCameraLookAt, glm::vec3(0.0f,-1.0f,0.0f)));
+    
+    if(m_pSkyBox != NULL)
+    {
+        m_pSkyBox->Update();
+        m_pSkyBox->Render(INode::E_RENDER_MODE_SIMPLE);
+    }
+    
+    if(m_pLandscape != NULL && m_pLandscape->Get_RenderModeReflectionEnable())
+    {
+        m_pLandscape->Update();
+        m_pLandscape->Render(INode::E_RENDER_MODE_REFLECTION);
+    }
+    
+    if(m_pWater != NULL && m_pWater->Get_RenderModeReflectionEnable())
+    {
+        m_pWater->Update();
+        m_pWater->Render(INode::E_RENDER_MODE_REFLECTION);
+    }
+    
+    if(m_pGrass != NULL && m_pGrass->Get_RenderModeReflectionEnable())
+    {
+        m_pGrass->Update();
+        m_pGrass->Render(INode::E_RENDER_MODE_REFLECTION);
+    }
     
     while (pBeginNodeIterator != pEndNodeIterator)
     {
@@ -332,6 +398,24 @@ void CSceneMgr::_DrawRefractionStep(void)
     std::vector<INode*>::iterator pEndNodeIterator = m_lContainer.end();
     m_pRenderMgr->BeginDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_REFRACTION);
     
+    if(m_pLandscape != NULL && m_pLandscape->Get_RenderModeRefractionEnable())
+    {
+        m_pLandscape->Update();
+        m_pLandscape->Render(INode::E_RENDER_MODE_REFRACTION);
+    }
+    
+    if(m_pWater != NULL && m_pWater->Get_RenderModeRefractionEnable())
+    {
+        m_pWater->Update();
+        m_pWater->Render(INode::E_RENDER_MODE_REFRACTION);
+    }
+    
+    if(m_pGrass != NULL && m_pGrass->Get_RenderModeRefractionEnable())
+    {
+        m_pGrass->Update();
+        m_pGrass->Render(INode::E_RENDER_MODE_REFRACTION);
+    }
+    
     while (pBeginNodeIterator != pEndNodeIterator)
     {
         if((*pBeginNodeIterator)->Get_RenderModeRefractionEnable())
@@ -351,6 +435,22 @@ void CSceneMgr::_DrawScreenNormalMapStep(void)
     pBeginNodeIterator = m_lContainer.begin();
     pEndNodeIterator = m_lContainer.end();
     m_pRenderMgr->BeginDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_SCREEN_NORMAL_MAP);
+    
+    if(m_pLandscape != NULL && m_pLandscape->Get_RenderModeScreenNormalEnable())
+    {
+        m_pLandscape->Render(INode::E_RENDER_MODE_SCREEN_NORMAL_MAP);
+    }
+    
+    if(m_pWater != NULL && m_pWater->Get_RenderModeScreenNormalEnable())
+    {
+        m_pWater->Render(INode::E_RENDER_MODE_SCREEN_NORMAL_MAP);
+    }
+    
+    if(m_pGrass != NULL && m_pGrass->Get_RenderModeScreenNormalEnable())
+    {
+        m_pGrass->Render(INode::E_RENDER_MODE_SCREEN_NORMAL_MAP);
+    }
+    
     while (pBeginNodeIterator != pEndNodeIterator)
     {
         if((*pBeginNodeIterator)->Get_RenderModeScreenNormalEnable())
@@ -375,11 +475,26 @@ void CSceneMgr::_DrawShadowMapStep(void)
     m_pRenderMgr->BeginDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_SHADOW_MAP);
     
     glm::vec3 vCameraPosition = m_pCamera->Get_Position();
-    vCameraPosition = glm::vec3(8.0f, 8.0f, 8.0f);//m_pGlobalLight->Get_Position();
+    vCameraPosition = glm::vec3(8.0f, 8.0f, 8.0f); //m_pGlobalLight->Get_Position();
     
     glm::vec3 vCameraLookAt = m_pCamera->Get_LookAt();
     vCameraLookAt = glm::vec3(0.0f, 0.0f, 0.0f);
     m_pCamera->Set_View(glm::lookAt(vCameraPosition, vCameraLookAt, glm::vec3(0.0f,-1.0f,0.0f)));
+    
+    if(m_pLandscape != NULL && m_pLandscape->Get_RenderModeShadowMapEnable())
+    {
+        m_pLandscape->Render(INode::E_RENDER_MODE_SHADOW_MAP);
+    }
+    
+    if(m_pWater != NULL && m_pWater->Get_RenderModeShadowMapEnable())
+    {
+        m_pWater->Render(INode::E_RENDER_MODE_SHADOW_MAP);
+    }
+    
+    if(m_pGrass != NULL && m_pGrass->Get_RenderModeShadowMapEnable())
+    {
+        m_pGrass->Render(INode::E_RENDER_MODE_SHADOW_MAP);
+    }
     
     while (pBeginNodeIterator != pEndNodeIterator)
     {
