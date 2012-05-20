@@ -49,7 +49,7 @@ void CWorld::Load(void)
     
     m_pCharaterControllerMgr->Add_MainCharacterController();
     m_pCharacterControllerPlayer = static_cast<CCharacterControllerPlayer*>(m_pCharaterControllerMgr->Get_MainCharacterController());
-    m_pCharacterControllerPlayer->Set_Position(glm::vec3(0.0f, 0.0f, 0.0f));
+    m_pCharacterControllerPlayer->Set_Position(glm::vec3(2.0f, 0.0f, 2.0f));
     
     CCharacterControllerEnemy* pCharacterControllerEnemy = static_cast<CCharacterControllerEnemy*>(m_pCharaterControllerMgr->Add_EnemyCharacterController());
     m_pGameAIMgr->Add_AICharacterController(pCharacterControllerEnemy);
@@ -67,8 +67,8 @@ void CWorld::Load(void)
     
     m_pCamera = CSceneMgr::Instance()->CreateTargetCamera(45.0f, 0.1f, 1024.0f, m_pCharacterControllerPlayer->Get_TargetForCamera());//CSceneMgr::Instance()->CreateFreeCamera(45.0f, 0.1f, 1024.0f);
     CSceneMgr::Instance()->Set_Camera(m_pCamera);
-    m_pCamera->Set_DistanceToLookAt(6.0f);
-    m_pCamera->Set_HeightFromLookAt(6.0f);
+    m_pCamera->Set_DistanceToLookAt(7.0f);
+    m_pCamera->Set_HeightFromLookAt(4.0f);
     glm::vec3 vCameraRotation = glm::vec3(0.0f, -MATH_PI / 4.0f, 0.0f);
     m_pCamera->Set_Rotation(vCameraRotation);
 }
@@ -86,10 +86,13 @@ void CWorld::Update(void)
     m_pLight->Set_Rotation(glm::vec3(0.0f, fAngle, 0.0f));
     
     glm::vec3 vCameraPosition = m_pCamera->Get_Position();
-    float fCameraHeight = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_HeightValueAtPoint(vCameraPosition.x, vCameraPosition.z);
+    float fCameraHeight = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_HeightValue(vCameraPosition.x, vCameraPosition.z);
     m_pCamera->Set_HeightFromLookAt(4.0f + fCameraHeight);
-    glm::vec3 vCameraRotation = m_pCamera->Get_Rotation();
-    vCameraRotation.y = glm::radians(m_pCharacterControllerPlayer->Get_Rotation().y) - 1.57f;
+    
+    glm::vec3 vCurrentCameraRotation = m_pCamera->Get_Rotation();
+    vCurrentCameraRotation.y = glm::radians(m_pCharacterControllerPlayer->Get_Rotation().y) - 1.57f;
+    glm::vec3 vOldCameraRotation = m_pCamera->Get_Rotation();
+    glm::vec3 vCameraRotation = glm::mix(vOldCameraRotation, vCurrentCameraRotation, 0.25f);
     m_pCamera->Set_Rotation(vCameraRotation);
     
     //CVector3d vLightPosition = CVector3d(m_pHero->Get_Model()->Get_Position().x, 8.0f, m_pHero->Get_Model()->Get_Position().z);

@@ -41,7 +41,7 @@ void main(void)
     OUT_View = normalize(mTangentSpace * vViewDirection);
     OUT_Light = normalize(mTangentSpace * vLightDirection);
     
-    OUT_TexCoord = IN_SLOT_TexCoord / 8.0;
+    OUT_TexCoord = IN_SLOT_TexCoord / 4.0;
     OUT_SplattingTexCoord = IN_SLOT_TexCoord / 32.0;
     OUT_Clip = dot(vWorldPosition.xyz, EXT_Clip_Plane.xyz) + EXT_Clip_Plane.w;
     OUT_ProjTexCoord = gl_Position;

@@ -86,7 +86,7 @@ void CPhysicMgr::Add_CollisionLandscape(INode *_pNode)
 	btVector3 *pVertices = new btVector3[iTotalVertices];
 	int* pIndices = new int[iTotalTriangles * 3];
     
-    float* pMapData = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_HeightMapData();
+    float* pMapData = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_DataSource();
     
 	for (int i = 0; i < iWidth; i++)
 	{

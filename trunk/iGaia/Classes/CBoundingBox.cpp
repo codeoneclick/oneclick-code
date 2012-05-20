@@ -100,15 +100,22 @@ CBoundingBox::CBoundingBox(const glm::vec3 &_vMax, const glm::vec3 &_vMin)
     m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShader->Get_ProgramHandle());
 }
 
-void CBoundingBox::Set_WorldMatrix(const glm::mat4x4& _mWorld)
-{
-    glm::mat4x4 mScale = glm::scale(glm::mat4x4(1.0),m_vScale);
-    m_mWorld = mScale * _mWorld;
-}
-
 CBoundingBox::~CBoundingBox()
 {
     
+}
+
+void CBoundingBox::Set_WorldMatrix(const glm::mat4x4& _mWorld)
+{
+    glm::mat4x4 mScale = glm::scale(glm::mat4x4(1.0),m_vScale);
+    m_mWorld = _mWorld * mScale;
+}
+
+void CBoundingBox::Set_MaxMinPoints(const glm::vec3 &_vMax, const glm::vec3 &_vMin)
+{
+    m_vMax = _vMax;
+    m_vMin = _vMin;
+    m_vScale = m_vMin - m_vMax;
 }
 
 void CBoundingBox::Render()

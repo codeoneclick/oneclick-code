@@ -47,6 +47,10 @@ void CModel::OnLoadDone(E_RESOURCE_TYPE _eType, IResource* pResource)
         case IResourceLoaderDelegate::E_RESOURCE_TYPE_MESH:
             std::cout<<"[CModel::OnLoadDone] Resource Mesh loaded : "<<pResource->Get_Name()<<"\n";
             m_pMesh = static_cast<CMesh*>(pResource);
+            if(m_pBoundingBox != NULL)
+            {
+                m_pBoundingBox->Set_MaxMinPoints(m_pMesh->Get_MaxBound(), m_pMesh->Get_MinBound());
+            }
             m_pMesh->Get_VertexBufferRef()->CommitToRAM();
             m_pMesh->Get_VertexBufferRef()->CommitFromRAMToVRAM();
             m_pMesh->Get_IndexBufferRef()->CommitFromRAMToVRAM();

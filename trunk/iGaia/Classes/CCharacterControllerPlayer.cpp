@@ -18,6 +18,7 @@ CCharacterControllerPlayer::CCharacterControllerPlayer(void)
     m_pTowerModel = NULL;
     m_pLeftTrackModel = NULL;
     m_pRightTrackModel = NULL;
+    m_pShadow = NULL;
     
     m_fMaxMoveSpeed = 0.2f;
     m_fMoveAcceleration = 0.01f;
@@ -46,7 +47,6 @@ void CCharacterControllerPlayer::Load(void)
     m_pTowerModel->Create_BoundingBox();
     m_pTowerModel->Set_RenderModeScreenNormalEnable(true);
     //m_pTowerModel->Set_RenderModeShadowMapEnable(true);
-
     
     m_pLeftTrackModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("left_track_model.mdl", false, IResource::E_THREAD_BACKGROUND);
     m_pLeftTrackModel->Set_Texture("model_02.pvr");
@@ -76,6 +76,10 @@ void CCharacterControllerPlayer::Load(void)
     m_pExplosionEmitter->Set_Shader(IResource::E_SHADER_UNIT);
     m_pExplosionEmitter->Set_Texture("fire.pvr");
     m_pExplosionEmitter->Set_Position(glm::vec3(0.0f, 0.33f, 0.0f));
+    
+    m_pShadow = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ShadowPlane();
+    m_pShadow->Set_Shader(IResource::E_SHADER_SHADOW_PLANE);
+    m_pShadow->Set_Texture("fire.pvr");
 
     CSceneMgr::Instance()->AddEventListener(m_pBodyModel, CEventMgr::E_EVENT_TOUCH);
     CSceneMgr::Instance()->Get_PhysicMgr()->Add_CollisionModelAsVehicle(m_pBodyModel, 2000, glm::vec3(2.0f, 2.0f, 2.0f));
@@ -105,6 +109,11 @@ void CCharacterControllerPlayer::Set_Position(const glm::vec3 &_vPosition)
     if(m_pRightTrackModel != NULL)
     {
         m_pRightTrackModel->Set_Position(_vPosition);
+    }
+    if(m_pShadow != NULL)
+    {
+        
+        m_pShadow->Set_Position(glm::vec3(_vPosition.x, 0.0f, _vPosition.z));
     }
     m_vPosition = _vPosition;
 }
@@ -176,12 +185,6 @@ void CCharacterControllerPlayer::OnPhysicEvent(INode* _pNode, glm::vec3 _vPositi
 
 void CCharacterControllerPlayer::Update(void)
 {
-    static float fOffsetValue = 0.0f;
-    fOffsetValue -= 0.1f;
-    glm::vec2 vTexCoordOffset = glm::vec2(fOffsetValue, 0.0f);
-    m_pLeftTrackModel->Set_TexCoordOffset(vTexCoordOffset);
-    m_pRightTrackModel->Set_TexCoordOffset(vTexCoordOffset);
-        
     /*btRaycastVehicle* pVehicle = m_pBodyModel->Get_RaycastVehicle();
     if(pVehicle != NULL)
     {
@@ -274,16 +277,45 @@ void CCharacterControllerPlayer::Update(void)
     
     m_fMoveSpeed = m_fMaxMoveSpeed;
     
+    glm::vec2 vRightTrackTexCoordOffset = glm::vec2(0.0f, 0.0f);
+    glm::vec2 vLeftTrackTexCoordOffset  = glm::vec2(0.0f, 0.0f);
+    float fTrackTexCoordOffsetMoveFactor  = 0.2f;
+    float fTrackTexCoordOffsetSteerFactor = 0.1f;
+    
+    ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
     switch (m_eMoveState)
     {
         case ICharacterController::E_CHARACTER_CONTROLLER_MOVE_STATE_NONE:
-            
+            if(pCamera->Get_FovY() > 45.0f)
+            {
+                pCamera->Set_FovY(pCamera->Get_FovY() - 0.66f);
+            }
             break;
         case ICharacterController::E_CHARACTER_CONTROLLER_MOVE_STATE_FORWARD:
+            
             MoveForward();
+           
+            vRightTrackTexCoordOffset.x = m_pRightTrackModel->Get_TexCoordOffset().x - fTrackTexCoordOffsetMoveFactor;
+            vLeftTrackTexCoordOffset.x = m_pLeftTrackModel->Get_TexCoordOffset().x - fTrackTexCoordOffsetMoveFactor;
+            
+            if(pCamera->Get_FovY() < 55.0f)
+            {
+                pCamera->Set_FovY(pCamera->Get_FovY() + 0.33f);
+            }
+            
             break;
         case ICharacterController::E_CHARACTER_CONTROLLER_MOVE_STATE_BACKWARD:
+            
             MoveBackward();
+            
+            vRightTrackTexCoordOffset.x = m_pRightTrackModel->Get_TexCoordOffset().x + fTrackTexCoordOffsetMoveFactor;
+            vLeftTrackTexCoordOffset.x = m_pLeftTrackModel->Get_TexCoordOffset().x + fTrackTexCoordOffsetMoveFactor;
+            
+            if(pCamera->Get_FovY() > 45.0f)
+            {
+                pCamera->Set_FovY(pCamera->Get_FovY() - 0.99f);
+            }
+            
             break;
         default:
             break;
@@ -295,20 +327,35 @@ void CCharacterControllerPlayer::Update(void)
             
             break;
         case ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_LEFT:
+            
             SteerLeft();
+            
+            vRightTrackTexCoordOffset.x = m_pRightTrackModel->Get_TexCoordOffset().x + fTrackTexCoordOffsetSteerFactor;
+            vLeftTrackTexCoordOffset.x = m_pLeftTrackModel->Get_TexCoordOffset().x - fTrackTexCoordOffsetSteerFactor;
+            
             break;
         case ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_RIGHT:
+            
             SteerRight();
+            
+            vRightTrackTexCoordOffset.x = m_pRightTrackModel->Get_TexCoordOffset().x - fTrackTexCoordOffsetSteerFactor;
+            vLeftTrackTexCoordOffset.x = m_pLeftTrackModel->Get_TexCoordOffset().x + fTrackTexCoordOffsetSteerFactor;
+            
             break;
         default:
             break;
     }
+    
+    m_pLeftTrackModel->Set_TexCoordOffset(vLeftTrackTexCoordOffset);
+    m_pRightTrackModel->Set_TexCoordOffset(vRightTrackTexCoordOffset);
 
-    m_vPosition.y = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_HeightValueAtPoint(m_vPosition.x, m_vPosition.z);
+    m_vPosition.y = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_HeightValue(m_vPosition.x, m_vPosition.z);
     Set_Position(m_vPosition);
+    glm::vec3 vCurrentRotation = glm::vec3(0.0f, m_vRotation.y, 0.0f);
     glm::vec2 vRotationOnHeightMap = _Get_RotationOnHeightmap(m_vPosition);
-    m_vRotation.x = -glm::degrees(vRotationOnHeightMap.x);
-    m_vRotation.z = glm::degrees(vRotationOnHeightMap.y);
+    vCurrentRotation.x = -glm::degrees(vRotationOnHeightMap.x);
+    vCurrentRotation.z =  glm::degrees(vRotationOnHeightMap.y);
+    m_vRotation = glm::mix(m_vRotation, vCurrentRotation, 0.25f);
     Set_Rotation(m_vRotation);
     
     //m_pExplosionEmitter->Set_Position(m_vPosition);

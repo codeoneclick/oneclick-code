@@ -17,7 +17,7 @@ const int CGrass::k_ELEMENT_NUM_VERTEXES = 8;
 
 CGrass::CGrass(void)
 {
-    /*m_iWidth = 32;
+    m_iWidth = 32;
     m_iHeight = 32;
     
     m_pSingleElementIndexBuffer = new unsigned short[k_ELEMENT_NUM_INDEXES];
@@ -34,30 +34,33 @@ CGrass::CGrass(void)
     m_pSingleElementIndexBuffer[9]  = 6;
     m_pSingleElementIndexBuffer[10] = 7;
     m_pSingleElementIndexBuffer[11] = 5;
+    
+    m_pSingleElementVertexBuffer = new CVertexBuffer(k_ELEMENT_NUM_VERTEXES);
+    glm::vec3* pPositionData = m_pSingleElementVertexBuffer->CreateOrReUse_PositionData();
 
-    m_pSingleElementVertexBuffer.m_pPositionData = new glm::vec3[k_ELEMENT_NUM_VERTEXES];
-    m_pSingleElementVertexBuffer.m_pPositionData[0] = glm::vec3(-k_ELEMENT_SIZE / 2, 0.0f, 0.0f);
-    m_pSingleElementVertexBuffer.m_pPositionData[1] = glm::vec3(-k_ELEMENT_SIZE / 2, k_ELEMENT_HEIGHT, 0.0f);
-    m_pSingleElementVertexBuffer.m_pPositionData[2] = glm::vec3( k_ELEMENT_SIZE / 2, 0.0f, 0.0f);
-    m_pSingleElementVertexBuffer.m_pPositionData[3] = glm::vec3( k_ELEMENT_SIZE / 2, k_ELEMENT_HEIGHT, 0.0f);
+    pPositionData[0] = glm::vec3(-k_ELEMENT_SIZE / 2, 0.0f, 0.0f);
+    pPositionData[1] = glm::vec3(-k_ELEMENT_SIZE / 2, k_ELEMENT_HEIGHT, 0.0f);
+    pPositionData[2] = glm::vec3( k_ELEMENT_SIZE / 2, 0.0f, 0.0f);
+    pPositionData[3] = glm::vec3( k_ELEMENT_SIZE / 2, k_ELEMENT_HEIGHT, 0.0f);
     
-    m_pSingleElementVertexBuffer.m_pPositionData[4] = glm::vec3(0.0f, 0.0f, -k_ELEMENT_SIZE / 2);
-    m_pSingleElementVertexBuffer.m_pPositionData[5] = glm::vec3(0.0f, k_ELEMENT_HEIGHT, -k_ELEMENT_SIZE / 2);
-    m_pSingleElementVertexBuffer.m_pPositionData[6] = glm::vec3(0.0f, 0.0f,  k_ELEMENT_SIZE / 2);
-    m_pSingleElementVertexBuffer.m_pPositionData[7] = glm::vec3(0.0f, k_ELEMENT_HEIGHT,  k_ELEMENT_SIZE / 2);
+    pPositionData[4] = glm::vec3(0.0f, 0.0f, -k_ELEMENT_SIZE / 2);
+    pPositionData[5] = glm::vec3(0.0f, k_ELEMENT_HEIGHT, -k_ELEMENT_SIZE / 2);
+    pPositionData[6] = glm::vec3(0.0f, 0.0f,  k_ELEMENT_SIZE / 2);
+    pPositionData[7] = glm::vec3(0.0f, k_ELEMENT_HEIGHT,  k_ELEMENT_SIZE / 2);
     
-    m_pSingleElementVertexBuffer.m_pTexCoordData = new glm::vec2[k_ELEMENT_NUM_VERTEXES];
-    m_pSingleElementVertexBuffer.m_pTexCoordData[0] = glm::vec2(0.0f,1.0f);
-    m_pSingleElementVertexBuffer.m_pTexCoordData[1] = glm::vec2(0.0f,0.0f);
-    m_pSingleElementVertexBuffer.m_pTexCoordData[2] = glm::vec2(1.0f,1.0f);
-    m_pSingleElementVertexBuffer.m_pTexCoordData[3] = glm::vec2(1.0f,0.0f);
+    glm::vec2* pTexCoordData = m_pSingleElementVertexBuffer->CreateOrReUse_TexCoordData();
     
-    m_pSingleElementVertexBuffer.m_pTexCoordData[4] = glm::vec2(0.0f,1.0f);
-    m_pSingleElementVertexBuffer.m_pTexCoordData[5] = glm::vec2(0.0f,0.0f);
-    m_pSingleElementVertexBuffer.m_pTexCoordData[6] = glm::vec2(1.0f,1.0f);
-    m_pSingleElementVertexBuffer.m_pTexCoordData[7] = glm::vec2(1.0f,0.0f);
+    pTexCoordData[0] = glm::vec2(0.0f,1.0f);
+    pTexCoordData[1] = glm::vec2(0.0f,0.0f);
+    pTexCoordData[2] = glm::vec2(1.0f,1.0f);
+    pTexCoordData[3] = glm::vec2(1.0f,0.0f);
     
-    m_pHeightMapSetter = NULL;*/
+    pTexCoordData[4] = glm::vec2(0.0f,1.0f);
+    pTexCoordData[5] = glm::vec2(0.0f,0.0f);
+    pTexCoordData[6] = glm::vec2(1.0f,1.0f);
+    pTexCoordData[7] = glm::vec2(1.0f,0.0f);
+    
+    m_pHeightMapSetter = NULL;
 }
 
 CGrass::~CGrass(void)
@@ -67,16 +70,24 @@ CGrass::~CGrass(void)
 
 void CGrass::Load(IResource::SResource _tResource)
 {   
-    /*m_pHeightMapSetter = CSceneMgr::Instance()->Get_HeightMapSetterRef();
+    m_pHeightMapSetter = CSceneMgr::Instance()->Get_HeightMapSetterRef();
     std::vector<glm::vec3> pElementsSourceData;
-    for(unsigned int i = 0; i < m_iWidth; ++i)
+    
+    srand(time(NULL));
+    
+    for(unsigned int i = 1; i < (m_iWidth - 1); i += 1)
     {
-        for(unsigned int j = 0; j < m_iHeight; ++j)
+        for(unsigned int j = 1; j < (m_iHeight - 1); j += 1)
         {
-            float fHeight = m_pHeightMapSetter->Get_HeightValueAtPoint(i, j);
-            if(fHeight < 0.1f)
+           
+            float fRange = 0.9f - 0.1f;
+            float fOffetX = 0.1f + float(fRange * rand() / (RAND_MAX + 1.0f));
+            float fOffetY = 0.1f + float(fRange * rand() / (RAND_MAX + 1.0f));
+            
+            float fHeight = m_pHeightMapSetter->Get_HeightValue(i + fOffetX, j + fOffetY);
+            if(fHeight < 1.25f && fHeight > 0.05f)
             {
-                pElementsSourceData.push_back(glm::vec3(i, fHeight, j));
+                pElementsSourceData.push_back(glm::vec3(i + fOffetX, fHeight + 0.025f, j + fOffetY));
             }
         }
     }
@@ -85,13 +96,16 @@ void CGrass::Load(IResource::SResource _tResource)
     pSource->m_iNumVertexes = pElementsSourceData.size() * k_ELEMENT_NUM_VERTEXES;
     pSource->m_iNumIndexes  = pElementsSourceData.size() * k_ELEMENT_NUM_INDEXES;
     
-    pSource->m_pVB = new CVertexBuffer(pSource->m_iNumVertexes);
-    pSource->m_pIB = new CIndexBuffer(pSource->m_iNumIndexes);
+    pSource->m_pVertexBuffer = new CVertexBuffer(pSource->m_iNumVertexes);
+    pSource->m_pIndexBuffer = new CIndexBuffer(pSource->m_iNumIndexes);
     
-    glm::vec3* pPositionData = pSource->m_pVB->CreateOrReUse_PositionData();
-    glm::vec2* pTextCoordData = pSource->m_pVB->CreateOrReUse_TexCoordData();
+    glm::vec3* pPositionData = pSource->m_pVertexBuffer->CreateOrReUse_PositionData();
+    glm::vec2* pTextCoordData = pSource->m_pVertexBuffer->CreateOrReUse_TexCoordData();
     
-    unsigned short* pIndexesBufferData = pSource->m_pIB->Get_Data();
+    unsigned short* pIndexesBufferData = pSource->m_pIndexBuffer->Get_Data();
+    
+    glm::vec3* pSingleElementPositionData = m_pSingleElementVertexBuffer->CreateOrReUse_PositionData();
+    glm::vec2* pSingleElementTextCoordData = m_pSingleElementVertexBuffer->CreateOrReUse_TexCoordData();
     
     std::vector<glm::vec3>::iterator pElementsSourceDataBegin = pElementsSourceData.begin();
     std::vector<glm::vec3>::iterator pElementsSourceDataEnd   = pElementsSourceData.end();
@@ -101,9 +115,8 @@ void CGrass::Load(IResource::SResource _tResource)
     {
         for(unsigned int i = 0; i < k_ELEMENT_NUM_VERTEXES; ++i)
         {
-            pPositionData[i + iVertexesDataOffset] = m_pSingleElementVertexBuffer.m_pPositionData[i] + (*pElementsSourceDataBegin);
-            pTextCoordData[i +iVertexesDataOffset] = m_pSingleElementVertexBuffer.m_pTexCoordData[i];
-
+            pPositionData[i + iVertexesDataOffset] = pSingleElementPositionData[i] + (*pElementsSourceDataBegin);
+            pTextCoordData[i +iVertexesDataOffset] = pSingleElementTextCoordData[i];
         }
         
         for(unsigned int i = 0; i < k_ELEMENT_NUM_INDEXES; ++i)
@@ -118,9 +131,9 @@ void CGrass::Load(IResource::SResource _tResource)
     
     m_pMesh = new CMesh();
     m_pMesh->Set_Source(pSource);
-    m_pMesh->Get_VB()->CommitToRAM();
-    m_pMesh->Get_VB()->CommitFromRAMToVRAM();
-    m_pMesh->Get_IB()->CommitFromRAMToVRAM();*/
+    m_pMesh->Get_VertexBufferRef()->CommitToRAM();
+    m_pMesh->Get_VertexBufferRef()->CommitFromRAMToVRAM();
+    m_pMesh->Get_IndexBufferRef()->CommitFromRAMToVRAM();
 }
 
 void CGrass::OnLoadDone(E_RESOURCE_TYPE _eType, IResource* pResource)
@@ -155,8 +168,8 @@ void CGrass::Update()
 
 void CGrass::Render(INode::E_RENDER_MODE _eMode)
 {
-    return;
     glDisable(GL_CULL_FACE);
+    glDepthMask(GL_FALSE);
     ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
     
     switch (_eMode)
@@ -211,8 +224,7 @@ void CGrass::Render(INode::E_RENDER_MODE _eMode)
         default:
             break;
     }
-    
-            
+         
     m_pMesh->Get_VertexBufferRef()->Enable();
     m_pMesh->Get_IndexBufferRef()->Enable();
     glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_DataFromVRAM());
@@ -221,4 +233,5 @@ void CGrass::Render(INode::E_RENDER_MODE _eMode)
     m_pShader->Disable();
     
     glEnable(GL_CULL_FACE);
+    glDepthMask(GL_TRUE);
 }

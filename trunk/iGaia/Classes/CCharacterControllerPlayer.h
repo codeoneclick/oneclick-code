@@ -19,6 +19,7 @@ protected:
     CModel* m_pTowerModel;
     CModel* m_pLeftTrackModel;
     CModel* m_pRightTrackModel;
+    CShadowPlane* m_pShadow;
     glm::vec3 m_vTowerModelTarget;
     E_CHARACTER_CONTROLLER_STATE m_eLeftTrackState;
     E_CHARACTER_CONTROLLER_STATE m_eRightTrackState;

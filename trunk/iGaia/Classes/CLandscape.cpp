@@ -36,13 +36,14 @@ CLandscape::~CLandscape()
 void CLandscape::Load(IResource::SResource _tResource)
 {
     m_pHeightMapSetter = new CHeightMapSetter();
-    m_pMesh = m_pHeightMapSetter->Load_SourceData(_tResource.m_sName, m_iWidth, m_iHeight);
+    m_pMesh = m_pHeightMapSetter->Load_DataSource(_tResource.m_sName, m_iWidth, m_iHeight);
     
     m_pNavigationMesh = new CNavigationMeshMgr();
     m_pNavigationMesh->Set_NavigationModel(this);
     m_pVisualNavigationMeshRef = m_pNavigationMesh->Get_VisualMesh();
     m_pVisualNavigationMeshShader = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_COLOR);
     m_pVisualNavigationMeshRef->Get_VertexBufferRef()->Set_ShaderRef(m_pVisualNavigationMeshShader->Get_ProgramHandle());
+    
     CSceneMgr::Instance()->Set_NavigationMeshRef(m_pNavigationMesh);
     CSceneMgr::Instance()->Set_HeightMapSetterRef(m_pHeightMapSetter);
     
@@ -54,7 +55,7 @@ void CLandscape::Load(IResource::SResource _tResource)
     }
     
     m_pMesh->Get_VertexBufferRef()->CommitToRAM();
-    m_pMesh->Get_VertexBufferRef()->CommitFromRAMToVRAM();
+    //m_pMesh->Get_VertexBufferRef()->CommitFromRAMToVRAM();
     m_pMesh->Get_IndexBufferRef()->CommitFromRAMToVRAM();
     
     m_pShaderPreEdgeDetect = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_COLOR);
@@ -143,7 +144,7 @@ void CLandscape::Render(INode::E_RENDER_MODE _eMode)
                 m_pShader->SetVector3(m_pLight->Get_Position(), CShader::k_VECTOR_LIGHT);
             }
             
-            m_pShader->SetTexture(m_pHeightMapSetter->Get_SplattingTexture(), CShader::k_TEXTURE_07);
+            m_pShader->SetTexture(m_pHeightMapSetter->Get_TextureSplatting(), CShader::k_TEXTURE_07);
             m_pShader->SetTexture(CSceneMgr::Instance()->Get_RenderMgr()->Get_OffScreenTexture(CScreenSpacePostMgr::E_OFFSCREEN_MODE_SHADOW_MAP), CShader::k_TEXTURE_08);
             m_pShader->SetMatrix(mBiasMatrix, CShader::k_MATRIX_BIAS);
             m_pShader->SetVector4(glm::vec4(0.0f, 1.0, 0.0, 0.1), CShader::k_VECTOR_CLIP_PLANE);
@@ -173,7 +174,7 @@ void CLandscape::Render(INode::E_RENDER_MODE _eMode)
                 m_pShader->SetVector3(m_pLight->Get_Position(), CShader::k_VECTOR_LIGHT);
             }
             
-            m_pShader->SetTexture(m_pHeightMapSetter->Get_SplattingTexture(), CShader::k_TEXTURE_07);
+            m_pShader->SetTexture(m_pHeightMapSetter->Get_TextureSplatting(), CShader::k_TEXTURE_07);
             m_pShader->SetVector4(glm::vec4(0.0f, 1.0, 0.0, 0.1), CShader::k_VECTOR_CLIP_PLANE);
         }
             break;
@@ -201,7 +202,7 @@ void CLandscape::Render(INode::E_RENDER_MODE _eMode)
                 m_pShader->SetVector3(m_pLight->Get_Position(), CShader::k_VECTOR_LIGHT);
             }
             
-            m_pShader->SetTexture(m_pHeightMapSetter->Get_SplattingTexture(), CShader::k_TEXTURE_07);
+            m_pShader->SetTexture(m_pHeightMapSetter->Get_TextureSplatting(), CShader::k_TEXTURE_07);
             m_pShader->SetVector4(glm::vec4(0.0f, -1.0, 0.0, 0.1), CShader::k_VECTOR_CLIP_PLANE);
         }
             break;

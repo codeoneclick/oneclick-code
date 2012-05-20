@@ -47,7 +47,8 @@ public:
     
     glm::mat4x4 Get_BillboardMatrix(glm::vec3 _vPosition);
     
-    void Set_FovY(float _fFovY) { m_fFovY = _fFovY; }
+    void Set_FovY(float _fFovY);
+    float Get_FovY(void) { return m_fFovY; }
     void Set_FarPlane(float _fFarPlane) { m_fFarPlane = _fFarPlane; }
     void Set_NearPlane(float _fNearPlane) { m_fNearPlane = _fNearPlane; }
     void Set_DistanceToLookAt(float _fDistanceToLookAt) { m_fDistanceToLookAt = _fDistanceToLookAt; }

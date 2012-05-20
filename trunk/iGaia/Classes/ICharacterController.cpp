@@ -32,11 +32,11 @@ float ICharacterController::_Get_RotationForPlane(glm::vec3 _vPoint_01, glm::vec
 glm::vec2 ICharacterController::_Get_RotationOnHeightmap(glm::vec3 _vPosition)
 {
     glm::vec3 vPoint_01 = _vPosition;
-    glm::vec3 vPoint_02 = glm::vec3(_vPosition.x, _vPosition.y + 0.1f, _vPosition.z);
-    float fHeight = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_HeightValueAtPoint(_vPosition.x + 0.1f, _vPosition.z);
-    glm::vec3 vPoint_03 = glm::vec3(_vPosition.x + 0.1f, fHeight, _vPosition.z);
-    fHeight = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_HeightValueAtPoint(_vPosition.x, _vPosition.z + 0.1f);
-    glm::vec3 vPoint_04 = glm::vec3(_vPosition.x, fHeight, _vPosition.z + 0.1f);
+    glm::vec3 vPoint_02 = glm::vec3(_vPosition.x, _vPosition.y + 0.25f, _vPosition.z);
+    float fHeight = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_HeightValue(_vPosition.x + 0.25f, _vPosition.z);
+    glm::vec3 vPoint_03 = glm::vec3(_vPosition.x + 0.25f, fHeight, _vPosition.z);
+    fHeight = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_HeightValue(_vPosition.x, _vPosition.z + 0.25f);
+    glm::vec3 vPoint_04 = glm::vec3(_vPosition.x, fHeight, _vPosition.z + 0.25f);
     
     float fAngle_01 = _Get_RotationForPlane(vPoint_01, vPoint_02, vPoint_03);
     float fAngle_02 = _Get_RotationForPlane(vPoint_01, vPoint_02, vPoint_04);
@@ -71,30 +71,44 @@ float ICharacterController::_GetRotationBetweenPoints(glm::vec3 _vPoint_01, glm:
 }
 
 
-void ICharacterController::MoveForward(void)
+bool ICharacterController::MoveForward(void)
 {
+    float fHeight = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_HeightValue(m_vPosition.x + sinf(glm::radians(m_vRotation.y)) * m_fMoveSpeed, m_vPosition.z + cosf(glm::radians(m_vRotation.y)) * m_fMoveSpeed);
+    if(fHeight < -0.15f)
+    {
+        return false;
+    }
     m_vPosition.x += sinf(glm::radians(m_vRotation.y)) * m_fMoveSpeed;
     m_vPosition.z += cosf(glm::radians(m_vRotation.y)) * m_fMoveSpeed;
     Set_Position(m_vPosition);
+    return true;
 }
 
-void ICharacterController::MoveBackward(void)
+bool ICharacterController::MoveBackward(void)
 {
+    float fHeight = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_HeightValue(m_vPosition.x - sinf(glm::radians(m_vRotation.y)) * m_fMoveSpeed, m_vPosition.z - cosf(glm::radians(m_vRotation.y)) * m_fMoveSpeed);
+    if(fHeight < -0.15f)
+    {
+        return false;
+    }
     m_vPosition.x -= sinf(glm::radians(m_vRotation.y)) * m_fMoveSpeed;
     m_vPosition.z -= cosf(glm::radians(m_vRotation.y)) * m_fMoveSpeed;
     Set_Position(m_vPosition);
+    return true;
 }
 
-void ICharacterController::SteerRight(void)
+bool ICharacterController::SteerRight(void)
 {
     m_vRotation.y -= m_fSteerSpeed;
     Set_Rotation(m_vRotation);
+    return true;
 }
 
-void ICharacterController::SteerLeft(void)
+bool ICharacterController::SteerLeft(void)
 {
     m_vRotation.y += m_fSteerSpeed;
     Set_Rotation(m_vRotation);
+    return true;
 }
 
 

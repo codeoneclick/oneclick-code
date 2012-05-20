@@ -28,7 +28,7 @@ void CLevel::Load(void)
     m_pLandscape->Set_Texture("layer_01_normal.pvr",  1, IResource::E_THREAD_BACKGROUND);
     m_pLandscape->Set_Texture("layer_02_diffuse.pvr", 2, IResource::E_THREAD_BACKGROUND);
     m_pLandscape->Set_Texture("layer_02_bump.pvr",    3, IResource::E_THREAD_BACKGROUND);
-    m_pLandscape->Set_Texture("layer_01_diffuse.pvr", 4, IResource::E_THREAD_BACKGROUND);
+    m_pLandscape->Set_Texture("layer_03_diffuse.pvr", 4, IResource::E_THREAD_BACKGROUND);
     m_pLandscape->Set_Texture("layer_01_normal.pvr",  5, IResource::E_THREAD_BACKGROUND);
     m_pLandscape->Set_Shader(IResource::E_SHADER_LANDSCAPE);
     CSceneMgr::Instance()->AddEventListener(m_pLandscape, CEventMgr::E_EVENT_TOUCH);
@@ -42,15 +42,15 @@ void CLevel::Load(void)
     
     m_pWater = (CWater*)CSceneMgr::Instance()->AddWaterModel("water");
     m_pWater->Set_Shader(IResource::E_SHADER_WATER);
-    m_pWater->Set_Texture("layer_02_bump.pvr", 0, IResource::E_THREAD_BACKGROUND);
+    m_pWater->Set_Texture("layer_02_bump.pvr", 2, IResource::E_THREAD_BACKGROUND);
     
-    //m_pGrass = (CGrass*)CSceneMgr::Instance()->AddLandscapeGrassModel("grass");
-    //m_pGrass->Set_Shader(IResource::E_SHADER_LAMBERT);
-    //m_pGrass->Set_Texture("mod_03.pvr", 0, IResource::E_THREAD_BACKGROUND);
+    m_pGrass = (CGrass*)CSceneMgr::Instance()->AddLandscapeGrassModel("grass");
+    m_pGrass->Set_Shader(IResource::E_SHADER_UNIT);
+    m_pGrass->Set_Texture("mod_03.pvr", 0, IResource::E_THREAD_BACKGROUND);
     
     m_pSkyBox = (CSkyBox*)CSceneMgr::Instance()->AddSkyBoxModel("skybox");
-    m_pSkyBox->Set_Shader(IResource::E_SHADER_TEXTURE_CUBE);
-    m_pSkyBox->Set_Texture("Skybox.pvr");
+    m_pSkyBox->Set_Shader(IResource::E_SHADER_LAMBERT);
+    m_pSkyBox->Set_Texture("clouds.pvr");
 }
 
 void CLevel::OnTouchEvent(IDelegate* _pDelegateOwner)
@@ -69,3 +69,6 @@ void CLevel::Update(void)
     fValue += 0.1f;
     m_pLandscape->Get_Shader()->SetFloat(fValue, CShader::k_TIMER);
 }
+
+
+
