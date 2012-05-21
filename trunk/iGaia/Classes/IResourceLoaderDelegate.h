@@ -9,15 +9,15 @@
 #ifndef iGaia_IResourceLoaderDelegate_h
 #define iGaia_IResourceLoaderDelegate_h
 
-class IResource;
-class IResourceLoaderDelegate
+#include "IDelegate.h"
+#include "IResource.h"
+
+class IResourceLoaderDelegate : public virtual IDelegate
 {
-public:
-    enum E_RESOURCE_TYPE { E_RESOURCE_TYPE_TEXTURE = 0, E_RESOURCE_TYPE_MESH, E_RESOURCE_TYPE_SHADER };
 public:
     IResourceLoaderDelegate(void);
     virtual ~IResourceLoaderDelegate(void);
-    virtual void OnResourceLoadDone(E_RESOURCE_TYPE _eType, IResource* _pResource) = 0;
+    virtual void OnResourceLoadDoneEvent(IResource::E_RESOURCE_TYPE _eType, IResource* _pResource) = 0;
 };
 
 

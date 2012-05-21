@@ -21,13 +21,13 @@ protected:
     std::map<std::string, IParser*> m_lTaskPool;
     std::map<std::string, IResource*> m_lContainer;
 public:
-    IResourceMgr();
-    ~IResourceMgr();
+    IResourceMgr(void);
+    virtual ~IResourceMgr(void);
     
-    virtual void Update();
-    virtual void Thread();
-    virtual IResource* Load(std::string _sName, IResource::E_THREAD _eThread, IResourceLoaderDelegate* _pResourceLoaderDelegate) = 0;
-    virtual void Unload(std::string _sName) = 0;
+    virtual void Update(void);
+    virtual void Thread(void);
+    virtual IResource* Load(const std::string& _sName, IResource::E_THREAD _eThread, IDelegate* _pDelegate, const std::map<std::string, std::string>* _lParams) = 0;
+    virtual void Unload(const std::string& _sName) = 0;
 };
 
 

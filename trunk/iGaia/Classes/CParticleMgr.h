@@ -11,23 +11,17 @@
 
 #include <iostream>
 #include "CParticleEmitter.h"
-#include "CShadowPlane.h"
 class CParticleMgr
 {
-public:
-    enum E_PARTICLE_MODE_STEP { E_PARTICLE_MODE_STEP_EMITTER = 0, E_PARTICLE_MODE_STEP_SHADOW };
 protected:
     std::vector<CParticleEmitter*> m_lEmitterContainer;
-    std::vector<CShadowPlane*> m_lShadowContainer;
 public:
     CParticleMgr(void);
     ~CParticleMgr(void);
     CParticleEmitter* Add_ParticleEmitter(void);
-    CShadowPlane* Add_ShadowPlane(void);
     void Remove_ParticleEmitter(CParticleEmitter* _pParticleEmitter);
-    void Remove_ShadowPlane(CShadowPlane* _pShadowPlane);
     void Update(void);
-    void Render(INode::E_RENDER_MODE _eMode, E_PARTICLE_MODE_STEP _eStep);
+    void Render(INode::E_RENDER_MODE _eMode);
 };
 
 #endif /* defined(__iGaia__CParticleMgr__) */

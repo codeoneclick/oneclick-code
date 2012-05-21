@@ -9,17 +9,19 @@
 #include <iostream>
 #include "CTexture.h"
 
-CTexture::CTexture()
+CTexture::CTexture(void)
 {
+    m_pSourceData = NULL;
+    m_eResourceType = E_RESOURCE_TYPE_TEXTURE;
 }
 
-CTexture::~CTexture()
+CTexture::~CTexture(void)
 {
-    glDeleteTextures(1, &m_pSource->m_hTextureHanlde);
-    delete m_pSource;
+    glDeleteTextures(1, &m_pSourceData->m_hTextureHanlde);
+    delete m_pSourceData;
 }
 
-void CTexture::Set_Source(void *_pSource)
+void CTexture::Set_SourceData(void *_pSourceData)
 {
-    m_pSource = static_cast<SSource*>(_pSource);
+    m_pSourceData = static_cast<SSourceData*>(_pSourceData);
 }

@@ -11,21 +11,22 @@
 
 CMesh::CMesh()
 {
-    m_pSource = NULL;
+    m_pSourceData = NULL;
+    m_eResourceType = E_RESOURCE_TYPE_MESH;
 }
 
 CMesh::~CMesh()
 {
-    delete m_pSource->m_pIndexBuffer;
-    delete m_pSource->m_pVertexBuffer;
-    delete m_pSource;
+    delete m_pSourceData->m_pIndexBuffer;
+    delete m_pSourceData->m_pVertexBuffer;
+    delete m_pSourceData;
 }
 
-void CMesh::Set_Source(void *_pSource)
+void CMesh::Set_SourceData(void *_pSourceData)
 {
-    if(m_pSource != NULL && m_pSource->m_pVertexBuffer != NULL)
+    if(m_pSourceData != NULL && m_pSourceData->m_pVertexBuffer != NULL)
     {
-        static_cast<SSource*>(_pSource)->m_pVertexBuffer->Set_ShaderRef(m_pSource->m_pVertexBuffer->Get_ShaderRef());
+        static_cast<SSourceData*>(_pSourceData)->m_pVertexBuffer->Set_ShaderRef(m_pSourceData->m_pVertexBuffer->Get_ShaderRef());
     }
-    m_pSource = static_cast<SSource*>(_pSource);
+    m_pSourceData = static_cast<SSourceData*>(_pSourceData);
 }

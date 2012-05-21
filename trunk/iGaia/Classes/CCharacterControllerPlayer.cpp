@@ -18,7 +18,7 @@ CCharacterControllerPlayer::CCharacterControllerPlayer(void)
     m_pTowerModel = NULL;
     m_pLeftTrackModel = NULL;
     m_pRightTrackModel = NULL;
-    m_pShadow = NULL;
+    //m_pShadow = NULL;
     
     m_fMaxMoveSpeed = 0.2f;
     m_fMoveAcceleration = 0.01f;
@@ -40,46 +40,50 @@ void CCharacterControllerPlayer::Load(void)
 {
     
     glm::vec3 vScale = glm::vec3(1.0f, 1.0f, 1.0f);
-    m_pTowerModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("tower_model.mdl", false, IResource::E_THREAD_BACKGROUND);
-    m_pTowerModel->Set_Texture("model_01.pvr");
+    m_pTowerModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("tower_model.mdl", IResource::E_THREAD_BACKGROUND);
+    m_pTowerModel->Set_Texture("model_01.pvr", 0, CTexture::E_WRAP_MODE_REPEAT);
     m_pTowerModel->Set_Scale(vScale);
-    m_pTowerModel->Set_Shader(IResource::E_SHADER_UNIT);
+    m_pTowerModel->Set_Shader(INode::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_UNIT);
+    m_pTowerModel->Set_Shader(INode::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
     m_pTowerModel->Create_BoundingBox();
     m_pTowerModel->Set_RenderModeScreenNormalEnable(true);
     //m_pTowerModel->Set_RenderModeShadowMapEnable(true);
     
-    m_pLeftTrackModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("left_track_model.mdl", false, IResource::E_THREAD_BACKGROUND);
-    m_pLeftTrackModel->Set_Texture("model_02.pvr");
+    m_pLeftTrackModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("left_track_model.mdl", IResource::E_THREAD_BACKGROUND);
+    m_pLeftTrackModel->Set_Texture("model_02.pvr", 0, CTexture::E_WRAP_MODE_REPEAT);
     m_pLeftTrackModel->Set_Scale(vScale);
-    m_pLeftTrackModel->Set_Shader(IResource::E_SHADER_ANIM_TEXCOORD_UNIT);
+    m_pLeftTrackModel->Set_Shader(INode::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_ANIM_TEXCOORD_UNIT);
+    m_pLeftTrackModel->Set_Shader(INode::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
     m_pLeftTrackModel->Create_BoundingBox();
     m_pLeftTrackModel->Set_RenderModeScreenNormalEnable(true);
     //m_pLeftTrackModel->Set_RenderModeShadowMapEnable(true);
 
-    m_pRightTrackModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("right_track_model.mdl", false, IResource::E_THREAD_BACKGROUND);
-    m_pRightTrackModel->Set_Texture("model_02.pvr");
+    m_pRightTrackModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("right_track_model.mdl", IResource::E_THREAD_BACKGROUND);
+    m_pRightTrackModel->Set_Texture("model_02.pvr", 0, CTexture::E_WRAP_MODE_REPEAT);
     m_pRightTrackModel->Set_Scale(vScale);
-    m_pRightTrackModel->Set_Shader(IResource::E_SHADER_ANIM_TEXCOORD_UNIT);
+    m_pRightTrackModel->Set_Shader(INode::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_ANIM_TEXCOORD_UNIT);
+    m_pRightTrackModel->Set_Shader(INode::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
     m_pRightTrackModel->Create_BoundingBox();
     m_pRightTrackModel->Set_RenderModeScreenNormalEnable(true);
     //m_pRightTrackModel->Set_RenderModeShadowMapEnable(true);
     
-    m_pBodyModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("base_model.mdl", false, IResource::E_THREAD_BACKGROUND);
-    m_pBodyModel->Set_Texture("model_01.pvr");
+    m_pBodyModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("base_model.mdl", IResource::E_THREAD_BACKGROUND);
+    m_pBodyModel->Set_Texture("model_01.pvr", 0, CTexture::E_WRAP_MODE_REPEAT);
     m_pBodyModel->Set_Scale(vScale);
-    m_pBodyModel->Set_Shader(IResource::E_SHADER_UNIT);
+    m_pBodyModel->Set_Shader(INode::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_UNIT);
+    m_pBodyModel->Set_Shader(INode::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
     m_pBodyModel->Create_BoundingBox();
     m_pBodyModel->Set_RenderModeScreenNormalEnable(true);
     //m_pBodyModel->Set_RenderModeShadowMapEnable(true);
     
     m_pExplosionEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitter();
-    m_pExplosionEmitter->Set_Shader(IResource::E_SHADER_UNIT);
-    m_pExplosionEmitter->Set_Texture("fire.pvr");
+    m_pExplosionEmitter->Set_Shader(INode::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_UNIT);
+    m_pExplosionEmitter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
     m_pExplosionEmitter->Set_Position(glm::vec3(0.0f, 0.33f, 0.0f));
     
-    m_pShadow = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ShadowPlane();
-    m_pShadow->Set_Shader(IResource::E_SHADER_SHADOW_PLANE);
-    m_pShadow->Set_Texture("fire.pvr");
+    m_pShadowDecal = CSceneMgr::Instance()->Get_DecalMgr()->Add_Decal();
+    m_pShadowDecal->Set_Shader(INode::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_DECAL);
+    m_pShadowDecal->Set_Texture("shadow.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
 
     CSceneMgr::Instance()->AddEventListener(m_pBodyModel, CEventMgr::E_EVENT_TOUCH);
     CSceneMgr::Instance()->Get_PhysicMgr()->Add_CollisionModelAsVehicle(m_pBodyModel, 2000, glm::vec3(2.0f, 2.0f, 2.0f));
@@ -87,9 +91,8 @@ void CCharacterControllerPlayer::Load(void)
     CSceneMgr::Instance()->Get_PhysicMgr()->Add_WheelToVehicleModel(m_pBodyModel, glm::vec3(-1.0f, 1.0f, -1.0f));
     CSceneMgr::Instance()->Get_PhysicMgr()->Add_WheelToVehicleModel(m_pBodyModel, glm::vec3( 1.0f, 1.0f, -1.0f));
     CSceneMgr::Instance()->Get_PhysicMgr()->Add_WheelToVehicleModel(m_pBodyModel, glm::vec3( 1.0f, 1.0f,  1.0f));
-    m_pBodyModel->Set_DelegateTarget(this);
-    m_pBodyModel->Add_Delegate(this);
-    CWorld::Instance()->Get_Level()->Get_Model()->Add_Delegate(this);
+    m_pBodyModel->Add_DelegateOwner(this);
+    CWorld::Instance()->Get_Level()->Get_Model()->Add_DelegateOwner(this);
 }
 
 void CCharacterControllerPlayer::Set_Position(const glm::vec3 &_vPosition)
@@ -110,10 +113,9 @@ void CCharacterControllerPlayer::Set_Position(const glm::vec3 &_vPosition)
     {
         m_pRightTrackModel->Set_Position(_vPosition);
     }
-    if(m_pShadow != NULL)
+    if(m_pShadowDecal != NULL)
     {
-        
-        m_pShadow->Set_Position(glm::vec3(_vPosition.x, 0.0f, _vPosition.z));
+        m_pShadowDecal->Set_Position(glm::vec3(_vPosition.x, 0.0f, _vPosition.z));
     }
     m_vPosition = _vPosition;
 }
@@ -136,65 +138,20 @@ void CCharacterControllerPlayer::Set_Rotation(const glm::vec3 &_vRotation)
     {
         m_pRightTrackModel->Set_Rotation(_vRotation);
     }
+    if(m_pShadowDecal != NULL)
+    {
+        m_pShadowDecal->Set_Rotation(m_vRotation);
+    }
     m_vRotation = _vRotation;
 }
 
-void CCharacterControllerPlayer::Set_Light(ILight *_pLight)
+void CCharacterControllerPlayer::OnTouchEvent(ITouchDelegate* _pDelegateOwner)
 {
-    if(m_pBodyModel != NULL)
-    {
-        m_pBodyModel->Set_Light(_pLight);
-    }
-    if(m_pTowerModel != NULL)
-    {
-        m_pTowerModel->Set_Light(_pLight);
-    }
-    if(m_pLeftTrackModel != NULL)
-    {
-        m_pLeftTrackModel->Set_Light(_pLight);
-    }
-    if(m_pRightTrackModel != NULL)
-    {
-        m_pRightTrackModel->Set_Light(_pLight);
-    }
-}
-
-void CCharacterControllerPlayer::OnTouchEvent(IDelegate* _pDelegateOwner)
-{
-    //glm::vec3 vPosition = CSceneMgr::Instance()->Get_CollisionMgr()->Get_Touch3DPoint();
-    //Set_Position(vPosition);
-    //m_pBodyModel->Set_RigidOrigin(glm::vec3(vPosition.x, 2.0f, vPosition.z));
     m_vTowerModelTarget = CSceneMgr::Instance()->Get_CollisionMgr()->Get_Touch3DPoint();
-}
-
-void CCharacterControllerPlayer::OnPhysicEvent(INode* _pNode, glm::vec3 _vPosition, glm::vec3 _vRotation, glm::vec3 _vScale)
-{
-    //Set_Position(_vPosition);
-    //Set_Rotation(_vRotation);
-    
-    /*static float fTest = 0.0f;
-    fTest += 3.33f;
-    
-    btTransform mTransform;
-    btQuaternion mQuaternion;
-    mQuaternion.setEulerZYX(m_vRotation.z, 0.0f, m_vRotation.x);
-    mTransform.setRotation(mQuaternion);
-    mTransform.setOrigin(btVector3(m_vPosition.x, m_vPosition.y, m_vPosition.z));
-    m_pBodyModel->Get_RigidBody()->setWorldTransform(mTransform);*/
 }
 
 void CCharacterControllerPlayer::Update(void)
 {
-    /*btRaycastVehicle* pVehicle = m_pBodyModel->Get_RaycastVehicle();
-    if(pVehicle != NULL)
-    {
-        int iNumWheels = pVehicle->getNumWheels();
-        for(unsigned int i = 0; i < iNumWheels; i++)
-        {
-            pVehicle->applyEngineForce(9000.0f, i);
-        }
-    }*/
-    
     switch (m_eLeftTrackState)
     {
         case E_CHARACTER_CONTROLLER_STATE_NONE:

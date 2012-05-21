@@ -160,6 +160,47 @@ void CShader::SetTexture(GLuint _hTextureHandle, const std::string& _sName)
     }
 }
 
+void CShader::SetCustomFloat(const float _fValue, const std::string &_sName)
+{
+    GLint hHandle = glGetUniformLocation(m_hProgramHandle, _sName.c_str());
+    if(hHandle >= 0)
+    {
+        glUniform1f(hHandle, _fValue);
+    }
+    else
+    {
+        std::cout<<"[CShader::SetCustomFloat] Handle : "<<_sName<<" not found."<<std::endl;
+    }
+}
+
+void CShader::SetCustomVector2(const glm::vec2 &_vValue, const std::string &_sName)
+{
+    GLint hHandle = glGetUniformLocation(m_hProgramHandle, _sName.c_str());
+    if(hHandle >= 0)
+    {
+        glUniform2fv(hHandle, 1, &_vValue[0]);
+    }
+    else
+    {
+        std::cout<<"[CShader::SetCustomVector2] Handle : "<<_sName<<" not found."<<std::endl;
+    }
+
+}
+
+void CShader::SetCustomVector3(const glm::vec3 &_vValue, const std::string &_sName)
+{
+    GLint hHandle = glGetUniformLocation(m_hProgramHandle, _sName.c_str());
+    if(hHandle >= 0)
+    {
+        glUniform3fv(hHandle, 1, &_vValue[0]);
+    }
+    else
+    {
+        std::cout<<"[CShader::SetCustomVector3] Handle : "<<_sName<<" not found."<<std::endl;
+    }
+
+}
+
 void CShader::Enable(void)
 {
     glUseProgram(m_hProgramHandle);

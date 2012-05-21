@@ -5,7 +5,7 @@
 //  Created by sergey sergeev on 5/15/12.
 //
 //
-
+/*
 #include "CShadowPlane.h"
 #include "CSceneMgr.h"
 
@@ -176,5 +176,5 @@ void CShadowPlane::Render(INode::E_RENDER_MODE _eMode)
     //glEnable(GL_DEPTH_TEST);
 }
 
-
+*/
 

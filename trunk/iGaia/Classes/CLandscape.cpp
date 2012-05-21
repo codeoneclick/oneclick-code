@@ -12,39 +12,23 @@
 #include "CRenderMgr.h"
 #include "CCollisionMgr.h"
 
-CLandscape::CLandscape()
+CLandscape::CLandscape(void)
 {
     m_iWidth = 32;
     m_iHeight = 32;
-    
     m_pHeightMapSetter = NULL;
-    m_pNavigationMesh = NULL;
-    m_pVisualNavigationMeshRef = NULL;
-    m_pVisualNavigationMeshShader = NULL;
-    
-    m_pShaderPreEdgeDetect = NULL;
-    m_pShaderNormalDepth = NULL;
-    
-    m_bIsNavigationMeshDebug = false;
 }
 
-CLandscape::~CLandscape()
+CLandscape::~CLandscape(void)
 {
     
 }
 
-void CLandscape::Load(IResource::SResource _tResource)
+void CLandscape::Load(const std::string& _sName, IResource::E_THREAD _eThread)
 {
     m_pHeightMapSetter = new CHeightMapSetter();
-    m_pMesh = m_pHeightMapSetter->Load_DataSource(_tResource.m_sName, m_iWidth, m_iHeight);
+    m_pMesh = m_pHeightMapSetter->Load_DataSource(_sName, m_iWidth, m_iHeight);
     
-    m_pNavigationMesh = new CNavigationMeshMgr();
-    m_pNavigationMesh->Set_NavigationModel(this);
-    m_pVisualNavigationMeshRef = m_pNavigationMesh->Get_VisualMesh();
-    m_pVisualNavigationMeshShader = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_COLOR);
-    m_pVisualNavigationMeshRef->Get_VertexBufferRef()->Set_ShaderRef(m_pVisualNavigationMeshShader->Get_ProgramHandle());
-    
-    CSceneMgr::Instance()->Set_NavigationMeshRef(m_pNavigationMesh);
     CSceneMgr::Instance()->Set_HeightMapSetterRef(m_pHeightMapSetter);
     
     glm::u8vec4* pColorData = m_pMesh->Get_VertexBufferRef()->CreateOrReUse_ColorData();
@@ -55,33 +39,30 @@ void CLandscape::Load(IResource::SResource _tResource)
     }
     
     m_pMesh->Get_VertexBufferRef()->CommitToRAM();
-    //m_pMesh->Get_VertexBufferRef()->CommitFromRAMToVRAM();
+    m_pMesh->Get_VertexBufferRef()->CommitFromRAMToVRAM();
     m_pMesh->Get_IndexBufferRef()->CommitFromRAMToVRAM();
-    
-    m_pShaderPreEdgeDetect = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_COLOR);
-    m_pShaderNormalDepth = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_NORMAL_DEPTH);
 }
 
-void CLandscape::OnLoadDone(E_RESOURCE_TYPE _eType, IResource* pResource)
+void CLandscape::OnResourceLoadDoneEvent(IResource::E_RESOURCE_TYPE _eType, IResource *_pResource)
 {
     switch (_eType)
     {
-        case IResourceLoaderDelegate::E_RESOURCE_TYPE_MESH:
-            std::cout<<"[CModel::OnLoadDone] Resource Mesh loaded : "<<pResource->Get_Name()<<"\n";
+        case IResource::E_RESOURCE_TYPE_MESH:
+            std::cout<<"[CModel::OnLoadDone] Resource Mesh loaded : "<<_pResource->Get_Name()<<"\n";
             break;
-        case IResourceLoaderDelegate::E_RESOURCE_TYPE_TEXTURE:
-            std::cout<<"[CModel::OnLoadDone] Resource Texture loaded : "<<pResource->Get_Name()<<"\n";
+        case IResource::E_RESOURCE_TYPE_TEXTURE:
+            std::cout<<"[CModel::OnLoadDone] Resource Texture loaded : "<<_pResource->Get_Name()<<"\n";
             break;
         default:
             break;
     }
 }
 
-void CLandscape::OnTouchEvent(void)
+void CLandscape::OnTouchEvent(ITouchDelegate *_pDelegateOwner)
 {
     CCollisionMgr::SRay3d tTouchRay = CSceneMgr::Instance()->Get_CollisionMgr()->Get_TouchRay();
     glm::vec3 vCollisionPoint;
-     
+    
     if(!CSceneMgr::Instance()->Get_CollisionMgr()->Get_CollisionPoint(m_pMesh->Get_VertexBufferRef(), m_pMesh->Get_IndexBufferRef(), tTouchRay, &vCollisionPoint))
     {
         return;
@@ -92,15 +73,14 @@ void CLandscape::OnTouchEvent(void)
     }
     
     CSceneMgr::Instance()->Get_CollisionMgr()->Set_Touch3DPoint(vCollisionPoint);
-    for(size_t index = 0; index< m_lDelegates.size(); index++)
-    {
-        m_lDelegates[index]->OnTouchEvent(m_pDelegateTarget);
-    }
-}
-
-void CLandscape::OnPhysicEventUpdate(glm::vec3 _vPosition, glm::vec3 _vRotation, glm::vec3 _vScale)
-{
     
+    for(size_t index = 0; index< m_lDelegateOwners.size(); index++)
+    {
+        if(m_lDelegateOwners[index]->Get_DelegateType() == IDelegate::E_DELEGATE_TYPE_TOUCH)
+        {
+            dynamic_cast<ITouchDelegate*>(m_lDelegateOwners[index])->OnTouchEvent(this);
+        }
+    }
 }
 
 void CLandscape::Update()
@@ -112,22 +92,25 @@ void CLandscape::Render(INode::E_RENDER_MODE _eMode)
 {      
     glCullFace(GL_BACK);
     ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
+    ILight* pLight = CSceneMgr::Instance()->Get_GlobalLight();
     
     switch (_eMode)
     {
         case INode::E_RENDER_MODE_SIMPLE:
         {
-            glm::mat4x4 mBiasMatrix = glm::mat4x4(0.5f, 0.0f, 0.0f, 0.0f,
-                                                  0.0f, 0.5f, 0.0f, 0.0f,
-                                                  0.0f, 0.0f, 0.5f, 0.0f,
-                                                  0.5f, 0.5f, 0.5f, 1.0f);
-
-            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShader->Get_ProgramHandle());
-            m_pShader->Enable();
-            m_pShader->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD); 
-            m_pShader->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
-            m_pShader->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
-            m_pShader->SetVector3(pCamera->Get_Position(), CShader::k_VECTOR_VIEW);
+            if(m_pShaders[_eMode] == NULL)
+            {
+                std::cout<<"[CModel::Render] Shader MODE_SIMPLE is NULL"<<std::endl;
+                return;
+            }
+            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShaders[_eMode]->Get_ProgramHandle());
+            m_pShaders[_eMode]->Enable();
+            m_pShaders[_eMode]->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD); 
+            m_pShaders[_eMode]->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
+            m_pShaders[_eMode]->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
+            m_pShaders[_eMode]->SetVector3(pCamera->Get_Position(), CShader::k_VECTOR_VIEW);
+            m_pShaders[_eMode]->SetVector3(pLight->Get_Position(), CShader::k_VECTOR_LIGHT);
+            
             char pStrTextureId[256];
             for(unsigned int i = 0; i < TEXTURES_MAX_COUNT; ++i)
             {
@@ -137,27 +120,27 @@ void CLandscape::Render(INode::E_RENDER_MODE _eMode)
                 }
                 sprintf(pStrTextureId, "EXT_TEXTURE_0%i",i + 1);
                 std::string k_TEXTURE_ID = pStrTextureId;
-                m_pShader->SetTexture(m_pTextures[i]->Get_Handle(), k_TEXTURE_ID);
+                m_pShaders[_eMode]->SetTexture(m_pTextures[i]->Get_Handle(), k_TEXTURE_ID);
             }
-            if(m_pLight != NULL)
-            {
-                m_pShader->SetVector3(m_pLight->Get_Position(), CShader::k_VECTOR_LIGHT);
-            }
-            
-            m_pShader->SetTexture(m_pHeightMapSetter->Get_TextureSplatting(), CShader::k_TEXTURE_07);
-            m_pShader->SetTexture(CSceneMgr::Instance()->Get_RenderMgr()->Get_OffScreenTexture(CScreenSpacePostMgr::E_OFFSCREEN_MODE_SHADOW_MAP), CShader::k_TEXTURE_08);
-            m_pShader->SetMatrix(mBiasMatrix, CShader::k_MATRIX_BIAS);
-            m_pShader->SetVector4(glm::vec4(0.0f, 1.0, 0.0, 0.1), CShader::k_VECTOR_CLIP_PLANE);
+
+            m_pShaders[_eMode]->SetTexture(m_pHeightMapSetter->Get_TextureSplatting(), CShader::k_TEXTURE_07);
+            m_pShaders[_eMode]->SetVector4(glm::vec4(0.0f, 1.0, 0.0, 0.1), CShader::k_VECTOR_CLIP_PLANE);
         }
             break;
         case INode::E_RENDER_MODE_REFLECTION:
         {
-            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShader->Get_ProgramHandle());
-            m_pShader->Enable();
-            m_pShader->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD); 
-            m_pShader->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
-            m_pShader->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
-            m_pShader->SetVector3(pCamera->Get_Position(), CShader::k_VECTOR_VIEW);
+            if(m_pShaders[_eMode] == NULL)
+            {
+                std::cout<<"[CModel::Render] Shader MODE_REFLECTION is NULL"<<std::endl;
+                return;
+            }
+            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShaders[_eMode]->Get_ProgramHandle());
+            m_pShaders[_eMode]->Enable();
+            m_pShaders[_eMode]->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD); 
+            m_pShaders[_eMode]->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
+            m_pShaders[_eMode]->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
+            m_pShaders[_eMode]->SetVector3(pCamera->Get_Position(), CShader::k_VECTOR_VIEW);
+            m_pShaders[_eMode]->SetVector3(pLight->Get_Position(), CShader::k_VECTOR_LIGHT);
             char pStrTextureId[256];
             for(unsigned int i = 0; i < TEXTURES_MAX_COUNT; ++i)
             {
@@ -167,25 +150,27 @@ void CLandscape::Render(INode::E_RENDER_MODE _eMode)
                 }
                 sprintf(pStrTextureId, "EXT_TEXTURE_0%i",i + 1);
                 std::string k_TEXTURE_ID = pStrTextureId;
-                m_pShader->SetTexture(m_pTextures[i]->Get_Handle(), k_TEXTURE_ID);
-            }
-            if(m_pLight != NULL)
-            {
-                m_pShader->SetVector3(m_pLight->Get_Position(), CShader::k_VECTOR_LIGHT);
+                m_pShaders[_eMode]->SetTexture(m_pTextures[i]->Get_Handle(), k_TEXTURE_ID);
             }
             
-            m_pShader->SetTexture(m_pHeightMapSetter->Get_TextureSplatting(), CShader::k_TEXTURE_07);
-            m_pShader->SetVector4(glm::vec4(0.0f, 1.0, 0.0, 0.1), CShader::k_VECTOR_CLIP_PLANE);
+            m_pShaders[_eMode]->SetTexture(m_pHeightMapSetter->Get_TextureSplatting(), CShader::k_TEXTURE_07);
+            m_pShaders[_eMode]->SetVector4(glm::vec4(0.0f, 1.0, 0.0, 0.1), CShader::k_VECTOR_CLIP_PLANE);
         }
             break;
         case INode::E_RENDER_MODE_REFRACTION:
         {
-            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShader->Get_ProgramHandle());
-            m_pShader->Enable();
-            m_pShader->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD); 
-            m_pShader->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
-            m_pShader->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
-            m_pShader->SetVector3(pCamera->Get_Position(), CShader::k_VECTOR_VIEW);
+            if(m_pShaders[_eMode] == NULL)
+            {
+                std::cout<<"[CModel::Render] Shader MODE_REFRACTION is NULL"<<std::endl;
+                return;
+            }
+            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShaders[_eMode]->Get_ProgramHandle());
+            m_pShaders[_eMode]->Enable();
+            m_pShaders[_eMode]->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD); 
+            m_pShaders[_eMode]->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
+            m_pShaders[_eMode]->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
+            m_pShaders[_eMode]->SetVector3(pCamera->Get_Position(), CShader::k_VECTOR_VIEW);
+            m_pShaders[_eMode]->SetVector3(pLight->Get_Position(), CShader::k_VECTOR_LIGHT);
             char pStrTextureId[256];
             for(unsigned int i = 0; i < TEXTURES_MAX_COUNT; ++i)
             {
@@ -195,30 +180,26 @@ void CLandscape::Render(INode::E_RENDER_MODE _eMode)
                 }
                 sprintf(pStrTextureId, "EXT_TEXTURE_0%i",i + 1);
                 std::string k_TEXTURE_ID = pStrTextureId;
-                m_pShader->SetTexture(m_pTextures[i]->Get_Handle(), k_TEXTURE_ID);
-            }
-            if(m_pLight != NULL)
-            {
-                m_pShader->SetVector3(m_pLight->Get_Position(), CShader::k_VECTOR_LIGHT);
+                m_pShaders[_eMode]->SetTexture(m_pTextures[i]->Get_Handle(), k_TEXTURE_ID);
             }
             
-            m_pShader->SetTexture(m_pHeightMapSetter->Get_TextureSplatting(), CShader::k_TEXTURE_07);
-            m_pShader->SetVector4(glm::vec4(0.0f, -1.0, 0.0, 0.1), CShader::k_VECTOR_CLIP_PLANE);
+            m_pShaders[_eMode]->SetTexture(m_pHeightMapSetter->Get_TextureSplatting(), CShader::k_TEXTURE_07);
+            m_pShaders[_eMode]->SetVector4(glm::vec4(0.0f, -1.0, 0.0, 0.1), CShader::k_VECTOR_CLIP_PLANE);
         }
             break;
         case INode::E_RENDER_MODE_SCREEN_NORMAL_MAP:
         {
-            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShaderNormalDepth->Get_ProgramHandle());
-            m_pShaderNormalDepth->Enable();
-            m_pShaderNormalDepth->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD); 
-            m_pShaderNormalDepth->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
-            m_pShaderNormalDepth->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
-            m_pShaderNormalDepth->SetVector4(glm::vec4(0.0f, 1.0, 0.0, 0.1), CShader::k_VECTOR_CLIP_PLANE);
-        }
-            break;
-        case INode::E_RENDER_MODE_SHADOW_MAP:
-        {
-            
+            if(m_pShaders[_eMode] == NULL)
+            {
+                std::cout<<"[CModel::Render] Shader MODE_SCREEN_NORMAL_MAP is NULL"<<std::endl;
+                return;
+            }
+            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShaders[_eMode]->Get_ProgramHandle());
+            m_pShaders[_eMode]->Enable();
+            m_pShaders[_eMode]->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD); 
+            m_pShaders[_eMode]->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
+            m_pShaders[_eMode]->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
+            m_pShaders[_eMode]->SetVector4(glm::vec4(0.0f, 1.0, 0.0, 0.1), CShader::k_VECTOR_CLIP_PLANE);
         }
             break;
         default:
@@ -230,24 +211,8 @@ void CLandscape::Render(INode::E_RENDER_MODE _eMode)
     glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_DataFromVRAM());
     m_pMesh->Get_IndexBufferRef()->Disable();
     m_pMesh->Get_VertexBufferRef()->Disable();
-    m_pShader->Disable();
+    m_pShaders[_eMode]->Disable();
     glCullFace(GL_FRONT);
-
-    
-    if(m_pVisualNavigationMeshRef != NULL && m_bIsNavigationMeshDebug == true)
-    {
-        m_pVisualNavigationMeshShader->Enable();
-        m_pVisualNavigationMeshShader->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD);
-        ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
-        m_pVisualNavigationMeshShader->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
-        m_pVisualNavigationMeshShader->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
-        m_pVisualNavigationMeshShader->SetVector3(pCamera->Get_Position(), CShader::k_VECTOR_VIEW);
-        
-        m_pVisualNavigationMeshRef->Get_VertexBufferRef()->Enable();
-        glDrawElements(GL_TRIANGLES, m_pVisualNavigationMeshRef->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*)m_pVisualNavigationMeshRef->Get_IndexBufferRef()->Get_Data());
-        m_pVisualNavigationMeshRef->Get_VertexBufferRef()->Disable();
-        m_pVisualNavigationMeshShader->Disable();
-    }
     
     if(m_pBoundingBox != NULL)
     {

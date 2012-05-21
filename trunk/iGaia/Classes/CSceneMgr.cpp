@@ -34,12 +34,12 @@ CSceneMgr::CSceneMgr(void)
     m_pSkyBox = NULL;
     m_pLandscape = NULL;
     m_pWater = NULL;
-    m_pGrass = NULL;
     
     m_pRenderMgr = new CRenderMgr();
     m_pCollisionMgr = new CCollisionMgr();
     m_pPhysicMgr = new CPhysicMgr();
     m_pParticleMgr = new CParticleMgr();
+    m_pDecalMgr = new CDecalMgr();
     
     m_lLights[ILight::E_LIGHT_MODE_DIRECTION] = new CLightPoint();
     static_cast<CLightPoint*>(m_lLights[ILight::E_LIGHT_MODE_DIRECTION])->Set_Visible(false);
@@ -65,83 +65,45 @@ CSceneMgr* CSceneMgr::Instance()
     return m_pInsatnce;
 }
 
-INode* CSceneMgr::AddModel(IResource::E_STANDART_MODEL _eModel, bool _isBatching)
+
+INode* CSceneMgr::AddCustomModel(const std::string& _sName, IResource::E_THREAD _eThread)
 {
-    IResource::SResource tResource;
-    tResource.m_sName = STANDART_MODEL;
-    tResource.m_eThread = IResource::E_THREAD_MAIN;
-    tResource.m_bIsBatching = _isBatching;
-    tResource.m_eModel = _eModel;
     INode* pNode = new CModel();
     m_lContainer.push_back(pNode);
-    pNode->Load(tResource);
+    pNode->Load(_sName, _eThread);
     return pNode;
 }
 
-INode* CSceneMgr::AddCustomModel(const std::string &_sName, bool _isBatching, IResource::E_THREAD _eThread)
+INode* CSceneMgr::AddLandscapeModel(const std::string& _sName, IResource::E_THREAD _eThread)
 {
-    IResource::SResource tResource;
-    tResource.m_sName = _sName;
-    tResource.m_eThread = _eThread;
-    tResource.m_bIsBatching = _isBatching;
-    tResource.m_eModel = IResource::E_STANDART_MODEL_NONE;
-    INode* pNode = new CModel();
-    m_lContainer.push_back(pNode);
-    pNode->Load(tResource);
-    return pNode;
-}
-
-INode* CSceneMgr::AddLandscapeModel(const std::string &_sName, bool _isBatching)
-{
-    IResource::SResource tResource;
-    tResource.m_sName = _sName;
-    tResource.m_eThread = IResource::E_THREAD_MAIN;
-    tResource.m_eModel = IResource::E_STANDART_MODEL_NONE;
-    tResource.m_bIsBatching = _isBatching;
     INode* pNode = new CLandscape();
+    m_lContainer.push_back(pNode);
+    pNode->Load(_sName, _eThread);
     m_pLandscape = pNode;
-    //m_lContainer.push_back(pNode);
-    pNode->Load(tResource);
     return pNode;
 }
 
-INode* CSceneMgr::AddLandscapeGrassModel(const std::string &_sName, bool _isBatching)
+INode* CSceneMgr::AddLandscapeGrassModel(const std::string& _sName, IResource::E_THREAD _eThread)
 {
-    IResource::SResource tResource;
-    tResource.m_sName = _sName;
-    tResource.m_eThread = IResource::E_THREAD_MAIN;
-    tResource.m_eModel = IResource::E_STANDART_MODEL_NONE;
-    tResource.m_bIsBatching = _isBatching;
     INode* pNode = new CGrass();
-    m_pGrass = pNode;
-    //m_lContainer.push_back(pNode);
-    pNode->Load(tResource);
+    m_lContainer.push_back(pNode);
+    pNode->Load(_sName, _eThread);
     return pNode;
 }
 
-INode* CSceneMgr::AddWaterModel(const std::string &_sName, bool _isBatching)
+INode* CSceneMgr::AddWaterModel(const std::string& _sName, IResource::E_THREAD _eThread)
 {
-    IResource::SResource tResource;
-    tResource.m_sName = _sName;
-    tResource.m_eThread = IResource::E_THREAD_MAIN;
-    tResource.m_eModel = IResource::E_STANDART_MODEL_NONE;
-    tResource.m_bIsBatching = _isBatching;
     INode* pNode = new CWater();
+    m_lContainer.push_back(pNode);
+    pNode->Load(_sName, _eThread);
     m_pWater = pNode;
-    pNode->Load(tResource);
-    //m_lContainer.push_back(pNode);
     return pNode;
 }
 
-INode* CSceneMgr::AddSkyBoxModel(const std::string &_sName, bool _isBatching)
+INode* CSceneMgr::AddSkyBoxModel(const std::string& _sName, IResource::E_THREAD _eThread)
 {
-    IResource::SResource tResource;
-    tResource.m_sName = _sName;
-    tResource.m_eThread = IResource::E_THREAD_MAIN;
-    tResource.m_eModel = IResource::E_STANDART_MODEL_NONE;
-    tResource.m_bIsBatching = _isBatching;
     INode* pNode = new CSkyBox();
-    pNode->Load(tResource);
+    pNode->Load(_sName, _eThread);
     m_pSkyBox = pNode;
     return pNode;
 }
@@ -260,6 +222,11 @@ void CSceneMgr::Update()
     m_pCollisionMgr->Update();
     m_pPhysicMgr->Update();
     
+    if(m_pDecalMgr != NULL)
+    {
+        m_pDecalMgr->Update();
+    }
+    
     if(m_pParticleMgr != NULL)
     {
         m_pParticleMgr->Update();
@@ -269,21 +236,6 @@ void CSceneMgr::Update()
     {
         m_pSkyBox->Set_Position(m_pCamera->Get_Position());
         m_pSkyBox->Update();
-    }
-    
-    if(m_pLandscape != NULL)
-    {
-        m_pLandscape->Update();
-    }
-    
-    if(m_pWater != NULL)
-    {
-        m_pWater->Update();
-    }
-    
-    if(m_pGrass != NULL)
-    {
-        m_pGrass->Update();
     }
 }
 
@@ -296,21 +248,6 @@ void CSceneMgr::_DrawSimpleStep(void)
     if(m_pSkyBox != NULL)
     {
         m_pSkyBox->Render(INode::E_RENDER_MODE_SIMPLE);
-    }
-    
-    if(m_pLandscape != NULL)
-    {
-        m_pLandscape->Render(INode::E_RENDER_MODE_SIMPLE);
-    }
-
-    if(m_pWater != NULL)
-    {
-        m_pWater->Render(INode::E_RENDER_MODE_SIMPLE);
-    }
-    
-    if(m_pGrass != NULL)
-    {
-        m_pGrass->Render(INode::E_RENDER_MODE_SIMPLE);
     }
     
     while (pBeginNodeIterator != pEndNodeIterator)
@@ -328,15 +265,16 @@ void CSceneMgr::_DrawSimpleStep(void)
         ++pMapBIterator;
     }*/
     
-    if(m_pParticleMgr != NULL)
+    if(m_pDecalMgr != NULL)
     {
-        m_pParticleMgr->Render(INode::E_RENDER_MODE_SIMPLE, CParticleMgr::E_PARTICLE_MODE_STEP_EMITTER);
+        m_pDecalMgr->Render(INode::E_RENDER_MODE_SIMPLE);
     }
     
     if(m_pParticleMgr != NULL)
     {
-        m_pParticleMgr->Render(INode::E_RENDER_MODE_SIMPLE, CParticleMgr::E_PARTICLE_MODE_STEP_SHADOW);
+        m_pParticleMgr->Render(INode::E_RENDER_MODE_SIMPLE);
     }
+    
     
     m_pRenderMgr->EndDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_SIMPLE);
 }
@@ -361,24 +299,6 @@ void CSceneMgr::_DrawReflectionStep(void)
         m_pSkyBox->Render(INode::E_RENDER_MODE_SIMPLE);
     }
     
-    if(m_pLandscape != NULL && m_pLandscape->Get_RenderModeReflectionEnable())
-    {
-        m_pLandscape->Update();
-        m_pLandscape->Render(INode::E_RENDER_MODE_REFLECTION);
-    }
-    
-    if(m_pWater != NULL && m_pWater->Get_RenderModeReflectionEnable())
-    {
-        m_pWater->Update();
-        m_pWater->Render(INode::E_RENDER_MODE_REFLECTION);
-    }
-    
-    if(m_pGrass != NULL && m_pGrass->Get_RenderModeReflectionEnable())
-    {
-        m_pGrass->Update();
-        m_pGrass->Render(INode::E_RENDER_MODE_REFLECTION);
-    }
-    
     while (pBeginNodeIterator != pEndNodeIterator)
     {
         if((*pBeginNodeIterator)->Get_RenderModeReflectionEnable())
@@ -397,24 +317,6 @@ void CSceneMgr::_DrawRefractionStep(void)
     std::vector<INode*>::iterator pBeginNodeIterator = m_lContainer.begin();
     std::vector<INode*>::iterator pEndNodeIterator = m_lContainer.end();
     m_pRenderMgr->BeginDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_REFRACTION);
-    
-    if(m_pLandscape != NULL && m_pLandscape->Get_RenderModeRefractionEnable())
-    {
-        m_pLandscape->Update();
-        m_pLandscape->Render(INode::E_RENDER_MODE_REFRACTION);
-    }
-    
-    if(m_pWater != NULL && m_pWater->Get_RenderModeRefractionEnable())
-    {
-        m_pWater->Update();
-        m_pWater->Render(INode::E_RENDER_MODE_REFRACTION);
-    }
-    
-    if(m_pGrass != NULL && m_pGrass->Get_RenderModeRefractionEnable())
-    {
-        m_pGrass->Update();
-        m_pGrass->Render(INode::E_RENDER_MODE_REFRACTION);
-    }
     
     while (pBeginNodeIterator != pEndNodeIterator)
     {
@@ -436,21 +338,6 @@ void CSceneMgr::_DrawScreenNormalMapStep(void)
     pEndNodeIterator = m_lContainer.end();
     m_pRenderMgr->BeginDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_SCREEN_NORMAL_MAP);
     
-    if(m_pLandscape != NULL && m_pLandscape->Get_RenderModeScreenNormalEnable())
-    {
-        m_pLandscape->Render(INode::E_RENDER_MODE_SCREEN_NORMAL_MAP);
-    }
-    
-    if(m_pWater != NULL && m_pWater->Get_RenderModeScreenNormalEnable())
-    {
-        m_pWater->Render(INode::E_RENDER_MODE_SCREEN_NORMAL_MAP);
-    }
-    
-    if(m_pGrass != NULL && m_pGrass->Get_RenderModeScreenNormalEnable())
-    {
-        m_pGrass->Render(INode::E_RENDER_MODE_SCREEN_NORMAL_MAP);
-    }
-    
     while (pBeginNodeIterator != pEndNodeIterator)
     {
         if((*pBeginNodeIterator)->Get_RenderModeScreenNormalEnable())
@@ -470,7 +357,7 @@ void CSceneMgr::_DrawScreenNormalMapStep(void)
 
 void CSceneMgr::_DrawShadowMapStep(void)
 {
-    std::vector<INode*>::iterator pBeginNodeIterator = m_lContainer.begin();
+    /*std::vector<INode*>::iterator pBeginNodeIterator = m_lContainer.begin();
     std::vector<INode*>::iterator pEndNodeIterator = m_lContainer.end();
     m_pRenderMgr->BeginDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_SHADOW_MAP);
     
@@ -506,7 +393,7 @@ void CSceneMgr::_DrawShadowMapStep(void)
         ++pBeginNodeIterator;
     }
     m_pCamera->Set_View(glm::lookAt(m_pCamera->Get_Position(), m_pCamera->Get_LookAt(), glm::vec3(0.0f,1.0f,0.0f))); 
-    m_pRenderMgr->EndDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_SHADOW_MAP);
+    m_pRenderMgr->EndDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_SHADOW_MAP);*/
 }
 
 void CSceneMgr::Render(void)

@@ -13,9 +13,9 @@
 #include "CGrass.h"
 #include "CWater.h"
 #include "CSkyBox.h"
-#include "IDelegate.h"
+#include "ITouchDelegate.h"
 
-class CLevel : public IDelegate
+class CLevel : public ITouchDelegate
 {
 private:
     CLandscape* m_pLandscape;
@@ -27,9 +27,9 @@ public:
     ~CLevel(void);
     void Load(void);
     void Update(void);
-    virtual void OnTouchEvent(IDelegate* _pDelegateOwner);
-    virtual void OnPhysicEvent(INode* _pNode, glm::vec3 _vPosition, glm::vec3 _vRotation, glm::vec3 _vScale);
     INode* Get_Model(void) { return m_pLandscape; }
+    
+    virtual void OnTouchEvent(ITouchDelegate* _pDelegateOwner);
 };
 
 #endif

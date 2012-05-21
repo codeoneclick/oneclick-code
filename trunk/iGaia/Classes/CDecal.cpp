@@ -19,23 +19,23 @@ CDecal::~CDecal(void)
     
 }
 
-void CDecal::Load(IResource::SResource _tResource)
+void CDecal::Load(const std::string& _sName, IResource::E_THREAD _eThread)
 {
-    unsigned int iWidth = 8;
-    unsigned int iHeight = 8;
-    CMesh::SSource* pSource = new CMesh::SSource();
-    pSource->m_iNumVertexes = iWidth * iHeight;
-    pSource->m_iNumIndexes  = (iWidth - 1) * (iHeight - 1) * 6;
+    unsigned int iWidth = 5;
+    unsigned int iHeight = 5;
+    CMesh::SSourceData* pSourceData = new CMesh::SSourceData();
+    pSourceData->m_iNumVertexes = iWidth * iHeight;
+    pSourceData->m_iNumIndexes  = (iWidth - 1) * (iHeight - 1) * 6;
     
-    pSource->m_pVertexBuffer = new CVertexBuffer(pSource->m_iNumVertexes);
+    pSourceData->m_pVertexBuffer = new CVertexBuffer(pSourceData->m_iNumVertexes);
     
-    glm::vec3* pPositionData = pSource->m_pVertexBuffer->CreateOrReUse_PositionData();
-    glm::vec2* pTexCoordData = pSource->m_pVertexBuffer->CreateOrReUse_TexCoordData();
+    glm::vec3* pPositionData = pSourceData->m_pVertexBuffer->CreateOrReUse_PositionData();
+    glm::vec2* pTexCoordData = pSourceData->m_pVertexBuffer->CreateOrReUse_TexCoordData();
     
-    memset(pPositionData, 0x0, pSource->m_iNumVertexes * sizeof(glm::vec3));
+    memset(pPositionData, 0x0, pSourceData->m_iNumVertexes * sizeof(glm::vec3));
     
     unsigned int index = 0;
-    float fScale = 0.5f;
+    float fScale = 0.25f;
     for(unsigned int i = 0; i < iWidth; ++i)
     {
         for(unsigned int j = 0; j < iHeight; ++j)
@@ -46,8 +46,8 @@ void CDecal::Load(IResource::SResource _tResource)
         }
     }
     
-    pSource->m_pIndexBuffer = new CIndexBuffer(pSource->m_iNumIndexes);
-    unsigned short* pIndexBufferData = pSource->m_pIndexBuffer->Get_Data();
+    pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes);
+    unsigned short* pIndexBufferData = pSourceData->m_pIndexBuffer->Get_Data();
     index = 0;
     for(unsigned int i = 0; i < (iWidth - 1); ++i)
     {
@@ -69,37 +69,37 @@ void CDecal::Load(IResource::SResource _tResource)
         }
     }
     
-    pSource->m_pVertexBuffer->CommitToRAM();
-    pSource->m_pIndexBuffer->CommitFromRAMToVRAM();
+    pSourceData->m_pVertexBuffer->CommitToRAM();
+    pSourceData->m_pIndexBuffer->CommitFromRAMToVRAM();
     
     m_pMesh = new CMesh();
-    m_pMesh->Set_Source(pSource);
+    m_pMesh->Set_SourceData(pSourceData);
 }
 
-void CDecal::OnLoadDone(E_RESOURCE_TYPE _eType, IResource* pResource)
+void CDecal::OnResourceLoadDoneEvent(IResource::E_RESOURCE_TYPE _eType, IResource *_pResource)
 {
     switch (_eType)
     {
-        case IResourceLoaderDelegate::E_RESOURCE_TYPE_MESH:
-            std::cout<<"[CModel::OnLoadDone] Resource Mesh loaded : "<<pResource->Get_Name()<<"\n";
+        case IResource::E_RESOURCE_TYPE_MESH:
+            std::cout<<"[CModel::OnLoadDone] Resource Mesh loaded : "<<_pResource->Get_Name()<<"\n";
             break;
-        case IResourceLoaderDelegate::E_RESOURCE_TYPE_TEXTURE:
-            std::cout<<"[CModel::OnLoadDone] Resource Texture loaded : "<<pResource->Get_Name()<<"\n";
+        case IResource::E_RESOURCE_TYPE_TEXTURE:
+            std::cout<<"[CModel::OnLoadDone] Resource Texture loaded : "<<_pResource->Get_Name()<<"\n";
             break;
         default:
             break;
     }
 }
 
-void CDecal::OnTouchEvent(void)
+void CDecal::OnTouchEvent(ITouchDelegate *_pDelegateOwner)
 {
     
 }
 
 void CDecal::Update()
 {
-    INode::Update();
-    unsigned int iWidth = 8;
+    //INode::Update();
+    /*unsigned int iWidth = 8;
     unsigned int iHeight = 8;
     glm::vec3* pPositionData = m_pMesh->Get_VertexBufferRef()->CreateOrReUse_PositionData();
     unsigned int index = 0;
@@ -107,32 +107,63 @@ void CDecal::Update()
     {
         for(unsigned int j = 0; j < iHeight; ++j)
         {
-            pPositionData[index].y = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_HeightValue(m_vPosition.x + pPositionData[index].x, m_vPosition.z + pPositionData[index].z) + 0.25f;
+            pPositionData[index].y = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_HeightValue(m_vPosition.x + pPositionData[index].x, m_vPosition.z + pPositionData[index].z) + 0.05f;
             ++index;
         }
+    }*/
+    
+    int iRoundPositionX = m_vPosition.x;
+    int iRoundPositionZ = m_vPosition.z;
+    float* pHeightmapData = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_SourceData();
+    unsigned int index = 0;
+    glm::vec3* pPositionData = m_pMesh->Get_VertexBufferRef()->CreateOrReUse_PositionData();
+    int iHeightmapWidth = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_Width();
+    int iHeightmapHeight = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_Height();
+    for(int i = -2; i <= 2; ++i)
+    {
+        for(int j = -2; j <= 2; ++j)
+        {
+            if((iRoundPositionX + i) < 0 || (iRoundPositionZ + j) < 0 || (iRoundPositionX + i) >= iHeightmapWidth || (iRoundPositionZ +j) > iHeightmapHeight)
+            {
+                pPositionData[index].x = iRoundPositionX;
+                pPositionData[index].y = pHeightmapData[iRoundPositionX + iRoundPositionZ * iHeightmapWidth] + 0.1f;
+                pPositionData[index].z = iRoundPositionZ;
+            }
+            else
+            {
+                pPositionData[index].x = iRoundPositionX + i;
+                pPositionData[index].y = pHeightmapData[iRoundPositionX + i + (iRoundPositionZ + j) * iHeightmapWidth] + 0.1f;
+                pPositionData[index].z = iRoundPositionZ + j;
+            }
+            index++;
+        }
     }
+    
     m_pMesh->Get_VertexBufferRef()->CommitToRAM();
 }
 
 void CDecal::Render(INode::E_RENDER_MODE _eMode)
 {      
-    //glDisable(GL_DEPTH_TEST);
     ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
-    
+    //glDisable(GL_DEPTH_TEST);
     switch (_eMode)
     {
         case INode::E_RENDER_MODE_SIMPLE:
         {
-            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShader->Get_ProgramHandle());
-            m_pShader->Enable();
-            m_pShader->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD);
-            m_pShader->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
-            m_pShader->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
-            m_pShader->SetVector3(pCamera->Get_Position(), CShader::k_VECTOR_VIEW);
-            if(m_pLight != NULL)
+            if(m_pShaders[_eMode] == NULL)
             {
-                m_pShader->SetVector3(m_pLight->Get_Position(), CShader::k_VECTOR_LIGHT);
+                std::cout<<"[CModel::Render] Shader MODE_SIMPLE is NULL"<<std::endl;
+                return;
             }
+
+            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShaders[_eMode] ->Get_ProgramHandle());
+            m_pShaders[_eMode]->Enable();
+            m_pShaders[_eMode]->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD);
+            m_pShaders[_eMode]->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
+            m_pShaders[_eMode]->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
+            m_pShaders[_eMode]->SetVector3(pCamera->Get_Position(), CShader::k_VECTOR_VIEW);
+            m_pShaders[_eMode]->SetCustomVector3(m_vPosition, "EXT_CenterPosition");
+            m_pShaders[_eMode]->SetCustomFloat(glm::radians(m_vRotation.y), "EXT_Angle");
             
             char pStrTextureId[256];
             for(unsigned int i = 0; i < TEXTURES_MAX_COUNT; ++i)
@@ -143,7 +174,7 @@ void CDecal::Render(INode::E_RENDER_MODE _eMode)
                 }
                 sprintf(pStrTextureId, "EXT_TEXTURE_0%i",i + 1);
                 std::string k_TEXTURE_ID = pStrTextureId;
-                m_pShader->SetTexture(m_pTextures[i]->Get_Handle(), k_TEXTURE_ID);
+                m_pShaders[_eMode] ->SetTexture(m_pTextures[i]->Get_Handle(), k_TEXTURE_ID);
             }
         }
             break;
@@ -157,11 +188,6 @@ void CDecal::Render(INode::E_RENDER_MODE _eMode)
             
         }
             break;
-        case INode::E_RENDER_MODE_SHADOW_MAP:
-        {
-            
-        }
-            break;
         default:
             break;
     }
@@ -171,7 +197,8 @@ void CDecal::Render(INode::E_RENDER_MODE _eMode)
     glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_DataFromVRAM());
     m_pMesh->Get_IndexBufferRef()->Disable();
     m_pMesh->Get_VertexBufferRef()->Disable();
-    
-    m_pShader->Disable();
+    m_pShaders[_eMode] ->Disable();
     //glEnable(GL_DEPTH_TEST);
 }
+
+

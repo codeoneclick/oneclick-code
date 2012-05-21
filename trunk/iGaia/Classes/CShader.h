@@ -37,6 +37,9 @@ public:
     void SetVector3(const glm::vec3& _vValue, const std::string& _sName);
     void SetVector4(const glm::vec4& _vValue, const std::string& _sName);
     void SetFloat(const float _fValue, const std::string& _sName);
+    void SetCustomVector3(const glm::vec3& _vValue, const std::string& _sName);
+    void SetCustomVector2(const glm::vec2& _vValue, const std::string& _sName);
+    void SetCustomFloat(const float _fValue, const std::string& _sName);
 public:
     static const std::string k_MATRIX_WORLD;
     static const std::string k_MATRIX_VIEW;

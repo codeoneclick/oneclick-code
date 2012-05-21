@@ -51,31 +51,35 @@ bool CCharacterControllerEnemy::_IsStateTimeElapsed(void)
 void CCharacterControllerEnemy::Load(void)
 {
     glm::vec3 vScale = glm::vec3(1.0f, 1.0f, 1.0f);
-    m_pTowerModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("tower_model.mdl", false, IResource::E_THREAD_BACKGROUND);
-    m_pTowerModel->Set_Texture("model_01.pvr");
+    m_pTowerModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("tower_model.mdl", IResource::E_THREAD_BACKGROUND);
+    m_pTowerModel->Set_Texture("model_01.pvr", 0, CTexture::E_WRAP_MODE_REPEAT);
     m_pTowerModel->Set_Scale(vScale);
-    m_pTowerModel->Set_Shader(IResource::E_SHADER_UNIT);
+    m_pTowerModel->Set_Shader(INode::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_UNIT);
+    m_pTowerModel->Set_Shader(INode::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
     //m_pTowerModel->Create_BoundingBox();
     m_pTowerModel->Set_RenderModeScreenNormalEnable(true);
     
-    m_pLeftTrackModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("left_track_model.mdl", false, IResource::E_THREAD_BACKGROUND);
-    m_pLeftTrackModel->Set_Texture("model_02.pvr");
+    m_pLeftTrackModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("left_track_model.mdl", IResource::E_THREAD_BACKGROUND);
+    m_pLeftTrackModel->Set_Texture("model_02.pvr", 0, CTexture::E_WRAP_MODE_REPEAT);
     m_pLeftTrackModel->Set_Scale(vScale);
-    m_pLeftTrackModel->Set_Shader(IResource::E_SHADER_ANIM_TEXCOORD_UNIT);
+    m_pLeftTrackModel->Set_Shader(INode::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_ANIM_TEXCOORD_UNIT);
+    m_pLeftTrackModel->Set_Shader(INode::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
     //m_pLeftTrackModel->Create_BoundingBox();
     m_pLeftTrackModel->Set_RenderModeScreenNormalEnable(true);
     
-    m_pRightTrackModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("right_track_model.mdl", false, IResource::E_THREAD_BACKGROUND);
-    m_pRightTrackModel->Set_Texture("model_02.pvr");
+    m_pRightTrackModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("right_track_model.mdl", IResource::E_THREAD_BACKGROUND);
+    m_pRightTrackModel->Set_Texture("model_02.pvr", 0, CTexture::E_WRAP_MODE_REPEAT);
     m_pRightTrackModel->Set_Scale(vScale);
-    m_pRightTrackModel->Set_Shader(IResource::E_SHADER_ANIM_TEXCOORD_UNIT);
+    m_pRightTrackModel->Set_Shader(INode::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_ANIM_TEXCOORD_UNIT);
+    m_pRightTrackModel->Set_Shader(INode::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
     //m_pRightTrackModel->Create_BoundingBox();
     m_pRightTrackModel->Set_RenderModeScreenNormalEnable(true);
     
-    m_pBodyModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("base_model.mdl", false, IResource::E_THREAD_BACKGROUND);
-    m_pBodyModel->Set_Texture("model_01.pvr");
+    m_pBodyModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("base_model.mdl", IResource::E_THREAD_BACKGROUND);
+    m_pBodyModel->Set_Texture("model_01.pvr", 0, CTexture::E_WRAP_MODE_REPEAT);
     m_pBodyModel->Set_Scale(vScale);
-    m_pBodyModel->Set_Shader(IResource::E_SHADER_UNIT);
+    m_pBodyModel->Set_Shader(INode::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_UNIT);
+    m_pBodyModel->Set_Shader(INode::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
     //m_pBodyModel->Create_BoundingBox();
     m_pBodyModel->Set_RenderModeScreenNormalEnable(true);
     
@@ -85,9 +89,8 @@ void CCharacterControllerEnemy::Load(void)
     CSceneMgr::Instance()->Get_PhysicMgr()->Add_WheelToVehicleModel(m_pBodyModel, glm::vec3(-1.0f, 1.0f, -1.0f));
     CSceneMgr::Instance()->Get_PhysicMgr()->Add_WheelToVehicleModel(m_pBodyModel, glm::vec3( 1.0f, 1.0f, -1.0f));
     CSceneMgr::Instance()->Get_PhysicMgr()->Add_WheelToVehicleModel(m_pBodyModel, glm::vec3( 1.0f, 1.0f,  1.0f));
-    m_pBodyModel->Set_DelegateTarget(this);
-    m_pBodyModel->Add_Delegate(this);
-    CWorld::Instance()->Get_Level()->Get_Model()->Add_Delegate(this);
+    m_pBodyModel->Add_DelegateOwner(this);
+    CWorld::Instance()->Get_Level()->Get_Model()->Add_DelegateOwner(this);
 }
 
 void CCharacterControllerEnemy::Set_Position(const glm::vec3 &_vPosition)
@@ -132,32 +135,7 @@ void CCharacterControllerEnemy::Set_Rotation(const glm::vec3 &_vRotation)
     m_vRotation = _vRotation;
 }
 
-void CCharacterControllerEnemy::Set_Light(ILight *_pLight)
-{
-    if(m_pBodyModel != NULL)
-    {
-        m_pBodyModel->Set_Light(_pLight);
-    }
-    if(m_pTowerModel != NULL)
-    {
-        m_pTowerModel->Set_Light(_pLight);
-    }
-    if(m_pLeftTrackModel != NULL)
-    {
-        m_pLeftTrackModel->Set_Light(_pLight);
-    }
-    if(m_pRightTrackModel != NULL)
-    {
-        m_pRightTrackModel->Set_Light(_pLight);
-    }
-}
-
-void CCharacterControllerEnemy::OnTouchEvent(IDelegate* _pDelegateOwner)
-{
-
-}
-
-void CCharacterControllerEnemy::OnPhysicEvent(INode* _pNode, glm::vec3 _vPosition, glm::vec3 _vRotation, glm::vec3 _vScale)
+void CCharacterControllerEnemy::OnTouchEvent(ITouchDelegate* _pDelegateOwner)
 {
 
 }

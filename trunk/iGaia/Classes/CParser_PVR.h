@@ -33,13 +33,13 @@ protected:
     };
     
 private:
-    CTexture::SSource* m_pSource;
+    CTexture::SSourceData* m_pSourceData;
     char* m_pData;
     SDescription* m_pDescription;
 public:
     CParser_PVR(void);
     virtual ~CParser_PVR(void);
-    virtual void* Get_Source() { return m_pSource; }
+    virtual void* Get_SourceData(void) { return m_pSourceData; }
     virtual void Load(const std::string& _sName);
     virtual void Commit(void);
 };

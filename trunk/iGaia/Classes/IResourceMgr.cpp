@@ -52,10 +52,10 @@ void IResourceMgr::Update()
             if(m_lContainer.find(pBTask->first) != m_lContainer.end())
             {
                 IResource* pResource = m_lContainer[pBTask->first];
-                pResource->Set_Source(pParser->Get_Source());
+                pResource->Set_SourceData(pParser->Get_SourceData());
                 m_lTaskPool.erase(pBTask);
                 delete pParser;
-                pResource->Get_ResourceLoaderDelegate()->OnLoadDone(pResource->Get_ResourceType(), pResource);
+                pResource->Push_SignalToDelegateOwners();
                 return;
             }
         }

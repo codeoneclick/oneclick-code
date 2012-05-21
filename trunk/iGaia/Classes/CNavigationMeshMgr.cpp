@@ -142,7 +142,7 @@ std::vector<glm::vec2> CNavigationMeshMgr::FindPath(glm::vec3 _vStartPoint, glm:
 
 void CNavigationMeshMgr::Create_VisualMesh(void)
 {
-    const int iMaxVertexesPerPolygon = m_pPolygonMesh->nvp; 
+    /*const int iMaxVertexesPerPolygon = m_pPolygonMesh->nvp;
     const float fCellWidth = m_pPolygonMesh->cs;
     const float fCellHeight = m_pPolygonMesh->ch;
     const float* pBoundingBoxOffset = m_pPolygonMesh->bmin;
@@ -223,7 +223,7 @@ void CNavigationMeshMgr::Create_VisualMesh(void)
     else
     {
         std::cout<<"[CNavigationMeshWrapper::Create_VisualMesh] Error : Polygon count = 0\n";
-    }
+    }*/
 }
 
 void CNavigationMeshMgr::Set_NavigationModel(INode *_pNode)

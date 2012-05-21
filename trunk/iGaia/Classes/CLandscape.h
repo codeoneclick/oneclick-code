@@ -12,36 +12,25 @@
 #include "INode.h"
 #include <map>
 #include "CHeightMapSetter.h"
-#include "CNavigationMeshMgr.h"
 
 class CLandscape : public INode
 {
 protected:
     unsigned int m_iWidth;
     unsigned int m_iHeight;
-    
-    CMesh* m_pVisualNavigationMeshRef;
-    CShader* m_pVisualNavigationMeshShader;
-    
     CHeightMapSetter* m_pHeightMapSetter;
-    CNavigationMeshMgr* m_pNavigationMesh;
-    
-    bool m_bIsNavigationMeshDebug;
-    
-    CShader* m_pShaderPreEdgeDetect;
-    CShader* m_pShaderNormalDepth;
 public:
     CLandscape(void);
-    virtual ~CLandscape();
-    virtual void Load(IResource::SResource _tResource);
-    virtual void OnLoadDone(E_RESOURCE_TYPE _eType, IResource* pResource);
-    virtual void OnTouchEvent(void);
-    virtual void OnPhysicEventUpdate(glm::vec3 _vPosition, glm::vec3 _vRotation, glm::vec3 _vScale);
+    virtual ~CLandscape(void);
+    virtual void Load(const std::string& _sName, IResource::E_THREAD _eThread);
     virtual void Update(void);
     virtual void Render(E_RENDER_MODE _eMode);
     CHeightMapSetter* Get_HeightMapSetter(void) { return m_pHeightMapSetter; }
     unsigned int Get_Width(void) { return m_iWidth; }
     unsigned int Get_Height(void) { return m_iHeight; }
+    
+    virtual void OnTouchEvent(ITouchDelegate* _pDelegateOwner);
+    virtual void OnResourceLoadDoneEvent(IResource::E_RESOURCE_TYPE _eType, IResource* _pResource);
 };
 
 #endif

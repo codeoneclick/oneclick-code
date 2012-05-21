@@ -19,6 +19,7 @@
 #include "CHeightMapSetter.h"
 #include "CNavigationMeshMgr.h"
 #include "CParticleMgr.h"
+#include "CDecalMgr.h"
 
 class CSceneMgr
 {
@@ -32,13 +33,13 @@ private:
     INode* m_pSkyBox;
     INode* m_pLandscape;
     INode* m_pWater;
-    INode* m_pGrass;
     ICamera* m_pCamera;
     
     CRenderMgr* m_pRenderMgr;
     CCollisionMgr* m_pCollisionMgr;
     CPhysicMgr* m_pPhysicMgr;
     CParticleMgr* m_pParticleMgr;
+    CDecalMgr* m_pDecalMgr;
     
     CNavigationMeshMgr* m_pNavigationMeshMgrRef;
     CHeightMapSetter* m_pHeightMapSetterRef;
@@ -61,12 +62,11 @@ public:
     void Set_GlobalLight(ILight* _pLight) { m_pGlobalLight = _pLight; }
     ILight* Get_GlobalLight(void) { return m_pGlobalLight; }
     
-    INode* AddModel(IResource::E_STANDART_MODEL _eModel, bool _isBatching);
-    INode* AddCustomModel(const std::string& _sName, bool _isBatching = false, IResource::E_THREAD _eThread = IResource::E_THREAD_MAIN);
-    INode* AddLandscapeModel(const std::string& _sName, bool _isBatching = false);
-    INode* AddLandscapeGrassModel(const std::string& _sName, bool _isBatching = false);
-    INode* AddWaterModel(const std::string& _sName, bool _isBatching = false);
-    INode* AddSkyBoxModel(const std::string& _sName, bool _isBatching = false);
+    INode* AddCustomModel(const std::string& _sName, IResource::E_THREAD _eThread = IResource::E_THREAD_MAIN);
+    INode* AddLandscapeModel(const std::string& _sName, IResource::E_THREAD _eThread = IResource::E_THREAD_MAIN);
+    INode* AddLandscapeGrassModel(const std::string& _sName, IResource::E_THREAD _eThread = IResource::E_THREAD_MAIN);
+    INode* AddWaterModel(const std::string& _sName, IResource::E_THREAD _eThread = IResource::E_THREAD_MAIN);
+    INode* AddSkyBoxModel(const std::string& _sName, IResource::E_THREAD _eThread = IResource::E_THREAD_MAIN);
     
     void AddEventListener(INode* _pNode, CEventMgr::E_EVENT _eEvent);
     void RemoveEventListener(INode* _pNode, CEventMgr::E_EVENT _eEvent);
@@ -78,6 +78,7 @@ public:
     CCollisionMgr* Get_CollisionMgr(void) { return m_pCollisionMgr; }
     CPhysicMgr* Get_PhysicMgr(void) { return m_pPhysicMgr; }
     CParticleMgr* Get_ParticleMgr(void) { return m_pParticleMgr; }
+    CDecalMgr* Get_DecalMgr(void) { return m_pDecalMgr; }
     
     CNavigationMeshMgr* Get_NavigationMeshRef(void) { return m_pNavigationMeshMgrRef; }
     void Set_NavigationMeshRef(CNavigationMeshMgr* _pNavigationMeshMgrRef) { m_pNavigationMeshMgrRef = _pNavigationMeshMgrRef; }

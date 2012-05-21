@@ -43,7 +43,6 @@
     {
         CGPoint TouchLocation = [touch locationInView:self];
         [self update:TouchLocation];
-        NSLog(@"Position : %f, %f", TouchLocation.x, TouchLocation.y);
     }
 }
 
@@ -53,7 +52,6 @@
     {
         CGPoint TouchLocation = [touch locationInView:self];
         [self update:TouchLocation];
-        NSLog(@"Position : %f, %f", TouchLocation.x, TouchLocation.y);
     }
 }
 
@@ -62,7 +60,6 @@
     for (UITouch*touch in touches)
     {
         CGPoint TouchLocation = [touch locationInView:self];
-        NSLog(@"Position : %f, %f", TouchLocation.x, TouchLocation.y);
         CWorld::Instance()->Get_PlayerCharacterController()->Set_SteerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_NONE);
         CWorld::Instance()->Get_PlayerCharacterController()->Set_MoveState(ICharacterController::E_CHARACTER_CONTROLLER_MOVE_STATE_NONE);
         CGRect tRect = m_pControl.frame;
@@ -77,7 +74,6 @@
     for (UITouch*touch in touches)
     {
         CGPoint TouchLocation = [touch locationInView:self];
-        NSLog(@"Touch Cancelled Position : %f, %f", TouchLocation.x, TouchLocation.y);
     }
 }
 

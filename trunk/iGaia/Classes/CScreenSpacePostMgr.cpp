@@ -97,14 +97,14 @@ CScreenSpacePostMgr::CScreenSpacePostMgr(void)
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
     
-    CMesh::SSource* pSource = new CMesh::SSource();
-    pSource->m_iNumVertexes = 4;
-    pSource->m_iNumIndexes  = 6;
+    CMesh::SSourceData* pSourceData = new CMesh::SSourceData();
+    pSourceData->m_iNumVertexes = 4;
+    pSourceData->m_iNumIndexes  = 6;
     
-    pSource->m_pVertexBuffer = new CVertexBuffer(pSource->m_iNumVertexes);
+    pSourceData->m_pVertexBuffer = new CVertexBuffer(pSourceData->m_iNumVertexes);
     
-    glm::vec3* pPositionData = pSource->m_pVertexBuffer->CreateOrReUse_PositionData();
-    glm::vec2* pTexCoordData = pSource->m_pVertexBuffer->CreateOrReUse_TexCoordData();
+    glm::vec3* pPositionData = pSourceData->m_pVertexBuffer->CreateOrReUse_PositionData();
+    glm::vec2* pTexCoordData = pSourceData->m_pVertexBuffer->CreateOrReUse_TexCoordData();
     
     unsigned i = 0;
     pPositionData[i] = glm::vec3(-1.0f,-1.0f,0.0f);
@@ -120,20 +120,20 @@ CScreenSpacePostMgr::CScreenSpacePostMgr(void)
     pTexCoordData[i] = glm::vec2(1.0f,1.0f);
     i++;
 
-    pSource->m_pIndexBuffer = new CIndexBuffer(pSource->m_iNumIndexes);
-    unsigned short* pIBData = pSource->m_pIndexBuffer->Get_Data();
+    pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes);
+    unsigned short* pIndexBufferData = pSourceData->m_pIndexBuffer->Get_Data();
     
     i = 0;
-    pIBData[i++] = 0;
-    pIBData[i++] = 1;
-    pIBData[i++] = 2;
+    pIndexBufferData[i++] = 0;
+    pIndexBufferData[i++] = 1;
+    pIndexBufferData[i++] = 2;
     
-    pIBData[i++] = 3; 
-    pIBData[i++] = 2; 
-    pIBData[i++] = 1;
+    pIndexBufferData[i++] = 3; 
+    pIndexBufferData[i++] = 2; 
+    pIndexBufferData[i++] = 1;
     
     m_pMesh = new CMesh();
-    m_pMesh->Set_Source(pSource);
+    m_pMesh->Set_SourceData(pSourceData);
     
     m_pMesh->Get_VertexBufferRef()->CommitToRAM();
     m_pMesh->Get_VertexBufferRef()->CommitFromRAMToVRAM();

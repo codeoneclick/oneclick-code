@@ -25,18 +25,18 @@ CWater::~CWater(void)
     
 }
 
-void CWater::Load(IResource::SResource _tResource)
+void CWater::Load(const std::string& _sName, IResource::E_THREAD _eThread)
 {     
-    CMesh::SSource* pSource = new CMesh::SSource();
-    pSource->m_iNumVertexes = 4;
-    pSource->m_iNumIndexes  = 6;
+    CMesh::SSourceData* pSourceData = new CMesh::SSourceData();
+    pSourceData->m_iNumVertexes = 4;
+    pSourceData->m_iNumIndexes  = 6;
     
-    pSource->m_pVertexBuffer = new CVertexBuffer(pSource->m_iNumVertexes);
+    pSourceData->m_pVertexBuffer = new CVertexBuffer(pSourceData->m_iNumVertexes);
     
-    glm::vec3* pPositionData = pSource->m_pVertexBuffer->CreateOrReUse_PositionData();
-    glm::vec2* pTexCoordData = pSource->m_pVertexBuffer->CreateOrReUse_TexCoordData();
+    glm::vec3* pPositionData = pSourceData->m_pVertexBuffer->CreateOrReUse_PositionData();
+    glm::vec2* pTexCoordData = pSourceData->m_pVertexBuffer->CreateOrReUse_TexCoordData();
     
-    memset(pPositionData, 0x0, pSource->m_iNumVertexes * sizeof(glm::vec3));
+    memset(pPositionData, 0x0, pSourceData->m_iNumVertexes * sizeof(glm::vec3));
     
     pPositionData[0] = glm::vec3( 0.0f,     m_fWaterHeight,  0.0f );
     pPositionData[1] = glm::vec3( m_iWidth, m_fWaterHeight,  0.0f );
@@ -48,45 +48,40 @@ void CWater::Load(IResource::SResource _tResource)
     pTexCoordData[2] = glm::vec2( 1.0f,  0.0f );
     pTexCoordData[3] = glm::vec2( 1.0f,  1.0f );
     
-    pSource->m_pIndexBuffer = new CIndexBuffer(pSource->m_iNumIndexes);
-    unsigned short* pIBData = pSource->m_pIndexBuffer->Get_Data();
+    pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes);
+    unsigned short* pIndexesBufferData = pSourceData->m_pIndexBuffer->Get_Data();
     
-    pIBData[0] = 0;
-    pIBData[1] = 1;
-    pIBData[2] = 2;
-    pIBData[3] = 0;
-    pIBData[4] = 2;
-    pIBData[5] = 3;
+    pIndexesBufferData[0] = 0;
+    pIndexesBufferData[1] = 1;
+    pIndexesBufferData[2] = 2;
+    pIndexesBufferData[3] = 0;
+    pIndexesBufferData[4] = 2;
+    pIndexesBufferData[5] = 3;
     
-    pSource->m_pVertexBuffer->CommitToRAM();
-    pSource->m_pVertexBuffer->CommitFromRAMToVRAM();
-    pSource->m_pIndexBuffer->CommitFromRAMToVRAM();
+    pSourceData->m_pVertexBuffer->CommitToRAM();
+    pSourceData->m_pVertexBuffer->CommitFromRAMToVRAM();
+    pSourceData->m_pIndexBuffer->CommitFromRAMToVRAM();
     
     m_pMesh = new CMesh();
-    m_pMesh->Set_Source(pSource);
+    m_pMesh->Set_SourceData(pSourceData);
 }
 
-void CWater::OnLoadDone(E_RESOURCE_TYPE _eType, IResource* pResource)
+void CWater::OnResourceLoadDoneEvent(IResource::E_RESOURCE_TYPE _eType, IResource *_pResource)
 {
     switch (_eType)
     {
-        case IResourceLoaderDelegate::E_RESOURCE_TYPE_MESH:
-            std::cout<<"[CModel::OnLoadDone] Resource Mesh loaded : "<<pResource->Get_Name()<<"\n";
+        case IResource::E_RESOURCE_TYPE_MESH:
+            std::cout<<"[CModel::OnLoadDone] Resource Mesh loaded : "<<_pResource->Get_Name()<<"\n";
             break;
-        case IResourceLoaderDelegate::E_RESOURCE_TYPE_TEXTURE:
-            std::cout<<"[CModel::OnLoadDone] Resource Texture loaded : "<<pResource->Get_Name()<<"\n";
+        case IResource::E_RESOURCE_TYPE_TEXTURE:
+            std::cout<<"[CModel::OnLoadDone] Resource Texture loaded : "<<_pResource->Get_Name()<<"\n";
             break;
         default:
             break;
     }
 }
 
-void CWater::OnTouchEvent(void)
-{
-    
-}
-
-void CWater::OnPhysicEventUpdate(glm::vec3 _vPosition, glm::vec3 _vRotation, glm::vec3 _vScale)
+void CWater::OnTouchEvent(ITouchDelegate *_pDelegateOwner)
 {
     
 }
@@ -105,16 +100,18 @@ void CWater::Render(INode::E_RENDER_MODE _eMode)
     {
         case INode::E_RENDER_MODE_SIMPLE:
         {
-            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShader->Get_ProgramHandle());
-            m_pShader->Enable();
-            m_pShader->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD);
-            m_pShader->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
-            m_pShader->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
-            m_pShader->SetVector3(pCamera->Get_Position(), CShader::k_VECTOR_VIEW);
-            if(m_pLight != NULL)
+            if(m_pShaders[_eMode] == NULL)
             {
-                m_pShader->SetVector3(m_pLight->Get_Position(), CShader::k_VECTOR_LIGHT);
+                std::cout<<"[CModel::Render] Shader MODE_SIMPLE is NULL"<<std::endl;
+                return;
             }
+
+            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShaders[_eMode]->Get_ProgramHandle());
+            m_pShaders[_eMode]->Enable();
+            m_pShaders[_eMode]->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD);
+            m_pShaders[_eMode]->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
+            m_pShaders[_eMode]->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
+            m_pShaders[_eMode]->SetVector3(pCamera->Get_Position(), CShader::k_VECTOR_VIEW);
             
             char pStrTextureId[256];
             for(unsigned int i = 0; i < TEXTURES_MAX_COUNT; ++i)
@@ -125,10 +122,10 @@ void CWater::Render(INode::E_RENDER_MODE _eMode)
                 }
                 sprintf(pStrTextureId, "EXT_TEXTURE_0%i",i + 1);
                 std::string k_TEXTURE_ID = pStrTextureId;
-                m_pShader->SetTexture(m_pTextures[i]->Get_Handle(), k_TEXTURE_ID);
+                m_pShaders[_eMode]->SetTexture(m_pTextures[i]->Get_Handle(), k_TEXTURE_ID);
             }
-            m_pShader->SetTexture(CSceneMgr::Instance()->Get_RenderMgr()->Get_OffScreenTexture(CScreenSpacePostMgr::E_OFFSCREEN_MODE_REFLECTION), CShader::k_TEXTURE_01);
-            m_pShader->SetTexture(CSceneMgr::Instance()->Get_RenderMgr()->Get_OffScreenTexture(CScreenSpacePostMgr::E_OFFSCREEN_MODE_REFRACTION), CShader::k_TEXTURE_02);
+            m_pShaders[_eMode]->SetTexture(CSceneMgr::Instance()->Get_RenderMgr()->Get_OffScreenTexture(CScreenSpacePostMgr::E_OFFSCREEN_MODE_REFLECTION), CShader::k_TEXTURE_01);
+            m_pShaders[_eMode]->SetTexture(CSceneMgr::Instance()->Get_RenderMgr()->Get_OffScreenTexture(CScreenSpacePostMgr::E_OFFSCREEN_MODE_REFRACTION), CShader::k_TEXTURE_02);
         }
             break;
         case INode::E_RENDER_MODE_REFLECTION:
@@ -137,11 +134,6 @@ void CWater::Render(INode::E_RENDER_MODE _eMode)
         }
             break;
         case INode::E_RENDER_MODE_REFRACTION:
-        {
-            
-        }
-            break;
-        case INode::E_RENDER_MODE_SHADOW_MAP:
         {
             
         }
@@ -155,7 +147,6 @@ void CWater::Render(INode::E_RENDER_MODE _eMode)
     glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_DataFromVRAM());
     m_pMesh->Get_IndexBufferRef()->Disable();
     m_pMesh->Get_VertexBufferRef()->Disable();
-    
-    m_pShader->Disable();
+    m_pShaders[_eMode]->Disable();
     glEnable(GL_CULL_FACE);
 }

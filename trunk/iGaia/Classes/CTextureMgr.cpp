@@ -12,20 +12,20 @@
 #include "stdlib.h"
 #include <algorithm>
 
-CTextureMgr::CTextureMgr()
+CTextureMgr::CTextureMgr(void)
 {
     CParser_PVR* pParser = new CParser_PVR();
     pParser->Load("layer_02_diffuse.pvr");
     pParser->Commit();
-    m_pStub = static_cast<CTexture::SSource*>(pParser->Get_Source());
+    m_pDefaultTextureSourceData = static_cast<CTexture::SSourceData*>(pParser->Get_SourceData());
 }
 
-CTextureMgr::~CTextureMgr()
+CTextureMgr::~CTextureMgr(void)
 {
     
 }
 
-IResource* CTextureMgr::Load(std::string _sName, IResource::E_THREAD _eThread, IResourceLoaderDelegate* _pResourceLoaderDelegate)
+IResource* CTextureMgr::Load(const std::string& _sName, IResource::E_THREAD _eThread, IDelegate* _pDelegate, const std::map<std::string, std::string>* _lParams)
 {
     CTexture* pTexture = NULL;
     
@@ -39,13 +39,14 @@ IResource* CTextureMgr::Load(std::string _sName, IResource::E_THREAD _eThread, I
         else
         {
             pTexture = new CTexture();
-            pTexture->Set_Source(m_pStub);
+            pTexture->Set_SourceData(m_pDefaultTextureSourceData);
             CParser_PVR* pParser = new CParser_PVR();
             pParser->Load(_sName.c_str());
+            pParser->Set_Params(_lParams);
             if(pParser->Get_Status() != IParser::E_ERROR_STATUS)
             {
                 pParser->Commit();
-                pTexture->Set_Source(pParser->Get_Source());
+                pTexture->Set_SourceData(pParser->Get_SourceData());
             }
             delete pParser;
             m_lContainer[_sName] = pTexture;
@@ -63,12 +64,12 @@ IResource* CTextureMgr::Load(std::string _sName, IResource::E_THREAD _eThread, I
             if(m_lTaskPool.find(_sName) == m_lTaskPool.end())
             {
                 m_lTaskPool[_sName] = new CParser_PVR();
+                m_lTaskPool[_sName]->Set_Params(_lParams);
             }
             pTexture = new CTexture();
-            pTexture->Set_Source(m_pStub);
+            pTexture->Set_SourceData(m_pDefaultTextureSourceData);
             pTexture->Set_Name(_sName);
-            pTexture->Set_ResourceLoaderDelegate(_pResourceLoaderDelegate);
-            pTexture->Set_ResourceType(IResourceLoaderDelegate::E_RESOURCE_TYPE_TEXTURE);
+            pTexture->Add_DelegateOwner(_pDelegate);
             m_lContainer[_sName] = pTexture;
         }
     }
@@ -76,7 +77,7 @@ IResource* CTextureMgr::Load(std::string _sName, IResource::E_THREAD _eThread, I
     return pTexture;
 }
 
-void CTextureMgr::Unload(std::string _sName)
+void CTextureMgr::Unload(const std::string& _sName)
 {
     CTexture* pTexture = NULL;
     if( m_lContainer.find(_sName) != m_lContainer.end())
@@ -84,7 +85,7 @@ void CTextureMgr::Unload(std::string _sName)
         pTexture = static_cast<CTexture*>(m_lContainer[_sName]);
         pTexture->DecRefCount();
         
-        if(pTexture->Get_RefCount() == 0 && pTexture->Get_Handle() != m_pStub->m_hTextureHanlde)
+        if(pTexture->Get_RefCount() == 0 && pTexture->Get_Handle() != m_pDefaultTextureSourceData->m_hTextureHanlde)
         {
             delete pTexture;
             std::map<std::string, IResource*>::iterator pIterator = m_lContainer.find(_sName);

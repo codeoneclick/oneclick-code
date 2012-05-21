@@ -19,18 +19,18 @@ CParticleEmitter::~CParticleEmitter(void)
     
 }
 
-void CParticleEmitter::Load(IResource::SResource _tResource)
+void CParticleEmitter::Load(const std::string& _sName, IResource::E_THREAD _eThread)
 {
-    CMesh::SSource* pSource = new CMesh::SSource();
-    pSource->m_iNumVertexes = m_iNumParticles * 4;
-    pSource->m_iNumIndexes  = m_iNumParticles * 6;
+    CMesh::SSourceData* pSourceData = new CMesh::SSourceData();
+    pSourceData->m_iNumVertexes = m_iNumParticles * 4;
+    pSourceData->m_iNumIndexes  = m_iNumParticles * 6;
     
-    pSource->m_pIndexBuffer = new CIndexBuffer(pSource->m_iNumIndexes);
-    unsigned short* pIBData = pSource->m_pIndexBuffer->Get_Data();
-    pSource->m_pVertexBuffer = new CVertexBuffer(pSource->m_iNumVertexes);
-    glm::vec3*   pPositionData = pSource->m_pVertexBuffer->CreateOrReUse_PositionData();
-    glm::vec2*   pTexCoordData = pSource->m_pVertexBuffer->CreateOrReUse_TexCoordData();
-    glm::u8vec4* pColorData = pSource->m_pVertexBuffer->CreateOrReUse_ColorData();
+    pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes);
+    unsigned short* pIndexBufferData = pSourceData->m_pIndexBuffer->Get_Data();
+    pSourceData->m_pVertexBuffer = new CVertexBuffer(pSourceData->m_iNumVertexes);
+    glm::vec3*   pPositionData = pSourceData->m_pVertexBuffer->CreateOrReUse_PositionData();
+    glm::vec2*   pTexCoordData = pSourceData->m_pVertexBuffer->CreateOrReUse_TexCoordData();
+    glm::u8vec4* pColorData = pSourceData->m_pVertexBuffer->CreateOrReUse_ColorData();
     
     m_pParticles = new SParticle[m_iNumParticles];
     
@@ -60,20 +60,20 @@ void CParticleEmitter::Load(IResource::SResource _tResource)
     
     for(unsigned int index = 0; index < m_iNumParticles; index++)
     {
-        pIBData[index * 6 + 0] = static_cast<unsigned short>(index * 4 + 0);
-        pIBData[index * 6 + 1] = static_cast<unsigned short>(index * 4 + 1);
-        pIBData[index * 6 + 2] = static_cast<unsigned short>(index * 4 + 2);
+        pIndexBufferData[index * 6 + 0] = static_cast<unsigned short>(index * 4 + 0);
+        pIndexBufferData[index * 6 + 1] = static_cast<unsigned short>(index * 4 + 1);
+        pIndexBufferData[index * 6 + 2] = static_cast<unsigned short>(index * 4 + 2);
         
-        pIBData[index * 6 + 3] = static_cast<unsigned short>(index * 4 + 0);
-        pIBData[index * 6 + 4] = static_cast<unsigned short>(index * 4 + 2);
-        pIBData[index * 6 + 5] = static_cast<unsigned short>(index * 4 + 3);
+        pIndexBufferData[index * 6 + 3] = static_cast<unsigned short>(index * 4 + 0);
+        pIndexBufferData[index * 6 + 4] = static_cast<unsigned short>(index * 4 + 2);
+        pIndexBufferData[index * 6 + 5] = static_cast<unsigned short>(index * 4 + 3);
     }
     
-    pSource->m_pVertexBuffer->CommitToRAM();
-    pSource->m_pIndexBuffer->CommitFromRAMToVRAM();
+    pSourceData->m_pVertexBuffer->CommitToRAM();
+    pSourceData->m_pIndexBuffer->CommitFromRAMToVRAM();
     
     m_pMesh = new CMesh();
-    m_pMesh->Set_Source(pSource);
+    m_pMesh->Set_SourceData(pSourceData);
     m_pMesh->Set_Name("emitter");
     
     for(unsigned short i = 0; i < m_iNumParticles; i++)
@@ -85,7 +85,6 @@ void CParticleEmitter::Load(IResource::SResource _tResource)
         vPosition.z = fOffset;
         m_pParticles[i].m_vPosition = vPosition;
     }
-    m_pShaderScreenNormalMap = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
 }
 
 float CParticleEmitter::_Get_RandomFromRange(float _fMin, float _fMax)
@@ -94,33 +93,24 @@ float CParticleEmitter::_Get_RandomFromRange(float _fMin, float _fMax)
     return _fMin + float(fRange * rand() / (RAND_MAX + 1.0f)); 
 }
 
-void CParticleEmitter::Set_Shader(IResource::E_SHADER _eShader)
-{
-    m_pShader = CShaderComposite::Instance()->Get_Shader(_eShader);
-    if(m_pMesh->Get_VertexBufferRef() != NULL)
-    {
-        m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShader->Get_ProgramHandle());
-    }
-}
-
-void CParticleEmitter::OnLoadDone(E_RESOURCE_TYPE _eType, IResource* pResource)
+void CParticleEmitter::OnResourceLoadDoneEvent(IResource::E_RESOURCE_TYPE _eType, IResource *_pResource)
 {
     switch (_eType)
     {
-        case IResourceLoaderDelegate::E_RESOURCE_TYPE_MESH:
-            std::cout<<"[CModel::OnLoadDone] Resource Mesh loaded : "<<pResource->Get_Name()<<"\n";
+        case IResource::E_RESOURCE_TYPE_MESH:
+            std::cout<<"[CModel::OnLoadDone] Resource Mesh loaded : "<<_pResource->Get_Name()<<"\n";
             break;
-        case IResourceLoaderDelegate::E_RESOURCE_TYPE_TEXTURE:
-            std::cout<<"[CModel::OnLoadDone] Resource Texture loaded : "<<pResource->Get_Name()<<"\n";
+        case IResource::E_RESOURCE_TYPE_TEXTURE:
+            std::cout<<"[CModel::OnLoadDone] Resource Texture loaded : "<<_pResource->Get_Name()<<"\n";
             break;
         default:
             break;
     }
 }
 
-void CParticleEmitter::OnTouchEvent(void)
+void CParticleEmitter::OnTouchEvent(ITouchDelegate *_pDelegateOwner)
 {
-
+    
 }
 
 void CParticleEmitter::Update(void)
@@ -189,12 +179,18 @@ void CParticleEmitter::Render(E_RENDER_MODE _eMode)
     {
         case INode::E_RENDER_MODE_SIMPLE:
         {
-            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShader->Get_ProgramHandle());
-            m_pShader->Enable();
-            m_pShader->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD);
-            m_pShader->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
-            m_pShader->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
-            m_pShader->SetVector3(pCamera->Get_Position(), CShader::k_VECTOR_VIEW);
+            if(m_pShaders[_eMode] == NULL)
+            {
+                std::cout<<"[CModel::Render] Shader MODE_SIMPLE is NULL"<<std::endl;
+                return;
+            }
+
+            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShaders[_eMode]->Get_ProgramHandle());
+            m_pShaders[_eMode]->Enable();
+            m_pShaders[_eMode]->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD);
+            m_pShaders[_eMode]->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
+            m_pShaders[_eMode]->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
+            m_pShaders[_eMode]->SetVector3(pCamera->Get_Position(), CShader::k_VECTOR_VIEW);
             
             char pStrTextureId[256];
             for(unsigned int i = 0; i < TEXTURES_MAX_COUNT; ++i)
@@ -205,17 +201,23 @@ void CParticleEmitter::Render(E_RENDER_MODE _eMode)
                 }
                 sprintf(pStrTextureId, "EXT_TEXTURE_0%i",i + 1);
                 std::string k_TEXTURE_ID = pStrTextureId;
-                m_pShader->SetTexture(m_pTextures[i]->Get_Handle(), k_TEXTURE_ID);
+                m_pShaders[_eMode]->SetTexture(m_pTextures[i]->Get_Handle(), k_TEXTURE_ID);
             }
         }
             break;
         case INode::E_RENDER_MODE_SCREEN_NORMAL_MAP:
         {
-            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShaderScreenNormalMap->Get_ProgramHandle());
-            m_pShaderScreenNormalMap->Enable();
-            m_pShaderScreenNormalMap->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD); 
-            m_pShaderScreenNormalMap->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
-            m_pShaderScreenNormalMap->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
+            if(m_pShaders[_eMode] == NULL)
+            {
+                std::cout<<"[CModel::Render] Shader MODE_SCREEN_NORMAL_MAP is NULL"<<std::endl;
+                return;
+            }
+            
+            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShaders[_eMode]->Get_ProgramHandle());
+            m_pShaders[_eMode]->Enable();
+            m_pShaders[_eMode]->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD); 
+            m_pShaders[_eMode]->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
+            m_pShaders[_eMode]->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
             
             char pStrTextureId[256];
             for(unsigned int i = 0; i < TEXTURES_MAX_COUNT; ++i)
@@ -226,7 +228,7 @@ void CParticleEmitter::Render(E_RENDER_MODE _eMode)
                 }
                 sprintf(pStrTextureId, "EXT_TEXTURE_0%i",i + 1);
                 std::string k_TEXTURE_ID = pStrTextureId;
-                m_pShader->SetTexture(m_pTextures[i]->Get_Handle(), k_TEXTURE_ID);
+                m_pShaders[_eMode]->SetTexture(m_pTextures[i]->Get_Handle(), k_TEXTURE_ID);
             }
         }
             break;
@@ -239,7 +241,7 @@ void CParticleEmitter::Render(E_RENDER_MODE _eMode)
     glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_DataFromVRAM());
     m_pMesh->Get_IndexBufferRef()->Disable();
     m_pMesh->Get_VertexBufferRef()->Disable();
-    m_pShader->Disable();
+    m_pShaders[_eMode]->Disable();
     glEnable(GL_CULL_FACE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glDepthMask(GL_TRUE);

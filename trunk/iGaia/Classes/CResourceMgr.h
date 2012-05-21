@@ -11,7 +11,7 @@
 
 #include "CTextureMgr.h"
 #include "CMeshMgr.h"
-#include "IResourceLoaderDelegate.h"
+#include "IDelegate.h"
 
 #include "stdlib.h"
 #include <map>
@@ -29,7 +29,7 @@ public:
     ~CResourceMgr();
     static CResourceMgr* Instance();
     void Update();
-    IResource* Load(const std::string& _sName, IResource::E_MGR _eMgr, IResource::E_THREAD _eThread, IResourceLoaderDelegate* _pResourceLoaderDelegate);
+    IResource* Load(const std::string& _sName, IResource::E_MGR _eMgr, IResource::E_THREAD _eThread, IDelegate* _pDeleagte,const std::map<std::string, std::string>* _lParams = NULL);
     void Unload(IResource* _pResource);
 };
 

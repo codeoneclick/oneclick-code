@@ -206,6 +206,9 @@
 		A12156B2152EDE9C002E1942 /* IResourceLoaderDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A12156B1152EDE9C002E1942 /* IResourceLoaderDelegate.cpp */; };
 		A12D2F2A1541582800955C6B /* CCharacterControllerEnemy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A12D2F281541582800955C6B /* CCharacterControllerEnemy.cpp */; };
 		A13F9EB91568D743009DCBB4 /* CDecal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A13F9EB71568D743009DCBB4 /* CDecal.cpp */; };
+		A13F9EC11568DC64009DCBB4 /* ITouchDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A13F9EBF1568DC64009DCBB4 /* ITouchDelegate.cpp */; };
+		A13F9EC91568ECB3009DCBB4 /* default.pvr in Resources */ = {isa = PBXBuildFile; fileRef = A13F9EC81568ECB3009DCBB4 /* default.pvr */; };
+		A13F9ED1156932FE009DCBB4 /* CDecalMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A13F9ECF156932FC009DCBB4 /* CDecalMgr.cpp */; };
 		A153D5C2153DA3D000FBFFD5 /* CInGameMenu.mm in Sources */ = {isa = PBXBuildFile; fileRef = A153D5C1153DA3D000FBFFD5 /* CInGameMenu.mm */; };
 		A153D5C8153DA75000FBFFD5 /* btn.png in Resources */ = {isa = PBXBuildFile; fileRef = A153D5C7153DA75000FBFFD5 /* btn.png */; };
 		A15E532515386D7100AB572D /* CNavigationMeshMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A15E532315386D7100AB572D /* CNavigationMeshMgr.cpp */; };
@@ -378,6 +381,9 @@
 		A1AF6F7E1549476D00703E2E /* ShaderTextureCube.frag in Sources */ = {isa = PBXBuildFile; fileRef = A1AF6F7C1549476D00703E2E /* ShaderTextureCube.frag */; };
 		A1AF6F7F1549476D00703E2E /* ShaderTextureCube.vert in Sources */ = {isa = PBXBuildFile; fileRef = A1AF6F7D1549476D00703E2E /* ShaderTextureCube.vert */; };
 		A1BAD24815418C4A00B4149D /* CGameAIMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1BAD24615418C4A00B4149D /* CGameAIMgr.cpp */; };
+		A1BE19A1156A2053004C3610 /* ShaderDecal.frag in Sources */ = {isa = PBXBuildFile; fileRef = A1BE199F156A2053004C3610 /* ShaderDecal.frag */; };
+		A1BE19A2156A2053004C3610 /* ShaderDecal.vert in Sources */ = {isa = PBXBuildFile; fileRef = A1BE19A0156A2053004C3610 /* ShaderDecal.vert */; };
+		A1BE19A5156A29D4004C3610 /* shadow.pvr in Resources */ = {isa = PBXBuildFile; fileRef = A1BE19A4156A29D4004C3610 /* shadow.pvr */; };
 		A1C7ADE91547E5010047264E /* fire.pvr in Resources */ = {isa = PBXBuildFile; fileRef = A1C7ADE81547E5010047264E /* fire.pvr */; };
 		A1C7ADEC1548441A0047264E /* Treads.png in Resources */ = {isa = PBXBuildFile; fileRef = A1C7ADEB1548441A0047264E /* Treads.png */; };
 		A1E1ED321563CC01009FD066 /* ShaderShadowPlane.frag in Sources */ = {isa = PBXBuildFile; fileRef = A1E1ED301563CC01009FD066 /* ShaderShadowPlane.frag */; };
@@ -821,6 +827,11 @@
 		A13D5A0F15378A56004C4363 /* ShaderPreNormalDepthUnit.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderPreNormalDepthUnit.vert; path = Shaders/ShaderPreNormalDepthUnit.vert; sourceTree = "<group>"; };
 		A13F9EB71568D743009DCBB4 /* CDecal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CDecal.cpp; sourceTree = "<group>"; };
 		A13F9EB81568D743009DCBB4 /* CDecal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDecal.h; sourceTree = "<group>"; };
+		A13F9EBF1568DC64009DCBB4 /* ITouchDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ITouchDelegate.cpp; sourceTree = "<group>"; };
+		A13F9EC01568DC64009DCBB4 /* ITouchDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITouchDelegate.h; sourceTree = "<group>"; };
+		A13F9EC81568ECB3009DCBB4 /* default.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = default.pvr; path = Resources/Textures/default.pvr; sourceTree = "<group>"; };
+		A13F9ECF156932FC009DCBB4 /* CDecalMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CDecalMgr.cpp; sourceTree = "<group>"; };
+		A13F9ED0156932FD009DCBB4 /* CDecalMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDecalMgr.h; sourceTree = "<group>"; };
 		A153D5C0153DA3D000FBFFD5 /* CInGameMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CInGameMenu.h; sourceTree = "<group>"; };
 		A153D5C1153DA3D000FBFFD5 /* CInGameMenu.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CInGameMenu.mm; sourceTree = "<group>"; };
 		A153D5C7153DA75000FBFFD5 /* btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = btn.png; path = Resources/Textures/btn.png; sourceTree = "<group>"; };
@@ -1204,6 +1215,9 @@
 		A1AF6F7D1549476D00703E2E /* ShaderTextureCube.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderTextureCube.vert; path = Shaders/ShaderTextureCube.vert; sourceTree = "<group>"; };
 		A1BAD24615418C4A00B4149D /* CGameAIMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGameAIMgr.cpp; sourceTree = "<group>"; };
 		A1BAD24715418C4A00B4149D /* CGameAIMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGameAIMgr.h; sourceTree = "<group>"; };
+		A1BE199F156A2053004C3610 /* ShaderDecal.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderDecal.frag; path = Shaders/ShaderDecal.frag; sourceTree = "<group>"; };
+		A1BE19A0156A2053004C3610 /* ShaderDecal.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderDecal.vert; path = Shaders/ShaderDecal.vert; sourceTree = "<group>"; };
+		A1BE19A4156A29D4004C3610 /* shadow.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = shadow.pvr; path = Resources/Textures/shadow.pvr; sourceTree = "<group>"; };
 		A1C7ADE81547E5010047264E /* fire.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = fire.pvr; path = Resources/Textures/fire.pvr; sourceTree = "<group>"; };
 		A1C7ADEB1548441A0047264E /* Treads.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Treads.png; path = Resources/Textures/Treads.png; sourceTree = "<group>"; };
 		A1E1ED301563CC01009FD066 /* ShaderShadowPlane.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderShadowPlane.frag; path = Shaders/ShaderShadowPlane.frag; sourceTree = "<group>"; };
@@ -1420,8 +1434,8 @@
 				93CFC0981463FA2800720766 /* IResourceMgr.cpp */,
 				CE914ED51455DA4400AA2000 /* CTextureMgr.h */,
 				CE914ED61455DA5700AA2000 /* CTextureMgr.cpp */,
-				CE914ED91455DA7800AA2000 /* CResourceMgr.cpp */,
 				CE914ED81455DA6800AA2000 /* CResourceMgr.h */,
+				CE914ED91455DA7800AA2000 /* CResourceMgr.cpp */,
 				CE914ED11455D7E900AA2000 /* CShaderComposite.h */,
 				CE914ED31455DA3200AA2000 /* CShaderComposite.cpp */,
 				93B6BB8D148420ED00E34B78 /* CMeshMgr.h */,
@@ -1443,8 +1457,6 @@
 				CE919217145736FD0021A0DC /* CTexture.cpp */,
 				93B6BB8A14841DC400E34B78 /* CMesh.h */,
 				93B6BB8B14841F0B00E34B78 /* CMesh.cpp */,
-				A12156AF152EDE83002E1942 /* IResourceLoaderDelegate.h */,
-				A12156B1152EDE9C002E1942 /* IResourceLoaderDelegate.cpp */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1467,6 +1479,7 @@
 		933EF3DA14EA4D3D00B7EBCE /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				A13F9EC31568DC82009DCBB4 /* Delegates */,
 				931A76E214DA8905007EDB2F /* CHeightMapSetter.h */,
 				931A76E414DA8914007EDB2F /* CHeightMapSetter.cpp */,
 				93A26E0A148D1E3000D14A0B /* CCommon_IOS.mm */,
@@ -1479,8 +1492,6 @@
 				93E52C1914C6E04900697561 /* CIndexBuffer.cpp */,
 				937367CA144EE2A70051ED8D /* CVertexBuffer.h */,
 				937367CB144EE2B30051ED8D /* CVertexBuffer.cpp */,
-				93A8E1FD14ED123C0014BE15 /* IDelegate.h */,
-				93A8E1FE14ED12520014BE15 /* IDelegate.cpp */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -1506,6 +1517,8 @@
 				937B276B14FF738C00B346E0 /* CScreenSpacePostMgr.cpp */,
 				A1964E8215348FFC002E0816 /* CPhysicMgr.h */,
 				A1964E8315349007002E0816 /* CPhysicMgr.cpp */,
+				A13F9ED0156932FD009DCBB4 /* CDecalMgr.h */,
+				A13F9ECF156932FC009DCBB4 /* CDecalMgr.cpp */,
 			);
 			name = Mgrs;
 			sourceTree = "<group>";
@@ -1561,6 +1574,8 @@
 		935D65061504AE0B00FBE552 /* CustomEffect */ = {
 			isa = PBXGroup;
 			children = (
+				A1BE199F156A2053004C3610 /* ShaderDecal.frag */,
+				A1BE19A0156A2053004C3610 /* ShaderDecal.vert */,
 				A1E1ED301563CC01009FD066 /* ShaderShadowPlane.frag */,
 				A1E1ED311563CC01009FD066 /* ShaderShadowPlane.vert */,
 				A1A3BB1C153D5F2C003AE14D /* ShaderAnimTexCoordUnit.frag */,
@@ -1611,13 +1626,13 @@
 				93F814F714D01E08005D6699 /* CLightPoint.cpp */,
 				93AA2A7814882E0B0073F016 /* ILight.h */,
 				93AA2A79148831D00073F016 /* ILight.cpp */,
+				93CE485E14B458D500C5F031 /* CBoundingBox.h */,
+				93CE485F14B458E000C5F031 /* CBoundingBox.cpp */,
 				9303B33914AC9001005ED3BF /* Cameras */,
 				93B6BB6F14840FC700E34B78 /* INode.h */,
 				93B6BB7114840FD500E34B78 /* INode.cpp */,
 				93243D57147553AB00ED7443 /* CModel.h */,
 				93243D59147553B500ED7443 /* CModel.cpp */,
-				93CE485E14B458D500C5F031 /* CBoundingBox.h */,
-				93CE485F14B458E000C5F031 /* CBoundingBox.cpp */,
 				93AE336314C4446D00F1A516 /* CLandscape.h */,
 				93AE336514C4447C00F1A516 /* CLandscape.cpp */,
 				93CBB21D150E13FD00CB1EFF /* CGrass.h */,
@@ -1914,6 +1929,19 @@
 				93FB5A4B1517CF9800E096A9 /* xstream.hpp */,
 			);
 			path = virtrev;
+			sourceTree = "<group>";
+		};
+		A13F9EC31568DC82009DCBB4 /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				93A8E1FD14ED123C0014BE15 /* IDelegate.h */,
+				93A8E1FE14ED12520014BE15 /* IDelegate.cpp */,
+				A13F9EC01568DC64009DCBB4 /* ITouchDelegate.h */,
+				A13F9EBF1568DC64009DCBB4 /* ITouchDelegate.cpp */,
+				A12156AF152EDE83002E1942 /* IResourceLoaderDelegate.h */,
+				A12156B1152EDE9C002E1942 /* IResourceLoaderDelegate.cpp */,
+			);
+			name = Delegates;
 			sourceTree = "<group>";
 		};
 		A153D5BE153DA3A400FBFFD5 /* GUI */ = {
@@ -2506,6 +2534,8 @@
 		CE91921914573F630021A0DC /* Textures */ = {
 			isa = PBXGroup;
 			children = (
+				A1BE19A4156A29D4004C3610 /* shadow.pvr */,
+				A13F9EC81568ECB3009DCBB4 /* default.pvr */,
 				A10074FD156130A8000E324E /* clouds.pvr */,
 				A1ED8E8815591C6B00B82AE3 /* joystick.png */,
 				A1AF6F731549380400703E2E /* Skybox.pvr */,
@@ -2728,6 +2758,8 @@
 				A1AF6F741549380400703E2E /* Skybox.pvr in Resources */,
 				A1ED8E8915591C6B00B82AE3 /* joystick.png in Resources */,
 				A10074FE156130A8000E324E /* clouds.pvr in Resources */,
+				A13F9EC91568ECB3009DCBB4 /* default.pvr in Resources */,
+				A1BE19A5156A29D4004C3610 /* shadow.pvr in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2971,6 +3003,10 @@
 				A1E1ED321563CC01009FD066 /* ShaderShadowPlane.frag in Sources */,
 				A1E1ED331563CC01009FD066 /* ShaderShadowPlane.vert in Sources */,
 				A13F9EB91568D743009DCBB4 /* CDecal.cpp in Sources */,
+				A13F9EC11568DC64009DCBB4 /* ITouchDelegate.cpp in Sources */,
+				A13F9ED1156932FE009DCBB4 /* CDecalMgr.cpp in Sources */,
+				A1BE19A1156A2053004C3610 /* ShaderDecal.frag in Sources */,
+				A1BE19A2156A2053004C3610 /* ShaderDecal.vert in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
