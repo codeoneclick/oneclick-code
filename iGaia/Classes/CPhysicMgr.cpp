@@ -39,7 +39,7 @@ CPhysicMgr::~CPhysicMgr(void)
 
 void CPhysicMgr::Add_CollisionModel(INode *_pNode, float _fMass, glm::vec3 _vOrigin)
 {
-    btCollisionShape* pModelShape = new btBoxShape(btVector3(1.0f,0.5f,1.0f));
+    /*btCollisionShape* pModelShape = new btBoxShape(btVector3(1.0f,0.5f,1.0f));
 	btCompoundShape* pModelCompound = new btCompoundShape();
 	btTransform mTransform;
 	mTransform.setIdentity();
@@ -56,24 +56,24 @@ void CPhysicMgr::Add_CollisionModel(INode *_pNode, float _fMass, glm::vec3 _vOri
 	pBody->setContactProcessingThreshold(defaultContactProcessingThreshold);
 	m_pDynamicsWorld->addRigidBody(pBody);
     m_lContainer.push_back(_pNode);
-    _pNode->Set_RigidBody(pBody);
+    _pNode->Set_RigidBody(pBody);*/
 }
 
 void CPhysicMgr::Add_CollisionModelAsVehicle(INode *_pNode, float _fMass, glm::vec3 _vOrigin)
 {
-    Add_CollisionModel(_pNode, _fMass, _vOrigin);
+    /*Add_CollisionModel(_pNode, _fMass, _vOrigin);
     btDefaultVehicleRaycaster* pDefaultVehicleRaycaster = new btDefaultVehicleRaycaster(m_pDynamicsWorld);
     btRaycastVehicle::btVehicleTuning pTuning;
     btRaycastVehicle* pRaycastVehicle = new btRaycastVehicle(pTuning, _pNode->Get_RigidBody(), pDefaultVehicleRaycaster);
     _pNode->Get_RigidBody()->setActivationState(DISABLE_DEACTIVATION);
     m_pDynamicsWorld->addVehicle(pRaycastVehicle);
     pRaycastVehicle->setCoordinateSystem(0, 1, 2);
-    _pNode->Set_RaycastVehicle(pRaycastVehicle);
+    _pNode->Set_RaycastVehicle(pRaycastVehicle);*/
 }
 
 void CPhysicMgr::Add_CollisionLandscape(INode *_pNode)
 {
-    btCollisionShape* pLandscapeCollisionShape = new btBoxShape(btVector3(32,8,32));
+    /*btCollisionShape* pLandscapeCollisionShape = new btBoxShape(btVector3(32,8,32));
     
 	int iVertexStride = sizeof(btVector3);
 	int iIndexStride = 3 * sizeof(int);
@@ -131,12 +131,12 @@ void CPhysicMgr::Add_CollisionLandscape(INode *_pNode)
 	pBody->setContactProcessingThreshold(defaultContactProcessingThreshold);
 	m_pDynamicsWorld->addRigidBody(pBody);
     m_lContainer.push_back(_pNode);
-    _pNode->Set_RigidBody(pBody);
+    _pNode->Set_RigidBody(pBody);*/
 }
 
 void CPhysicMgr::Add_WheelToVehicleModel(INode *_pNode, glm::vec3 _vConnectionPoint)
 {
-    std::vector<INode*>::iterator pBeignIterator = m_lContainer.begin();
+    /*std::vector<INode*>::iterator pBeignIterator = m_lContainer.begin();
     std::vector<INode*>::iterator pEndIterator = m_lContainer.end();
     
     while (pBeignIterator != pEndIterator)
@@ -161,12 +161,12 @@ void CPhysicMgr::Add_WheelToVehicleModel(INode *_pNode, glm::vec3 _vConnectionPo
             pWheelInfo.m_rollInfluence = 0.1f;
         }
         ++pBeignIterator;
-    }
+    }*/
 }
 
 void CPhysicMgr::Update(void)
 {
-    m_pDynamicsWorld->stepSimulation(1.0f / 60.f);
+    /*m_pDynamicsWorld->stepSimulation(1.0f / 60.f);
     
     std::vector<INode*>::iterator pBeignIterator = m_lContainer.begin();
     std::vector<INode*>::iterator pEndIterator = m_lContainer.end();
@@ -200,7 +200,7 @@ void CPhysicMgr::Update(void)
         //std::cout << "[CPhysicMgr::Update] m_pTestBody rotation: "<<vRotation.x<<" , "<<vRotation.y<<" , "<<vRotation.z<< std::endl;
         
         ++pBeignIterator;
-    }
+    }*/
 }
 
 

@@ -15,7 +15,7 @@ const glm::vec3 CLightPoint::k_Size = glm::vec3(0.2f, 0.2f, 0.2f);
 
 CLightPoint::CLightPoint()
 {
-    m_vDistanceToLightAt = glm::vec2( 16.0f, 16.0f);
+    /*m_vDistanceToLightAt = glm::vec2( 16.0f, 16.0f);
     
     m_mWorld = glm::mat4x4(1.0f);
     m_pShader = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_COLOR);
@@ -120,7 +120,7 @@ CLightPoint::CLightPoint()
     
     m_pMesh = new CMesh();
     m_pMesh->Set_Source(pSource);
-    m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShader->Get_ProgramHandle());
+    m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShader->Get_ProgramHandle());*/
 }
 
 CLightPoint::~CLightPoint()
@@ -140,7 +140,7 @@ void CLightPoint::Update(void)
 
 void CLightPoint::Render()
 {
-    if(m_bIsVisible)
+    /*if(m_bIsVisible)
     {
         m_pShader->Enable();
         m_pShader->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD);
@@ -153,5 +153,5 @@ void CLightPoint::Render()
         m_pMesh->Get_IndexBufferRef()->Disable();
         m_pMesh->Get_VertexBufferRef()->Disable();
         m_pShader->Disable();
-    }
+    }*/
 }

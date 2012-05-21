@@ -17,15 +17,15 @@
 class CParser_MDL : public IParser
 {
 private:
-    CMesh::SSource* m_pSource;
-    char*           m_pData;
+    CMesh::SSourceData* m_pSourceData;
+    char* m_pData;
 public:
-    CParser_MDL();
-    ~CParser_MDL();
+    CParser_MDL(void);
+    virtual ~CParser_MDL(void);
     
     virtual void  Load(const std::string& _sName);
-    virtual void* Get_Source() { return m_pSource; }
-    virtual void  Commit();
+    virtual void* Get_SourceData() { return m_pSourceData; }
+    virtual void  Commit(void);
 };
 
 

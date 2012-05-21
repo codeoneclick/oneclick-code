@@ -23,14 +23,14 @@ CMesh* CBoundingBox::Get_BoundingBoxMesh(void)
         glm::vec3 m_vMin = glm::vec3( -0.5f, -1.0f, -0.5f);
         glm::vec3 m_vMax = glm::vec3(  0.5f,  0.0f,  0.5f);
 
-        CMesh::SSource* pSource = new CMesh::SSource();
-        pSource->m_iNumVertexes = 8;
-        pSource->m_iNumIndexes  = 24;
+        CMesh::SSourceData* pSourceData = new CMesh::SSourceData();
+        pSourceData->m_iNumVertexes = 8;
+        pSourceData->m_iNumIndexes  = 24;
     
-        pSource->m_pVertexBuffer = new CVertexBuffer(pSource->m_iNumVertexes);
+        pSourceData->m_pVertexBuffer = new CVertexBuffer(pSourceData->m_iNumVertexes);
         
-        glm::vec3* pPositionData = pSource->m_pVertexBuffer->CreateOrReUse_PositionData();
-        glm::u8vec4* pColorData = pSource->m_pVertexBuffer->CreateOrReUse_ColorData();
+        glm::vec3* pPositionData = pSourceData->m_pVertexBuffer->CreateOrReUse_PositionData();
+        glm::u8vec4* pColorData = pSourceData->m_pVertexBuffer->CreateOrReUse_ColorData();
     
         pPositionData[0] = glm::vec3( m_vMin.x,  m_vMin.y, m_vMax.z);
         pPositionData[1] = glm::vec3( m_vMax.x,  m_vMin.y, m_vMax.z);
@@ -42,43 +42,43 @@ CMesh* CBoundingBox::Get_BoundingBoxMesh(void)
         pPositionData[6] = glm::vec3( m_vMax.x,  m_vMax.y,  m_vMin.z);
         pPositionData[7] = glm::vec3( m_vMax.x,  m_vMin.y,  m_vMin.z);
     
-        for(unsigned int i = 0; i < pSource->m_iNumVertexes; i++)
+        for(unsigned int i = 0; i < pSourceData->m_iNumVertexes; i++)
         {
             pColorData[i] = glm::u8vec4(0, 255, 0, 255);
         }
     
-        pSource->m_pIndexBuffer = new CIndexBuffer(pSource->m_iNumIndexes);
-        unsigned short* pIBData = pSource->m_pIndexBuffer->Get_Data();
+        pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes);
+        unsigned short* pIndexBufferData = pSourceData->m_pIndexBuffer->Get_Data();
     
-        pIBData[0] = 0;
-        pIBData[1] = 1;
-        pIBData[2] = 0;
-        pIBData[3] = 3;
-        pIBData[4] = 3;
-        pIBData[5] = 2;
-        pIBData[6] = 1;
-        pIBData[7] = 2;
+        pIndexBufferData[0] = 0;
+        pIndexBufferData[1] = 1;
+        pIndexBufferData[2] = 0;
+        pIndexBufferData[3] = 3;
+        pIndexBufferData[4] = 3;
+        pIndexBufferData[5] = 2;
+        pIndexBufferData[6] = 1;
+        pIndexBufferData[7] = 2;
     
-        pIBData[8] = 4;
-        pIBData[9] = 5;
-        pIBData[10] = 4;
-        pIBData[11] = 7;
-        pIBData[12] = 7;
-        pIBData[13] = 6;
-        pIBData[14] = 5;
-        pIBData[15] = 6;
+        pIndexBufferData[8] = 4;
+        pIndexBufferData[9] = 5;
+        pIndexBufferData[10] = 4;
+        pIndexBufferData[11] = 7;
+        pIndexBufferData[12] = 7;
+        pIndexBufferData[13] = 6;
+        pIndexBufferData[14] = 5;
+        pIndexBufferData[15] = 6;
     
-        pIBData[16] = 0;
-        pIBData[17] = 4;
-        pIBData[18] = 1;
-        pIBData[19] = 7;
-        pIBData[20] = 2;
-        pIBData[21] = 6;
-        pIBData[22] = 3;
-        pIBData[23] = 5;
+        pIndexBufferData[16] = 0;
+        pIndexBufferData[17] = 4;
+        pIndexBufferData[18] = 1;
+        pIndexBufferData[19] = 7;
+        pIndexBufferData[20] = 2;
+        pIndexBufferData[21] = 6;
+        pIndexBufferData[22] = 3;
+        pIndexBufferData[23] = 5;
     
         m_pMesh = new CMesh();
-        m_pMesh->Set_Source(pSource);
+        m_pMesh->Set_SourceData(pSourceData);
         m_pMesh->Get_VertexBufferRef()->CommitToRAM();
         m_pMesh->Get_VertexBufferRef()->CommitFromRAMToVRAM();
         m_pMesh->Get_IndexBufferRef()->CommitFromRAMToVRAM();

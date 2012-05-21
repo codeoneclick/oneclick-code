@@ -36,13 +36,23 @@ protected:
     void _Create_TextureSplatting(void);
     void _Create_TextureDecal(void);
     void _Update_TextureDecal(void);
+    void _CalculateNormals(CVertexBuffer* _pVertexBuffer, CIndexBuffer* _pIndexBuffer);
+    void _CalculateTangentsAndBinormals(CVertexBuffer* _pVertexBuffer, CIndexBuffer* _pIndexBuffer);
+    void _CalculateTriangleBasis(const glm::vec3& E, const glm::vec3& F, const glm::vec3& G, float sE,
+                                 float tE, float sF, float tF, float sG, float tG, glm::vec3& tangentX,
+                                 glm::vec3& tangentY);
+    glm::vec3 _ClosestPointOnLine(const glm::vec3& a, const glm::vec3& b, const glm::vec3& p);
+    glm::vec3 _Ortogonalize(const glm::vec3& v1, const glm::vec3& v2);
     
 public:
     CHeightMapSetter(void);
     ~CHeightMapSetter(void);
     
     CMesh* Load_DataSource(const std::string _sName, int _iWidth, int _iHeight);
-    float* Get_DataSource(void) { return m_pDataSource; }
+    float* Get_SourceData(void) { return m_pDataSource; }
+    
+    int Get_Width(void) { return m_iWidth; }
+    int Get_Height(void) { return m_iHeight; }
     
     float Get_HeightValue(float _x, float _z);
     float Get_HeightValue(glm::vec2 _vPosition);

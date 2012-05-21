@@ -12,11 +12,11 @@
 #include "CModel.h"
 #include "CShadowPlane.h"
 #include "CSceneMgr.h"
-#include "IDelegate.h"
+#include "ITouchDelegate.h"
 #include "CLandscape.h"
 #include <time.h>
 
-class ICharacterController : public IDelegate
+class ICharacterController : public ITouchDelegate
 {
 public:
     enum E_CHARACTER_CONTROLLER_STATE { E_CHARACTER_CONTROLLER_STATE_NONE = 0, E_CHARACTER_CONTROLLER_STATE_INC_MOVE, E_CHARACTER_CONTROLLER_STATE_DEC_MOVE };
@@ -45,13 +45,14 @@ public:
     virtual void Set_Rotation(const glm::vec3& _vRotation) = 0;
     glm::vec3 Get_Position(void) { return m_vPosition; }
     glm::vec3 Get_Rotation(void) { return m_vRotation; }
-    virtual void Set_Light(ILight* _pLight) = 0;
     bool MoveForward(void);
     bool MoveBackward(void);
     bool SteerRight(void);
     bool SteerLeft(void);
     void Set_MoveState(E_CHARACTER_CONTROLLER_MOVE_STATE _eMoveState) { m_eMoveState = _eMoveState; }
     void Set_SteerState(E_CHARACTER_CONTROLLER_STEER_STATE _eSteerState) { m_eSteerState = _eSteerState; }
+    
+    virtual void OnTouchEvent(ITouchDelegate* _pDelegateOwner) = 0;
 };
 
 

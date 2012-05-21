@@ -10,7 +10,7 @@
 
 IResourceLoaderDelegate::IResourceLoaderDelegate(void)
 {
-    
+    m_eDelegateType = E_DELEGATE_TYPE_RESOURCE_LOAD;
 }
 
 IResourceLoaderDelegate::~IResourceLoaderDelegate(void)

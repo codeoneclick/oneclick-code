@@ -12,13 +12,13 @@
 #include <strstream>
 #include "CCommon_IOS.h"
 
-CParser_PVR::CParser_PVR()
+CParser_PVR::CParser_PVR(void)
 {
-    m_pSource = NULL;
+    m_pSourceData = NULL;
     m_pData = NULL;
 }
 
-CParser_PVR::~CParser_PVR()
+CParser_PVR::~CParser_PVR(void)
 {
     if(m_pData != NULL)
     {
@@ -142,11 +142,11 @@ void CParser_PVR::Commit(void)
     int iHeight = m_pDescription->m_vSize.y;
     char* pData = m_pDescription->m_pTextureData;
     
-    m_pSource = new CTexture::SSource();
-    m_pSource->m_iWidth  = m_pDescription->m_vSize.x;
-    m_pSource->m_iHeight = m_pDescription->m_vSize.y;
+    m_pSourceData = new CTexture::SSourceData();
+    m_pSourceData->m_iWidth  = m_pDescription->m_vSize.x;
+    m_pSourceData->m_iHeight = m_pDescription->m_vSize.y;
     
-    glGenTextures( 1, &m_pSource->m_hTextureHanlde );
+    glGenTextures( 1, &m_pSourceData->m_hTextureHanlde );
     
     GLenum iTextureTarget = GL_TEXTURE_2D;
     
@@ -155,11 +155,23 @@ void CParser_PVR::Commit(void)
         iTextureTarget = GL_TEXTURE_CUBE_MAP;
     }
     
-    glBindTexture(iTextureTarget, m_pSource->m_hTextureHanlde );
+    glBindTexture(iTextureTarget, m_pSourceData->m_hTextureHanlde );
     if(iTextureTarget == GL_TEXTURE_2D)
     {
-        glTexParameteri(iTextureTarget, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(iTextureTarget, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        GLint iWrap = GL_REPEAT;
+        if(m_lParams.find("WRAP") != m_lParams.end())
+        {
+            if(m_lParams.find("WRAP")->second == "CLAMP")
+            {
+                iWrap = GL_CLAMP_TO_EDGE;
+            }
+            else if(m_lParams.find("WRAP")->second == "REPEAT")
+            {
+                iWrap = GL_REPEAT;
+            }    
+        }
+        glTexParameteri(iTextureTarget, GL_TEXTURE_WRAP_S, iWrap);
+        glTexParameteri(iTextureTarget, GL_TEXTURE_WRAP_T, iWrap);
         glTexParameteri(iTextureTarget, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
         glTexParameteri(iTextureTarget, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     }
@@ -167,7 +179,6 @@ void CParser_PVR::Commit(void)
     {
         glTexParameteri(iTextureTarget, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(iTextureTarget, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        //glTexParameteri(iTextureTarget, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
         glTexParameteri(iTextureTarget, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(iTextureTarget, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         m_pDescription->m_bCompressed = false;

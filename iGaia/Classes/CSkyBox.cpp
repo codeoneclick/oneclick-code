@@ -19,16 +19,16 @@ CSkyBox::~CSkyBox(void)
     
 }
 
-void CSkyBox::Load(IResource::SResource _tResource)
+void CSkyBox::Load(const std::string& _sName, IResource::E_THREAD _eThread)
 {     
-    CMesh::SSource* pSource = new CMesh::SSource();
-    pSource->m_iNumVertexes = 24;
-    pSource->m_iNumIndexes  = 36;
+    CMesh::SSourceData* pSourceData = new CMesh::SSourceData();
+    pSourceData->m_iNumVertexes = 24;
+    pSourceData->m_iNumIndexes  = 36;
     
-    pSource->m_pVertexBuffer = new CVertexBuffer(pSource->m_iNumVertexes);
+    pSourceData->m_pVertexBuffer = new CVertexBuffer(pSourceData->m_iNumVertexes);
     
-    glm::vec3* pPositionData = pSource->m_pVertexBuffer->CreateOrReUse_PositionData();
-    glm::vec2* pTexCoordData = pSource->m_pVertexBuffer->CreateOrReUse_TexCoordData();
+    glm::vec3* pPositionData = pSourceData->m_pVertexBuffer->CreateOrReUse_PositionData();
+    glm::vec2* pTexCoordData = pSourceData->m_pVertexBuffer->CreateOrReUse_TexCoordData();
     
     glm::vec3 m_vMin = glm::vec3( -1.0f, -1.0f, -1.0f);
     glm::vec3 m_vMax = glm::vec3(  1.0f,  1.0f,  1.0f);
@@ -95,8 +95,8 @@ void CSkyBox::Load(IResource::SResource _tResource)
     pTexCoordData[22] = glm::vec2(1.0f, 1.0f);
     pTexCoordData[23] = glm::vec2(0.0f, 1.0f);
     
-    pSource->m_pIndexBuffer = new CIndexBuffer(pSource->m_iNumIndexes);
-    unsigned short* pIndexBufferData = pSource->m_pIndexBuffer->Get_Data();
+    pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes);
+    unsigned short* pIndexBufferData = pSourceData->m_pIndexBuffer->Get_Data();
     
     // Front
     pIndexBufferData[0] = 0;
@@ -141,30 +141,30 @@ void CSkyBox::Load(IResource::SResource _tResource)
     pIndexBufferData[34] = 22;
     pIndexBufferData[35] = 23;
     
-    pSource->m_pVertexBuffer->CommitToRAM();
-    pSource->m_pVertexBuffer->CommitFromRAMToVRAM();
-    pSource->m_pIndexBuffer->CommitFromRAMToVRAM();
+    pSourceData->m_pVertexBuffer->CommitToRAM();
+    pSourceData->m_pVertexBuffer->CommitFromRAMToVRAM();
+    pSourceData->m_pIndexBuffer->CommitFromRAMToVRAM();
     
     m_pMesh = new CMesh();
-    m_pMesh->Set_Source(pSource);
+    m_pMesh->Set_SourceData(pSourceData);
 }
 
-void CSkyBox::OnLoadDone(E_RESOURCE_TYPE _eType, IResource* pResource)
+void CSkyBox::OnResourceLoadDoneEvent(IResource::E_RESOURCE_TYPE _eType, IResource *_pResource)
 {
     switch (_eType)
     {
-        case IResourceLoaderDelegate::E_RESOURCE_TYPE_MESH:
-            std::cout<<"[CModel::OnLoadDone] Resource Mesh loaded : "<<pResource->Get_Name()<<"\n";
+        case IResource::E_RESOURCE_TYPE_MESH:
+            std::cout<<"[CModel::OnLoadDone] Resource Mesh loaded : "<<_pResource->Get_Name()<<"\n";
             break;
-        case IResourceLoaderDelegate::E_RESOURCE_TYPE_TEXTURE:
-            std::cout<<"[CModel::OnLoadDone] Resource Texture loaded : "<<pResource->Get_Name()<<"\n";
+        case IResource::E_RESOURCE_TYPE_TEXTURE:
+            std::cout<<"[CModel::OnLoadDone] Resource Texture loaded : "<<_pResource->Get_Name()<<"\n";
             break;
         default:
             break;
     }
 }
 
-void CSkyBox::OnTouchEvent(void)
+void CSkyBox::OnTouchEvent(ITouchDelegate *_pDelegateOwner)
 {
     
 }
@@ -184,16 +184,18 @@ void CSkyBox::Render(INode::E_RENDER_MODE _eMode)
     {
         case INode::E_RENDER_MODE_SIMPLE:
         {
-            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShader->Get_ProgramHandle());
-            m_pShader->Enable();
-            m_pShader->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD);
-            m_pShader->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
-            m_pShader->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
-            m_pShader->SetVector3(pCamera->Get_Position(), CShader::k_VECTOR_VIEW);
-            if(m_pLight != NULL)
+            if(m_pShaders[_eMode] == NULL)
             {
-                m_pShader->SetVector3(m_pLight->Get_Position(), CShader::k_VECTOR_LIGHT);
+                std::cout<<"[CModel::Render] Shader MODE_SIMPLE is NULL"<<std::endl;
+                return;
             }
+            
+            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShaders[_eMode]->Get_ProgramHandle());
+            m_pShaders[_eMode]->Enable();
+            m_pShaders[_eMode]->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD);
+            m_pShaders[_eMode]->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
+            m_pShaders[_eMode]->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
+            m_pShaders[_eMode]->SetVector3(pCamera->Get_Position(), CShader::k_VECTOR_VIEW);
             
             char pStrTextureId[256];
             for(unsigned int i = 0; i < TEXTURES_MAX_COUNT; ++i)
@@ -204,9 +206,8 @@ void CSkyBox::Render(INode::E_RENDER_MODE _eMode)
                 }
                 sprintf(pStrTextureId, "EXT_TEXTURE_0%i",i + 1);
                 std::string k_TEXTURE_ID = pStrTextureId;
-                m_pShader->SetTexture(m_pTextures[i]->Get_Handle(), k_TEXTURE_ID);
+                m_pShaders[_eMode]->SetTexture(m_pTextures[i]->Get_Handle(), k_TEXTURE_ID);
             }
-            //m_pShader->SetTextureCube(m_pTextures[0]->Get_Handle(),CShader::k_TEXTURE_CUBE);
         }
             break;
         case INode::E_RENDER_MODE_REFLECTION:
@@ -215,11 +216,6 @@ void CSkyBox::Render(INode::E_RENDER_MODE _eMode)
         }
             break;
         case INode::E_RENDER_MODE_REFRACTION:
-        {
-            
-        }
-            break;
-        case INode::E_RENDER_MODE_SHADOW_MAP:
         {
             
         }
@@ -233,8 +229,7 @@ void CSkyBox::Render(INode::E_RENDER_MODE _eMode)
     glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_DataFromVRAM());
     m_pMesh->Get_IndexBufferRef()->Disable();
     m_pMesh->Get_VertexBufferRef()->Disable();
-    
-    m_pShader->Disable();
+    m_pShaders[_eMode]->Disable();
     glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
 }

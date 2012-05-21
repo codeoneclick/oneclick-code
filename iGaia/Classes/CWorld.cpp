@@ -61,10 +61,6 @@ void CWorld::Load(void)
     static_cast<CLightPoint*>(m_pLight)->Set_Visible(true);
     CSceneMgr::Instance()->Set_GlobalLight(m_pLight);
     
-    m_pCharacterControllerPlayer->Set_Light(m_pLight);
-    m_pLevel->Get_Model()->Set_Light(m_pLight);
-    pCharacterControllerEnemy->Set_Light(m_pLight);
-    
     m_pCamera = CSceneMgr::Instance()->CreateTargetCamera(45.0f, 0.1f, 1024.0f, m_pCharacterControllerPlayer->Get_TargetForCamera());//CSceneMgr::Instance()->CreateFreeCamera(45.0f, 0.1f, 1024.0f);
     CSceneMgr::Instance()->Set_Camera(m_pCamera);
     m_pCamera->Set_DistanceToLookAt(7.0f);

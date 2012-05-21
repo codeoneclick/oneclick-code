@@ -76,6 +76,9 @@
 #include "../Shaders/ShaderShadowPlane.vert"
 #include "../Shaders/ShaderShadowPlane.frag"
 
+#include "../Shaders/ShaderDecal.vert"
+#include "../Shaders/ShaderDecal.frag"
+
 CShaderComposite* CShaderComposite::m_pInstance = NULL;
 
 CShaderComposite::CShaderComposite()
@@ -170,6 +173,10 @@ CShaderComposite::CShaderComposite()
     pData = pParser->Load(ShaderShadowPlaneV, ShaderShadowPlaneF);
     pShader = new CShader(pData.s_pHandle);
     m_lContainer[IResource::E_SHADER_SHADOW_PLANE] = pShader;
+    
+    pData = pParser->Load(ShaderDecalV, ShaderDecalF);
+    pShader = new CShader(pData.s_pHandle);
+    m_lContainer[IResource::E_SHADER_DECAL] = pShader;
 }
 
 CShaderComposite::~CShaderComposite()

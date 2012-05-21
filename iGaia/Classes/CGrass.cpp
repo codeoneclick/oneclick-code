@@ -68,7 +68,7 @@ CGrass::~CGrass(void)
     
 }
 
-void CGrass::Load(IResource::SResource _tResource)
+void CGrass::Load(const std::string &_sName, IResource::E_THREAD _eThread)
 {   
     m_pHeightMapSetter = CSceneMgr::Instance()->Get_HeightMapSetterRef();
     std::vector<glm::vec3> pElementsSourceData;
@@ -92,17 +92,17 @@ void CGrass::Load(IResource::SResource _tResource)
         }
     }
     
-    CMesh::SSource* pSource = new CMesh::SSource();
-    pSource->m_iNumVertexes = pElementsSourceData.size() * k_ELEMENT_NUM_VERTEXES;
-    pSource->m_iNumIndexes  = pElementsSourceData.size() * k_ELEMENT_NUM_INDEXES;
+    CMesh::SSourceData* pSourceData = new CMesh::SSourceData();
+    pSourceData->m_iNumVertexes = pElementsSourceData.size() * k_ELEMENT_NUM_VERTEXES;
+    pSourceData->m_iNumIndexes  = pElementsSourceData.size() * k_ELEMENT_NUM_INDEXES;
     
-    pSource->m_pVertexBuffer = new CVertexBuffer(pSource->m_iNumVertexes);
-    pSource->m_pIndexBuffer = new CIndexBuffer(pSource->m_iNumIndexes);
+    pSourceData->m_pVertexBuffer = new CVertexBuffer(pSourceData->m_iNumVertexes);
+    pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes);
     
-    glm::vec3* pPositionData = pSource->m_pVertexBuffer->CreateOrReUse_PositionData();
-    glm::vec2* pTextCoordData = pSource->m_pVertexBuffer->CreateOrReUse_TexCoordData();
+    glm::vec3* pPositionData = pSourceData->m_pVertexBuffer->CreateOrReUse_PositionData();
+    glm::vec2* pTextCoordData = pSourceData->m_pVertexBuffer->CreateOrReUse_TexCoordData();
     
-    unsigned short* pIndexesBufferData = pSource->m_pIndexBuffer->Get_Data();
+    unsigned short* pIndexesBufferData = pSourceData->m_pIndexBuffer->Get_Data();
     
     glm::vec3* pSingleElementPositionData = m_pSingleElementVertexBuffer->CreateOrReUse_PositionData();
     glm::vec2* pSingleElementTextCoordData = m_pSingleElementVertexBuffer->CreateOrReUse_TexCoordData();
@@ -130,33 +130,28 @@ void CGrass::Load(IResource::SResource _tResource)
     }
     
     m_pMesh = new CMesh();
-    m_pMesh->Set_Source(pSource);
+    m_pMesh->Set_SourceData(pSourceData);
     m_pMesh->Get_VertexBufferRef()->CommitToRAM();
     m_pMesh->Get_VertexBufferRef()->CommitFromRAMToVRAM();
     m_pMesh->Get_IndexBufferRef()->CommitFromRAMToVRAM();
 }
 
-void CGrass::OnLoadDone(E_RESOURCE_TYPE _eType, IResource* pResource)
+void CGrass::OnResourceLoadDoneEvent(IResource::E_RESOURCE_TYPE _eType, IResource *_pResource)
 {
     switch (_eType)
     {
-        case IResourceLoaderDelegate::E_RESOURCE_TYPE_MESH:
-            std::cout<<"[CModel::OnLoadDone] Resource Mesh loaded : "<<pResource->Get_Name()<<"\n";
+        case IResource::E_RESOURCE_TYPE_MESH:
+            std::cout<<"[CModel::OnLoadDone] Resource Mesh loaded : "<<_pResource->Get_Name()<<"\n";
             break;
-        case IResourceLoaderDelegate::E_RESOURCE_TYPE_TEXTURE:
-            std::cout<<"[CModel::OnLoadDone] Resource Texture loaded : "<<pResource->Get_Name()<<"\n";
+        case IResource::E_RESOURCE_TYPE_TEXTURE:
+            std::cout<<"[CModel::OnLoadDone] Resource Texture loaded : "<<_pResource->Get_Name()<<"\n";
             break;
         default:
             break;
     }
 }
 
-void CGrass::OnTouchEvent(void)
-{
-    
-}
-
-void CGrass::OnPhysicEventUpdate(glm::vec3 _vPosition, glm::vec3 _vRotation, glm::vec3 _vScale)
+void CGrass::OnTouchEvent(ITouchDelegate *_pDelegateOwner)
 {
     
 }
@@ -176,17 +171,18 @@ void CGrass::Render(INode::E_RENDER_MODE _eMode)
     {
         case INode::E_RENDER_MODE_SIMPLE:
         {
-            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShader->Get_ProgramHandle());
-            m_pShader->Enable();
-            m_pShader->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD);
-            m_pShader->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
-            m_pShader->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
-            m_pShader->SetVector3(pCamera->Get_Position(), CShader::k_VECTOR_VIEW);
-            
-            if(m_pLight != NULL)
+            if(m_pShaders[_eMode] == NULL)
             {
-                m_pShader->SetVector3(m_pLight->Get_Position(), CShader::k_VECTOR_LIGHT);
+                std::cout<<"[CModel::Render] Shader MODE_SIMPLE is NULL"<<std::endl;
+                return;
             }
+            
+            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShaders[_eMode]->Get_ProgramHandle());
+            m_pShaders[_eMode]->Enable();
+            m_pShaders[_eMode]->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD);
+            m_pShaders[_eMode]->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
+            m_pShaders[_eMode]->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
+            m_pShaders[_eMode]->SetVector3(pCamera->Get_Position(), CShader::k_VECTOR_VIEW);
             
             char pStrTextureId[256];
             for(unsigned int i = 0; i < TEXTURES_MAX_COUNT; ++i)
@@ -197,7 +193,7 @@ void CGrass::Render(INode::E_RENDER_MODE _eMode)
                 }
                 sprintf(pStrTextureId, "EXT_TEXTURE_0%i",i + 1);
                 std::string k_TEXTURE_ID = pStrTextureId;
-                m_pShader->SetTexture(m_pTextures[i]->Get_Handle(), k_TEXTURE_ID);
+                m_pShaders[_eMode]->SetTexture(m_pTextures[i]->Get_Handle(), k_TEXTURE_ID);
             }
         }
             break;
@@ -216,11 +212,6 @@ void CGrass::Render(INode::E_RENDER_MODE _eMode)
             
         }
             break;
-        case INode::E_RENDER_MODE_SHADOW_MAP:
-        {
-            
-        }
-            break;
         default:
             break;
     }
@@ -230,7 +221,7 @@ void CGrass::Render(INode::E_RENDER_MODE _eMode)
     glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_DataFromVRAM());
     m_pMesh->Get_IndexBufferRef()->Disable();
     m_pMesh->Get_VertexBufferRef()->Disable();
-    m_pShader->Disable();
+    m_pShaders[_eMode]->Disable();
     
     glEnable(GL_CULL_FACE);
     glDepthMask(GL_TRUE);

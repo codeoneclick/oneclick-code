@@ -12,12 +12,12 @@
 #include <strstream>
 #include "CCommon_IOS.h"
 
-CParser_MDL::CParser_MDL()
+CParser_MDL::CParser_MDL(void)
 {
     
 }
 
-CParser_MDL::~CParser_MDL()
+CParser_MDL::~CParser_MDL(void)
 {
     
 }
@@ -40,53 +40,53 @@ void CParser_MDL::Load(const std::string& _sName)
     fread(&iNumVertexes, sizeof(int), 1, pFile);
     fread(&iNumIndexes, sizeof(int), 1, pFile);
     
-    m_pSource = new CMesh::SSource();
-    m_pSource->m_iNumVertexes = iNumVertexes;
-    m_pSource->m_iNumIndexes = iNumIndexes;
-    m_pSource->m_pIndexBuffer  = new CIndexBuffer(m_pSource->m_iNumIndexes);
-	m_pSource->m_pData = new CMesh::SVertex[m_pSource->m_iNumVertexes];
+    m_pSourceData = new CMesh::SSourceData();
+    m_pSourceData->m_iNumVertexes = iNumVertexes;
+    m_pSourceData->m_iNumIndexes = iNumIndexes;
+    m_pSourceData->m_pIndexBuffer  = new CIndexBuffer(m_pSourceData->m_iNumIndexes);
+	m_pSourceData->m_pData = new CMesh::SVertex[m_pSourceData->m_iNumVertexes];
     
-    m_pSource->m_vMaxBound = glm::vec3( -4096.0f, -4096.0f, -4096.0f );
-    m_pSource->m_vMinBound = glm::vec3(  4096.0f,  4096.0f,  4096.0f );
+    m_pSourceData->m_vMaxBound = glm::vec3( -4096.0f, -4096.0f, -4096.0f );
+    m_pSourceData->m_vMinBound = glm::vec3(  4096.0f,  4096.0f,  4096.0f );
     
-    for( unsigned int i = 0; i < m_pSource->m_iNumVertexes; ++i)
+    for( unsigned int i = 0; i < m_pSourceData->m_iNumVertexes; ++i)
     {
-        fread(&m_pSource->m_pData[i].m_vPosition,sizeof(glm::vec3), 1, pFile);
-        fread(&m_pSource->m_pData[i].m_vNormal, sizeof(glm::vec3), 1, pFile);
-        fread(&m_pSource->m_pData[i].m_vTangent, sizeof(glm::vec3), 1, pFile);
-        fread(&m_pSource->m_pData[i].m_vTexCoord, sizeof(glm::vec2), 1, pFile);
+        fread(&m_pSourceData->m_pData[i].m_vPosition,sizeof(glm::vec3), 1, pFile);
+        fread(&m_pSourceData->m_pData[i].m_vNormal, sizeof(glm::vec3), 1, pFile);
+        fread(&m_pSourceData->m_pData[i].m_vTangent, sizeof(glm::vec3), 1, pFile);
+        fread(&m_pSourceData->m_pData[i].m_vTexCoord, sizeof(glm::vec2), 1, pFile);
         
         
         //std::cout<<"Position : "<<m_pSource->m_pData[i].m_vPosition.x<<","<<m_pSource->m_pData[i].m_vPosition.y<<","<<m_pSource->m_pData[i].m_vPosition.z<<"\n";
        
-        if(m_pSource->m_pData[i].m_vPosition.x > m_pSource->m_vMaxBound.x)
+        if(m_pSourceData->m_pData[i].m_vPosition.x > m_pSourceData->m_vMaxBound.x)
         {
-            m_pSource->m_vMaxBound.x = m_pSource->m_pData[i].m_vPosition.x;
+            m_pSourceData->m_vMaxBound.x = m_pSourceData->m_pData[i].m_vPosition.x;
         }
         
-        if(m_pSource->m_pData[i].m_vPosition.y > m_pSource->m_vMaxBound.y)
+        if(m_pSourceData->m_pData[i].m_vPosition.y > m_pSourceData->m_vMaxBound.y)
         {
-            m_pSource->m_vMaxBound.y = m_pSource->m_pData[i].m_vPosition.y;
+            m_pSourceData->m_vMaxBound.y = m_pSourceData->m_pData[i].m_vPosition.y;
         }
         
-        if(m_pSource->m_pData[i].m_vPosition.z > m_pSource->m_vMaxBound.z)
+        if(m_pSourceData->m_pData[i].m_vPosition.z > m_pSourceData->m_vMaxBound.z)
         {
-            m_pSource->m_vMaxBound.z = m_pSource->m_pData[i].m_vPosition.z;
+            m_pSourceData->m_vMaxBound.z = m_pSourceData->m_pData[i].m_vPosition.z;
         }
         
-        if(m_pSource->m_pData[i].m_vPosition.x < m_pSource->m_vMinBound.x)
+        if(m_pSourceData->m_pData[i].m_vPosition.x < m_pSourceData->m_vMinBound.x)
         {
-            m_pSource->m_vMinBound.x = m_pSource->m_pData[i].m_vPosition.x;
+            m_pSourceData->m_vMinBound.x = m_pSourceData->m_pData[i].m_vPosition.x;
         }
         
-        if(m_pSource->m_pData[i].m_vPosition.y < m_pSource->m_vMinBound.y)
+        if(m_pSourceData->m_pData[i].m_vPosition.y < m_pSourceData->m_vMinBound.y)
         {
-            m_pSource->m_vMinBound.y = m_pSource->m_pData[i].m_vPosition.y;
+            m_pSourceData->m_vMinBound.y = m_pSourceData->m_pData[i].m_vPosition.y;
         }
         
-        if(m_pSource->m_pData[i].m_vPosition.z < m_pSource->m_vMinBound.z)
+        if(m_pSourceData->m_pData[i].m_vPosition.z < m_pSourceData->m_vMinBound.z)
         {
-            m_pSource->m_vMinBound.z = m_pSource->m_pData[i].m_vPosition.z;
+            m_pSourceData->m_vMinBound.z = m_pSourceData->m_pData[i].m_vPosition.z;
         }
     }
     /*fseek (pFile , 0 , SEEK_CUR);
@@ -98,8 +98,8 @@ void CParser_MDL::Load(const std::string& _sName)
     std::cout<<"[CParser_MDL] Index block size: "<<iBlockSize;*/
     
     //int iNum = 0;
-    unsigned short* pIndexBufferData = m_pSource->m_pIndexBuffer->Get_Data();
-    for(int i = 0; i < m_pSource->m_iNumIndexes; i++)
+    unsigned short* pIndexBufferData = m_pSourceData->m_pIndexBuffer->Get_Data();
+    for(int i = 0; i < m_pSourceData->m_iNumIndexes; i++)
     {
         fread(&pIndexBufferData[i], sizeof(unsigned short),1, pFile);
         //std::cout<<"Index : "<<pIBData[i]<<"  Num : "<<iNum++<<"\n";
@@ -109,20 +109,20 @@ void CParser_MDL::Load(const std::string& _sName)
     m_eStatus = E_DONE_STATUS;
 }
 
-void CParser_MDL::Commit()
+void CParser_MDL::Commit(void)
 {
-    m_pSource->m_pVertexBuffer = new CVertexBuffer(m_pSource->m_iNumVertexes);
-    glm::vec3* pPositionData = m_pSource->m_pVertexBuffer->CreateOrReUse_PositionData();
-    glm::vec2* pTexCoordData = m_pSource->m_pVertexBuffer->CreateOrReUse_TexCoordData();
-    glm::u8vec4* pNormalData = m_pSource->m_pVertexBuffer->CreateOrReUse_NormalData();
-    glm::u8vec4* pTangentData = m_pSource->m_pVertexBuffer->CreateOrReUse_TangentData();
+    m_pSourceData->m_pVertexBuffer = new CVertexBuffer(m_pSourceData->m_iNumVertexes);
+    glm::vec3* pPositionData = m_pSourceData->m_pVertexBuffer->CreateOrReUse_PositionData();
+    glm::vec2* pTexCoordData = m_pSourceData->m_pVertexBuffer->CreateOrReUse_TexCoordData();
+    glm::u8vec4* pNormalData = m_pSourceData->m_pVertexBuffer->CreateOrReUse_NormalData();
+    glm::u8vec4* pTangentData = m_pSourceData->m_pVertexBuffer->CreateOrReUse_TangentData();
     
-    for(unsigned int index = 0; index < m_pSource->m_iNumVertexes; index++)
+    for(unsigned int index = 0; index < m_pSourceData->m_iNumVertexes; index++)
     {
-        pPositionData[index] = m_pSource->m_pData[index].m_vPosition;
-        pTexCoordData[index] = m_pSource->m_pData[index].m_vTexCoord;
-        pNormalData[index] = CVertexBuffer::CompressVEC3(m_pSource->m_pData[index].m_vNormal);
-        pTangentData[index] = CVertexBuffer::CompressVEC3(m_pSource->m_pData[index].m_vTangent);
+        pPositionData[index] = m_pSourceData->m_pData[index].m_vPosition;
+        pTexCoordData[index] = m_pSourceData->m_pData[index].m_vTexCoord;
+        pNormalData[index] = CVertexBuffer::CompressVEC3(m_pSourceData->m_pData[index].m_vNormal);
+        pTangentData[index] = CVertexBuffer::CompressVEC3(m_pSourceData->m_pData[index].m_vTangent);
     }
 }
 

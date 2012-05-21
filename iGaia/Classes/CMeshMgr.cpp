@@ -9,20 +9,20 @@
 #include <iostream>
 #include "CMeshMgr.h"
 
-CMeshMgr::CMeshMgr()
+CMeshMgr::CMeshMgr(void)
 {
     CParser_MDL* pParser = new CParser_MDL();
     pParser->Load("player.mdl");
     pParser->Commit();
-    m_pStub = static_cast<CMesh::SSource*>(pParser->Get_Source());
+    m_pDefaultMeshSourceData = static_cast<CMesh::SSourceData*>(pParser->Get_SourceData());
 }
 
-CMeshMgr::~CMeshMgr()
+CMeshMgr::~CMeshMgr(void)
 {
     
 }
 
-IResource* CMeshMgr::Load(std::string _sName, IResource::E_THREAD _eThread, IResourceLoaderDelegate* _pResourceLoaderDelegate)
+IResource* CMeshMgr::Load(const std::string& _sName, IResource::E_THREAD _eThread, IDelegate* _pDelegate, const std::map<std::string, std::string>* _lParams)
 {
     CMesh* pMesh = NULL;
     
@@ -36,14 +36,14 @@ IResource* CMeshMgr::Load(std::string _sName, IResource::E_THREAD _eThread, IRes
         else
         {
             pMesh = new CMesh();
-            pMesh->Set_Source(m_pStub);
+            pMesh->Set_SourceData(m_pDefaultMeshSourceData);
             
             IParser* pParser = new CParser_MDL();
             
             pParser->Load(_sName.c_str());
             if(pParser->Get_Status() != IParser::E_ERROR_STATUS)
             {
-                pMesh->Set_Source(pParser->Get_Source());
+                pMesh->Set_SourceData(pParser->Get_SourceData());
             }
             delete pParser;
         }
@@ -62,10 +62,9 @@ IResource* CMeshMgr::Load(std::string _sName, IResource::E_THREAD _eThread, IRes
                 m_lTaskPool[_sName] = new CParser_MDL();
             }
             pMesh = new CMesh();
-            pMesh->Set_Source(m_pStub);
+            pMesh->Set_SourceData(m_pDefaultMeshSourceData);
             pMesh->Set_Name(_sName);
-            pMesh->Set_ResourceLoaderDelegate(_pResourceLoaderDelegate);
-            pMesh->Set_ResourceType(IResourceLoaderDelegate::E_RESOURCE_TYPE_MESH);
+            pMesh->Add_DelegateOwner(_pDelegate);
             m_lContainer[_sName] = pMesh;
         }
     }
@@ -73,7 +72,7 @@ IResource* CMeshMgr::Load(std::string _sName, IResource::E_THREAD _eThread, IRes
     return pMesh;
 }
 
-void CMeshMgr::Unload(std::string _sName)
+void CMeshMgr::Unload(const std::string& _sName)
 {
     CMesh* pMesh = NULL;
     if( m_lContainer.find(_sName) != m_lContainer.end())

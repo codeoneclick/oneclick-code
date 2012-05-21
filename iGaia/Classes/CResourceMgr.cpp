@@ -58,9 +58,9 @@ void CResourceMgr::Update()
     }
 }
 
-IResource* CResourceMgr::Load(const std::string& _sName, IResource::E_MGR _eMgr, IResource::E_THREAD _eThread, IResourceLoaderDelegate* _pResourceLoaderDelegate)
+IResource* CResourceMgr::Load(const std::string& _sName, IResource::E_MGR _eMgr, IResource::E_THREAD _eThread, IDelegate* _pDelegate, const std::map<std::string, std::string>* _lParams)
 {
-    return m_lMgr[_eMgr]->Load(_sName, _eThread, _pResourceLoaderDelegate);
+    return m_lMgr[_eMgr]->Load(_sName, _eThread, _pDelegate, _lParams);
 }
 
 void CResourceMgr::Unload(IResource *_pResource)

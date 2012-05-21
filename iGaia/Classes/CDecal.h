@@ -12,20 +12,19 @@
 #include <iostream>
 #include "INode.h"
 
-class CDecal
+class CDecal : public INode
 {
 protected:
 public:
     CDecal(void);
     ~CDecal(void);
     
-    virtual void Load(IResource::SResource _tResource);
-    virtual void OnLoadDone(E_RESOURCE_TYPE _eType, IResource* pResource);
-    virtual void OnTouchEvent(void);
-    virtual void OnPhysicEventUpdate(glm::vec3 _vPosition, glm::vec3 _vRotation, glm::vec3 _vScale) { }
-    virtual void Create_BoundingBox(void) { }
+    virtual void Load(const std::string& _sName, IResource::E_THREAD _eThread);
     virtual void Update(void);
     virtual void Render(E_RENDER_MODE _eMode);
+    
+    virtual void OnTouchEvent(ITouchDelegate* _pDelegateOwner);
+    virtual void OnResourceLoadDoneEvent(IResource::E_RESOURCE_TYPE _eType, IResource* _pResource);
 };
 
 #endif /* defined(__iGaia__CDecal__) */

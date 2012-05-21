@@ -13,7 +13,7 @@ CMeshComposite* CMeshComposite::m_pInstance = NULL;
 
 CMeshComposite::CMeshComposite()
 {
-    CMesh::SSource* pSource = new CMesh::SSource();
+    /*CMesh::SSource* pSource = new CMesh::SSource();
     pSource->m_iNumVertexes = 4;
     pSource->m_iNumIndexes  = 6;
     
@@ -180,7 +180,7 @@ CMeshComposite::CMeshComposite()
     pMesh->Set_Source(pSource);
     pMesh->Set_Name("cube");
     
-    m_lContainer[IResource::E_STANDART_MODEL_CUBE] = pMesh;
+    m_lContainer[IResource::E_STANDART_MODEL_CUBE] = pMesh;*/
 }
 
 CMeshComposite::~CMeshComposite()

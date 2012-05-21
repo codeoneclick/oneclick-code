@@ -30,20 +30,18 @@ INode::INode()
     m_pTextures[6] = NULL;
     m_pTextures[7] = NULL;
     
-    m_pShader = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_TEXTURE);
+    m_pShaders = new CShader*[E_RENDER_MODE_MAX];
+    m_pShaders[E_RENDER_MODE_SIMPLE] = NULL;
+    m_pShaders[E_RENDER_MODE_REFLECTION] = NULL;
+    m_pShaders[E_RENDER_MODE_REFRACTION] = NULL;
+    m_pShaders[E_RENDER_MODE_SCREEN_NORMAL_MAP] = NULL;
     
     m_pBoundingBox = NULL;
-    
-    m_pLight = NULL;
     
     m_bIsRenderModeReflectionEnable = false;
     m_bIsRenderModeRefractionEnable = false;
     m_bIsRenderModeScreenNormalEnable = false;
     m_bIsRenderModeShadowMapEnable = false;
-    
-    m_pRigidBody = NULL;
-    m_pRaycastVehicle = NULL;
-
 }
 
 INode::~INode()
@@ -51,7 +49,7 @@ INode::~INode()
     
 }
 
-void INode::Set_Texture(CTexture *_pTexture, int index)
+void INode::Set_Texture(CTexture *_pTexture, int index, CTexture::E_WRAP_MODE _eWrap)
 {
     if( index >= TEXTURES_MAX_COUNT )
     {
@@ -66,7 +64,7 @@ void INode::Set_Texture(CTexture *_pTexture, int index)
     m_pTextures[index] = _pTexture;
 }
 
-void INode::Set_Texture(const std::string &_sName, int index, IResource::E_THREAD _eThread)
+void INode::Set_Texture(const std::string &_sName, int index, CTexture::E_WRAP_MODE _eWrap, IResource::E_THREAD _eThread)
 {
     if( index >= TEXTURES_MAX_COUNT )
     {
@@ -77,17 +75,21 @@ void INode::Set_Texture(const std::string &_sName, int index, IResource::E_THREA
     {
         // TODO: unload
     }
-    
-    m_pTextures[index] = static_cast<CTexture*>(CResourceMgr::Instance()->Load(_sName, IResource::E_MGR_TEXTURE, _eThread, this));;
+    std::map<std::string, std::string> lParams;
+    if(_eWrap == CTexture::E_WRAP_MODE_REPEAT)
+    {
+        lParams["WRAP"] = "REPEAT";
+    }
+    else if(_eWrap == CTexture::E_WRAP_MODE_CLAMP)
+    {
+        lParams["WRAP"] = "CLAMP";
+    }
+    m_pTextures[index] = static_cast<CTexture*>(CResourceMgr::Instance()->Load(_sName, IResource::E_MGR_TEXTURE, _eThread, this, &lParams));
 }
 
-void INode::Set_Shader(IResource::E_SHADER _eShader)
+void INode::Set_Shader(INode::E_RENDER_MODE _eRenderMode, IResource::E_SHADER _eShader)
 {
-    m_pShader = CShaderComposite::Instance()->Get_Shader(_eShader);
-    if(m_pMesh->Get_VertexBufferRef() != NULL)
-    {
-        m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShader->Get_ProgramHandle());
-    }
+    m_pShaders[_eRenderMode] = CShaderComposite::Instance()->Get_Shader(_eShader);
 }
 
 void INode::Create_BoundingBox()
@@ -107,27 +109,27 @@ void INode::Remove_BoundingBox()
     m_pBoundingBox = NULL;
 }
 
-void INode::Add_Delegate(IDelegate *_pDelegate)
+void INode::Add_DelegateOwner(IDelegate *_pDelegateOwner)
 {
-    for(size_t index = 0; index< m_lDelegates.size(); index++)
+    for(size_t index = 0; index< m_lDelegateOwners.size(); index++)
     {
-        if(m_lDelegates[index] == _pDelegate)
+        if(m_lDelegateOwners[index] == _pDelegateOwner)
         {
             return;
         }
     }
-    m_lDelegates.push_back(_pDelegate);
+    m_lDelegateOwners.push_back(_pDelegateOwner);
 }
 
-void INode::Remove_Delegate(IDelegate *_pDelegate)
+void INode::Remove_DelegateOwner(IDelegate *_pDelegateOwner)
 {
-    std::vector<IDelegate*>::iterator pBeginIterator = m_lDelegates.begin();
-    std::vector<IDelegate*>::iterator pEndIterator = m_lDelegates.end();
+    std::vector<IDelegate*>::iterator pBeginIterator = m_lDelegateOwners.begin();
+    std::vector<IDelegate*>::iterator pEndIterator = m_lDelegateOwners.end();
     while (pBeginIterator != pEndIterator)
     {
-        if((*pBeginIterator) == _pDelegate)
+        if((*pBeginIterator) == _pDelegateOwner)
         {
-            m_lDelegates.erase(pBeginIterator);
+            m_lDelegateOwners.erase(pBeginIterator);
             return;
         }
         ++pBeginIterator;

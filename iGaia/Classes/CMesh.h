@@ -14,8 +14,6 @@
 #include "IResource.h"
 #include <vector>
 
-#define MAX_BONE_WEIGHTS 8
-
 class CMesh : public IResource
 {   
 public:
@@ -27,7 +25,7 @@ public:
         glm::vec3    m_vTangent;
     };
     
-    struct SSource
+    struct SSourceData
     {
         SVertex*        m_pData;
         CVertexBuffer*  m_pVertexBuffer;
@@ -38,17 +36,17 @@ public:
         glm::vec3       m_vMinBound;
     }; 
 protected:
-    SSource* m_pSource;
+    SSourceData* m_pSourceData;
 public:
     CMesh(void);
     ~CMesh(void);
-    CVertexBuffer*  Get_VertexBufferRef(void) { return m_pSource->m_pVertexBuffer; }
-    CIndexBuffer*   Get_IndexBufferRef(void) { return m_pSource->m_pIndexBuffer; }
-    virtual void Set_Source(void* _pSource);
-    int Get_NumIndexes(void) { return m_pSource->m_iNumIndexes; }
-    int Get_NumVertexes(void) { return m_pSource->m_iNumVertexes; }
-    glm::vec3 Get_MaxBound(void) { return m_pSource->m_vMaxBound; }
-    glm::vec3 Get_MinBound(void) { return m_pSource->m_vMinBound; }
+    CVertexBuffer*  Get_VertexBufferRef(void) { return m_pSourceData->m_pVertexBuffer; }
+    CIndexBuffer*   Get_IndexBufferRef(void) { return m_pSourceData->m_pIndexBuffer; }
+    virtual void Set_SourceData(void* _pSourceData);
+    int Get_NumIndexes(void) { return m_pSourceData->m_iNumIndexes; }
+    int Get_NumVertexes(void) { return m_pSourceData->m_iNumVertexes; }
+    glm::vec3 Get_MaxBound(void) { return m_pSourceData->m_vMaxBound; }
+    glm::vec3 Get_MinBound(void) { return m_pSourceData->m_vMinBound; }
 };
 
 #endif

@@ -12,14 +12,16 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-class INode;
 class IDelegate
 {
 public:
+    enum E_DELEGATE_TYPE { E_DELEGATE_TYPE_NONE = 0, E_DELEGATE_TYPE_RESOURCE_LOAD, E_DELEGATE_TYPE_TOUCH };
+protected:
+    E_DELEGATE_TYPE m_eDelegateType;
+public:
     IDelegate(void);
-    ~IDelegate(void);
-    virtual void OnTouchEvent(IDelegate* _pDelegateOwner) = 0;
-    virtual void OnPhysicEvent(INode* _pNode, glm::vec3 _vPosition, glm::vec3 _vRotation, glm::vec3 _vScale) = 0;
+    virtual ~IDelegate(void);
+    E_DELEGATE_TYPE Get_DelegateType(void) { return m_eDelegateType; }
 };
 
 #endif

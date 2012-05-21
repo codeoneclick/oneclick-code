@@ -11,6 +11,7 @@
 
 #include "stdlib.h"
 #include <string.h>
+#include <map>
 
 class IParser
 {
@@ -24,13 +25,15 @@ public:
     };
 protected:
     E_STATUS m_eStatus;
+    std::map<std::string, std::string> m_lParams;
 public:
-    IParser();
-    virtual ~IParser();
+    IParser(void);
+    virtual ~IParser(void);
     virtual void  Load(const std::string& _sName) = 0;
-    virtual void* Get_Source() = 0;
-    virtual void  Commit() = 0;
-    inline E_STATUS Get_Status() { return m_eStatus; }
+    virtual void* Get_SourceData(void) = 0;
+    virtual void  Set_Params(const std::map<std::string, std::string>* _lParams) { m_lParams = (*_lParams); }
+    virtual void  Commit(void) = 0;
+    inline E_STATUS Get_Status(void) { return m_eStatus; }
 };
 
 #endif
