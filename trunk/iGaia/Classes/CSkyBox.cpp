@@ -96,7 +96,7 @@ void CSkyBox::Load(const std::string& _sName, IResource::E_THREAD _eThread)
     pTexCoordData[23] = glm::vec2(0.0f, 1.0f);
     
     pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes);
-    unsigned short* pIndexBufferData = pSourceData->m_pIndexBuffer->Get_Data();
+    unsigned short* pIndexBufferData = pSourceData->m_pIndexBuffer->Get_SourceData();
     
     // Front
     pIndexBufferData[0] = 0;
@@ -175,7 +175,9 @@ void CSkyBox::Update()
 }
 
 void CSkyBox::Render(INode::E_RENDER_MODE _eMode)
-{      
+{
+    INode::Render(_eMode);
+    
     glDisable(GL_CULL_FACE);
     glDisable(GL_DEPTH_TEST);
     ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
@@ -226,7 +228,7 @@ void CSkyBox::Render(INode::E_RENDER_MODE _eMode)
     
     m_pMesh->Get_VertexBufferRef()->Enable();
     m_pMesh->Get_IndexBufferRef()->Enable();
-    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_DataFromVRAM());
+    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_SourceDataFromVRAM());
     m_pMesh->Get_IndexBufferRef()->Disable();
     m_pMesh->Get_VertexBufferRef()->Disable();
     m_pShaders[_eMode]->Disable();

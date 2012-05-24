@@ -20,6 +20,7 @@
 #include "CNavigationMeshMgr.h"
 #include "CParticleMgr.h"
 #include "CDecalMgr.h"
+#include "CFrustum.h"
 
 class CSceneMgr
 {
@@ -34,6 +35,7 @@ private:
     INode* m_pLandscape;
     INode* m_pWater;
     ICamera* m_pCamera;
+    CFrustum* m_pFrustum;
     
     CRenderMgr* m_pRenderMgr;
     CCollisionMgr* m_pCollisionMgr;
@@ -57,7 +59,8 @@ public:
     
     ILight* Get_Light(ILight::E_LIGHT_MODE _eMode, unsigned int _iIndex = 0);
     ICamera* Get_Camera(void) { return m_pCamera; }
-    void Set_Camera(ICamera* _pCamera) { m_pCamera = _pCamera; }
+    void Set_Camera(ICamera* _pCamera);
+    CFrustum* Get_Frustum(void) { return m_pFrustum; }
     
     void Set_GlobalLight(ILight* _pLight) { m_pGlobalLight = _pLight; }
     ILight* Get_GlobalLight(void) { return m_pGlobalLight; }

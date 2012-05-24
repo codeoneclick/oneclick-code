@@ -82,7 +82,15 @@ void CModel::Update()
 }
 
 void CModel::Render(E_RENDER_MODE _eMode)
-{     
+{
+    
+    if(CSceneMgr::Instance()->Get_Frustum()->IsPointInFrustum(m_vPosition) == CFrustum::E_FRUSTUM_RESULT_OUTSIDE)
+    {
+        return;
+    }
+    
+    INode::Render(_eMode);
+    
     glCullFace(GL_BACK);
     ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
     ILight* pLight = CSceneMgr::Instance()->Get_GlobalLight();
@@ -162,7 +170,7 @@ void CModel::Render(E_RENDER_MODE _eMode)
     
     m_pMesh->Get_VertexBufferRef()->Enable();
     m_pMesh->Get_IndexBufferRef()->Enable();
-    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_DataFromVRAM());
+    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_SourceDataFromVRAM());
     m_pMesh->Get_IndexBufferRef()->Disable();
     m_pMesh->Get_VertexBufferRef()->Disable();
     m_pShaders[_eMode]->Disable();

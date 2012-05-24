@@ -116,13 +116,13 @@ void main(void)
     lowp float normalDelta = dot(diagonalDelta.xyz, vec3(1.0));
     lowp float depthDelta = diagonalDelta.w;
     
-    normalDelta = clamp((normalDelta - 0.2), 0.0, 1.0);
+    normalDelta = clamp((normalDelta - 0.5), 0.0, 1.0);
     //depthDelta = clamp((depthDelta - 0.04) * 10.0, 0.0, 1.0);
     
     lowp float edgeAmount = clamp(normalDelta, 0.0, 1.0);
     
     lowp vec4 vOriginalColor = texture2D(EXT_TEXTURE_02, OUT_TexCoord);
-    if(vOriginalColor.r > 0.85 && vOriginalColor.g > 0.85 && vOriginalColor.b > 0.85)
+    if(vOriginalColor.r > 0.75 && vOriginalColor.g > 0.75 && vOriginalColor.b > 0.75)
     {
         edgeAmount = 0.0;
     }

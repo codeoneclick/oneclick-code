@@ -7,6 +7,8 @@
 //
 
 #include <iostream>
+#include <mach/mach.h>
+#include <mach/mach_time.h>
 #include "CSceneMgr.h"
 #include "CModel.h"
 #include "CLandscape.h"
@@ -34,6 +36,7 @@ CSceneMgr::CSceneMgr(void)
     m_pSkyBox = NULL;
     m_pLandscape = NULL;
     m_pWater = NULL;
+    m_pFrustum = NULL;
     
     m_pRenderMgr = new CRenderMgr();
     m_pCollisionMgr = new CCollisionMgr();
@@ -118,6 +121,14 @@ void CSceneMgr::RemoveEventListener(INode *_pNode, CEventMgr::E_EVENT _eEvent)
     CEventMgr::Instance()->RemoveEventListener(_pNode, _eEvent);
 }
 
+void CSceneMgr::Set_Camera(ICamera* _pCamera)
+{
+    m_pCamera = _pCamera;
+    m_pFrustum = new CFrustum();
+    m_pFrustum->Set_InternalParams(m_pCamera->Get_FovY(), m_pCamera->Get_AspectRatio(), m_pCamera->Get_NearPlane(), m_pCamera->Get_FarPlane());
+    m_pFrustum->Set_CameraRef(m_pCamera);
+}
+
 ICamera* CSceneMgr::CreateFreeCamera(float _fFov, float _fNearPlane, float _fFarPlane)
 {
     CCameraFree* pCamera = new CCameraFree();
@@ -199,6 +210,11 @@ void CSceneMgr::Update()
     if(m_pCamera != NULL)
     {
         m_pCamera->Update();
+    }
+    
+    if(m_pFrustum != NULL)
+    {
+        m_pFrustum->Update();
     }
     
     std::map<unsigned int, ILight*>::iterator pMapBIterator = m_lLights.begin();
@@ -396,13 +412,46 @@ void CSceneMgr::_DrawShadowMapStep(void)
     m_pRenderMgr->EndDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_SHADOW_MAP);*/
 }
 
+uint64_t getTickCount(void)
+{
+    static mach_timebase_info_data_t sTimebaseInfo;
+    uint64_t machTime = mach_absolute_time();
+    
+    if (sTimebaseInfo.denom == 0 )
+    {
+        (void)mach_timebase_info(&sTimebaseInfo);
+    }
+    
+    uint64_t millis = ((machTime / 1000000) * sTimebaseInfo.numer) / sTimebaseInfo.denom;
+    return millis;
+}
+
+
 void CSceneMgr::Render(void)
-{   _DrawReflectionStep();
+{
+    CWindow::g_iTrianglesPerFrame = 0;
+    
+    _DrawReflectionStep();
     _DrawRefractionStep();
     _DrawShadowMapStep();
     _DrawSimpleStep();
     _DrawScreenNormalMapStep();
     m_pRenderMgr->DrawResult();
+    
+    std::cout<<"[CSceneMgr::Render] Triangles Per Frame : "<<CWindow::g_iTrianglesPerFrame<<std::endl;
+    
+    static int iLastTime = 0;
+    int iCurrentTime = getTickCount();
+    ++CWindow::g_iFramesPerSecond;
+    
+    if(iCurrentTime - iLastTime > 1000 )
+    {
+        iLastTime = iCurrentTime;
+        
+        std::cout<<"[CSceneMgr::Render] Frames Per Second : "<<CWindow::g_iFramesPerSecond<<std::endl;
+        CWindow::g_iFramesPerSecond = 0;
+    }
+
 }
 
 

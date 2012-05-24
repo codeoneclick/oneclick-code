@@ -44,6 +44,8 @@ CVertexBuffer::CVertexBuffer(unsigned int _iNumVertexes)
     
     m_pSource = NULL;
     
+    m_eMode = GL_STATIC_DRAW;
+    
     m_pData.m_pPositionData = NULL;
     m_pData.m_pTexCoordData = NULL;
     m_pData.m_pNormalData   = NULL;
@@ -325,10 +327,57 @@ void CVertexBuffer::Disable()
 
 void CVertexBuffer::CommitFromRAMToVRAM(void)
 {
-    glGenBuffers(1, &m_iHandle);
-    glBindBuffer(GL_ARRAY_BUFFER, m_iHandle);
-    glBufferData(GL_ARRAY_BUFFER, m_iSize * m_iNumVertexes, m_pSource, GL_STATIC_DRAW);
-    m_bIsInVRAM = true;
+    if(m_bIsInVRAM)
+    {
+        /*glBindBuffer(GL_ARRAY_BUFFER, m_iHandle);
+        char* pSourceDataVRAM = static_cast<char*>(glMapBufferOES(GL_ARRAY_BUFFER, GL_WRITE_ONLY_OES));
+        if(pSourceDataVRAM != NULL)
+        {
+            memcpy(pSourceDataVRAM, m_pSource,  m_iSize * m_iNumVertexes);
+        }
+        glUnmapBufferOES(GL_ARRAY_BUFFER);*/
+        
+        glBindBuffer(GL_ARRAY_BUFFER, m_iHandle);
+        glBufferData(GL_ARRAY_BUFFER, m_iSize * m_iNumVertexes, m_pSource, m_eMode);
+    }
+    else
+    {
+        glGenBuffers(1, &m_iHandle);
+        glBindBuffer(GL_ARRAY_BUFFER, m_iHandle);
+        glBufferData(GL_ARRAY_BUFFER, m_iSize * m_iNumVertexes, NULL, m_eMode);
+        glBufferSubData(GL_ARRAY_BUFFER, NULL, m_iSize * m_iNumVertexes, m_pSource);
+        m_bIsInVRAM = true;
+    }
 }
+
+void CVertexBuffer::Lock(void)
+{
+    if(!m_bIsInVRAM)
+    {
+        return;
+    }
+}
+
+void CVertexBuffer::Unlock(void)
+{
+    if(!m_bIsInVRAM)
+    {
+        return;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

@@ -202,6 +202,8 @@
 		A10074FE156130A8000E324E /* clouds.pvr in Resources */ = {isa = PBXBuildFile; fileRef = A10074FD156130A8000E324E /* clouds.pvr */; };
 		A11AA3CA1547218800113AA3 /* smoke.pvr in Resources */ = {isa = PBXBuildFile; fileRef = A11AA3C91547218800113AA3 /* smoke.pvr */; };
 		A11D250A1562975C00BA650F /* CShadowPlane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A11D25081562975A00BA650F /* CShadowPlane.cpp */; };
+		A1201A8D156B75710099EE9D /* ShaderGrass.frag in Sources */ = {isa = PBXBuildFile; fileRef = A1201A8B156B75710099EE9D /* ShaderGrass.frag */; };
+		A1201A8E156B75710099EE9D /* ShaderGrass.vert in Sources */ = {isa = PBXBuildFile; fileRef = A1201A8C156B75710099EE9D /* ShaderGrass.vert */; };
 		A1207C6D153C02C60021A0C7 /* model_01.pvr in Resources */ = {isa = PBXBuildFile; fileRef = A1207C6C153C02C60021A0C7 /* model_01.pvr */; };
 		A12156B2152EDE9C002E1942 /* IResourceLoaderDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A12156B1152EDE9C002E1942 /* IResourceLoaderDelegate.cpp */; };
 		A12D2F2A1541582800955C6B /* CCharacterControllerEnemy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A12D2F281541582800955C6B /* CCharacterControllerEnemy.cpp */; };
@@ -390,6 +392,7 @@
 		A1E1ED331563CC01009FD066 /* ShaderShadowPlane.vert in Sources */ = {isa = PBXBuildFile; fileRef = A1E1ED311563CC01009FD066 /* ShaderShadowPlane.vert */; };
 		A1ED8E8915591C6B00B82AE3 /* joystick.png in Resources */ = {isa = PBXBuildFile; fileRef = A1ED8E8815591C6B00B82AE3 /* joystick.png */; };
 		A1F690471557CCAC00A2920A /* CJoystick.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1F690461557CCAC00A2920A /* CJoystick.mm */; };
+		A1FFAA8B156CBAE500B01ECB /* CFrustum.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1FFAA89156CBAE500B01ECB /* CFrustum.cpp */; };
 		CE8DFA9314587B0C00AE7288 /* CGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE8DFA9214587B0C00AE7288 /* CGame.cpp */; };
 		CE914ED41455DA3200AA2000 /* CShaderComposite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE914ED31455DA3200AA2000 /* CShaderComposite.cpp */; };
 		CE914ED71455DA5700AA2000 /* CTextureMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE914ED61455DA5700AA2000 /* CTextureMgr.cpp */; };
@@ -818,6 +821,8 @@
 		A11AA3C91547218800113AA3 /* smoke.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = smoke.pvr; path = Resources/Textures/smoke.pvr; sourceTree = "<group>"; };
 		A11D25081562975A00BA650F /* CShadowPlane.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CShadowPlane.cpp; sourceTree = "<group>"; };
 		A11D25091562975B00BA650F /* CShadowPlane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CShadowPlane.h; sourceTree = "<group>"; };
+		A1201A8B156B75710099EE9D /* ShaderGrass.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderGrass.frag; path = Shaders/ShaderGrass.frag; sourceTree = "<group>"; };
+		A1201A8C156B75710099EE9D /* ShaderGrass.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderGrass.vert; path = Shaders/ShaderGrass.vert; sourceTree = "<group>"; };
 		A1207C6C153C02C60021A0C7 /* model_01.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = model_01.pvr; path = Resources/Textures/model_01.pvr; sourceTree = "<group>"; };
 		A12156AF152EDE83002E1942 /* IResourceLoaderDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IResourceLoaderDelegate.h; sourceTree = "<group>"; };
 		A12156B1152EDE9C002E1942 /* IResourceLoaderDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IResourceLoaderDelegate.cpp; sourceTree = "<group>"; };
@@ -1225,6 +1230,8 @@
 		A1ED8E8815591C6B00B82AE3 /* joystick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = joystick.png; path = Resources/Textures/joystick.png; sourceTree = "<group>"; };
 		A1F690451557CCAC00A2920A /* CJoystick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CJoystick.h; sourceTree = "<group>"; };
 		A1F690461557CCAC00A2920A /* CJoystick.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CJoystick.mm; sourceTree = "<group>"; };
+		A1FFAA89156CBAE500B01ECB /* CFrustum.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CFrustum.cpp; sourceTree = "<group>"; };
+		A1FFAA8A156CBAE500B01ECB /* CFrustum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFrustum.h; sourceTree = "<group>"; };
 		CE8DFA9114587AFD00AE7288 /* CGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGame.h; sourceTree = "<group>"; };
 		CE8DFA9214587B0C00AE7288 /* CGame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGame.cpp; sourceTree = "<group>"; };
 		CE914ED11455D7E900AA2000 /* CShaderComposite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CShaderComposite.h; sourceTree = "<group>"; };
@@ -1492,6 +1499,8 @@
 				93E52C1914C6E04900697561 /* CIndexBuffer.cpp */,
 				937367CA144EE2A70051ED8D /* CVertexBuffer.h */,
 				937367CB144EE2B30051ED8D /* CVertexBuffer.cpp */,
+				A1FFAA8A156CBAE500B01ECB /* CFrustum.h */,
+				A1FFAA89156CBAE500B01ECB /* CFrustum.cpp */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -1574,6 +1583,8 @@
 		935D65061504AE0B00FBE552 /* CustomEffect */ = {
 			isa = PBXGroup;
 			children = (
+				A1201A8B156B75710099EE9D /* ShaderGrass.frag */,
+				A1201A8C156B75710099EE9D /* ShaderGrass.vert */,
 				A1BE199F156A2053004C3610 /* ShaderDecal.frag */,
 				A1BE19A0156A2053004C3610 /* ShaderDecal.vert */,
 				A1E1ED301563CC01009FD066 /* ShaderShadowPlane.frag */,
@@ -3007,6 +3018,9 @@
 				A13F9ED1156932FE009DCBB4 /* CDecalMgr.cpp in Sources */,
 				A1BE19A1156A2053004C3610 /* ShaderDecal.frag in Sources */,
 				A1BE19A2156A2053004C3610 /* ShaderDecal.vert in Sources */,
+				A1201A8D156B75710099EE9D /* ShaderGrass.frag in Sources */,
+				A1201A8E156B75710099EE9D /* ShaderGrass.vert in Sources */,
+				A1FFAA8B156CBAE500B01ECB /* CFrustum.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3048,6 +3062,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iGaia_Prefix.pch;
 				GCC_THUMB_SUPPORT = NO;

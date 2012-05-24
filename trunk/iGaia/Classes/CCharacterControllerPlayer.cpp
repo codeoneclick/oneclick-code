@@ -245,7 +245,7 @@ void CCharacterControllerPlayer::Update(void)
         case ICharacterController::E_CHARACTER_CONTROLLER_MOVE_STATE_NONE:
             if(pCamera->Get_FovY() > 45.0f)
             {
-                pCamera->Set_FovY(pCamera->Get_FovY() - 0.66f);
+                //pCamera->Set_FovY(pCamera->Get_FovY() - 0.66f);
             }
             break;
         case ICharacterController::E_CHARACTER_CONTROLLER_MOVE_STATE_FORWARD:
@@ -257,7 +257,7 @@ void CCharacterControllerPlayer::Update(void)
             
             if(pCamera->Get_FovY() < 55.0f)
             {
-                pCamera->Set_FovY(pCamera->Get_FovY() + 0.33f);
+                //pCamera->Set_FovY(pCamera->Get_FovY() + 0.33f);
             }
             
             break;
@@ -270,7 +270,7 @@ void CCharacterControllerPlayer::Update(void)
             
             if(pCamera->Get_FovY() > 45.0f)
             {
-                pCamera->Set_FovY(pCamera->Get_FovY() - 0.99f);
+                //pCamera->Set_FovY(pCamera->Get_FovY() - 0.99f);
             }
             
             break;

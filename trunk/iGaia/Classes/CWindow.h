@@ -25,7 +25,10 @@ public:
     static int Get_OffScreenWidth()  { return m_iOffScreenWidth;  }
     static int Get_OffScreenHeight() { return m_iOffScreenHeight; }
     static void Set_OffScreenWidth(int _iWidth)   { m_iOffScreenWidth  = _iWidth;  }
-    static void Set_OffScreenHeight(int _iHeight) { m_iOffScreenHeight = _iHeight; } 
+    static void Set_OffScreenHeight(int _iHeight) { m_iOffScreenHeight = _iHeight; }
+    
+    static unsigned int g_iTrianglesPerFrame;
+    static unsigned int g_iFramesPerSecond;
 };
 
 #endif

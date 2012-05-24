@@ -21,8 +21,8 @@ CDecal::~CDecal(void)
 
 void CDecal::Load(const std::string& _sName, IResource::E_THREAD _eThread)
 {
-    unsigned int iWidth = 5;
-    unsigned int iHeight = 5;
+    unsigned int iWidth = 7;
+    unsigned int iHeight = 7;
     CMesh::SSourceData* pSourceData = new CMesh::SSourceData();
     pSourceData->m_iNumVertexes = iWidth * iHeight;
     pSourceData->m_iNumIndexes  = (iWidth - 1) * (iHeight - 1) * 6;
@@ -47,7 +47,7 @@ void CDecal::Load(const std::string& _sName, IResource::E_THREAD _eThread)
     }
     
     pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes);
-    unsigned short* pIndexBufferData = pSourceData->m_pIndexBuffer->Get_Data();
+    unsigned short* pIndexBufferData = pSourceData->m_pIndexBuffer->Get_SourceData();
     index = 0;
     for(unsigned int i = 0; i < (iWidth - 1); ++i)
     {
@@ -69,7 +69,9 @@ void CDecal::Load(const std::string& _sName, IResource::E_THREAD _eThread)
         }
     }
     
+    pSourceData->m_pVertexBuffer->Set_Mode(GL_STREAM_DRAW);
     pSourceData->m_pVertexBuffer->CommitToRAM();
+    pSourceData->m_pVertexBuffer->CommitFromRAMToVRAM();
     pSourceData->m_pIndexBuffer->CommitFromRAMToVRAM();
     
     m_pMesh = new CMesh();
@@ -119,9 +121,9 @@ void CDecal::Update()
     glm::vec3* pPositionData = m_pMesh->Get_VertexBufferRef()->CreateOrReUse_PositionData();
     int iHeightmapWidth = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_Width();
     int iHeightmapHeight = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_Height();
-    for(int i = -2; i <= 2; ++i)
+    for(int i = -3; i <= 3; ++i)
     {
-        for(int j = -2; j <= 2; ++j)
+        for(int j = -3; j <= 3; ++j)
         {
             if((iRoundPositionX + i) < 0 || (iRoundPositionZ + j) < 0 || (iRoundPositionX + i) >= iHeightmapWidth || (iRoundPositionZ +j) > iHeightmapHeight)
             {
@@ -140,10 +142,13 @@ void CDecal::Update()
     }
     
     m_pMesh->Get_VertexBufferRef()->CommitToRAM();
+    m_pMesh->Get_VertexBufferRef()->CommitFromRAMToVRAM();
 }
 
 void CDecal::Render(INode::E_RENDER_MODE _eMode)
-{      
+{
+    INode::Render(_eMode);
+    
     ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
     //glDisable(GL_DEPTH_TEST);
     switch (_eMode)
@@ -194,7 +199,7 @@ void CDecal::Render(INode::E_RENDER_MODE _eMode)
     
     m_pMesh->Get_VertexBufferRef()->Enable();
     m_pMesh->Get_IndexBufferRef()->Enable();
-    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_DataFromVRAM());
+    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_SourceDataFromVRAM());
     m_pMesh->Get_IndexBufferRef()->Disable();
     m_pMesh->Get_VertexBufferRef()->Disable();
     m_pShaders[_eMode] ->Disable();

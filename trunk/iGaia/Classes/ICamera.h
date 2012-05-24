@@ -50,12 +50,15 @@ public:
     void Set_FovY(float _fFovY);
     float Get_FovY(void) { return m_fFovY; }
     void Set_FarPlane(float _fFarPlane) { m_fFarPlane = _fFarPlane; }
+    float Get_FarPlane(void) { return m_fFarPlane; }
     void Set_NearPlane(float _fNearPlane) { m_fNearPlane = _fNearPlane; }
+    float Get_NearPlane(void) { return m_fNearPlane; }
     void Set_DistanceToLookAt(float _fDistanceToLookAt) { m_fDistanceToLookAt = _fDistanceToLookAt; }
     float Get_DistanceToLookAt(void) { return m_fDistanceToLookAt; }
     void Set_HeightFromLookAt(float _fHeightFromLookAt) { m_fHeightFromLookAt = _fHeightFromLookAt; }
     float Get_HeightFromLookAt(void) { return m_fHeightFromLookAt; }
-    void Set_AspectRation(float _fAspectRation) { m_fAspectRatio = _fAspectRation; }
+    void Set_AspectRatio(float _fAspectRatio) { m_fAspectRatio = _fAspectRatio; }
+    float Get_AspectRatio(void) { return m_fAspectRatio; }
     
     virtual glm::vec3 Get_Position(void) { return m_vPosition; }
     virtual void Set_Position(const glm::vec3& _vPosition) { m_vPosition = _vPosition; }

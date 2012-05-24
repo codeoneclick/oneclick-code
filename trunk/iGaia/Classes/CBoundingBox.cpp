@@ -48,7 +48,7 @@ CMesh* CBoundingBox::Get_BoundingBoxMesh(void)
         }
     
         pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes);
-        unsigned short* pIndexBufferData = pSourceData->m_pIndexBuffer->Get_Data();
+        unsigned short* pIndexBufferData = pSourceData->m_pIndexBuffer->Get_SourceData();
     
         pIndexBufferData[0] = 0;
         pIndexBufferData[1] = 1;
@@ -127,7 +127,7 @@ void CBoundingBox::Render()
     m_pShader->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
     m_pMesh->Get_VertexBufferRef()->Enable();
     m_pMesh->Get_IndexBufferRef()->Enable();
-    glDrawElements(GL_LINES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_DataFromVRAM());
+    glDrawElements(GL_LINES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_SourceDataFromVRAM());
     m_pMesh->Get_IndexBufferRef()->Disable();
     m_pMesh->Get_VertexBufferRef()->Disable();
     m_pShader->Disable();
