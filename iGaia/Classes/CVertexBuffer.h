@@ -33,7 +33,7 @@ struct SVertex
     glm::u8vec4*  m_pColorData;
 };
 
-private:
+protected:
     GLuint m_iHandle;
     GLuint m_iShaderHandle;
     unsigned int m_iNumVertexes;
@@ -48,6 +48,7 @@ private:
     
     SVertex m_pData;
     char* m_pSource;
+    GLenum m_eMode;
 public:
     CVertexBuffer(unsigned int _iNumVertexes);
     ~CVertexBuffer(void);
@@ -65,6 +66,8 @@ public:
     glm::u8vec4*  CreateOrReUse_NormalData(void);
     glm::u8vec4*  CreateOrReUse_TangentData(void);
     glm::u8vec4*  CreateOrReUse_ColorData(void);
+
+    void Set_Mode(GLenum _eMode) { m_eMode = _eMode; }
     
     void Set_ShaderRef(GLuint _iShaderHandler);
     GLuint Get_ShaderRef(void) { return m_iShaderHandle; }

@@ -259,7 +259,7 @@ void CNavigationMeshMgr::Set_NavigationModel(INode *_pNode)
     
     size_t iNumIndexes = _pNode->Get_Mesh()->Get_NumIndexes();
     size_t iNumTriangles = iNumIndexes / 3;
-    unsigned short* pNodeIndexesData = _pNode->Get_Mesh()->Get_IndexBufferRef()->Get_Data();
+    unsigned short* pNodeIndexesData = _pNode->Get_Mesh()->Get_IndexBufferRef()->Get_SourceData();
     int* pNavigationMeshIndexesData = new int[iNumIndexes] ;
     
     for(size_t index =0; index < iNumIndexes; index+= 3)

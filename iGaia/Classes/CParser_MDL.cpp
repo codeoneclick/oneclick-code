@@ -98,7 +98,7 @@ void CParser_MDL::Load(const std::string& _sName)
     std::cout<<"[CParser_MDL] Index block size: "<<iBlockSize;*/
     
     //int iNum = 0;
-    unsigned short* pIndexBufferData = m_pSourceData->m_pIndexBuffer->Get_Data();
+    unsigned short* pIndexBufferData = m_pSourceData->m_pIndexBuffer->Get_SourceData();
     for(int i = 0; i < m_pSourceData->m_iNumIndexes; i++)
     {
         fread(&pIndexBufferData[i], sizeof(unsigned short),1, pFile);

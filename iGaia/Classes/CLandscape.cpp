@@ -14,8 +14,8 @@
 
 CLandscape::CLandscape(void)
 {
-    m_iWidth = 32;
-    m_iHeight = 32;
+    m_iWidth = 64;
+    m_iHeight = 64;
     m_pHeightMapSetter = NULL;
 }
 
@@ -41,6 +41,161 @@ void CLandscape::Load(const std::string& _sName, IResource::E_THREAD _eThread)
     m_pMesh->Get_VertexBufferRef()->CommitToRAM();
     m_pMesh->Get_VertexBufferRef()->CommitFromRAMToVRAM();
     m_pMesh->Get_IndexBufferRef()->CommitFromRAMToVRAM();
+    
+    unsigned short* pIndexBufferData = m_pMesh->Get_IndexBufferRef()->Get_SourceData();
+    unsigned int iNumIndexes = m_pMesh->Get_IndexBufferRef()->Get_NumIndexes();
+    
+    m_pTempIndexBufferDataSource = new unsigned short[iNumIndexes];
+    m_pTempNumIndexes = 0;
+    
+    m_pQuadTree = new SQuadTreeNode();
+    m_pQuadTree->m_pParent = NULL;
+    m_pQuadTree->m_vMaxBound = glm::vec3(m_iWidth, 64.0f, m_iHeight);
+    m_pQuadTree->m_vMinBound = glm::vec3(0.0f, -64.0f, 0.0f);
+    m_pQuadTree->m_iNumIndexes = iNumIndexes;
+    m_pQuadTree->m_pIndexes = static_cast<unsigned short*>(malloc(m_pQuadTree->m_iNumIndexes * sizeof(unsigned short)));
+    m_pQuadTree->m_pIndexesId = static_cast<unsigned short*>(malloc(m_pQuadTree->m_iNumIndexes * sizeof(unsigned short)));
+    memcpy(m_pQuadTree->m_pIndexes , pIndexBufferData, m_pQuadTree->m_iNumIndexes * sizeof(unsigned short));
+    memset(m_pQuadTree->m_pIndexesId, 0x0, m_pQuadTree->m_iNumIndexes * sizeof(unsigned short));
+    _CreateQuadTreeNode(m_iWidth, m_pQuadTree);
+}
+
+void CLandscape::_CreateQuadTreeNode(int _iSize, CLandscape::SQuadTreeNode *_pParentNode)
+{
+    static int iRecurseCount = 0;
+    iRecurseCount++;
+    std::cout<<"[CLandscape::_CreateQuadTreeNode] Recurse Count : "<<iRecurseCount<<std::endl;
+    if(_iSize <= 2)
+    {
+        return;
+    }
+    
+    _pParentNode->m_pChilds = new SQuadTreeNode*[k_MAX_QUADTREE_CHILDREN];
+    
+    _pParentNode->m_pChilds[0] = new SQuadTreeNode();
+    _pParentNode->m_pChilds[0]->m_pParent = _pParentNode;
+    _pParentNode->m_pChilds[0]->m_vMinBound = glm::vec3(_pParentNode->m_vMinBound.x, _pParentNode->m_vMinBound.y, _pParentNode->m_vMinBound.z );
+    _pParentNode->m_pChilds[0]->m_vMaxBound = glm::vec3(_pParentNode->m_vMaxBound.x / 2.0f, _pParentNode->m_vMaxBound.y, _pParentNode->m_vMaxBound.z / 2.0f);
+    _CreateIndexBufferRefForQuadTreeNode(_pParentNode->m_pChilds[0]);
+    
+    _pParentNode->m_pChilds[1] = new SQuadTreeNode();
+    _pParentNode->m_pChilds[1]->m_pParent = _pParentNode;
+    _pParentNode->m_pChilds[1]->m_vMinBound = glm::vec3(_pParentNode->m_vMinBound.x, _pParentNode->m_vMinBound.y, _pParentNode->m_vMaxBound.z / 2.0f);
+    _pParentNode->m_pChilds[1]->m_vMaxBound = glm::vec3(_pParentNode->m_vMaxBound.x / 2.0f, _pParentNode->m_vMaxBound.y, _pParentNode->m_vMaxBound.z);
+    _CreateIndexBufferRefForQuadTreeNode(_pParentNode->m_pChilds[1]);
+    
+    _pParentNode->m_pChilds[2] = new SQuadTreeNode();
+    _pParentNode->m_pChilds[2]->m_pParent = _pParentNode;
+    _pParentNode->m_pChilds[2]->m_vMinBound = glm::vec3(_pParentNode->m_vMaxBound.x / 2.0f, _pParentNode->m_vMinBound.y, _pParentNode->m_vMaxBound.z / 2.0f);
+    _pParentNode->m_pChilds[2]->m_vMaxBound = glm::vec3(_pParentNode->m_vMaxBound.x, _pParentNode->m_vMaxBound.y, _pParentNode->m_vMaxBound.z);
+    _CreateIndexBufferRefForQuadTreeNode(_pParentNode->m_pChilds[2]);
+    
+    _pParentNode->m_pChilds[3] = new SQuadTreeNode();
+    _pParentNode->m_pChilds[3]->m_pParent = _pParentNode;
+    _pParentNode->m_pChilds[3]->m_vMinBound = glm::vec3(_pParentNode->m_vMaxBound.x / 2.0f, _pParentNode->m_vMinBound.y, _pParentNode->m_vMinBound.z);
+    _pParentNode->m_pChilds[3]->m_vMaxBound = glm::vec3(_pParentNode->m_vMaxBound.x, _pParentNode->m_vMaxBound.y, _pParentNode->m_vMaxBound.z / 2.0f);
+    _CreateIndexBufferRefForQuadTreeNode(_pParentNode->m_pChilds[3]);
+    
+    _CreateQuadTreeNode(_iSize / 2, _pParentNode->m_pChilds[0]);
+    _CreateQuadTreeNode(_iSize / 2, _pParentNode->m_pChilds[1]);
+    _CreateQuadTreeNode(_iSize / 2, _pParentNode->m_pChilds[2]);
+    _CreateQuadTreeNode(_iSize / 2, _pParentNode->m_pChilds[3]);
+}
+
+void CLandscape::_CreateIndexBufferRefForQuadTreeNode(CLandscape::SQuadTreeNode *_pNode)
+{
+    glm::vec3* pPositionData = m_pMesh->Get_VertexBufferRef()->CreateOrReUse_PositionData();
+    unsigned int iParentNumIndexes = _pNode->m_pParent->m_iNumIndexes;
+    _pNode->m_pIndexes = static_cast<unsigned short*>(malloc(sizeof(unsigned short)));
+    float fMaxY = -4096.0f;
+    float fMinY =  4096.0f;
+    
+    unsigned int iQuadTreeNodeId = 0;
+    CLandscape::SQuadTreeNode* pParentNode = _pNode->m_pParent;
+    while (pParentNode != NULL)
+    {
+        iQuadTreeNodeId++;
+        pParentNode = pParentNode->m_pParent;
+    }
+    
+    for(unsigned int i = 0; i < iParentNumIndexes; i += 3)
+    {
+        if(_IsPointInBoundBox(pPositionData[_pNode->m_pParent->m_pIndexes[i + 0]], _pNode->m_vMinBound, _pNode->m_vMaxBound) ||
+           _IsPointInBoundBox(pPositionData[_pNode->m_pParent->m_pIndexes[i + 1]], _pNode->m_vMinBound, _pNode->m_vMaxBound) ||
+           _IsPointInBoundBox(pPositionData[_pNode->m_pParent->m_pIndexes[i + 2]], _pNode->m_vMinBound, _pNode->m_vMaxBound))
+        {
+            
+            if(_pNode->m_pParent->m_pIndexesId[i + 0] == iQuadTreeNodeId ||
+               _pNode->m_pParent->m_pIndexesId[i + 1] == iQuadTreeNodeId ||
+               _pNode->m_pParent->m_pIndexesId[i + 2] == iQuadTreeNodeId)
+            {
+                continue;
+            }
+            
+            _pNode->m_iNumIndexes += 3;
+            _pNode->m_pIndexes = static_cast<unsigned short*>(realloc(_pNode->m_pIndexes, sizeof(unsigned short) * _pNode->m_iNumIndexes));
+            
+            _pNode->m_pIndexes[_pNode->m_iNumIndexes - 3] = _pNode->m_pParent->m_pIndexes[i + 0];
+            _pNode->m_pIndexes[_pNode->m_iNumIndexes - 2] = _pNode->m_pParent->m_pIndexes[i + 1];
+            _pNode->m_pIndexes[_pNode->m_iNumIndexes - 1] = _pNode->m_pParent->m_pIndexes[i + 2];
+            
+            _pNode->m_pParent->m_pIndexesId[i + 0] = iQuadTreeNodeId;
+            _pNode->m_pParent->m_pIndexesId[i + 1] = iQuadTreeNodeId;
+            _pNode->m_pParent->m_pIndexesId[i + 2] = iQuadTreeNodeId;
+            
+            if(pPositionData[_pNode->m_pParent->m_pIndexes[i + 0]].y > fMaxY)
+            {
+                fMaxY = pPositionData[_pNode->m_pParent->m_pIndexes[i + 0]].y;
+            }
+            
+            if(pPositionData[_pNode->m_pParent->m_pIndexes[i + 1]].y > fMaxY)
+            {
+                fMaxY = pPositionData[_pNode->m_pParent->m_pIndexes[i + 1]].y;
+            }
+            
+            if(pPositionData[_pNode->m_pParent->m_pIndexes[i + 2]].y > fMaxY)
+            {
+                fMaxY = pPositionData[_pNode->m_pParent->m_pIndexes[i + 2]].y;
+            }
+            
+            
+            if(pPositionData[_pNode->m_pParent->m_pIndexes[i + 0]].y < fMinY)
+            {
+                fMinY = pPositionData[_pNode->m_pParent->m_pIndexes[i + 0]].y;
+            }
+            
+            if(pPositionData[_pNode->m_pParent->m_pIndexes[i + 1]].y < fMinY)
+            {
+                fMinY = pPositionData[_pNode->m_pParent->m_pIndexes[i + 1]].y;
+            }
+            
+            if(pPositionData[_pNode->m_pParent->m_pIndexes[i + 2]].y < fMinY)
+            {
+                fMinY = pPositionData[_pNode->m_pParent->m_pIndexes[i + 2]].y;
+            }
+        }
+    }
+    _pNode->m_pIndexesId = static_cast<unsigned short*>(malloc(_pNode->m_iNumIndexes * sizeof(unsigned short)));
+    memset(_pNode->m_pIndexesId, 0x0, _pNode->m_iNumIndexes * sizeof(unsigned short));
+    _pNode->m_vMaxBound.y = fMaxY;
+    _pNode->m_vMinBound.y = fMinY;
+}
+
+bool CLandscape::_IsPointInBoundBox(glm::vec3 _vPoint, glm::vec3 _vMinBound, glm::vec3 _vMaxBound)
+{
+    if(_vPoint.x >= _vMinBound.x &&
+       _vPoint.x <= _vMaxBound.x &&
+       _vPoint.y >= _vMinBound.y &&
+       _vPoint.y <= _vMaxBound.y &&
+       _vPoint.z >= _vMinBound.z &&
+       _vPoint.z <= _vMaxBound.z)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 void CLandscape::OnResourceLoadDoneEvent(IResource::E_RESOURCE_TYPE _eType, IResource *_pResource)
@@ -83,13 +238,58 @@ void CLandscape::OnTouchEvent(ITouchDelegate *_pDelegateOwner)
     }
 }
 
-void CLandscape::Update()
+void CLandscape::_CheckVisibleQuadTreeNode(CLandscape::SQuadTreeNode *_pNode)
+{
+    CFrustum* pFrustum = CSceneMgr::Instance()->Get_Frustum();
+    if(_pNode->m_pChilds == NULL)
+    {
+        return;
+    }
+    
+    for(unsigned int i = 0; i < k_MAX_QUADTREE_CHILDREN; i++)
+    {
+        int iResult = pFrustum->IsBoxInFrustum(_pNode->m_pChilds[i]->m_vMaxBound, _pNode->m_pChilds[i]->m_vMinBound);
+        if(iResult == CFrustum::E_FRUSTUM_RESULT_INSIDE)
+        {
+            //std::cout<<"[CLandscape::_CheckVisibleQuadTreeNode] QuadTreeNode Index : "<<i<<" E_FRUSTUM_RESULT_INSIDE"<<std::endl;
+            memcpy(&m_pTempIndexBufferDataSource[m_pTempNumIndexes], _pNode->m_pChilds[i]->m_pIndexes, sizeof(unsigned short) * _pNode->m_pChilds[i]->m_iNumIndexes);
+            //std::cout<<"[CLandscape::_CheckVisibleQuadTreeNode] Indexes Nun += "<<_pNode->m_pChilds[i]->m_iNumIndexes<<std::endl;
+            m_pTempNumIndexes += _pNode->m_pChilds[i]->m_iNumIndexes;
+        }
+        else if(iResult == CFrustum::E_FRUSTUM_RESULT_INTERSECT)
+        {
+            //std::cout<<"[CLandscape::_CheckVisibleQuadTreeNode] QuadTreeNode Index : "<<i<<" E_FRUSTUM_RESULT_INTERSECT"<<std::endl;
+            if(_pNode->m_pChilds[i]->m_pChilds == NULL)
+            {
+                memcpy(&m_pTempIndexBufferDataSource[m_pTempNumIndexes], _pNode->m_pChilds[i]->m_pIndexes, sizeof(unsigned short) * _pNode->m_pChilds[i]->m_iNumIndexes);
+                //std::cout<<"[CLandscape::_CheckVisibleQuadTreeNode] Indexes Nun += "<<_pNode->m_pChilds[i]->m_iNumIndexes<<std::endl;
+                m_pTempNumIndexes += _pNode->m_pChilds[i]->m_iNumIndexes;
+            }
+            else
+            {
+                _CheckVisibleQuadTreeNode(_pNode->m_pChilds[i]);
+            }
+        }
+        else if(iResult == CFrustum::E_FRUSTUM_RESULT_OUTSIDE)
+        {
+            //std::cout<<"[CLandscape::_CheckVisibleQuadTreeNode] QuadTreeNode Index : "<<i<<" E_FRUSTUM_RESULT_OUTSIDE"<<std::endl;
+        }
+    }
+}
+
+void CLandscape::Update(void)
 {
     INode::Update();
+    m_pTempNumIndexes = 0;
+    _CheckVisibleQuadTreeNode(m_pQuadTree);
+    m_pMesh->Get_IndexBufferRef()->Set_WorkingSourceData(m_pTempIndexBufferDataSource, m_pTempNumIndexes);
+    m_pMesh->Get_IndexBufferRef()->CommitFromRAMToVRAM();
 }
 
 void CLandscape::Render(INode::E_RENDER_MODE _eMode)
-{      
+{
+    INode::Render(_eMode);
+    
     glCullFace(GL_BACK);
     ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
     ILight* pLight = CSceneMgr::Instance()->Get_GlobalLight();
@@ -208,10 +408,10 @@ void CLandscape::Render(INode::E_RENDER_MODE _eMode)
     
     m_pMesh->Get_VertexBufferRef()->Enable();
     m_pMesh->Get_IndexBufferRef()->Enable();
-    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_DataFromVRAM());
+    unsigned int iNumIndexes = m_pMesh->Get_IndexBufferRef()->Get_NumWorkingIndexes();
+    glDrawElements(GL_TRIANGLES, iNumIndexes, GL_UNSIGNED_SHORT, (void*) NULL);
     m_pMesh->Get_IndexBufferRef()->Disable();
     m_pMesh->Get_VertexBufferRef()->Disable();
-    m_pShaders[_eMode]->Disable();
     glCullFace(GL_FRONT);
     
     if(m_pBoundingBox != NULL)

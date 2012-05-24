@@ -61,7 +61,7 @@ public:
     virtual ~INode(void);
     virtual void Load(const std::string& _sName, IResource::E_THREAD _eThread) = 0;
     virtual void Update(void);
-    virtual void Render(E_RENDER_MODE _eMode) = 0;
+    virtual void Render(E_RENDER_MODE _eMode);
     
     CShader*  Get_Shader(E_RENDER_MODE _eRenderMode);
     CTexture* Get_Texture(unsigned int index);

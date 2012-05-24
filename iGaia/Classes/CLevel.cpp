@@ -47,7 +47,7 @@ void CLevel::Load(void)
     m_pWater->Set_Texture("layer_02_bump.pvr", 2, CTexture::E_WRAP_MODE_REPEAT, IResource::E_THREAD_BACKGROUND);
     
     m_pGrass = (CGrass*)CSceneMgr::Instance()->AddLandscapeGrassModel("grass");
-    m_pGrass->Set_Shader(INode::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_UNIT);
+    m_pGrass->Set_Shader(INode::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_GRASS);
     m_pGrass->Set_Texture("mod_03.pvr", 0, CTexture::E_WRAP_MODE_REPEAT, IResource::E_THREAD_BACKGROUND);
     
     m_pSkyBox = (CSkyBox*)CSceneMgr::Instance()->AddSkyBoxModel("skybox");

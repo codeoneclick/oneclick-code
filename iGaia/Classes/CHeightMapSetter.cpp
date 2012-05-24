@@ -29,7 +29,7 @@ CMesh* CHeightMapSetter::Load_DataSource(const std::string _sName, int _iWidth, 
     m_iWidth = _iWidth;
     m_iHeight = _iHeight;
     
-    /*CMesh::SSourceData* pSourceData = new CMesh::SSourceData();
+    CMesh::SSourceData* pSourceData = new CMesh::SSourceData();
     pSourceData->m_iNumVertexes = m_iWidth * m_iHeight;
     pSourceData->m_iNumIndexes  = (m_iWidth - 1) * (m_iHeight - 1) * 6;
     
@@ -46,8 +46,8 @@ CMesh* CHeightMapSetter::Load_DataSource(const std::string _sName, int _iWidth, 
         for(unsigned int j = 0; j < m_iHeight;++j)
         {
             pPositionData[index].x = i;
-            pPositionData[index].y = sin(i) + cos(j) * 0.33f + 2.0f;
-            m_pDataSource[index] = pPositionData[index].y;
+            pPositionData[index].y = sin(i * 0.33f) + cos(j * 0.33f) * 0.33f + 0.66f;
+            m_pDataSource[i + j * m_iWidth] = pPositionData[index].y;
             pPositionData[index].z = j;
             
             pTexCoordData[index].x = i / static_cast<float>(m_iWidth);
@@ -57,7 +57,7 @@ CMesh* CHeightMapSetter::Load_DataSource(const std::string _sName, int _iWidth, 
     }
     
     pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes);
-    unsigned short* pIndexBufferData = pSourceData->m_pIndexBuffer->Get_Data();
+    unsigned short* pIndexBufferData = pSourceData->m_pIndexBuffer->Get_SourceData();
     index = 0;
     for(unsigned int i = 0; i < (m_iWidth - 1); ++i)
     {
@@ -82,10 +82,9 @@ CMesh* CHeightMapSetter::Load_DataSource(const std::string _sName, int _iWidth, 
     _CalculateNormals(pSourceData->m_pVertexBuffer, pSourceData->m_pIndexBuffer);
     _CalculateTangentsAndBinormals(pSourceData->m_pVertexBuffer, pSourceData->m_pIndexBuffer);
     CMesh* pMesh = new CMesh();
-    pMesh->Set_SourceData(pSourceData);*/
+    pMesh->Set_SourceData(pSourceData);
     
-    
-    CParser_MDL* pParser = new CParser_MDL();
+    /*CParser_MDL* pParser = new CParser_MDL();
     pParser->Load(_sName);
     pParser->Commit();
     
@@ -105,7 +104,7 @@ CMesh* CHeightMapSetter::Load_DataSource(const std::string _sName, int _iWidth, 
             pPositionData[i + ((m_iWidth - 1) - j) * m_iWidth].y = fHeight;
             m_pDataSource[i + j * m_iHeight] = pPositionData[i + ((m_iWidth - 1) - j) * m_iWidth].y;
         }
-    }
+    }*/
     
     _Create_TextureSplatting();
     
@@ -205,7 +204,7 @@ void CHeightMapSetter::_CalculateNormals(CVertexBuffer* _pVertexBuffer, CIndexBu
 {
     glm::vec3* pPositionData = _pVertexBuffer->CreateOrReUse_PositionData();
     glm::u8vec4* pNormalData = _pVertexBuffer->CreateOrReUse_NormalData();
-    unsigned short* pIBData = _pIndexBuffer->Get_Data();
+    unsigned short* pIBData = _pIndexBuffer->Get_SourceData();
     unsigned int iNumIndexes = _pIndexBuffer->Get_NumIndexes();
     for(unsigned int index = 0; index < iNumIndexes; index += 3)
     {
@@ -235,7 +234,7 @@ void CHeightMapSetter::_CalculateTangentsAndBinormals(CVertexBuffer* _pVertexBuf
     glm::vec2* pTexCoordData = _pVertexBuffer->CreateOrReUse_TexCoordData();
     glm::u8vec4* pNormalData = _pVertexBuffer->CreateOrReUse_NormalData();
     glm::u8vec4* pTangentData = _pVertexBuffer->CreateOrReUse_TangentData();
-    unsigned short* pIndexBufferData = _pIndexBuffer->Get_Data();
+    unsigned short* pIndexBufferData = _pIndexBuffer->Get_SourceData();
 	
     for ( i = 0; i < iNumIndexes; i += 3 )
 	{

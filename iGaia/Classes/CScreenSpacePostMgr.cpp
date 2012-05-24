@@ -121,7 +121,7 @@ CScreenSpacePostMgr::CScreenSpacePostMgr(void)
     i++;
 
     pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes);
-    unsigned short* pIndexBufferData = pSourceData->m_pIndexBuffer->Get_Data();
+    unsigned short* pIndexBufferData = pSourceData->m_pIndexBuffer->Get_SourceData();
     
     i = 0;
     pIndexBufferData[i++] = 0;
@@ -176,9 +176,9 @@ void CScreenSpacePostMgr::DisableScreenMode(void)
     
 }
 
-
 void CScreenSpacePostMgr::Render_PostSimple(void)
 {
+    glDisable(GL_DEPTH_TEST);
     if(m_pMesh->Get_VertexBufferRef() != NULL)
     {
         m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShaderPostSimple->Get_ProgramHandle());
@@ -187,10 +187,11 @@ void CScreenSpacePostMgr::Render_PostSimple(void)
     m_pShaderPostSimple->SetTexture(m_hOffScreenTextures[E_OFFSCREEN_MODE_EDGE_DETECT], CShader::k_TEXTURE_01);
     m_pMesh->Get_VertexBufferRef()->Enable();
     m_pMesh->Get_IndexBufferRef()->Enable();
-    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_DataFromVRAM());
+    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_SourceDataFromVRAM());
     m_pMesh->Get_IndexBufferRef()->Disable();
     m_pMesh->Get_VertexBufferRef()->Disable();
     m_pShaderPostSimple->Disable();
+    glEnable(GL_DEPTH_TEST);
 }
 
 void CScreenSpacePostMgr::Render_PostBloomExtract(void)
@@ -204,7 +205,7 @@ void CScreenSpacePostMgr::Render_PostBloomExtract(void)
     m_pShaderPostBloomExtract->SetTexture(m_hOffScreenTextures[E_OFFSCREEN_MODE_EDGE_DETECT], CShader::k_TEXTURE_01);
     m_pMesh->Get_VertexBufferRef()->Enable();
     m_pMesh->Get_IndexBufferRef()->Enable();
-    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_DataFromVRAM());
+    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_SourceDataFromVRAM());
     m_pMesh->Get_IndexBufferRef()->Disable();
     m_pMesh->Get_VertexBufferRef()->Disable();
     m_pShaderPostBloomExtract->Disable();
@@ -221,7 +222,7 @@ void CScreenSpacePostMgr::Render_PostBloomCombine(void)
     m_pShaderPostBloomCombine->SetTexture(m_hOffScreenTextures[E_OFFSCREEN_MODE_EDGE_DETECT], CShader::k_TEXTURE_02);
     m_pMesh->Get_VertexBufferRef()->Enable();
     m_pMesh->Get_IndexBufferRef()->Enable();
-    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_DataFromVRAM());
+    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_SourceDataFromVRAM());
     m_pMesh->Get_IndexBufferRef()->Disable();
     m_pMesh->Get_VertexBufferRef()->Disable();
     m_pShaderPostBloomCombine->Disable();
@@ -237,7 +238,7 @@ void CScreenSpacePostMgr::Render_PostBlur(void)
     m_pShaderPostBlur->SetTexture(m_hOffScreenTextures[E_OFFSCREEN_MODE_BLOOM_EXTRACT], CShader::k_TEXTURE_01);
     m_pMesh->Get_VertexBufferRef()->Enable();
     m_pMesh->Get_IndexBufferRef()->Enable();
-    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_DataFromVRAM());
+    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_SourceDataFromVRAM());
     m_pMesh->Get_IndexBufferRef()->Disable();
     m_pMesh->Get_VertexBufferRef()->Disable();
     m_pShaderPostBlur->Disable();
@@ -255,7 +256,7 @@ void CScreenSpacePostMgr::Render_PostEdgeDetect(void)
     m_pShaderPostEdgeDetect->SetTexture(m_hOffScreenTextures[E_OFFSCREEN_MODE_SCREEN_NORMAL_MAP], CShader::k_TEXTURE_02);
     m_pMesh->Get_VertexBufferRef()->Enable();
     m_pMesh->Get_IndexBufferRef()->Enable();
-    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_DataFromVRAM());
+    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_SourceDataFromVRAM());
     m_pMesh->Get_IndexBufferRef()->Disable();
     m_pMesh->Get_VertexBufferRef()->Disable();
     m_pShaderPostEdgeDetect->Disable();

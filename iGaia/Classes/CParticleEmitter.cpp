@@ -26,7 +26,7 @@ void CParticleEmitter::Load(const std::string& _sName, IResource::E_THREAD _eThr
     pSourceData->m_iNumIndexes  = m_iNumParticles * 6;
     
     pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes);
-    unsigned short* pIndexBufferData = pSourceData->m_pIndexBuffer->Get_Data();
+    unsigned short* pIndexBufferData = pSourceData->m_pIndexBuffer->Get_SourceData();
     pSourceData->m_pVertexBuffer = new CVertexBuffer(pSourceData->m_iNumVertexes);
     glm::vec3*   pPositionData = pSourceData->m_pVertexBuffer->CreateOrReUse_PositionData();
     glm::vec2*   pTexCoordData = pSourceData->m_pVertexBuffer->CreateOrReUse_TexCoordData();
@@ -69,7 +69,9 @@ void CParticleEmitter::Load(const std::string& _sName, IResource::E_THREAD _eThr
         pIndexBufferData[index * 6 + 5] = static_cast<unsigned short>(index * 4 + 3);
     }
     
+    pSourceData->m_pVertexBuffer->Set_Mode(GL_STREAM_DRAW);
     pSourceData->m_pVertexBuffer->CommitToRAM();
+    pSourceData->m_pVertexBuffer->CommitFromRAMToVRAM();
     pSourceData->m_pIndexBuffer->CommitFromRAMToVRAM();
     
     m_pMesh = new CMesh();
@@ -167,10 +169,13 @@ void CParticleEmitter::Update(void)
         pColorData[index * 4 + 3] = m_pParticles[index].m_vColor;
     }
     m_pMesh->Get_VertexBufferRef()->CommitToRAM();
+    m_pMesh->Get_VertexBufferRef()->CommitFromRAMToVRAM();
 }
 
 void CParticleEmitter::Render(E_RENDER_MODE _eMode)
 {
+    INode::Render(_eMode);
+    
     glDisable(GL_CULL_FACE);
     glDepthMask(GL_FALSE);
     glBlendFunc(GL_SRC_ALPHA, GL_DST_ALPHA);
@@ -238,7 +243,7 @@ void CParticleEmitter::Render(E_RENDER_MODE _eMode)
     
     m_pMesh->Get_VertexBufferRef()->Enable();
     m_pMesh->Get_IndexBufferRef()->Enable();
-    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_DataFromVRAM());
+    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_SourceDataFromVRAM());
     m_pMesh->Get_IndexBufferRef()->Disable();
     m_pMesh->Get_VertexBufferRef()->Disable();
     m_pShaders[_eMode]->Disable();

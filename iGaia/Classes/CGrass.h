@@ -28,6 +28,8 @@ protected:
     unsigned int m_iHeight;
     
     CHeightMapSetter* m_pHeightMapSetter;
+    
+    std::vector<glm::vec3> m_lGrassElementsPosition;
 public:
     CGrass(void);
     virtual ~CGrass(void);

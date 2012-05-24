@@ -12,6 +12,7 @@
 #include "CResourceMgr.h"
 #include "CRenderMgr.h"
 #include "CCollisionMgr.h"
+#include "CWindow.h"
 
 INode::INode()
 {
@@ -136,7 +137,7 @@ void INode::Remove_DelegateOwner(IDelegate *_pDelegateOwner)
     }
 }
 
-void INode::Update()
+void INode::Update(void)
 {
     m_mRotation = glm::rotate(glm::mat4(1.0f), m_vRotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
     m_mRotation = glm::rotate(m_mRotation, m_vRotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
@@ -153,5 +154,13 @@ void INode::Update()
         m_pBoundingBox->Set_WorldMatrix(m_mWorld);
     }
 }
+
+void INode::Render(INode::E_RENDER_MODE _eMode)
+{
+    CWindow::g_iTrianglesPerFrame += m_pMesh->Get_IndexBufferRef()->Get_NumWorkingIndexes() / 3;
+}
+
+
+
 
 

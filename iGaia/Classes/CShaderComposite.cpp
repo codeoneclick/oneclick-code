@@ -79,6 +79,9 @@
 #include "../Shaders/ShaderDecal.vert"
 #include "../Shaders/ShaderDecal.frag"
 
+#include "../Shaders/ShaderGrass.vert"
+#include "../Shaders/ShaderGrass.frag"
+
 CShaderComposite* CShaderComposite::m_pInstance = NULL;
 
 CShaderComposite::CShaderComposite()
@@ -177,6 +180,10 @@ CShaderComposite::CShaderComposite()
     pData = pParser->Load(ShaderDecalV, ShaderDecalF);
     pShader = new CShader(pData.s_pHandle);
     m_lContainer[IResource::E_SHADER_DECAL] = pShader;
+    
+    pData = pParser->Load(ShaderGrassV, ShaderGrassF);
+    pShader = new CShader(pData.s_pHandle);
+    m_lContainer[IResource::E_SHADER_GRASS] = pShader;
 }
 
 CShaderComposite::~CShaderComposite()

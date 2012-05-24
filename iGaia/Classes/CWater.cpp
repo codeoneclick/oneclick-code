@@ -15,8 +15,8 @@ const int CWater::k_ELEMENT_NUM_VERTEXES = 4;
 
 CWater::CWater(void)
 {
-    m_iWidth = 32;
-    m_iHeight = 32;
+    m_iWidth = 64;
+    m_iHeight = 64;
     m_fWaterHeight = -0.1f;
 }
 
@@ -49,7 +49,7 @@ void CWater::Load(const std::string& _sName, IResource::E_THREAD _eThread)
     pTexCoordData[3] = glm::vec2( 1.0f,  1.0f );
     
     pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes);
-    unsigned short* pIndexesBufferData = pSourceData->m_pIndexBuffer->Get_Data();
+    unsigned short* pIndexesBufferData = pSourceData->m_pIndexBuffer->Get_SourceData();
     
     pIndexesBufferData[0] = 0;
     pIndexesBufferData[1] = 1;
@@ -92,7 +92,9 @@ void CWater::Update()
 }
 
 void CWater::Render(INode::E_RENDER_MODE _eMode)
-{      
+{
+    INode::Render(_eMode);
+    
     glDisable(GL_CULL_FACE);
     ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
     
@@ -144,7 +146,7 @@ void CWater::Render(INode::E_RENDER_MODE _eMode)
     
     m_pMesh->Get_VertexBufferRef()->Enable();
     m_pMesh->Get_IndexBufferRef()->Enable();
-    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_DataFromVRAM());
+    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_SourceDataFromVRAM());
     m_pMesh->Get_IndexBufferRef()->Disable();
     m_pMesh->Get_VertexBufferRef()->Disable();
     m_pShaders[_eMode]->Disable();

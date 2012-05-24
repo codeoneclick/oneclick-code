@@ -83,7 +83,7 @@ void CWorld::Update(void)
     
     glm::vec3 vCameraPosition = m_pCamera->Get_Position();
     float fCameraHeight = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_HeightValue(vCameraPosition.x, vCameraPosition.z);
-    m_pCamera->Set_HeightFromLookAt(4.0f + fCameraHeight);
+    m_pCamera->Set_HeightFromLookAt(14.0f + fCameraHeight);
     
     glm::vec3 vCurrentCameraRotation = m_pCamera->Get_Rotation();
     vCurrentCameraRotation.y = glm::radians(m_pCharacterControllerPlayer->Get_Rotation().y) - 1.57f;

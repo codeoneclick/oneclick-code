@@ -11,28 +11,30 @@
 
 CIndexBuffer::CIndexBuffer(unsigned int _iNumIndexes)
 {
-    m_pData = new unsigned short[_iNumIndexes];
+    m_pSourceData = new unsigned short[_iNumIndexes];
+    m_pWorkingSourceData = NULL;
     m_iNumIndexes = _iNumIndexes;
+    m_iNumWorkingIndexes = m_iNumIndexes;
     m_bIsInVRAM = false;
 }
 
-CIndexBuffer::~CIndexBuffer()
+CIndexBuffer::~CIndexBuffer(void)
 {
-    if(m_pData != NULL)
+    if(m_pSourceData != NULL)
     {
-        delete[] m_pData;
-        m_pData = NULL;
+        delete[] m_pSourceData;
+        m_pSourceData = NULL;
     }
     
     glDeleteBuffers(1, &m_iHandle);
 }
 
-unsigned short* CIndexBuffer::Get_Data(void)
+unsigned short* CIndexBuffer::Get_SourceData(void)
 {
-    return m_pData;
+    return m_pSourceData;
 }
 
-unsigned short* CIndexBuffer::Get_DataFromVRAM(void)
+unsigned short* CIndexBuffer::Get_SourceDataFromVRAM(void)
 {
     if(m_bIsInVRAM == true)
     {
@@ -40,11 +42,16 @@ unsigned short* CIndexBuffer::Get_DataFromVRAM(void)
     }
     else
     {
-        return m_pData;
+        if(m_pWorkingSourceData == NULL)
+        {
+            m_pWorkingSourceData = new unsigned short[m_iNumIndexes];
+            memcpy(m_pWorkingSourceData, m_pSourceData, sizeof(unsigned short) * m_iNumIndexes);
+        }
+        return m_pWorkingSourceData;
     }
 }
 
-void CIndexBuffer::Enable()
+void CIndexBuffer::Enable(void)
 {
     if(m_bIsInVRAM == true)
     {
@@ -56,15 +63,47 @@ void CIndexBuffer::Enable()
     }
 }
 
-void CIndexBuffer::Disable()
+void CIndexBuffer::Disable(void)
 {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, NULL);
 }
 
-void CIndexBuffer::CommitFromRAMToVRAM()
+void CIndexBuffer::Set_WorkingSourceData(unsigned short *_pSourceData, unsigned int _iNumIndexes)
 {
-    glGenBuffers(1, &m_iHandle);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_iHandle);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned short) * m_iNumIndexes, m_pData, GL_STATIC_DRAW);
-    m_bIsInVRAM = true;
+    if(m_pWorkingSourceData == NULL)
+    {
+        m_pWorkingSourceData = new unsigned short[m_iNumIndexes];
+    }
+    m_iNumWorkingIndexes = _iNumIndexes;
+    memcpy(m_pWorkingSourceData, _pSourceData, m_iNumWorkingIndexes * sizeof(unsigned short));
 }
+
+void CIndexBuffer::CommitFromRAMToVRAM(void)
+{
+    if(m_bIsInVRAM)
+    {
+        if(m_pWorkingSourceData == NULL)
+        {
+            m_pWorkingSourceData = new unsigned short[m_iNumIndexes];
+            memcpy(m_pWorkingSourceData, m_pSourceData, sizeof(unsigned short) * m_iNumIndexes);
+        }
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_iHandle);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned short) * m_iNumWorkingIndexes, m_pWorkingSourceData, GL_STREAM_DRAW);
+    }
+    else
+    {
+        if(m_pWorkingSourceData == NULL)
+        {
+            m_pWorkingSourceData = new unsigned short[m_iNumIndexes];
+            memcpy(m_pWorkingSourceData, m_pSourceData, sizeof(unsigned short) * m_iNumIndexes);
+        }
+        glGenBuffers(1, &m_iHandle);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_iHandle);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned short) * m_iNumWorkingIndexes, NULL, GL_STREAM_DRAW);
+        glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, NULL, sizeof(unsigned short) * m_iNumWorkingIndexes, m_pWorkingSourceData);
+        m_bIsInVRAM = true;
+    }
+}
+
+
+
