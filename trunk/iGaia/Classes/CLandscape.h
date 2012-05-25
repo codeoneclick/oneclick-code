@@ -39,8 +39,8 @@ protected:
     unsigned int m_iWidth;
     unsigned int m_iHeight;
     CHeightMapSetter* m_pHeightMapSetter;
-    unsigned short* m_pTempIndexBufferDataSource;
-    unsigned int m_pTempNumIndexes;
+    unsigned short* m_pWorkingIndexesSourceDataRef;
+    unsigned int m_iWorkingNumIndexes;
     SQuadTreeNode* m_pQuadTree;
     void _CreateQuadTreeNode(int _iSize, SQuadTreeNode* _pParentNode);
     void _CreateIndexBufferRefForQuadTreeNode(SQuadTreeNode* _pNode);
