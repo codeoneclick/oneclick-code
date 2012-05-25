@@ -40,13 +40,14 @@ void CLandscape::Load(const std::string& _sName, IResource::E_THREAD _eThread)
     
     m_pMesh->Get_VertexBufferRef()->CommitToRAM();
     m_pMesh->Get_VertexBufferRef()->CommitFromRAMToVRAM();
+    m_pMesh->Get_IndexBufferRef()->Set_Mode(GL_STREAM_DRAW);
     m_pMesh->Get_IndexBufferRef()->CommitFromRAMToVRAM();
     
     unsigned short* pIndexBufferData = m_pMesh->Get_IndexBufferRef()->Get_SourceData();
     unsigned int iNumIndexes = m_pMesh->Get_IndexBufferRef()->Get_NumIndexes();
     
-    m_pTempIndexBufferDataSource = new unsigned short[iNumIndexes];
-    m_pTempNumIndexes = 0;
+    m_pWorkingIndexesSourceDataRef = m_pMesh->Get_IndexBufferRef()->Get_WorkingSourceDataRef();
+    m_iWorkingNumIndexes = 0;
     
     m_pQuadTree = new SQuadTreeNode();
     m_pQuadTree->m_pParent = NULL;
@@ -252,18 +253,18 @@ void CLandscape::_CheckVisibleQuadTreeNode(CLandscape::SQuadTreeNode *_pNode)
         if(iResult == CFrustum::E_FRUSTUM_RESULT_INSIDE)
         {
             //std::cout<<"[CLandscape::_CheckVisibleQuadTreeNode] QuadTreeNode Index : "<<i<<" E_FRUSTUM_RESULT_INSIDE"<<std::endl;
-            memcpy(&m_pTempIndexBufferDataSource[m_pTempNumIndexes], _pNode->m_pChilds[i]->m_pIndexes, sizeof(unsigned short) * _pNode->m_pChilds[i]->m_iNumIndexes);
+            memcpy(&m_pWorkingIndexesSourceDataRef[m_iWorkingNumIndexes], _pNode->m_pChilds[i]->m_pIndexes, sizeof(unsigned short) * _pNode->m_pChilds[i]->m_iNumIndexes);
             //std::cout<<"[CLandscape::_CheckVisibleQuadTreeNode] Indexes Nun += "<<_pNode->m_pChilds[i]->m_iNumIndexes<<std::endl;
-            m_pTempNumIndexes += _pNode->m_pChilds[i]->m_iNumIndexes;
+            m_iWorkingNumIndexes += _pNode->m_pChilds[i]->m_iNumIndexes;
         }
         else if(iResult == CFrustum::E_FRUSTUM_RESULT_INTERSECT)
         {
             //std::cout<<"[CLandscape::_CheckVisibleQuadTreeNode] QuadTreeNode Index : "<<i<<" E_FRUSTUM_RESULT_INTERSECT"<<std::endl;
             if(_pNode->m_pChilds[i]->m_pChilds == NULL)
             {
-                memcpy(&m_pTempIndexBufferDataSource[m_pTempNumIndexes], _pNode->m_pChilds[i]->m_pIndexes, sizeof(unsigned short) * _pNode->m_pChilds[i]->m_iNumIndexes);
+                memcpy(&m_pWorkingIndexesSourceDataRef[m_iWorkingNumIndexes], _pNode->m_pChilds[i]->m_pIndexes, sizeof(unsigned short) * _pNode->m_pChilds[i]->m_iNumIndexes);
                 //std::cout<<"[CLandscape::_CheckVisibleQuadTreeNode] Indexes Nun += "<<_pNode->m_pChilds[i]->m_iNumIndexes<<std::endl;
-                m_pTempNumIndexes += _pNode->m_pChilds[i]->m_iNumIndexes;
+                m_iWorkingNumIndexes += _pNode->m_pChilds[i]->m_iNumIndexes;
             }
             else
             {
@@ -280,16 +281,16 @@ void CLandscape::_CheckVisibleQuadTreeNode(CLandscape::SQuadTreeNode *_pNode)
 void CLandscape::Update(void)
 {
     INode::Update();
-    m_pTempNumIndexes = 0;
+    m_iWorkingNumIndexes = 0;
     _CheckVisibleQuadTreeNode(m_pQuadTree);
-    m_pMesh->Get_IndexBufferRef()->Set_WorkingSourceData(m_pTempIndexBufferDataSource, m_pTempNumIndexes);
+    m_pMesh->Get_IndexBufferRef()->Set_NumWorkingIndexes(m_iWorkingNumIndexes);
     m_pMesh->Get_IndexBufferRef()->CommitFromRAMToVRAM();
 }
 
 void CLandscape::Render(INode::E_RENDER_MODE _eMode)
 {
+    glDisable(GL_BLEND);
     INode::Render(_eMode);
-    
     glCullFace(GL_BACK);
     ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
     ILight* pLight = CSceneMgr::Instance()->Get_GlobalLight();
@@ -409,7 +410,7 @@ void CLandscape::Render(INode::E_RENDER_MODE _eMode)
     m_pMesh->Get_VertexBufferRef()->Enable();
     m_pMesh->Get_IndexBufferRef()->Enable();
     unsigned int iNumIndexes = m_pMesh->Get_IndexBufferRef()->Get_NumWorkingIndexes();
-    glDrawElements(GL_TRIANGLES, iNumIndexes, GL_UNSIGNED_SHORT, (void*) NULL);
+    glDrawElements(GL_TRIANGLES, iNumIndexes, GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_SourceDataFromVRAM());
     m_pMesh->Get_IndexBufferRef()->Disable();
     m_pMesh->Get_VertexBufferRef()->Disable();
     glCullFace(GL_FRONT);
@@ -418,6 +419,7 @@ void CLandscape::Render(INode::E_RENDER_MODE _eMode)
     {
         m_pBoundingBox->Render();
     }
+    glEnable(GL_BLEND);
 }
 
 

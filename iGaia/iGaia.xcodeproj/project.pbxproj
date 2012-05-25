@@ -377,7 +377,10 @@
 		A1A5E8E11532E0E6004DD73B /* left_track_model.mdl in Resources */ = {isa = PBXBuildFile; fileRef = A1A5E8DC1532E0E6004DD73B /* left_track_model.mdl */; };
 		A1A5E8E21532E0E6004DD73B /* right_track_model.mdl in Resources */ = {isa = PBXBuildFile; fileRef = A1A5E8DD1532E0E6004DD73B /* right_track_model.mdl */; };
 		A1A5E8E31532E0E6004DD73B /* tower_model.mdl in Resources */ = {isa = PBXBuildFile; fileRef = A1A5E8DE1532E0E6004DD73B /* tower_model.mdl */; };
+		A1A8BF94156F6C0100CBFAD1 /* camera_button.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A8BF93156F6C0100CBFAD1 /* camera_button.png */; };
 		A1AB4E3E1546B71D00434639 /* CParticleEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1AB4E3C1546B71D00434639 /* CParticleEmitter.cpp */; };
+		A1AC4D9C156F7E440031FE05 /* CBullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1AC4D9A156F7E440031FE05 /* CBullet.cpp */; };
+		A1AC4DA3156FC74F0031FE05 /* CGameShooterMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1AC4DA1156FC74F0031FE05 /* CGameShooterMgr.cpp */; };
 		A1AF6F741549380400703E2E /* Skybox.pvr in Resources */ = {isa = PBXBuildFile; fileRef = A1AF6F731549380400703E2E /* Skybox.pvr */; };
 		A1AF6F771549383200703E2E /* CSkyBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1AF6F751549383200703E2E /* CSkyBox.cpp */; };
 		A1AF6F7E1549476D00703E2E /* ShaderTextureCube.frag in Sources */ = {isa = PBXBuildFile; fileRef = A1AF6F7C1549476D00703E2E /* ShaderTextureCube.frag */; };
@@ -1211,8 +1214,13 @@
 		A1A5E8DC1532E0E6004DD73B /* left_track_model.mdl */ = {isa = PBXFileReference; lastKnownFileType = file; path = left_track_model.mdl; sourceTree = "<group>"; };
 		A1A5E8DD1532E0E6004DD73B /* right_track_model.mdl */ = {isa = PBXFileReference; lastKnownFileType = file; path = right_track_model.mdl; sourceTree = "<group>"; };
 		A1A5E8DE1532E0E6004DD73B /* tower_model.mdl */ = {isa = PBXFileReference; lastKnownFileType = file; path = tower_model.mdl; sourceTree = "<group>"; };
+		A1A8BF93156F6C0100CBFAD1 /* camera_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = camera_button.png; path = Resources/Textures/camera_button.png; sourceTree = "<group>"; };
 		A1AB4E3C1546B71D00434639 /* CParticleEmitter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CParticleEmitter.cpp; sourceTree = "<group>"; };
 		A1AB4E3D1546B71D00434639 /* CParticleEmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CParticleEmitter.h; sourceTree = "<group>"; };
+		A1AC4D9A156F7E440031FE05 /* CBullet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CBullet.cpp; sourceTree = "<group>"; };
+		A1AC4D9B156F7E440031FE05 /* CBullet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBullet.h; sourceTree = "<group>"; };
+		A1AC4DA1156FC74F0031FE05 /* CGameShooterMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGameShooterMgr.cpp; sourceTree = "<group>"; };
+		A1AC4DA2156FC74F0031FE05 /* CGameShooterMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; path = CGameShooterMgr.h; sourceTree = "<group>"; };
 		A1AF6F731549380400703E2E /* Skybox.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = Skybox.pvr; path = Resources/Textures/Skybox.pvr; sourceTree = "<group>"; };
 		A1AF6F751549383200703E2E /* CSkyBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CSkyBox.cpp; sourceTree = "<group>"; };
 		A1AF6F761549383200703E2E /* CSkyBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSkyBox.h; sourceTree = "<group>"; };
@@ -1361,6 +1369,8 @@
 				93A8E1FB14ECF7380014BE15 /* CGameCharaterControllerMgr.cpp */,
 				A1BAD24715418C4A00B4149D /* CGameAIMgr.h */,
 				A1BAD24615418C4A00B4149D /* CGameAIMgr.cpp */,
+				A1AC4DA2156FC74F0031FE05 /* CGameShooterMgr.h */,
+				A1AC4DA1156FC74F0031FE05 /* CGameShooterMgr.cpp */,
 			);
 			name = GameMgrs;
 			sourceTree = "<group>";
@@ -2509,9 +2519,19 @@
 			path = ibmsdk;
 			sourceTree = "<group>";
 		};
+		A1AC4D98156F7DEB0031FE05 /* GameHelpers */ = {
+			isa = PBXGroup;
+			children = (
+				A1AC4D9B156F7E440031FE05 /* CBullet.h */,
+				A1AC4D9A156F7E440031FE05 /* CBullet.cpp */,
+			);
+			name = GameHelpers;
+			sourceTree = "<group>";
+		};
 		CE8DFA8E14587A8200AE7288 /* Game */ = {
 			isa = PBXGroup;
 			children = (
+				A1AC4D98156F7DEB0031FE05 /* GameHelpers */,
 				A153D5BE153DA3A400FBFFD5 /* GUI */,
 				9307CBC114EBBA1700ADFE2B /* GameUnits */,
 				9307CBC014EBBA0100ADFE2B /* GameBuilding */,
@@ -2545,6 +2565,7 @@
 		CE91921914573F630021A0DC /* Textures */ = {
 			isa = PBXGroup;
 			children = (
+				A1A8BF93156F6C0100CBFAD1 /* camera_button.png */,
 				A1BE19A4156A29D4004C3610 /* shadow.pvr */,
 				A13F9EC81568ECB3009DCBB4 /* default.pvr */,
 				A10074FD156130A8000E324E /* clouds.pvr */,
@@ -2771,6 +2792,7 @@
 				A10074FE156130A8000E324E /* clouds.pvr in Resources */,
 				A13F9EC91568ECB3009DCBB4 /* default.pvr in Resources */,
 				A1BE19A5156A29D4004C3610 /* shadow.pvr in Resources */,
+				A1A8BF94156F6C0100CBFAD1 /* camera_button.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3021,6 +3043,8 @@
 				A1201A8D156B75710099EE9D /* ShaderGrass.frag in Sources */,
 				A1201A8E156B75710099EE9D /* ShaderGrass.vert in Sources */,
 				A1FFAA8B156CBAE500B01ECB /* CFrustum.cpp in Sources */,
+				A1AC4D9C156F7E440031FE05 /* CBullet.cpp in Sources */,
+				A1AC4DA3156FC74F0031FE05 /* CGameShooterMgr.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

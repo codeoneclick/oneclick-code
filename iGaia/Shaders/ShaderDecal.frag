@@ -36,7 +36,6 @@ void main(void)
     lowp vec3 vTransformTexCoord = vec3(vTexCoord.x, vTexCoord.y, 1.0);
     
     vTransformTexCoord = vTransformTexCoord * mScaleMatrix * mRotationMatrix * mTranslationMatrix;
-    
     lowp vec4 vDiffuseColor = texture2D(EXT_TEXTURE_01, vTransformTexCoord.xy);
     gl_FragColor = vDiffuseColor;
 }

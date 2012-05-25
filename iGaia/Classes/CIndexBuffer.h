@@ -24,17 +24,21 @@ private:
     unsigned int m_iNumIndexes;
     unsigned int m_iNumWorkingIndexes;
     bool m_bIsInVRAM;
+    GLenum m_eMode;
 public:
     CIndexBuffer(unsigned int _iNumIndexes);
     ~CIndexBuffer(void);
     
+    void Set_Mode(GLenum _eMode) { m_eMode = _eMode; }
     unsigned int Get_NumIndexes(void) { return m_iNumIndexes; }
     unsigned int Get_NumWorkingIndexes(void) { return m_iNumWorkingIndexes; }
+    void Set_NumWorkingIndexes(unsigned int _iNumWorkingIndexes) { m_iNumWorkingIndexes = _iNumWorkingIndexes; }
+    unsigned short* Get_WorkingSourceDataRef(void);
     unsigned short* Get_SourceData(void);
     unsigned short* Get_SourceDataFromVRAM(void);
-    void Set_WorkingSourceData(unsigned short* _pSourceData, unsigned int _iNumIndexes);
     void Enable(void);
     void Disable(void);
+    void CommitToRAM(void);
     void CommitFromRAMToVRAM(void);
 };
 

@@ -150,7 +150,6 @@ void CDecal::Render(INode::E_RENDER_MODE _eMode)
     INode::Render(_eMode);
     
     ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
-    //glDisable(GL_DEPTH_TEST);
     switch (_eMode)
     {
         case INode::E_RENDER_MODE_SIMPLE:
@@ -166,7 +165,6 @@ void CDecal::Render(INode::E_RENDER_MODE _eMode)
             m_pShaders[_eMode]->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD);
             m_pShaders[_eMode]->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
             m_pShaders[_eMode]->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
-            m_pShaders[_eMode]->SetVector3(pCamera->Get_Position(), CShader::k_VECTOR_VIEW);
             m_pShaders[_eMode]->SetCustomVector3(m_vPosition, "EXT_CenterPosition");
             m_pShaders[_eMode]->SetCustomFloat(glm::radians(m_vRotation.y), "EXT_Angle");
             
@@ -203,7 +201,6 @@ void CDecal::Render(INode::E_RENDER_MODE _eMode)
     m_pMesh->Get_IndexBufferRef()->Disable();
     m_pMesh->Get_VertexBufferRef()->Disable();
     m_pShaders[_eMode] ->Disable();
-    //glEnable(GL_DEPTH_TEST);
 }
 
 

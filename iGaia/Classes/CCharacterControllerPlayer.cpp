@@ -150,6 +150,11 @@ void CCharacterControllerPlayer::OnTouchEvent(ITouchDelegate* _pDelegateOwner)
     m_vTowerModelTarget = CSceneMgr::Instance()->Get_CollisionMgr()->Get_Touch3DPoint();
 }
 
+void CCharacterControllerPlayer::Shoot(void)
+{
+    CWorld::Instance()->Get_GameShooterMgr()->CreateBullet(m_vPosition, m_vPosition, m_pTowerModel->Get_Rotation());
+}
+
 void CCharacterControllerPlayer::Update(void)
 {
     switch (m_eLeftTrackState)

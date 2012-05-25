@@ -16,6 +16,7 @@ CIndexBuffer::CIndexBuffer(unsigned int _iNumIndexes)
     m_iNumIndexes = _iNumIndexes;
     m_iNumWorkingIndexes = m_iNumIndexes;
     m_bIsInVRAM = false;
+    m_eMode = GL_STATIC_DRAW;
 }
 
 CIndexBuffer::~CIndexBuffer(void)
@@ -68,14 +69,19 @@ void CIndexBuffer::Disable(void)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, NULL);
 }
 
-void CIndexBuffer::Set_WorkingSourceData(unsigned short *_pSourceData, unsigned int _iNumIndexes)
+void CIndexBuffer::CommitToRAM(void)
+{
+
+}
+
+unsigned short* CIndexBuffer::Get_WorkingSourceDataRef(void)
 {
     if(m_pWorkingSourceData == NULL)
     {
         m_pWorkingSourceData = new unsigned short[m_iNumIndexes];
+        memcpy(m_pWorkingSourceData, m_pSourceData, sizeof(unsigned short) * m_iNumIndexes);
     }
-    m_iNumWorkingIndexes = _iNumIndexes;
-    memcpy(m_pWorkingSourceData, _pSourceData, m_iNumWorkingIndexes * sizeof(unsigned short));
+    return m_pWorkingSourceData;
 }
 
 void CIndexBuffer::CommitFromRAMToVRAM(void)
@@ -88,7 +94,7 @@ void CIndexBuffer::CommitFromRAMToVRAM(void)
             memcpy(m_pWorkingSourceData, m_pSourceData, sizeof(unsigned short) * m_iNumIndexes);
         }
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_iHandle);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned short) * m_iNumWorkingIndexes, m_pWorkingSourceData, GL_STREAM_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned short) * m_iNumWorkingIndexes, m_pWorkingSourceData, m_eMode);
     }
     else
     {
@@ -99,7 +105,7 @@ void CIndexBuffer::CommitFromRAMToVRAM(void)
         }
         glGenBuffers(1, &m_iHandle);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_iHandle);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned short) * m_iNumWorkingIndexes, NULL, GL_STREAM_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned short) * m_iNumWorkingIndexes, NULL, m_eMode);
         glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, NULL, sizeof(unsigned short) * m_iNumWorkingIndexes, m_pWorkingSourceData);
         m_bIsInVRAM = true;
     }
