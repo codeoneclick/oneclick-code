@@ -33,8 +33,8 @@ void CWater::Load(const std::string& _sName, IResource::E_THREAD _eThread)
     
     pSourceData->m_pVertexBuffer = new CVertexBuffer(pSourceData->m_iNumVertexes);
     
-    glm::vec3* pPositionData = pSourceData->m_pVertexBuffer->CreateOrReUse_PositionData();
-    glm::vec2* pTexCoordData = pSourceData->m_pVertexBuffer->CreateOrReUse_TexCoordData();
+    glm::vec3* pPositionData = pSourceData->m_pVertexBuffer->GetOrCreate_PositionSourceData();
+    glm::vec2* pTexCoordData = pSourceData->m_pVertexBuffer->GetOrCreate_TexcoordSourceData();
     
     memset(pPositionData, 0x0, pSourceData->m_iNumVertexes * sizeof(glm::vec3));
     
@@ -58,11 +58,11 @@ void CWater::Load(const std::string& _sName, IResource::E_THREAD _eThread)
     pIndexesBufferData[4] = 2;
     pIndexesBufferData[5] = 3;
     
-    pSourceData->m_pVertexBuffer->CommitToRAM();
+    pSourceData->m_pVertexBuffer->AppendWorkingSourceData();
     pSourceData->m_pVertexBuffer->CommitFromRAMToVRAM();
     pSourceData->m_pIndexBuffer->CommitFromRAMToVRAM();
     
-    m_pMesh = new CMesh();
+    m_pMesh = new CMesh(IResource::E_CREATION_MODE_CUSTOM);
     m_pMesh->Set_SourceData(pSourceData);
 }
 

@@ -76,10 +76,10 @@ void CCharacterControllerPlayer::Load(void)
     m_pBodyModel->Set_RenderModeScreenNormalEnable(true);
     //m_pBodyModel->Set_RenderModeShadowMapEnable(true);
     
-    m_pExplosionEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitter();
-    m_pExplosionEmitter->Set_Shader(INode::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_UNIT);
-    m_pExplosionEmitter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
-    m_pExplosionEmitter->Set_Position(glm::vec3(0.0f, 0.33f, 0.0f));
+    //m_pExplosionEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitter();
+    //m_pExplosionEmitter->Set_Shader(INode::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_UNIT);
+    //m_pExplosionEmitter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
+    //m_pExplosionEmitter->Set_Position(glm::vec3(0.0f, 0.33f, 0.0f));
     
     m_pShadowDecal = CSceneMgr::Instance()->Get_DecalMgr()->Add_Decal();
     m_pShadowDecal->Set_Shader(INode::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_DECAL);
@@ -152,7 +152,7 @@ void CCharacterControllerPlayer::OnTouchEvent(ITouchDelegate* _pDelegateOwner)
 
 void CCharacterControllerPlayer::Shoot(void)
 {
-    CWorld::Instance()->Get_GameShooterMgr()->CreateBullet(m_vPosition, m_vPosition, m_pTowerModel->Get_Rotation());
+    CWorld::Instance()->Get_GameShooterMgr()->CreateBullet(glm::vec3(m_vPosition.x, m_vPosition.y + 0.5f, m_vPosition.z), glm::vec3(m_vPosition.x, m_vPosition.y + 0.5f, m_vPosition.z), m_pTowerModel->Get_Rotation());
 }
 
 void CCharacterControllerPlayer::Update(void)

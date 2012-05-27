@@ -31,7 +31,20 @@ CParticleEmitter* CParticleMgr::Add_ParticleEmitter(void)
 
 void CParticleMgr::Remove_ParticleEmitter(CParticleEmitter *_pParticleEmitter)
 {
-    // TODO
+    std::vector<CParticleEmitter*>::iterator pBeginEmitterIterator = m_lEmitterContainer.begin();
+    std::vector<CParticleEmitter*>::iterator pEndEmitterIterator = m_lEmitterContainer.end();
+    
+    while(pBeginEmitterIterator != pEndEmitterIterator)
+    {
+        if((*pBeginEmitterIterator) == _pParticleEmitter)
+        {
+            m_lEmitterContainer.erase(pBeginEmitterIterator);
+            delete _pParticleEmitter;
+            _pParticleEmitter = NULL;
+            return;
+        }
+        ++pBeginEmitterIterator;
+    }
 }
 
 void CParticleMgr::Update(void)

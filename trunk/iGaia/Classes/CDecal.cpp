@@ -29,8 +29,8 @@ void CDecal::Load(const std::string& _sName, IResource::E_THREAD _eThread)
     
     pSourceData->m_pVertexBuffer = new CVertexBuffer(pSourceData->m_iNumVertexes);
     
-    glm::vec3* pPositionData = pSourceData->m_pVertexBuffer->CreateOrReUse_PositionData();
-    glm::vec2* pTexCoordData = pSourceData->m_pVertexBuffer->CreateOrReUse_TexCoordData();
+    glm::vec3* pPositionData = pSourceData->m_pVertexBuffer->GetOrCreate_PositionSourceData();
+    glm::vec2* pTexCoordData = pSourceData->m_pVertexBuffer->GetOrCreate_TexcoordSourceData();
     
     memset(pPositionData, 0x0, pSourceData->m_iNumVertexes * sizeof(glm::vec3));
     
@@ -70,11 +70,11 @@ void CDecal::Load(const std::string& _sName, IResource::E_THREAD _eThread)
     }
     
     pSourceData->m_pVertexBuffer->Set_Mode(GL_STREAM_DRAW);
-    pSourceData->m_pVertexBuffer->CommitToRAM();
+    pSourceData->m_pVertexBuffer->AppendWorkingSourceData();
     pSourceData->m_pVertexBuffer->CommitFromRAMToVRAM();
     pSourceData->m_pIndexBuffer->CommitFromRAMToVRAM();
     
-    m_pMesh = new CMesh();
+    m_pMesh = new CMesh(IResource::E_CREATION_MODE_CUSTOM);
     m_pMesh->Set_SourceData(pSourceData);
 }
 
@@ -118,7 +118,7 @@ void CDecal::Update()
     int iRoundPositionZ = m_vPosition.z;
     float* pHeightmapData = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_SourceData();
     unsigned int index = 0;
-    glm::vec3* pPositionData = m_pMesh->Get_VertexBufferRef()->CreateOrReUse_PositionData();
+    glm::vec3* pPositionData = m_pMesh->Get_VertexBufferRef()->GetOrCreate_PositionSourceData();
     int iHeightmapWidth = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_Width();
     int iHeightmapHeight = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_Height();
     for(int i = -3; i <= 3; ++i)
@@ -141,7 +141,7 @@ void CDecal::Update()
         }
     }
     
-    m_pMesh->Get_VertexBufferRef()->CommitToRAM();
+    m_pMesh->Get_VertexBufferRef()->AppendWorkingSourceData();
     m_pMesh->Get_VertexBufferRef()->CommitFromRAMToVRAM();
 }
 

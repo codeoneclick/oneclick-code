@@ -14,7 +14,7 @@
 #include "CCollisionMgr.h"
 #include "CWindow.h"
 
-INode::INode()
+INode::INode(void)
 {
     m_vScale    = glm::vec3(1.0f, 1.0f, 1.0f);
     m_vRotation = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -22,22 +22,20 @@ INode::INode()
     m_vTexCoordOffset = glm::vec2(0.0f, 0.0f);
     
     m_pTextures = new CTexture*[TEXTURES_MAX_COUNT];
-    m_pTextures[0] = NULL;
-    m_pTextures[1] = NULL;
-    m_pTextures[2] = NULL;
-    m_pTextures[3] = NULL;
-    m_pTextures[4] = NULL;
-    m_pTextures[5] = NULL;
-    m_pTextures[6] = NULL;
-    m_pTextures[7] = NULL;
+    for(unsigned int i = 0; i < TEXTURES_MAX_COUNT; ++i)
+    {
+        m_pTextures[i] = NULL;
+    }
     
     m_pShaders = new CShader*[E_RENDER_MODE_MAX];
-    m_pShaders[E_RENDER_MODE_SIMPLE] = NULL;
-    m_pShaders[E_RENDER_MODE_REFLECTION] = NULL;
-    m_pShaders[E_RENDER_MODE_REFRACTION] = NULL;
-    m_pShaders[E_RENDER_MODE_SCREEN_NORMAL_MAP] = NULL;
+    for(unsigned int i = 0; i < E_RENDER_MODE_MAX; ++i)
+    {
+        m_pShaders[i] = NULL;
+    }
     
     m_pBoundingBox = NULL;
+    
+    m_pMesh = NULL;
     
     m_bIsRenderModeReflectionEnable = false;
     m_bIsRenderModeRefractionEnable = false;
@@ -45,9 +43,22 @@ INode::INode()
     m_bIsRenderModeShadowMapEnable = false;
 }
 
-INode::~INode()
+INode::~INode(void)
 {
+    std::cout<<"[INode::~INode] delete"<<std::endl;
     
+    m_lDelegateOwners.clear();
+    
+    SAFE_DELETE_ARRAY(m_pTextures);
+    
+    SAFE_DELETE_ARRAY(m_pShaders);
+    
+    SAFE_DELETE(m_pBoundingBox);
+    
+    if(m_pMesh->Get_CreationMode() == IResource::E_CREATION_MODE_CUSTOM)
+    {
+        SAFE_DELETE(m_pMesh);
+    }
 }
 
 void INode::Set_Texture(CTexture *_pTexture, int index, CTexture::E_WRAP_MODE _eWrap)

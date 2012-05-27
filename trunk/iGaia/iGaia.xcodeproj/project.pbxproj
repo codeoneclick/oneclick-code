@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1560F179157252B7000F9F96 /* IVertexBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1560F178157252B7000F9F96 /* IVertexBuffer.cpp */; };
+		1560F18315726592000F9F96 /* CVertexBufferPositionTexcoord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1560F18215726592000F9F96 /* CVertexBufferPositionTexcoord.cpp */; };
+		1560F186157265B7000F9F96 /* CVertexBufferPositionColor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1560F185157265B6000F9F96 /* CVertexBufferPositionColor.cpp */; };
+		1560F189157265F1000F9F96 /* CVertexBufferPositionTexcoordNormal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1560F188157265F0000F9F96 /* CVertexBufferPositionTexcoordNormal.cpp */; };
+		1560F18C15726620000F9F96 /* CVertexBufferPositionTexcoordNormalTangent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1560F18B1572661F000F9F96 /* CVertexBufferPositionTexcoordNormalTangent.cpp */; };
 		1D3623260D0F684500981E51 /* MainAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* MainAppDelegate.mm */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
@@ -404,6 +409,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1560F178157252B7000F9F96 /* IVertexBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IVertexBuffer.cpp; sourceTree = "<group>"; };
+		1560F17B157252CB000F9F96 /* IVertexBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IVertexBuffer.h; sourceTree = "<group>"; };
+		1560F1801572657C000F9F96 /* CVertexBufferPositionTexcoord.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CVertexBufferPositionTexcoord.h; sourceTree = "<group>"; };
+		1560F18215726592000F9F96 /* CVertexBufferPositionTexcoord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CVertexBufferPositionTexcoord.cpp; sourceTree = "<group>"; };
+		1560F184157265A4000F9F96 /* CVertexBufferPositionColor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CVertexBufferPositionColor.h; sourceTree = "<group>"; };
+		1560F185157265B6000F9F96 /* CVertexBufferPositionColor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CVertexBufferPositionColor.cpp; sourceTree = "<group>"; };
+		1560F187157265D8000F9F96 /* CVertexBufferPositionTexcoordNormal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CVertexBufferPositionTexcoordNormal.h; sourceTree = "<group>"; };
+		1560F188157265F0000F9F96 /* CVertexBufferPositionTexcoordNormal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CVertexBufferPositionTexcoordNormal.cpp; sourceTree = "<group>"; };
+		1560F18A1572660F000F9F96 /* CVertexBufferPositionTexcoordNormalTangent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CVertexBufferPositionTexcoordNormalTangent.h; sourceTree = "<group>"; };
+		1560F18B1572661F000F9F96 /* CVertexBufferPositionTexcoordNormalTangent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CVertexBufferPositionTexcoordNormalTangent.cpp; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* MainAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainAppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* MainAppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MainAppDelegate.mm; sourceTree = "<group>"; };
@@ -1220,7 +1235,7 @@
 		A1AC4D9A156F7E440031FE05 /* CBullet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CBullet.cpp; sourceTree = "<group>"; };
 		A1AC4D9B156F7E440031FE05 /* CBullet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBullet.h; sourceTree = "<group>"; };
 		A1AC4DA1156FC74F0031FE05 /* CGameShooterMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGameShooterMgr.cpp; sourceTree = "<group>"; };
-		A1AC4DA2156FC74F0031FE05 /* CGameShooterMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; path = CGameShooterMgr.h; sourceTree = "<group>"; };
+		A1AC4DA2156FC74F0031FE05 /* CGameShooterMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGameShooterMgr.h; sourceTree = "<group>"; };
 		A1AF6F731549380400703E2E /* Skybox.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = Skybox.pvr; path = Resources/Textures/Skybox.pvr; sourceTree = "<group>"; };
 		A1AF6F751549383200703E2E /* CSkyBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CSkyBox.cpp; sourceTree = "<group>"; };
 		A1AF6F761549383200703E2E /* CSkyBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSkyBox.h; sourceTree = "<group>"; };
@@ -1511,6 +1526,16 @@
 				937367CB144EE2B30051ED8D /* CVertexBuffer.cpp */,
 				A1FFAA8A156CBAE500B01ECB /* CFrustum.h */,
 				A1FFAA89156CBAE500B01ECB /* CFrustum.cpp */,
+				1560F17B157252CB000F9F96 /* IVertexBuffer.h */,
+				1560F178157252B7000F9F96 /* IVertexBuffer.cpp */,
+				1560F1801572657C000F9F96 /* CVertexBufferPositionTexcoord.h */,
+				1560F18215726592000F9F96 /* CVertexBufferPositionTexcoord.cpp */,
+				1560F184157265A4000F9F96 /* CVertexBufferPositionColor.h */,
+				1560F185157265B6000F9F96 /* CVertexBufferPositionColor.cpp */,
+				1560F187157265D8000F9F96 /* CVertexBufferPositionTexcoordNormal.h */,
+				1560F188157265F0000F9F96 /* CVertexBufferPositionTexcoordNormal.cpp */,
+				1560F18A1572660F000F9F96 /* CVertexBufferPositionTexcoordNormalTangent.h */,
+				1560F18B1572661F000F9F96 /* CVertexBufferPositionTexcoordNormalTangent.cpp */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -3045,6 +3070,11 @@
 				A1FFAA8B156CBAE500B01ECB /* CFrustum.cpp in Sources */,
 				A1AC4D9C156F7E440031FE05 /* CBullet.cpp in Sources */,
 				A1AC4DA3156FC74F0031FE05 /* CGameShooterMgr.cpp in Sources */,
+				1560F179157252B7000F9F96 /* IVertexBuffer.cpp in Sources */,
+				1560F18315726592000F9F96 /* CVertexBufferPositionTexcoord.cpp in Sources */,
+				1560F186157265B7000F9F96 /* CVertexBufferPositionColor.cpp in Sources */,
+				1560F189157265F1000F9F96 /* CVertexBufferPositionTexcoordNormal.cpp in Sources */,
+				1560F18C15726620000F9F96 /* CVertexBufferPositionTexcoordNormalTangent.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3059,7 +3089,8 @@
 					armv6,
 					armv7,
 				);
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -3071,6 +3102,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PRODUCT_NAME = iGaia;
 				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;

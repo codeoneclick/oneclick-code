@@ -76,7 +76,7 @@ bool CCollisionMgr::RayTriangleIntersection(glm::vec3& _vTrianglePoint_01, glm::
 
 bool CCollisionMgr::Get_CollisionPoint(CVertexBuffer *_pVB, CIndexBuffer *_pIB, SRay3d& _tRay3d, glm::vec3* _vCollisionPoint)
 {
-    glm::vec3* pPositionData = _pVB->CreateOrReUse_PositionData();
+    glm::vec3* pPositionData = _pVB->GetOrCreate_PositionSourceData();
     unsigned short* pIBData = _pIB->Get_SourceData();
     unsigned int iNumIndexes = _pIB->Get_NumIndexes();
     for(unsigned int index = 0; index < iNumIndexes; index += 3)

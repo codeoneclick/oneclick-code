@@ -17,13 +17,15 @@ class CBullet
 protected:
     glm::vec3 m_vPosition;
     glm::vec3 m_vRotation;
+    CParticleEmitter* m_pFireEmmiter;
     CParticleEmitter* m_pExplosionEmitter;
-    CDecal* m_pShadowDecal;
+    INode* m_pModel;
     glm::vec3 m_vStartPoint;
     glm::vec3 m_vEndPoint;
     float m_fMoveSpeed;
     bool m_bIsDestroyed;
     void _MoveForward(void);
+    void _SelfDestroy(void);
 public:
     CBullet(void);
     ~CBullet(void);

@@ -35,7 +35,7 @@ IResource* CMeshMgr::Load(const std::string& _sName, IResource::E_THREAD _eThrea
         }
         else
         {
-            pMesh = new CMesh();
+            pMesh = new CMesh(IResource::E_CREATION_MODE_NATIVE);
             pMesh->Set_SourceData(m_pDefaultMeshSourceData);
             
             IParser* pParser = new CParser_MDL();
@@ -61,7 +61,7 @@ IResource* CMeshMgr::Load(const std::string& _sName, IResource::E_THREAD _eThrea
             {
                 m_lTaskPool[_sName] = new CParser_MDL();
             }
-            pMesh = new CMesh();
+            pMesh = new CMesh(IResource::E_CREATION_MODE_NATIVE);
             pMesh->Set_SourceData(m_pDefaultMeshSourceData);
             pMesh->Set_Name(_sName);
             pMesh->Add_DelegateOwner(_pDelegate);

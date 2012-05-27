@@ -28,11 +28,11 @@
 #include "ITouchDelegate.h"
 
 #define TEXTURES_MAX_COUNT 8
+#define SAFE_DELETE(a) { delete (a); (a) = NULL; }
+#define SAFE_DELETE_ARRAY(a) { delete[] (a); (a) = NULL; }
 
 class INode : public ITouchDelegate, public IResourceLoaderDelegate
 {
-public:
-    enum E_RENDER_MODE { E_RENDER_MODE_SIMPLE = 0, E_RENDER_MODE_REFLECTION, E_RENDER_MODE_REFRACTION, E_RENDER_MODE_SCREEN_NORMAL_MAP, E_RENDER_MODE_MAX };
 protected:
     glm::mat4x4 m_mScale;
     glm::mat4x4 m_mRotation;

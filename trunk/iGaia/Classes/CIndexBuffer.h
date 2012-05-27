@@ -15,6 +15,9 @@
 #include <string.h>
 #include <vector>
 
+#define SAFE_DELETE(a) { delete (a); (a) = NULL; }
+#define SAFE_DELETE_ARRAY(a) { delete[] (a); (a) = NULL; }
+
 class CIndexBuffer
 { 
 private:

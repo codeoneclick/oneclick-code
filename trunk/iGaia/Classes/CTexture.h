@@ -14,7 +14,6 @@
 #include "PVRTTexture.h"
 #include "IResource.h"
 
-
 class CTexture : public IResource
 {   
 public:

@@ -16,6 +16,6 @@ void main(void)
     lowp float fDiffuseFactor = max(dot(OUT_Normal, OUT_Light), 0.0);
 
     vDiffuseColor.rgb = vDiffuseColor.rgb * fDiffuseFactor + vDiffuseColor.rgb * 0.66;
-    gl_FragColor = vDiffuseColor;
+    gl_FragColor = texture2D(EXT_TEXTURE_01, OUT_TexCoord);//vDiffuseColor;
 }
 );

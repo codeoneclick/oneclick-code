@@ -31,14 +31,14 @@ void CLandscape::Load(const std::string& _sName, IResource::E_THREAD _eThread)
     
     CSceneMgr::Instance()->Set_HeightMapSetterRef(m_pHeightMapSetter);
     
-    glm::u8vec4* pColorData = m_pMesh->Get_VertexBufferRef()->CreateOrReUse_ColorData();
+    glm::u8vec4* pColorData = m_pMesh->Get_VertexBufferRef()->GetOrCreate_ColorSourceData();
     unsigned char iUniqueColorId = CSceneMgr::Instance()->Get_UniqueColorId(this);
     for(unsigned int i = 0; i < m_pMesh->Get_NumVertexes(); ++i)
     {
         pColorData[i] = glm::u8vec4(iUniqueColorId, iUniqueColorId, iUniqueColorId, 255);
     }
     
-    m_pMesh->Get_VertexBufferRef()->CommitToRAM();
+    m_pMesh->Get_VertexBufferRef()->AppendWorkingSourceData();
     m_pMesh->Get_VertexBufferRef()->CommitFromRAMToVRAM();
     m_pMesh->Get_IndexBufferRef()->Set_Mode(GL_STREAM_DRAW);
     m_pMesh->Get_IndexBufferRef()->CommitFromRAMToVRAM();
@@ -105,7 +105,7 @@ void CLandscape::_CreateQuadTreeNode(int _iSize, CLandscape::SQuadTreeNode *_pPa
 
 void CLandscape::_CreateIndexBufferRefForQuadTreeNode(CLandscape::SQuadTreeNode *_pNode)
 {
-    glm::vec3* pPositionData = m_pMesh->Get_VertexBufferRef()->CreateOrReUse_PositionData();
+    glm::vec3* pPositionData = m_pMesh->Get_VertexBufferRef()->GetOrCreate_PositionSourceData();
     unsigned int iParentNumIndexes = _pNode->m_pParent->m_iNumIndexes;
     _pNode->m_pIndexes = static_cast<unsigned short*>(malloc(sizeof(unsigned short)));
     float fMaxY = -4096.0f;
@@ -289,9 +289,10 @@ void CLandscape::Update(void)
 
 void CLandscape::Render(INode::E_RENDER_MODE _eMode)
 {
+    glDisable(GL_CULL_FACE);
     glDisable(GL_BLEND);
     INode::Render(_eMode);
-    glCullFace(GL_BACK);
+    //glCullFace(GL_BACK);
     ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
     ILight* pLight = CSceneMgr::Instance()->Get_GlobalLight();
     
@@ -413,13 +414,14 @@ void CLandscape::Render(INode::E_RENDER_MODE _eMode)
     glDrawElements(GL_TRIANGLES, iNumIndexes, GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_SourceDataFromVRAM());
     m_pMesh->Get_IndexBufferRef()->Disable();
     m_pMesh->Get_VertexBufferRef()->Disable();
-    glCullFace(GL_FRONT);
+    //glCullFace(GL_FRONT);
     
     if(m_pBoundingBox != NULL)
     {
         m_pBoundingBox->Render();
     }
     glEnable(GL_BLEND);
+    glEnable(GL_CULL_FACE);
 }
 
 

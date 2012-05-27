@@ -103,8 +103,8 @@ CScreenSpacePostMgr::CScreenSpacePostMgr(void)
     
     pSourceData->m_pVertexBuffer = new CVertexBuffer(pSourceData->m_iNumVertexes);
     
-    glm::vec3* pPositionData = pSourceData->m_pVertexBuffer->CreateOrReUse_PositionData();
-    glm::vec2* pTexCoordData = pSourceData->m_pVertexBuffer->CreateOrReUse_TexCoordData();
+    glm::vec3* pPositionData = pSourceData->m_pVertexBuffer->GetOrCreate_PositionSourceData();
+    glm::vec2* pTexCoordData = pSourceData->m_pVertexBuffer->GetOrCreate_TexcoordSourceData();
     
     unsigned i = 0;
     pPositionData[i] = glm::vec3(-1.0f,-1.0f,0.0f);
@@ -132,10 +132,10 @@ CScreenSpacePostMgr::CScreenSpacePostMgr(void)
     pIndexBufferData[i++] = 2; 
     pIndexBufferData[i++] = 1;
     
-    m_pMesh = new CMesh();
+    m_pMesh = new CMesh(IResource::E_CREATION_MODE_CUSTOM);
     m_pMesh->Set_SourceData(pSourceData);
     
-    m_pMesh->Get_VertexBufferRef()->CommitToRAM();
+    m_pMesh->Get_VertexBufferRef()->AppendWorkingSourceData();
     m_pMesh->Get_VertexBufferRef()->CommitFromRAMToVRAM();
     m_pMesh->Get_IndexBufferRef()->CommitFromRAMToVRAM();
     

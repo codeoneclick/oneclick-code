@@ -25,7 +25,7 @@ void CModel::Load(const std::string& _sName, IResource::E_THREAD _eThread)
 {
     m_pMesh = static_cast<CMesh*>(CResourceMgr::Instance()->Load(_sName, IResource::E_MGR_MESH, _eThread, this));
     
-    m_pMesh->Get_VertexBufferRef()->CommitToRAM();
+    m_pMesh->Get_VertexBufferRef()->AppendWorkingSourceData();
     m_pMesh->Get_VertexBufferRef()->CommitFromRAMToVRAM();
     m_pMesh->Get_IndexBufferRef()->CommitFromRAMToVRAM();
 }
@@ -41,7 +41,7 @@ void CModel::OnResourceLoadDoneEvent(IResource::E_RESOURCE_TYPE _eType, IResourc
             {
                 m_pBoundingBox->Set_MaxMinPoints(m_pMesh->Get_MaxBound(), m_pMesh->Get_MinBound());
             }
-            m_pMesh->Get_VertexBufferRef()->CommitToRAM();
+            m_pMesh->Get_VertexBufferRef()->AppendWorkingSourceData();
             m_pMesh->Get_VertexBufferRef()->CommitFromRAMToVRAM();
             m_pMesh->Get_IndexBufferRef()->CommitFromRAMToVRAM();
             break;

@@ -229,7 +229,7 @@ void CNavigationMeshMgr::Create_VisualMesh(void)
 void CNavigationMeshMgr::Set_NavigationModel(INode *_pNode)
 {
     size_t iNumVertexes = _pNode->Get_Mesh()->Get_NumVertexes();
-    glm::vec3* pPositionData = _pNode->Get_Mesh()->Get_VertexBufferRef()->CreateOrReUse_PositionData();
+    glm::vec3* pPositionData = _pNode->Get_Mesh()->Get_VertexBufferRef()->GetOrCreate_PositionSourceData();
     float* pNavigationMeshVertexesData = new float[iNumVertexes * 3];
     
     float pBoundingBoxMin[3];
