@@ -15,11 +15,13 @@ IResource::IResource(void)
 {
     m_iRefCount = 0;
     m_eResourceType = E_RESOURCE_TYPE_NONE;
+    m_eCreationMode = E_CREATION_MODE_NATIVE;
 }
 
 IResource::~IResource(void)
 {
-    
+    std::cout<<"[IResource::~IResource]"<<std::endl;
+    m_lDelegateOwners.clear();
 }
 
 void IResource::Release()

@@ -35,6 +35,7 @@ void main(void)
     vDiffuseColor = vDiffuseColor * fDiffuseFactor;
 
     lowp vec4 vColor = vDiffuseColor * fSelfShadow + vAmbientColor;
+    vColor.a = 1.0;
     gl_FragColor = vColor;
 }
 );

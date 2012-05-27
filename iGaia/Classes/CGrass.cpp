@@ -38,7 +38,7 @@ CGrass::CGrass(void)
     m_pSingleElementIndexBuffer[11] = 5;*/
     
     m_pSingleElementVertexBuffer = new CVertexBuffer(k_ELEMENT_NUM_VERTEXES);
-    glm::vec3* pPositionData = m_pSingleElementVertexBuffer->CreateOrReUse_PositionData();
+    glm::vec3* pPositionData = m_pSingleElementVertexBuffer->GetOrCreate_PositionSourceData();
 
     pPositionData[0] = glm::vec3(-k_ELEMENT_SIZE / 2, 0.0f, 0.0f);
     pPositionData[1] = glm::vec3(-k_ELEMENT_SIZE / 2, k_ELEMENT_HEIGHT, 0.0f);
@@ -50,7 +50,7 @@ CGrass::CGrass(void)
     pPositionData[6] = glm::vec3(0.0f, 0.0f,  k_ELEMENT_SIZE / 2);
     pPositionData[7] = glm::vec3(0.0f, k_ELEMENT_HEIGHT,  k_ELEMENT_SIZE / 2);*/
     
-    glm::vec2* pTexCoordData = m_pSingleElementVertexBuffer->CreateOrReUse_TexCoordData();
+    glm::vec2* pTexCoordData = m_pSingleElementVertexBuffer->GetOrCreate_TexcoordSourceData();
     
     pTexCoordData[0] = glm::vec2(0.0f,1.0f);
     pTexCoordData[1] = glm::vec2(0.0f,0.0f);
@@ -100,13 +100,13 @@ void CGrass::Load(const std::string &_sName, IResource::E_THREAD _eThread)
     pSourceData->m_pVertexBuffer = new CVertexBuffer(pSourceData->m_iNumVertexes);
     pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes);
     
-    glm::vec3* pPositionData = pSourceData->m_pVertexBuffer->CreateOrReUse_PositionData();
-    glm::vec2* pTextCoordData = pSourceData->m_pVertexBuffer->CreateOrReUse_TexCoordData();
+    glm::vec3* pPositionData = pSourceData->m_pVertexBuffer->GetOrCreate_PositionSourceData();
+    glm::vec2* pTextCoordData = pSourceData->m_pVertexBuffer->GetOrCreate_TexcoordSourceData();
     
     unsigned short* pIndexesBufferData = pSourceData->m_pIndexBuffer->Get_SourceData();
     
-    glm::vec3* pSingleElementPositionData = m_pSingleElementVertexBuffer->CreateOrReUse_PositionData();
-    glm::vec2* pSingleElementTextCoordData = m_pSingleElementVertexBuffer->CreateOrReUse_TexCoordData();
+    glm::vec3* pSingleElementPositionData = m_pSingleElementVertexBuffer->GetOrCreate_PositionSourceData();
+    glm::vec2* pSingleElementTextCoordData = m_pSingleElementVertexBuffer->GetOrCreate_TexcoordSourceData();
     
     std::vector<glm::vec3>::iterator pElementsSourceDataBegin = m_lGrassElementsPosition.begin();
     std::vector<glm::vec3>::iterator pElementsSourceDataEnd   = m_lGrassElementsPosition.end();
@@ -130,10 +130,10 @@ void CGrass::Load(const std::string &_sName, IResource::E_THREAD _eThread)
         ++pElementsSourceDataBegin;
     }
     
-    m_pMesh = new CMesh();
+    m_pMesh = new CMesh(IResource::E_CREATION_MODE_CUSTOM);
     m_pMesh->Set_SourceData(pSourceData);
     m_pMesh->Get_VertexBufferRef()->Set_Mode(GL_STREAM_DRAW);
-    m_pMesh->Get_VertexBufferRef()->CommitToRAM();
+    m_pMesh->Get_VertexBufferRef()->AppendWorkingSourceData();
     m_pMesh->Get_VertexBufferRef()->CommitFromRAMToVRAM();
     m_pMesh->Get_IndexBufferRef()->Set_Mode(GL_STREAM_DRAW);
     m_pMesh->Get_IndexBufferRef()->CommitFromRAMToVRAM();
@@ -201,7 +201,7 @@ void CGrass::_CreateQuadTreeNode(int _iSize, CGrass::SQuadTreeNode *_pParentNode
 
 void CGrass::_CreateIndexBufferRefForQuadTreeNode(CGrass::SQuadTreeNode *_pNode)
 {
-    glm::vec3* pPositionData = m_pMesh->Get_VertexBufferRef()->CreateOrReUse_PositionData();
+    glm::vec3* pPositionData = m_pMesh->Get_VertexBufferRef()->GetOrCreate_PositionSourceData();
     unsigned int iParentNumIndexes = _pNode->m_pParent->m_iNumIndexes;
     _pNode->m_pIndexes = static_cast<unsigned short*>(malloc(sizeof(unsigned short)));
     float fMaxY = -4096.0f;
@@ -364,8 +364,8 @@ void CGrass::Update()
     
     ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
     unsigned int iNumGrassElements = m_lGrassElementsPosition.size();
-    glm::vec3* pSingleElementPositionData = m_pSingleElementVertexBuffer->CreateOrReUse_PositionData();
-    glm::vec3* pPositionData = m_pMesh->Get_VertexBufferRef()->CreateOrReUse_PositionData();
+    glm::vec3* pSingleElementPositionData = m_pSingleElementVertexBuffer->GetOrCreate_PositionSourceData();
+    glm::vec3* pPositionData = m_pMesh->Get_VertexBufferRef()->GetOrCreate_PositionSourceData();
     for(unsigned int index = 0; index < iNumGrassElements; index++)
     {
         glm::mat4 mWorld = pCamera->Get_BillboardMatrix(m_lGrassElementsPosition[index]);
@@ -390,7 +390,7 @@ void CGrass::Update()
         vTransform = mWorld * vTransform;
         pPositionData[index * 4 + 3] = glm::vec3(vTransform.x, vTransform.y, vTransform.z);
     }
-    m_pMesh->Get_VertexBufferRef()->CommitToRAM();
+    m_pMesh->Get_VertexBufferRef()->AppendWorkingSourceData();
     m_pMesh->Get_VertexBufferRef()->CommitFromRAMToVRAM();
 }
 

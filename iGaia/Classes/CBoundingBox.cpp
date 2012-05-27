@@ -29,8 +29,8 @@ CMesh* CBoundingBox::Get_BoundingBoxMesh(void)
     
         pSourceData->m_pVertexBuffer = new CVertexBuffer(pSourceData->m_iNumVertexes);
         
-        glm::vec3* pPositionData = pSourceData->m_pVertexBuffer->CreateOrReUse_PositionData();
-        glm::u8vec4* pColorData = pSourceData->m_pVertexBuffer->CreateOrReUse_ColorData();
+        glm::vec3* pPositionData = pSourceData->m_pVertexBuffer->GetOrCreate_PositionSourceData();
+        glm::u8vec4* pColorData = pSourceData->m_pVertexBuffer->GetOrCreate_ColorSourceData();
     
         pPositionData[0] = glm::vec3( m_vMin.x,  m_vMin.y, m_vMax.z);
         pPositionData[1] = glm::vec3( m_vMax.x,  m_vMin.y, m_vMax.z);
@@ -77,9 +77,9 @@ CMesh* CBoundingBox::Get_BoundingBoxMesh(void)
         pIndexBufferData[22] = 3;
         pIndexBufferData[23] = 5;
     
-        m_pMesh = new CMesh();
+        m_pMesh = new CMesh(IResource::E_CREATION_MODE_CUSTOM);
         m_pMesh->Set_SourceData(pSourceData);
-        m_pMesh->Get_VertexBufferRef()->CommitToRAM();
+        m_pMesh->Get_VertexBufferRef()->AppendWorkingSourceData();
         m_pMesh->Get_VertexBufferRef()->CommitFromRAMToVRAM();
         m_pMesh->Get_IndexBufferRef()->CommitFromRAMToVRAM();
     }

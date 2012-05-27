@@ -35,8 +35,8 @@ CMesh* CHeightMapSetter::Load_DataSource(const std::string _sName, int _iWidth, 
     
     pSourceData->m_pVertexBuffer = new CVertexBuffer(pSourceData->m_iNumVertexes);
     
-    glm::vec3* pPositionData = pSourceData->m_pVertexBuffer->CreateOrReUse_PositionData();
-    glm::vec2* pTexCoordData = pSourceData->m_pVertexBuffer->CreateOrReUse_TexCoordData();
+    glm::vec3* pPositionData = pSourceData->m_pVertexBuffer->GetOrCreate_PositionSourceData();
+    glm::vec2* pTexCoordData = pSourceData->m_pVertexBuffer->GetOrCreate_TexcoordSourceData();
     
     m_pDataSource = new float[m_iWidth * m_iHeight];
     
@@ -81,7 +81,7 @@ CMesh* CHeightMapSetter::Load_DataSource(const std::string _sName, int _iWidth, 
     
     _CalculateNormals(pSourceData->m_pVertexBuffer, pSourceData->m_pIndexBuffer);
     _CalculateTangentsAndBinormals(pSourceData->m_pVertexBuffer, pSourceData->m_pIndexBuffer);
-    CMesh* pMesh = new CMesh();
+    CMesh* pMesh = new CMesh(IResource::E_CREATION_MODE_CUSTOM);
     pMesh->Set_SourceData(pSourceData);
     
     /*CParser_MDL* pParser = new CParser_MDL();
@@ -202,8 +202,8 @@ void CHeightMapSetter::Update(void)
 
 void CHeightMapSetter::_CalculateNormals(CVertexBuffer* _pVertexBuffer, CIndexBuffer* _pIndexBuffer)
 {
-    glm::vec3* pPositionData = _pVertexBuffer->CreateOrReUse_PositionData();
-    glm::u8vec4* pNormalData = _pVertexBuffer->CreateOrReUse_NormalData();
+    glm::vec3* pPositionData = _pVertexBuffer->GetOrCreate_PositionSourceData();
+    glm::u8vec4* pNormalData = _pVertexBuffer->GetOrCreate_NormalSourceData();
     unsigned short* pIBData = _pIndexBuffer->Get_SourceData();
     unsigned int iNumIndexes = _pIndexBuffer->Get_NumIndexes();
     for(unsigned int index = 0; index < iNumIndexes; index += 3)
@@ -221,7 +221,7 @@ void CHeightMapSetter::_CalculateNormals(CVertexBuffer* _pVertexBuffer, CIndexBu
         pNormalData[pIBData[index + 1]] = vByteNormal;
         pNormalData[pIBData[index + 2]] = vByteNormal;
     }
-    _pVertexBuffer->CommitToRAM();
+    _pVertexBuffer->AppendWorkingSourceData();
 }
 
 void CHeightMapSetter::_CalculateTangentsAndBinormals(CVertexBuffer* _pVertexBuffer, CIndexBuffer* _pIndexBuffer)
@@ -230,10 +230,10 @@ void CHeightMapSetter::_CalculateTangentsAndBinormals(CVertexBuffer* _pVertexBuf
 	std::vector<glm::vec3> lTangents, lBinormals;
     
 	int iNumIndexes = _pIndexBuffer->Get_NumIndexes();
-    glm::vec3* pPositionData = _pVertexBuffer->CreateOrReUse_PositionData();
-    glm::vec2* pTexCoordData = _pVertexBuffer->CreateOrReUse_TexCoordData();
-    glm::u8vec4* pNormalData = _pVertexBuffer->CreateOrReUse_NormalData();
-    glm::u8vec4* pTangentData = _pVertexBuffer->CreateOrReUse_TangentData();
+    glm::vec3* pPositionData = _pVertexBuffer->GetOrCreate_PositionSourceData();
+    glm::vec2* pTexCoordData = _pVertexBuffer->GetOrCreate_TexcoordSourceData();
+    glm::u8vec4* pNormalData = _pVertexBuffer->GetOrCreate_NormalSourceData();
+    glm::u8vec4* pTangentData = _pVertexBuffer->GetOrCreate_TangentSourceData();
     unsigned short* pIndexBufferData = _pIndexBuffer->Get_SourceData();
 	
     for ( i = 0; i < iNumIndexes; i += 3 )
@@ -283,7 +283,7 @@ void CHeightMapSetter::_CalculateTangentsAndBinormals(CVertexBuffer* _pVertexBuf
         
         pTangentData[i] = CVertexBuffer::CompressVEC3(vTangentRes);
 	}
-    _pVertexBuffer->CommitToRAM();
+    _pVertexBuffer->AppendWorkingSourceData();
 }
 
 

@@ -18,6 +18,8 @@
 
 class CShader
 {
+public:
+    enum E_RENDER_MODE { E_RENDER_MODE_SIMPLE = 0, E_RENDER_MODE_REFLECTION, E_RENDER_MODE_REFRACTION, E_RENDER_MODE_SCREEN_NORMAL_MAP, E_RENDER_MODE_MAX };
 protected:
     GLuint m_hProgramHandle;
     std::map<std::string, GLint> m_lUniformHandle;

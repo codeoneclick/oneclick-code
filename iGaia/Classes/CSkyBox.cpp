@@ -27,8 +27,8 @@ void CSkyBox::Load(const std::string& _sName, IResource::E_THREAD _eThread)
     
     pSourceData->m_pVertexBuffer = new CVertexBuffer(pSourceData->m_iNumVertexes);
     
-    glm::vec3* pPositionData = pSourceData->m_pVertexBuffer->CreateOrReUse_PositionData();
-    glm::vec2* pTexCoordData = pSourceData->m_pVertexBuffer->CreateOrReUse_TexCoordData();
+    glm::vec3* pPositionData = pSourceData->m_pVertexBuffer->GetOrCreate_PositionSourceData();
+    glm::vec2* pTexCoordData = pSourceData->m_pVertexBuffer->GetOrCreate_TexcoordSourceData();
     
     glm::vec3 m_vMin = glm::vec3( -1.0f, -1.0f, -1.0f);
     glm::vec3 m_vMax = glm::vec3(  1.0f,  1.0f,  1.0f);
@@ -141,11 +141,11 @@ void CSkyBox::Load(const std::string& _sName, IResource::E_THREAD _eThread)
     pIndexBufferData[34] = 22;
     pIndexBufferData[35] = 23;
     
-    pSourceData->m_pVertexBuffer->CommitToRAM();
+    pSourceData->m_pVertexBuffer->AppendWorkingSourceData();
     pSourceData->m_pVertexBuffer->CommitFromRAMToVRAM();
     pSourceData->m_pIndexBuffer->CommitFromRAMToVRAM();
     
-    m_pMesh = new CMesh();
+    m_pMesh = new CMesh(IResource::E_CREATION_MODE_CUSTOM);
     m_pMesh->Set_SourceData(pSourceData);
 }
 
@@ -179,6 +179,7 @@ void CSkyBox::Render(INode::E_RENDER_MODE _eMode)
     INode::Render(_eMode);
     
     glDisable(GL_CULL_FACE);
+    glDisable(GL_BLEND);
     glDisable(GL_DEPTH_TEST);
     ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
     
@@ -233,6 +234,7 @@ void CSkyBox::Render(INode::E_RENDER_MODE _eMode)
     m_pShaders[_eMode]->Disable();
     glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
 }
 
 

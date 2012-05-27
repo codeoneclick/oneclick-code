@@ -60,7 +60,7 @@ protected:
 
 public:
     CGrass(void);
-    virtual ~CGrass(void);
+    ~CGrass(void);
     virtual void Load(const std::string& _sName, IResource::E_THREAD _eThread);
     virtual void Update(void);
     virtual void Render(E_RENDER_MODE _eMode);

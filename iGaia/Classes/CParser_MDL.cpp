@@ -112,10 +112,10 @@ void CParser_MDL::Load(const std::string& _sName)
 void CParser_MDL::Commit(void)
 {
     m_pSourceData->m_pVertexBuffer = new CVertexBuffer(m_pSourceData->m_iNumVertexes);
-    glm::vec3* pPositionData = m_pSourceData->m_pVertexBuffer->CreateOrReUse_PositionData();
-    glm::vec2* pTexCoordData = m_pSourceData->m_pVertexBuffer->CreateOrReUse_TexCoordData();
-    glm::u8vec4* pNormalData = m_pSourceData->m_pVertexBuffer->CreateOrReUse_NormalData();
-    glm::u8vec4* pTangentData = m_pSourceData->m_pVertexBuffer->CreateOrReUse_TangentData();
+    glm::vec3* pPositionData  = m_pSourceData->m_pVertexBuffer->GetOrCreate_PositionSourceData();
+    glm::vec2* pTexCoordData  = m_pSourceData->m_pVertexBuffer->GetOrCreate_TexcoordSourceData();
+    glm::u8vec4* pNormalData  = m_pSourceData->m_pVertexBuffer->GetOrCreate_NormalSourceData();
+    glm::u8vec4* pTangentData = m_pSourceData->m_pVertexBuffer->GetOrCreate_TangentSourceData();
     
     for(unsigned int index = 0; index < m_pSourceData->m_iNumVertexes; index++)
     {

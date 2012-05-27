@@ -20,14 +20,14 @@ CIndexBuffer::CIndexBuffer(unsigned int _iNumIndexes)
 }
 
 CIndexBuffer::~CIndexBuffer(void)
-{
-    if(m_pSourceData != NULL)
-    {
-        delete[] m_pSourceData;
-        m_pSourceData = NULL;
-    }
+{  
+    SAFE_DELETE_ARRAY(m_pWorkingSourceData);
+    SAFE_DELETE_ARRAY(m_pSourceData);
     
-    glDeleteBuffers(1, &m_iHandle);
+    if(m_bIsInVRAM)
+    {
+        glDeleteBuffers(1, &m_iHandle);
+    }
 }
 
 unsigned short* CIndexBuffer::Get_SourceData(void)

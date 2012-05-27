@@ -365,7 +365,7 @@ void CSceneMgr::_DrawScreenNormalMapStep(void)
     
     if(m_pParticleMgr != NULL)
     {
-        //m_pParticleMgr->Render(INode::E_RENDER_MODE_SCREEN_NORMAL_MAP);
+        m_pParticleMgr->Render(INode::E_RENDER_MODE_SCREEN_NORMAL_MAP);
     }
     
     m_pRenderMgr->EndDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_SCREEN_NORMAL_MAP);

@@ -15,7 +15,7 @@ class CModel : public INode
 {
 public:
     CModel(void);
-    virtual ~CModel(void);
+    ~CModel(void);
     virtual void Load(const std::string& _sName, IResource::E_THREAD _eThread);
     virtual void Update(void);
     virtual void Render(E_RENDER_MODE _eMode);

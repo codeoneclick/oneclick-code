@@ -13,9 +13,13 @@
 #include <vector>
 #include "IDelegate.h"
 
+#define SAFE_DELETE(a) { delete (a); (a) = NULL; }
+#define SAFE_DELETE_ARRAY(a) { delete[] (a); (a) = NULL; }
+
 class IResource
 {
 public:
+    enum E_CREATION_MODE { E_CREATION_MODE_NATIVE = 0, E_CREATION_MODE_CUSTOM }; 
 #define STANDART_MODEL "STANDART_MODEL"
     enum E_STANDART_MODEL { E_STANDART_MODEL_NONE = 0, E_STANDART_MODEL_PLANE, E_STANDART_MODEL_CUBE }; 
     enum E_MGR { E_MGR_TEXTURE = 0,  E_MGR_MESH };
@@ -28,6 +32,7 @@ protected:
     std::string m_sName;
     E_RESOURCE_TYPE m_eResourceType;
     std::vector<IDelegate*> m_lDelegateOwners;
+    E_CREATION_MODE m_eCreationMode;
 public:
     IResource(void);
     virtual ~IResource(void);
@@ -39,6 +44,7 @@ public:
     inline std::string Get_Name(void) { return m_sName; }
     virtual void Set_SourceData(void* _pSourceData) = 0;
     inline E_RESOURCE_TYPE Get_ResourceType(void) { return m_eResourceType; }
+    inline E_CREATION_MODE Get_CreationMode(void) { return m_eCreationMode; }
 
     void Add_DelegateOwner(IDelegate* _pDelegateOwner);
     void Remove_DelegateOnwer(IDelegate* _pDelegateOwner);

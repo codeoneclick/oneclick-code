@@ -38,8 +38,8 @@ public:
 protected:
     SSourceData* m_pSourceData;
 public:
-    CMesh(void);
-    ~CMesh(void);
+    CMesh(E_CREATION_MODE _eCreationMode);
+    virtual ~CMesh(void);
     CVertexBuffer*  Get_VertexBufferRef(void) { return m_pSourceData->m_pVertexBuffer; }
     CIndexBuffer*   Get_IndexBufferRef(void) { return m_pSourceData->m_pIndexBuffer; }
     virtual void Set_SourceData(void* _pSourceData);

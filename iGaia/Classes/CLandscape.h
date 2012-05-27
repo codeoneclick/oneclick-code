@@ -48,7 +48,7 @@ protected:
     void _CheckVisibleQuadTreeNode(SQuadTreeNode* _pNode);
 public:
     CLandscape(void);
-    virtual ~CLandscape(void);
+    ~CLandscape(void);
     virtual void Load(const std::string& _sName, IResource::E_THREAD _eThread);
     virtual void Update(void);
     virtual void Render(E_RENDER_MODE _eMode);
