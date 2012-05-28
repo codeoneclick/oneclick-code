@@ -13,7 +13,7 @@
 #include <vector>
 #include <iostream.h>
 #include <map>
-#include "CVertexBuffer.h"
+#include "IVertexBuffer.h"
 #include "CIndexBuffer.h"
 
 class CCollisionMgr
@@ -61,7 +61,7 @@ public:
     glm::vec3 Get_Touch3DPoint(void) { return m_vTouch3DPoint; }
     SRay3d Get_TouchRay(void) { return m_vTouchRay; }
     bool RayTriangleIntersection(glm::vec3& _vTrianglePoint_01, glm::vec3& _vTrianglePoint_02, glm::vec3& _vTrianglePoint_03, SRay3d& _tRay, glm::vec3* _vIntersectPoint);
-    bool Get_CollisionPoint(CVertexBuffer *_pVB, CIndexBuffer *_pIB, SRay3d& _tRay3d, glm::vec3* _vCollisionPoint);
+    bool Get_CollisionPoint(IVertexBuffer *_pVB, CIndexBuffer *_pIB, SRay3d& _tRay3d, glm::vec3* _vCollisionPoint);
     void Update(void);
 };
 

@@ -24,7 +24,7 @@
 class IVertexBuffer
 {
 protected:
-    void* m_pData;
+    char* m_pData;
     GLuint m_hHandle;
     GLenum m_eMode;
     unsigned int m_iNumVertexes;
@@ -39,8 +39,10 @@ public:
     static glm::u8vec4 CompressVEC3(const glm::vec3& _vUncopressed);
     static glm::vec3   UnCompressU8VEC4(const glm::u8vec4& _vCompressed);
     
-    virtual void* Lock(void) = 0;
-    void  Unlock(void);
+    inline void* Lock(void) { return m_pData; }
+    void Unlock(void);
+    
+    void Commit(void);
     
     virtual void Enable(CShader::E_RENDER_MODE _eRenderMode) = 0;
     virtual void Disable(CShader::E_RENDER_MODE _eRenderMode) = 0;

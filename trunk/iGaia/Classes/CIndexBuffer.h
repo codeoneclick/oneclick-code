@@ -41,8 +41,7 @@ public:
     unsigned short* Get_SourceDataFromVRAM(void);
     void Enable(void);
     void Disable(void);
-    void CommitToRAM(void);
-    void CommitFromRAMToVRAM(void);
+    void Commit(void);
 };
 
 

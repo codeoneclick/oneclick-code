@@ -25,9 +25,8 @@ void CModel::Load(const std::string& _sName, IResource::E_THREAD _eThread)
 {
     m_pMesh = static_cast<CMesh*>(CResourceMgr::Instance()->Load(_sName, IResource::E_MGR_MESH, _eThread, this));
     
-    m_pMesh->Get_VertexBufferRef()->AppendWorkingSourceData();
-    m_pMesh->Get_VertexBufferRef()->CommitFromRAMToVRAM();
-    m_pMesh->Get_IndexBufferRef()->CommitFromRAMToVRAM();
+    m_pMesh->Get_VertexBufferRef()->Commit();
+    m_pMesh->Get_IndexBufferRef()->Commit();
 }
 
 void CModel::OnResourceLoadDoneEvent(IResource::E_RESOURCE_TYPE _eType, IResource *_pResource)
@@ -41,9 +40,17 @@ void CModel::OnResourceLoadDoneEvent(IResource::E_RESOURCE_TYPE _eType, IResourc
             {
                 m_pBoundingBox->Set_MaxMinPoints(m_pMesh->Get_MaxBound(), m_pMesh->Get_MinBound());
             }
-            m_pMesh->Get_VertexBufferRef()->AppendWorkingSourceData();
-            m_pMesh->Get_VertexBufferRef()->CommitFromRAMToVRAM();
-            m_pMesh->Get_IndexBufferRef()->CommitFromRAMToVRAM();
+            m_pMesh->Get_VertexBufferRef()->Commit();
+            m_pMesh->Get_IndexBufferRef()->Commit();
+            
+            for(unsigned int i = 0; i < CShader::E_RENDER_MODE_MAX; ++i)
+            {
+                if(m_pShaders[i] != NULL)
+                {
+                    m_pMesh->Get_VertexBufferRef()->Add_ShaderRef(static_cast<CShader::E_RENDER_MODE>(i), m_pShaders[i]);
+                }
+            }
+            
             break;
         case IResource::E_RESOURCE_TYPE_TEXTURE:
             std::cout<<"[CModel::OnLoadDone] Resource Texture loaded : "<<_pResource->Get_Name()<<"\n";
@@ -81,7 +88,7 @@ void CModel::Update()
     INode::Update();
 }
 
-void CModel::Render(E_RENDER_MODE _eMode)
+void CModel::Render(CShader::E_RENDER_MODE _eMode)
 {
     
     if(CSceneMgr::Instance()->Get_Frustum()->IsPointInFrustum(m_vPosition) == CFrustum::E_FRUSTUM_RESULT_OUTSIDE)
@@ -97,7 +104,7 @@ void CModel::Render(E_RENDER_MODE _eMode)
     
     switch (_eMode)
     {
-        case INode::E_RENDER_MODE_SIMPLE:
+        case CShader::E_RENDER_MODE_SIMPLE:
         {
             if(m_pShaders[_eMode] == NULL)
             {
@@ -105,39 +112,35 @@ void CModel::Render(E_RENDER_MODE _eMode)
                 return;
             }
 
-            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShaders[_eMode]->Get_ProgramHandle());
             m_pShaders[_eMode]->Enable();
-            m_pShaders[_eMode]->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD);
-            m_pShaders[_eMode]->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
-            m_pShaders[_eMode]->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
-            m_pShaders[_eMode]->SetVector3(pCamera->Get_Position(), CShader::k_VECTOR_VIEW);
-            m_pShaders[_eMode]->SetVector2(m_vTexCoordOffset, CShader::k_TEXCOORD_OFFSET);
-            m_pShaders[_eMode]->SetVector3(pLight->Get_Position(), CShader::k_VECTOR_LIGHT);
+            m_pShaders[_eMode]->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
+            m_pShaders[_eMode]->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
+            m_pShaders[_eMode]->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
+            m_pShaders[_eMode]->Set_Vector3(pCamera->Get_Position(), CShader::E_ATTRIBUTE_VECTOR_CAMERA_POSITION);
+            m_pShaders[_eMode]->Set_Vector2(m_vTexCoordOffset, CShader::E_ATTRIBUTE_VECTOR_TEXCOORD_OFFSET);
+            m_pShaders[_eMode]->Set_Vector3(pLight->Get_Position(), CShader::E_ATTRIBUTE_VECTOR_LIGHT_POSITION);
             
-            char pStrTextureId[256];
             for(unsigned int i = 0; i < TEXTURES_MAX_COUNT; ++i)
             {
                 if( m_pTextures[i] == NULL )
                 {
                     continue;
                 }
-                sprintf(pStrTextureId, "EXT_TEXTURE_0%i",i + 1);
-                std::string k_TEXTURE_ID = pStrTextureId;
-                m_pShaders[_eMode]->SetTexture(m_pTextures[i]->Get_Handle(), k_TEXTURE_ID);
+                m_pShaders[_eMode]->Set_Texture(m_pTextures[i]->Get_Handle(), static_cast<CShader::E_TEXTURE_SLOT>(i));
             }
         }
             break;
-        case INode::E_RENDER_MODE_REFLECTION:
+        case CShader::E_RENDER_MODE_REFLECTION:
         {
             
         }
             break;
-        case INode::E_RENDER_MODE_REFRACTION:
+        case CShader::E_RENDER_MODE_REFRACTION:
         {
             
         }
             break;
-        case INode::E_RENDER_MODE_SCREEN_NORMAL_MAP:
+        case CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP:
         {
             if(m_pShaders[_eMode] == NULL)
             {
@@ -145,22 +148,18 @@ void CModel::Render(E_RENDER_MODE _eMode)
                 return;
             }
             
-            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShaders[_eMode]->Get_ProgramHandle());
             m_pShaders[_eMode]->Enable();
-            m_pShaders[_eMode]->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD); 
-            m_pShaders[_eMode]->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
-            m_pShaders[_eMode]->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
+            m_pShaders[_eMode]->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
+            m_pShaders[_eMode]->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
+            m_pShaders[_eMode]->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
             
-            char pStrTextureId[256];
             for(unsigned int i = 0; i < TEXTURES_MAX_COUNT; ++i)
             {
                 if( m_pTextures[i] == NULL )
                 {
                     continue;
                 }
-                sprintf(pStrTextureId, "EXT_TEXTURE_0%i",i + 1);
-                std::string k_TEXTURE_ID = pStrTextureId;
-                m_pShaders[_eMode]->SetTexture(m_pTextures[i]->Get_Handle(), k_TEXTURE_ID);
+                m_pShaders[_eMode]->Set_Texture(m_pTextures[i]->Get_Handle(), static_cast<CShader::E_TEXTURE_SLOT>(i));
             }
         }
             break;
@@ -168,15 +167,15 @@ void CModel::Render(E_RENDER_MODE _eMode)
             break;
     }
     
-    m_pMesh->Get_VertexBufferRef()->Enable();
+    m_pMesh->Get_VertexBufferRef()->Enable(_eMode);
     m_pMesh->Get_IndexBufferRef()->Enable();
     glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_SourceDataFromVRAM());
     m_pMesh->Get_IndexBufferRef()->Disable();
-    m_pMesh->Get_VertexBufferRef()->Disable();
+    m_pMesh->Get_VertexBufferRef()->Disable(_eMode);
     m_pShaders[_eMode]->Disable();
     glCullFace(GL_FRONT);
     
-    if(m_pBoundingBox != NULL && INode::E_RENDER_MODE_SIMPLE == _eMode)
+    if(m_pBoundingBox != NULL && CShader::E_RENDER_MODE_SIMPLE == _eMode)
     {
         m_pBoundingBox->Render();
     }

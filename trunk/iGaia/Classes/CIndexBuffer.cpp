@@ -69,11 +69,6 @@ void CIndexBuffer::Disable(void)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, NULL);
 }
 
-void CIndexBuffer::CommitToRAM(void)
-{
-
-}
-
 unsigned short* CIndexBuffer::Get_WorkingSourceDataRef(void)
 {
     if(m_pWorkingSourceData == NULL)
@@ -84,7 +79,7 @@ unsigned short* CIndexBuffer::Get_WorkingSourceDataRef(void)
     return m_pWorkingSourceData;
 }
 
-void CIndexBuffer::CommitFromRAMToVRAM(void)
+void CIndexBuffer::Commit(void)
 {
     if(m_bIsInVRAM)
     {

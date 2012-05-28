@@ -36,8 +36,8 @@ protected:
     void _Create_TextureSplatting(void);
     void _Create_TextureDecal(void);
     void _Update_TextureDecal(void);
-    void _CalculateNormals(CVertexBuffer* _pVertexBuffer, CIndexBuffer* _pIndexBuffer);
-    void _CalculateTangentsAndBinormals(CVertexBuffer* _pVertexBuffer, CIndexBuffer* _pIndexBuffer);
+    void _CalculateNormals(IVertexBuffer* _pVertexBuffer, CIndexBuffer* _pIndexBuffer);
+    void _CalculateTangentsAndBinormals(IVertexBuffer* _pVertexBuffer, CIndexBuffer* _pIndexBuffer);
     void _CalculateTriangleBasis(const glm::vec3& E, const glm::vec3& F, const glm::vec3& G, float sE,
                                  float tE, float sF, float tF, float sG, float tG, glm::vec3& tangentX,
                                  glm::vec3& tangentY);

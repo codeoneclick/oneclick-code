@@ -11,6 +11,7 @@
 #include <fstream>
 #include <strstream>
 #include "CCommon_IOS.h"
+#include "CVertexBufferPositionTexcoordNormalTangent.h"
 
 CParser_MDL::CParser_MDL(void)
 {
@@ -111,18 +112,15 @@ void CParser_MDL::Load(const std::string& _sName)
 
 void CParser_MDL::Commit(void)
 {
-    m_pSourceData->m_pVertexBuffer = new CVertexBuffer(m_pSourceData->m_iNumVertexes);
-    glm::vec3* pPositionData  = m_pSourceData->m_pVertexBuffer->GetOrCreate_PositionSourceData();
-    glm::vec2* pTexCoordData  = m_pSourceData->m_pVertexBuffer->GetOrCreate_TexcoordSourceData();
-    glm::u8vec4* pNormalData  = m_pSourceData->m_pVertexBuffer->GetOrCreate_NormalSourceData();
-    glm::u8vec4* pTangentData = m_pSourceData->m_pVertexBuffer->GetOrCreate_TangentSourceData();
+    m_pSourceData->m_pVertexBuffer = new CVertexBufferPositionTexcoordNormalTangent(m_pSourceData->m_iNumVertexes, GL_STATIC_DRAW);
+    CVertexBufferPositionTexcoordNormalTangent::SVertex* pVertexBufferData = static_cast<CVertexBufferPositionTexcoordNormalTangent::SVertex*>(m_pSourceData->m_pVertexBuffer->Lock());
     
     for(unsigned int index = 0; index < m_pSourceData->m_iNumVertexes; index++)
     {
-        pPositionData[index] = m_pSourceData->m_pData[index].m_vPosition;
-        pTexCoordData[index] = m_pSourceData->m_pData[index].m_vTexCoord;
-        pNormalData[index] = CVertexBuffer::CompressVEC3(m_pSourceData->m_pData[index].m_vNormal);
-        pTangentData[index] = CVertexBuffer::CompressVEC3(m_pSourceData->m_pData[index].m_vTangent);
+        pVertexBufferData[index].m_vPosition = m_pSourceData->m_pData[index].m_vPosition;
+        pVertexBufferData[index].m_vTexcoord = m_pSourceData->m_pData[index].m_vTexCoord;
+        pVertexBufferData[index].m_vNormal = IVertexBuffer::CompressVEC3(m_pSourceData->m_pData[index].m_vNormal);
+        pVertexBufferData[index].m_vTangent = IVertexBuffer::CompressVEC3(m_pSourceData->m_pData[index].m_vTangent);
     }
 }
 

@@ -9,6 +9,7 @@
 #include <iostream>
 #include "CHeightMapSetter.h"
 #include "CSceneMgr.h"
+#include "CVertexBufferPositionTexcoordNormalTangent.h"
 
 CHeightMapSetter::CHeightMapSetter(void)
 {
@@ -33,10 +34,9 @@ CMesh* CHeightMapSetter::Load_DataSource(const std::string _sName, int _iWidth, 
     pSourceData->m_iNumVertexes = m_iWidth * m_iHeight;
     pSourceData->m_iNumIndexes  = (m_iWidth - 1) * (m_iHeight - 1) * 6;
     
-    pSourceData->m_pVertexBuffer = new CVertexBuffer(pSourceData->m_iNumVertexes);
+    pSourceData->m_pVertexBuffer = new CVertexBufferPositionTexcoordNormalTangent(pSourceData->m_iNumVertexes, GL_STATIC_DRAW);
     
-    glm::vec3* pPositionData = pSourceData->m_pVertexBuffer->GetOrCreate_PositionSourceData();
-    glm::vec2* pTexCoordData = pSourceData->m_pVertexBuffer->GetOrCreate_TexcoordSourceData();
+    CVertexBufferPositionTexcoordNormalTangent::SVertex* pVertexBufferData = static_cast<CVertexBufferPositionTexcoordNormalTangent::SVertex*>(pSourceData->m_pVertexBuffer->Lock());
     
     m_pDataSource = new float[m_iWidth * m_iHeight];
     
@@ -45,13 +45,13 @@ CMesh* CHeightMapSetter::Load_DataSource(const std::string _sName, int _iWidth, 
     {
         for(unsigned int j = 0; j < m_iHeight;++j)
         {
-            pPositionData[index].x = i;
-            pPositionData[index].y = sin(i * 0.33f) + cos(j * 0.33f) * 0.33f + 0.66f;
-            m_pDataSource[i + j * m_iWidth] = pPositionData[index].y;
-            pPositionData[index].z = j;
+            pVertexBufferData[index].m_vPosition.x = i;
+            pVertexBufferData[index].m_vPosition.y = sin(i * 0.33f) + cos(j * 0.33f) * 0.33f + 0.66f;
+            m_pDataSource[i + j * m_iWidth] = pVertexBufferData[index].m_vPosition.y;
+            pVertexBufferData[index].m_vPosition.z = j;
             
-            pTexCoordData[index].x = i / static_cast<float>(m_iWidth);
-            pTexCoordData[index].y = j / static_cast<float>(m_iHeight);
+            pVertexBufferData[index].m_vTexcoord.x = i / static_cast<float>(m_iWidth);
+            pVertexBufferData[index].m_vTexcoord.y = j / static_cast<float>(m_iHeight);
             ++index;
         }
     }
@@ -200,53 +200,48 @@ void CHeightMapSetter::Update(void)
     
 }
 
-void CHeightMapSetter::_CalculateNormals(CVertexBuffer* _pVertexBuffer, CIndexBuffer* _pIndexBuffer)
+void CHeightMapSetter::_CalculateNormals(IVertexBuffer* _pVertexBuffer, CIndexBuffer* _pIndexBuffer)
 {
-    glm::vec3* pPositionData = _pVertexBuffer->GetOrCreate_PositionSourceData();
-    glm::u8vec4* pNormalData = _pVertexBuffer->GetOrCreate_NormalSourceData();
-    unsigned short* pIBData = _pIndexBuffer->Get_SourceData();
+    CVertexBufferPositionTexcoordNormalTangent::SVertex* pVertexBufferData = static_cast<CVertexBufferPositionTexcoordNormalTangent::SVertex*>(_pVertexBuffer->Lock());
+    unsigned short* pIndexBufferData = _pIndexBuffer->Get_SourceData();
     unsigned int iNumIndexes = _pIndexBuffer->Get_NumIndexes();
     for(unsigned int index = 0; index < iNumIndexes; index += 3)
     {
-        glm::vec3 vPoint_01 = pPositionData[pIBData[index]];
-        glm::vec3 vPoint_02 = pPositionData[pIBData[index + 1]];
-        glm::vec3 vPoint_03 = pPositionData[pIBData[index + 2]];
+        glm::vec3 vPoint_01 = pVertexBufferData[pIndexBufferData[index + 0]].m_vPosition;
+        glm::vec3 vPoint_02 = pVertexBufferData[pIndexBufferData[index + 1]].m_vPosition;
+        glm::vec3 vPoint_03 = pVertexBufferData[pIndexBufferData[index + 2]].m_vPosition;
         
         glm::vec3 vEdge_01 = vPoint_02 - vPoint_01;
         glm::vec3 vEdge_02 = vPoint_03 - vPoint_01;
         glm::vec3 vNormal = glm::cross(vEdge_01, vEdge_02);
         vNormal = glm::normalize(vNormal);
-        glm::u8vec4 vByteNormal = CVertexBuffer::CompressVEC3(vNormal);
-        pNormalData[pIBData[index]] = vByteNormal;
-        pNormalData[pIBData[index + 1]] = vByteNormal;
-        pNormalData[pIBData[index + 2]] = vByteNormal;
+        glm::u8vec4 vByteNormal = IVertexBuffer::CompressVEC3(vNormal);
+        pVertexBufferData[pIndexBufferData[index + 0]].m_vNormal = vByteNormal;
+        pVertexBufferData[pIndexBufferData[index + 1]].m_vNormal = vByteNormal;
+        pVertexBufferData[pIndexBufferData[index + 2]].m_vNormal = vByteNormal;
     }
-    _pVertexBuffer->AppendWorkingSourceData();
 }
 
-void CHeightMapSetter::_CalculateTangentsAndBinormals(CVertexBuffer* _pVertexBuffer, CIndexBuffer* _pIndexBuffer)
+void CHeightMapSetter::_CalculateTangentsAndBinormals(IVertexBuffer* _pVertexBuffer, CIndexBuffer* _pIndexBuffer)
 {
 	register int i, j;
 	std::vector<glm::vec3> lTangents, lBinormals;
     
 	int iNumIndexes = _pIndexBuffer->Get_NumIndexes();
-    glm::vec3* pPositionData = _pVertexBuffer->GetOrCreate_PositionSourceData();
-    glm::vec2* pTexCoordData = _pVertexBuffer->GetOrCreate_TexcoordSourceData();
-    glm::u8vec4* pNormalData = _pVertexBuffer->GetOrCreate_NormalSourceData();
-    glm::u8vec4* pTangentData = _pVertexBuffer->GetOrCreate_TangentSourceData();
+    CVertexBufferPositionTexcoordNormalTangent::SVertex* pVertexBufferData = static_cast<CVertexBufferPositionTexcoordNormalTangent::SVertex*>(_pVertexBuffer->Lock());
     unsigned short* pIndexBufferData = _pIndexBuffer->Get_SourceData();
 	
     for ( i = 0; i < iNumIndexes; i += 3 )
 	{
-		glm::vec3 v1 = pPositionData[pIndexBufferData[i + 0]];
-		glm::vec3 v2 = pPositionData[pIndexBufferData[i + 1]];
-		glm::vec3 v3 = pPositionData[pIndexBufferData[i + 2]];
-		float s1 = pTexCoordData[pIndexBufferData[i + 0]].x;
-		float t1 = pTexCoordData[pIndexBufferData[i + 0]].y;
-		float s2 = pTexCoordData[pIndexBufferData[i + 1]].x;
-		float t2 = pTexCoordData[pIndexBufferData[i + 1]].y;
-		float s3 = pTexCoordData[pIndexBufferData[i + 2]].x;
-		float t3 = pTexCoordData[pIndexBufferData[i + 2]].y;
+		glm::vec3 v1 = pVertexBufferData[pIndexBufferData[i + 0]].m_vPosition;
+		glm::vec3 v2 = pVertexBufferData[pIndexBufferData[i + 1]].m_vPosition;
+		glm::vec3 v3 = pVertexBufferData[pIndexBufferData[i + 2]].m_vPosition;
+		float s1 = pVertexBufferData[pIndexBufferData[i + 0]].m_vTexcoord.x;
+		float t1 = pVertexBufferData[pIndexBufferData[i + 0]].m_vTexcoord.y;
+		float s2 = pVertexBufferData[pIndexBufferData[i + 1]].m_vTexcoord.x;
+		float t2 = pVertexBufferData[pIndexBufferData[i + 1]].m_vTexcoord.y;
+		float s3 = pVertexBufferData[pIndexBufferData[i + 2]].m_vTexcoord.x;
+		float t3 = pVertexBufferData[pIndexBufferData[i + 2]].m_vTexcoord.y;
         
 		glm::vec3  t, b;
 		_CalculateTriangleBasis(v1, v2, v3, s1, t1, s2, t2, s3, t3, t, b);
@@ -277,13 +272,12 @@ void CHeightMapSetter::_CalculateTangentsAndBinormals(CVertexBuffer* _pVertexBuf
 		vTangentRes /= float(lrt.size());
 		vBinormalRes /= float(lrb.size());
         
-        glm::vec3 vNormal = CVertexBuffer::UnCompressU8VEC4(pNormalData[i]);
+        glm::vec3 vNormal = IVertexBuffer::UnCompressU8VEC4(pVertexBufferData[i].m_vNormal);
 		vTangentRes = _Ortogonalize(vNormal, vTangentRes);
 		vBinormalRes = _Ortogonalize(vNormal, vBinormalRes);
         
-        pTangentData[i] = CVertexBuffer::CompressVEC3(vTangentRes);
+        pVertexBufferData[i].m_vTangent = IVertexBuffer::CompressVEC3(vTangentRes);
 	}
-    _pVertexBuffer->AppendWorkingSourceData();
 }
 
 

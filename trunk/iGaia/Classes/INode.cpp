@@ -27,8 +27,8 @@ INode::INode(void)
         m_pTextures[i] = NULL;
     }
     
-    m_pShaders = new CShader*[E_RENDER_MODE_MAX];
-    for(unsigned int i = 0; i < E_RENDER_MODE_MAX; ++i)
+    m_pShaders = new CShader*[CShader::E_RENDER_MODE_MAX];
+    for(unsigned int i = 0; i < CShader::E_RENDER_MODE_MAX; ++i)
     {
         m_pShaders[i] = NULL;
     }
@@ -99,7 +99,7 @@ void INode::Set_Texture(const std::string &_sName, int index, CTexture::E_WRAP_M
     m_pTextures[index] = static_cast<CTexture*>(CResourceMgr::Instance()->Load(_sName, IResource::E_MGR_TEXTURE, _eThread, this, &lParams));
 }
 
-void INode::Set_Shader(INode::E_RENDER_MODE _eRenderMode, IResource::E_SHADER _eShader)
+void INode::Set_Shader(CShader::E_RENDER_MODE _eRenderMode, IResource::E_SHADER _eShader)
 {
     m_pShaders[_eRenderMode] = CShaderComposite::Instance()->Get_Shader(_eShader);
 }
@@ -166,7 +166,7 @@ void INode::Update(void)
     }
 }
 
-void INode::Render(INode::E_RENDER_MODE _eMode)
+void INode::Render(CShader::E_RENDER_MODE _eMode)
 {
     CWindow::g_iTrianglesPerFrame += m_pMesh->Get_IndexBufferRef()->Get_NumWorkingIndexes() / 3;
 }

@@ -54,6 +54,12 @@ void IVertexBuffer::Unlock(void)
     glBufferData(GL_ARRAY_BUFFER, k_STRIDE_SIZE * m_iNumVertexes, m_pData, m_eMode);
 }
 
+void IVertexBuffer::Commit(void)
+{
+    glBindBuffer(GL_ARRAY_BUFFER, m_hHandle);
+    glBufferData(GL_ARRAY_BUFFER, k_STRIDE_SIZE * m_iNumVertexes, m_pData, m_eMode);
+}
+
 
 
 

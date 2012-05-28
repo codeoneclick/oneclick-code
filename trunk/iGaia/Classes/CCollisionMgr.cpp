@@ -12,6 +12,7 @@
 #include "CInput.h"
 #include "CSceneMgr.h"
 #include "CWindow.h"
+#include "CVertexBufferPositionTexcoord.h"
 
 CCollisionMgr::CCollisionMgr()
 {
@@ -74,16 +75,16 @@ bool CCollisionMgr::RayTriangleIntersection(glm::vec3& _vTrianglePoint_01, glm::
 	return true;
 }
 
-bool CCollisionMgr::Get_CollisionPoint(CVertexBuffer *_pVB, CIndexBuffer *_pIB, SRay3d& _tRay3d, glm::vec3* _vCollisionPoint)
+bool CCollisionMgr::Get_CollisionPoint(IVertexBuffer *_pVertexBuffer, CIndexBuffer *_pIndexBuffer, SRay3d& _tRay3d, glm::vec3* _vCollisionPoint)
 {
-    glm::vec3* pPositionData = _pVB->GetOrCreate_PositionSourceData();
-    unsigned short* pIBData = _pIB->Get_SourceData();
-    unsigned int iNumIndexes = _pIB->Get_NumIndexes();
+    CVertexBufferPositionTexcoord::SVertex* pVertexBufferData = static_cast<CVertexBufferPositionTexcoord::SVertex*>(_pVertexBuffer->Lock());
+    unsigned short* pIndexBufferData = _pIndexBuffer->Get_SourceData();
+    unsigned int iNumIndexes = _pIndexBuffer->Get_NumIndexes();
     for(unsigned int index = 0; index < iNumIndexes; index += 3)
     {
-        glm::vec3 vPoint_01 = pPositionData[pIBData[index]];
-        glm::vec3 vPoint_02 = pPositionData[pIBData[index + 1]];
-        glm::vec3 vPoint_03 = pPositionData[pIBData[index + 2]];
+        glm::vec3 vPoint_01 = pVertexBufferData[pIndexBufferData[index + 0]].m_vPosition;
+        glm::vec3 vPoint_02 = pVertexBufferData[pIndexBufferData[index + 1]].m_vPosition;
+        glm::vec3 vPoint_03 = pVertexBufferData[pIndexBufferData[index + 2]].m_vPosition;
             
         if(RayTriangleIntersection(vPoint_01, vPoint_02, vPoint_03, _tRay3d, _vCollisionPoint))
         {

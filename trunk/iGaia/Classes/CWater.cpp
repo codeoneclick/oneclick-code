@@ -31,7 +31,7 @@ void CWater::Load(const std::string& _sName, IResource::E_THREAD _eThread)
     pSourceData->m_iNumVertexes = 4;
     pSourceData->m_iNumIndexes  = 6;
     
-    pSourceData->m_pVertexBuffer = new CVertexBuffer(pSourceData->m_iNumVertexes);
+    pSourceData->m_pVertexBuffer = new IVertexBuffer(pSourceData->m_iNumVertexes);
     
     glm::vec3* pPositionData = pSourceData->m_pVertexBuffer->GetOrCreate_PositionSourceData();
     glm::vec2* pTexCoordData = pSourceData->m_pVertexBuffer->GetOrCreate_TexcoordSourceData();

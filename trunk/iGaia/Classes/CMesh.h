@@ -9,7 +9,7 @@
 #ifndef iGaia_CMesh_h
 #define iGaia_CMesh_h
 
-#include "CVertexBuffer.h"
+#include "IVertexBuffer.h"
 #include "CIndexBuffer.h"
 #include "IResource.h"
 #include <vector>
@@ -28,7 +28,7 @@ public:
     struct SSourceData
     {
         SVertex*        m_pData;
-        CVertexBuffer*  m_pVertexBuffer;
+        IVertexBuffer*  m_pVertexBuffer;
         CIndexBuffer*   m_pIndexBuffer;
         int             m_iNumVertexes;
         int             m_iNumIndexes;
@@ -40,7 +40,7 @@ protected:
 public:
     CMesh(E_CREATION_MODE _eCreationMode);
     virtual ~CMesh(void);
-    CVertexBuffer*  Get_VertexBufferRef(void) { return m_pSourceData->m_pVertexBuffer; }
+    IVertexBuffer*  Get_VertexBufferRef(void) { return m_pSourceData->m_pVertexBuffer; }
     CIndexBuffer*   Get_IndexBufferRef(void) { return m_pSourceData->m_pIndexBuffer; }
     virtual void Set_SourceData(void* _pSourceData);
     int Get_NumIndexes(void) { return m_pSourceData->m_iNumIndexes; }

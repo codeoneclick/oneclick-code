@@ -61,15 +61,15 @@ public:
     virtual ~INode(void);
     virtual void Load(const std::string& _sName, IResource::E_THREAD _eThread) = 0;
     virtual void Update(void);
-    virtual void Render(E_RENDER_MODE _eMode);
+    virtual void Render(CShader::E_RENDER_MODE _eMode);
     
-    CShader*  Get_Shader(E_RENDER_MODE _eRenderMode);
+    CShader*  Get_Shader(CShader::E_RENDER_MODE _eRenderMode);
     CTexture* Get_Texture(unsigned int index);
     CMesh*    Get_Mesh(void) { return m_pMesh; }
     
     void Set_Texture(CTexture* _pTexture, int index, CTexture::E_WRAP_MODE _eWrap);
     void Set_Texture(const std::string &_sName, int _index, CTexture::E_WRAP_MODE _eWrap, IResource::E_THREAD _eThread = IResource::E_THREAD_MAIN);
-    void Set_Shader(E_RENDER_MODE _eRenderMode, IResource::E_SHADER _eShader);
+    void Set_Shader(CShader::E_RENDER_MODE _eRenderMode, IResource::E_SHADER _eShader);
     
     void Set_Position(const glm::vec3& _vPosition) { m_vPosition = _vPosition; }
     glm::vec3 Get_Position(void) { return m_vPosition; }
