@@ -22,7 +22,7 @@ public:
     CDecal* Add_Decal(void);
     void Remove_Decal(CDecal* _pDecal);
     void Update(void);
-    void Render(INode::E_RENDER_MODE _eMode);
+    void Render(CShader::E_RENDER_MODE _eMode);
 };
 
 

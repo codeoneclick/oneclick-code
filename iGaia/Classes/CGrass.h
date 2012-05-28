@@ -40,7 +40,7 @@ protected:
     static const int k_ELEMENT_NUM_VERTEXES;
     
     unsigned short* m_pSingleElementIndexBuffer;
-    CVertexBuffer*  m_pSingleElementVertexBuffer;
+    IVertexBuffer*  m_pSingleElementVertexBuffer;
     
     unsigned int m_iWidth;
     unsigned int m_iHeight;
@@ -63,7 +63,7 @@ public:
     ~CGrass(void);
     virtual void Load(const std::string& _sName, IResource::E_THREAD _eThread);
     virtual void Update(void);
-    virtual void Render(E_RENDER_MODE _eMode);
+    virtual void Render(CShader::E_RENDER_MODE _eMode);
     
     virtual void OnTouchEvent(ITouchDelegate* _pDelegateOwner);
     virtual void OnResourceLoadDoneEvent(IResource::E_RESOURCE_TYPE _eType, IResource* _pResource);

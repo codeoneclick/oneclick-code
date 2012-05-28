@@ -11,6 +11,7 @@
 #include "CSceneMgr.h"
 #include "CRenderMgr.h"
 #include "CCollisionMgr.h"
+#include "CVertexBufferPositionTexcoordNormalTangent.h"
 
 CLandscape::CLandscape(void)
 {
@@ -31,17 +32,8 @@ void CLandscape::Load(const std::string& _sName, IResource::E_THREAD _eThread)
     
     CSceneMgr::Instance()->Set_HeightMapSetterRef(m_pHeightMapSetter);
     
-    glm::u8vec4* pColorData = m_pMesh->Get_VertexBufferRef()->GetOrCreate_ColorSourceData();
-    unsigned char iUniqueColorId = CSceneMgr::Instance()->Get_UniqueColorId(this);
-    for(unsigned int i = 0; i < m_pMesh->Get_NumVertexes(); ++i)
-    {
-        pColorData[i] = glm::u8vec4(iUniqueColorId, iUniqueColorId, iUniqueColorId, 255);
-    }
-    
-    m_pMesh->Get_VertexBufferRef()->AppendWorkingSourceData();
-    m_pMesh->Get_VertexBufferRef()->CommitFromRAMToVRAM();
-    m_pMesh->Get_IndexBufferRef()->Set_Mode(GL_STREAM_DRAW);
-    m_pMesh->Get_IndexBufferRef()->CommitFromRAMToVRAM();
+    m_pMesh->Get_VertexBufferRef()->Commit();
+    m_pMesh->Get_IndexBufferRef()->Commit();
     
     unsigned short* pIndexBufferData = m_pMesh->Get_IndexBufferRef()->Get_SourceData();
     unsigned int iNumIndexes = m_pMesh->Get_IndexBufferRef()->Get_NumIndexes();
@@ -105,7 +97,7 @@ void CLandscape::_CreateQuadTreeNode(int _iSize, CLandscape::SQuadTreeNode *_pPa
 
 void CLandscape::_CreateIndexBufferRefForQuadTreeNode(CLandscape::SQuadTreeNode *_pNode)
 {
-    glm::vec3* pPositionData = m_pMesh->Get_VertexBufferRef()->GetOrCreate_PositionSourceData();
+    CVertexBufferPositionTexcoordNormalTangent::SVertex* pVertexBufferData = static_cast<CVertexBufferPositionTexcoordNormalTangent::SVertex*>(m_pMesh->Get_VertexBufferRef()->Lock());
     unsigned int iParentNumIndexes = _pNode->m_pParent->m_iNumIndexes;
     _pNode->m_pIndexes = static_cast<unsigned short*>(malloc(sizeof(unsigned short)));
     float fMaxY = -4096.0f;
@@ -121,9 +113,9 @@ void CLandscape::_CreateIndexBufferRefForQuadTreeNode(CLandscape::SQuadTreeNode 
     
     for(unsigned int i = 0; i < iParentNumIndexes; i += 3)
     {
-        if(_IsPointInBoundBox(pPositionData[_pNode->m_pParent->m_pIndexes[i + 0]], _pNode->m_vMinBound, _pNode->m_vMaxBound) ||
-           _IsPointInBoundBox(pPositionData[_pNode->m_pParent->m_pIndexes[i + 1]], _pNode->m_vMinBound, _pNode->m_vMaxBound) ||
-           _IsPointInBoundBox(pPositionData[_pNode->m_pParent->m_pIndexes[i + 2]], _pNode->m_vMinBound, _pNode->m_vMaxBound))
+        if(_IsPointInBoundBox(pVertexBufferData[_pNode->m_pParent->m_pIndexes[i + 0]].m_vPosition, _pNode->m_vMinBound, _pNode->m_vMaxBound) ||
+           _IsPointInBoundBox(pVertexBufferData[_pNode->m_pParent->m_pIndexes[i + 1]].m_vPosition, _pNode->m_vMinBound, _pNode->m_vMaxBound) ||
+           _IsPointInBoundBox(pVertexBufferData[_pNode->m_pParent->m_pIndexes[i + 2]].m_vPosition, _pNode->m_vMinBound, _pNode->m_vMaxBound))
         {
             
             if(_pNode->m_pParent->m_pIndexesId[i + 0] == iQuadTreeNodeId ||
@@ -144,35 +136,35 @@ void CLandscape::_CreateIndexBufferRefForQuadTreeNode(CLandscape::SQuadTreeNode 
             _pNode->m_pParent->m_pIndexesId[i + 1] = iQuadTreeNodeId;
             _pNode->m_pParent->m_pIndexesId[i + 2] = iQuadTreeNodeId;
             
-            if(pPositionData[_pNode->m_pParent->m_pIndexes[i + 0]].y > fMaxY)
+            if(pVertexBufferData[_pNode->m_pParent->m_pIndexes[i + 0]].m_vPosition.y > fMaxY)
             {
-                fMaxY = pPositionData[_pNode->m_pParent->m_pIndexes[i + 0]].y;
+                fMaxY = pVertexBufferData[_pNode->m_pParent->m_pIndexes[i + 0]].m_vPosition.y;
             }
             
-            if(pPositionData[_pNode->m_pParent->m_pIndexes[i + 1]].y > fMaxY)
+            if(pVertexBufferData[_pNode->m_pParent->m_pIndexes[i + 1]].m_vPosition.y > fMaxY)
             {
-                fMaxY = pPositionData[_pNode->m_pParent->m_pIndexes[i + 1]].y;
+                fMaxY = pVertexBufferData[_pNode->m_pParent->m_pIndexes[i + 1]].m_vPosition.y;
             }
             
-            if(pPositionData[_pNode->m_pParent->m_pIndexes[i + 2]].y > fMaxY)
+            if(pVertexBufferData[_pNode->m_pParent->m_pIndexes[i + 2]].m_vPosition.y > fMaxY)
             {
-                fMaxY = pPositionData[_pNode->m_pParent->m_pIndexes[i + 2]].y;
+                fMaxY = pVertexBufferData[_pNode->m_pParent->m_pIndexes[i + 2]].m_vPosition.y;
             }
             
             
-            if(pPositionData[_pNode->m_pParent->m_pIndexes[i + 0]].y < fMinY)
+            if(pVertexBufferData[_pNode->m_pParent->m_pIndexes[i + 0]].m_vPosition.y < fMinY)
             {
-                fMinY = pPositionData[_pNode->m_pParent->m_pIndexes[i + 0]].y;
+                fMinY = pVertexBufferData[_pNode->m_pParent->m_pIndexes[i + 0]].m_vPosition.y;
             }
             
-            if(pPositionData[_pNode->m_pParent->m_pIndexes[i + 1]].y < fMinY)
+            if(pVertexBufferData[_pNode->m_pParent->m_pIndexes[i + 1]].m_vPosition.y < fMinY)
             {
-                fMinY = pPositionData[_pNode->m_pParent->m_pIndexes[i + 1]].y;
+                fMinY = pVertexBufferData[_pNode->m_pParent->m_pIndexes[i + 1]].m_vPosition.y;
             }
             
-            if(pPositionData[_pNode->m_pParent->m_pIndexes[i + 2]].y < fMinY)
+            if(pVertexBufferData[_pNode->m_pParent->m_pIndexes[i + 2]].m_vPosition.y < fMinY)
             {
-                fMinY = pPositionData[_pNode->m_pParent->m_pIndexes[i + 2]].y;
+                fMinY = pVertexBufferData[_pNode->m_pParent->m_pIndexes[i + 2]].m_vPosition.y;
             }
         }
     }
@@ -284,10 +276,10 @@ void CLandscape::Update(void)
     m_iWorkingNumIndexes = 0;
     _CheckVisibleQuadTreeNode(m_pQuadTree);
     m_pMesh->Get_IndexBufferRef()->Set_NumWorkingIndexes(m_iWorkingNumIndexes);
-    m_pMesh->Get_IndexBufferRef()->CommitFromRAMToVRAM();
+    m_pMesh->Get_IndexBufferRef()->Commit();
 }
 
-void CLandscape::Render(INode::E_RENDER_MODE _eMode)
+void CLandscape::Render(CShader::E_RENDER_MODE _eMode)
 {
     glDisable(GL_CULL_FACE);
     glDisable(GL_BLEND);
@@ -298,122 +290,112 @@ void CLandscape::Render(INode::E_RENDER_MODE _eMode)
     
     switch (_eMode)
     {
-        case INode::E_RENDER_MODE_SIMPLE:
+        case CShader::E_RENDER_MODE_SIMPLE:
         {
             if(m_pShaders[_eMode] == NULL)
             {
                 std::cout<<"[CModel::Render] Shader MODE_SIMPLE is NULL"<<std::endl;
                 return;
             }
-            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShaders[_eMode]->Get_ProgramHandle());
             m_pShaders[_eMode]->Enable();
-            m_pShaders[_eMode]->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD); 
-            m_pShaders[_eMode]->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
-            m_pShaders[_eMode]->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
-            m_pShaders[_eMode]->SetVector3(pCamera->Get_Position(), CShader::k_VECTOR_VIEW);
-            m_pShaders[_eMode]->SetVector3(pLight->Get_Position(), CShader::k_VECTOR_LIGHT);
+            m_pShaders[_eMode]->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
+            m_pShaders[_eMode]->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
+            m_pShaders[_eMode]->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
+            m_pShaders[_eMode]->Set_Vector3(pCamera->Get_Position(), CShader::E_ATTRIBUTE_VECTOR_CAMERA_POSITION);
+            m_pShaders[_eMode]->Set_Vector3(pLight->Get_Position(), CShader::E_ATTRIBUTE_VECTOR_LIGHT_POSITION);
             
-            char pStrTextureId[256];
             for(unsigned int i = 0; i < TEXTURES_MAX_COUNT; ++i)
             {
                 if( m_pTextures[i] == NULL )
                 {
                     continue;
                 }
-                sprintf(pStrTextureId, "EXT_TEXTURE_0%i",i + 1);
-                std::string k_TEXTURE_ID = pStrTextureId;
-                m_pShaders[_eMode]->SetTexture(m_pTextures[i]->Get_Handle(), k_TEXTURE_ID);
+                m_pShaders[_eMode]->Set_Texture(m_pTextures[i]->Get_Handle(), static_cast<CShader::E_TEXTURE_SLOT>(i));
             }
 
-            m_pShaders[_eMode]->SetTexture(m_pHeightMapSetter->Get_TextureSplatting(), CShader::k_TEXTURE_07);
-            m_pShaders[_eMode]->SetVector4(glm::vec4(0.0f, 1.0, 0.0, 0.1), CShader::k_VECTOR_CLIP_PLANE);
+            m_pShaders[_eMode]->Set_Texture(m_pHeightMapSetter->Get_TextureSplatting(), CShader::E_TEXTURE_SLOT_07);
+            m_pShaders[_eMode]->Set_Vector4(glm::vec4(0.0f, 1.0, 0.0, 0.1), CShader::E_ATTRIBUTE_VECTOR_CLIP_PLANE);
         }
             break;
-        case INode::E_RENDER_MODE_REFLECTION:
+        case CShader::E_RENDER_MODE_REFLECTION:
         {
             if(m_pShaders[_eMode] == NULL)
             {
                 std::cout<<"[CModel::Render] Shader MODE_REFLECTION is NULL"<<std::endl;
                 return;
             }
-            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShaders[_eMode]->Get_ProgramHandle());
             m_pShaders[_eMode]->Enable();
-            m_pShaders[_eMode]->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD); 
-            m_pShaders[_eMode]->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
-            m_pShaders[_eMode]->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
-            m_pShaders[_eMode]->SetVector3(pCamera->Get_Position(), CShader::k_VECTOR_VIEW);
-            m_pShaders[_eMode]->SetVector3(pLight->Get_Position(), CShader::k_VECTOR_LIGHT);
-            char pStrTextureId[256];
+            m_pShaders[_eMode]->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
+            m_pShaders[_eMode]->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
+            m_pShaders[_eMode]->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
+            m_pShaders[_eMode]->Set_Vector3(pCamera->Get_Position(), CShader::E_ATTRIBUTE_VECTOR_CAMERA_POSITION);
+            m_pShaders[_eMode]->Set_Vector3(pLight->Get_Position(), CShader::E_ATTRIBUTE_VECTOR_LIGHT_POSITION);
+            
             for(unsigned int i = 0; i < TEXTURES_MAX_COUNT; ++i)
             {
                 if( m_pTextures[i] == NULL )
                 {
                     continue;
                 }
-                sprintf(pStrTextureId, "EXT_TEXTURE_0%i",i + 1);
-                std::string k_TEXTURE_ID = pStrTextureId;
-                m_pShaders[_eMode]->SetTexture(m_pTextures[i]->Get_Handle(), k_TEXTURE_ID);
+                m_pShaders[_eMode]->Set_Texture(m_pTextures[i]->Get_Handle(), static_cast<CShader::E_TEXTURE_SLOT>(i));
             }
             
-            m_pShaders[_eMode]->SetTexture(m_pHeightMapSetter->Get_TextureSplatting(), CShader::k_TEXTURE_07);
-            m_pShaders[_eMode]->SetVector4(glm::vec4(0.0f, 1.0, 0.0, 0.1), CShader::k_VECTOR_CLIP_PLANE);
+            m_pShaders[_eMode]->Set_Texture(m_pHeightMapSetter->Get_TextureSplatting(), CShader::E_TEXTURE_SLOT_07);
+            m_pShaders[_eMode]->Set_Vector4(glm::vec4(0.0f, 1.0, 0.0, 0.1), CShader::E_ATTRIBUTE_VECTOR_CLIP_PLANE);
         }
             break;
-        case INode::E_RENDER_MODE_REFRACTION:
+        case CShader::E_RENDER_MODE_REFRACTION:
         {
             if(m_pShaders[_eMode] == NULL)
             {
                 std::cout<<"[CModel::Render] Shader MODE_REFRACTION is NULL"<<std::endl;
                 return;
             }
-            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShaders[_eMode]->Get_ProgramHandle());
+            
             m_pShaders[_eMode]->Enable();
-            m_pShaders[_eMode]->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD); 
-            m_pShaders[_eMode]->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
-            m_pShaders[_eMode]->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
-            m_pShaders[_eMode]->SetVector3(pCamera->Get_Position(), CShader::k_VECTOR_VIEW);
-            m_pShaders[_eMode]->SetVector3(pLight->Get_Position(), CShader::k_VECTOR_LIGHT);
-            char pStrTextureId[256];
+            m_pShaders[_eMode]->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
+            m_pShaders[_eMode]->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
+            m_pShaders[_eMode]->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
+            m_pShaders[_eMode]->Set_Vector3(pCamera->Get_Position(), CShader::E_ATTRIBUTE_VECTOR_CAMERA_POSITION);
+            m_pShaders[_eMode]->Set_Vector3(pLight->Get_Position(), CShader::E_ATTRIBUTE_VECTOR_LIGHT_POSITION);
+            
             for(unsigned int i = 0; i < TEXTURES_MAX_COUNT; ++i)
             {
                 if( m_pTextures[i] == NULL )
                 {
                     continue;
                 }
-                sprintf(pStrTextureId, "EXT_TEXTURE_0%i",i + 1);
-                std::string k_TEXTURE_ID = pStrTextureId;
-                m_pShaders[_eMode]->SetTexture(m_pTextures[i]->Get_Handle(), k_TEXTURE_ID);
+                m_pShaders[_eMode]->Set_Texture(m_pTextures[i]->Get_Handle(), static_cast<CShader::E_TEXTURE_SLOT>(i));
             }
-            
-            m_pShaders[_eMode]->SetTexture(m_pHeightMapSetter->Get_TextureSplatting(), CShader::k_TEXTURE_07);
-            m_pShaders[_eMode]->SetVector4(glm::vec4(0.0f, -1.0, 0.0, 0.1), CShader::k_VECTOR_CLIP_PLANE);
+            m_pShaders[_eMode]->Set_Texture(m_pHeightMapSetter->Get_TextureSplatting(), CShader::E_TEXTURE_SLOT_07);
+            m_pShaders[_eMode]->Set_Vector4(glm::vec4(0.0f, -1.0, 0.0, 0.1), CShader::E_ATTRIBUTE_VECTOR_CLIP_PLANE);
         }
             break;
-        case INode::E_RENDER_MODE_SCREEN_NORMAL_MAP:
+        case CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP:
         {
             if(m_pShaders[_eMode] == NULL)
             {
                 std::cout<<"[CModel::Render] Shader MODE_SCREEN_NORMAL_MAP is NULL"<<std::endl;
                 return;
             }
-            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShaders[_eMode]->Get_ProgramHandle());
+            
             m_pShaders[_eMode]->Enable();
-            m_pShaders[_eMode]->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD); 
-            m_pShaders[_eMode]->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
-            m_pShaders[_eMode]->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
-            m_pShaders[_eMode]->SetVector4(glm::vec4(0.0f, 1.0, 0.0, 0.1), CShader::k_VECTOR_CLIP_PLANE);
+            m_pShaders[_eMode]->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
+            m_pShaders[_eMode]->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
+            m_pShaders[_eMode]->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
+            m_pShaders[_eMode]->Set_Vector4(glm::vec4(0.0f, 1.0, 0.0, 0.1), CShader::E_ATTRIBUTE_VECTOR_CLIP_PLANE);
         }
             break;
         default:
             break;
     }
     
-    m_pMesh->Get_VertexBufferRef()->Enable();
+    m_pMesh->Get_VertexBufferRef()->Enable(_eMode);
     m_pMesh->Get_IndexBufferRef()->Enable();
     unsigned int iNumIndexes = m_pMesh->Get_IndexBufferRef()->Get_NumWorkingIndexes();
     glDrawElements(GL_TRIANGLES, iNumIndexes, GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_SourceDataFromVRAM());
     m_pMesh->Get_IndexBufferRef()->Disable();
-    m_pMesh->Get_VertexBufferRef()->Disable();
+    m_pMesh->Get_VertexBufferRef()->Disable(_eMode);
     //glCullFace(GL_FRONT);
     
     if(m_pBoundingBox != NULL)

@@ -7,6 +7,7 @@
 //
 
 #include <iostream>
+/*
 #include "CVertexBuffer.h"
 
 const std::string CVertexBuffer::k_SLOT_POSITION   = "IN_SLOT_Position";
@@ -278,7 +279,7 @@ void CVertexBuffer::Disable()
 void CVertexBuffer::CommitFromRAMToVRAM(void)
 {
     if(m_bIsInVRAM)
-    {
+    {*/
         /*glBindBuffer(GL_ARRAY_BUFFER, m_iHandle);
         char* pSourceDataVRAM = static_cast<char*>(glMapBufferOES(GL_ARRAY_BUFFER, GL_WRITE_ONLY_OES));
         if(pSourceDataVRAM != NULL)
@@ -286,7 +287,7 @@ void CVertexBuffer::CommitFromRAMToVRAM(void)
             memcpy(pSourceDataVRAM, m_pSource,  m_iSize * m_iNumVertexes);
         }
         glUnmapBufferOES(GL_ARRAY_BUFFER);*/
-        
+        /*
         glBindBuffer(GL_ARRAY_BUFFER, m_iHandle);
         glBufferData(GL_ARRAY_BUFFER, m_iSize * m_iNumVertexes, m_pSourceData, m_eMode);
     }
@@ -315,7 +316,7 @@ void CVertexBuffer::Unlock(void)
         return;
     }
 }
-
+*/
 
 
 

@@ -34,7 +34,7 @@ public:
     virtual void Load(const std::string& _sName, IResource::E_THREAD _eThread);
     virtual void Create_BoundingBox(void) { }
     virtual void Update(void);
-    virtual void Render(E_RENDER_MODE _eMode);
+    virtual void Render(CShader::E_RENDER_MODE _eMode);
 
     virtual void OnTouchEvent(ITouchDelegate* _pDelegateOwner);
     virtual void OnResourceLoadDoneEvent(IResource::E_RESOURCE_TYPE _eType, IResource* _pResource);

@@ -10,6 +10,7 @@
 #include "CBoundingBox.h"
 #include "CShaderComposite.h"
 #include "CSceneMgr.h"
+#include "CVertexBufferPositionColor.h"
 
 const float CBoundingBox::k_MAX_VALUE = -4096.0f;
 const float CBoundingBox::k_MIN_VALUE = 4096.0f;
@@ -27,20 +28,21 @@ CMesh* CBoundingBox::Get_BoundingBoxMesh(void)
         pSourceData->m_iNumVertexes = 8;
         pSourceData->m_iNumIndexes  = 24;
     
-        pSourceData->m_pVertexBuffer = new CVertexBuffer(pSourceData->m_iNumVertexes);
+        pSourceData->m_pVertexBuffer = new CVertexBufferPositionColor(pSourceData->m_iNumVertexes, GL_STATIC_DRAW);
         
-        glm::vec3* pPositionData = pSourceData->m_pVertexBuffer->GetOrCreate_PositionSourceData();
-        glm::u8vec4* pColorData = pSourceData->m_pVertexBuffer->GetOrCreate_ColorSourceData();
+        CVertexBufferPositionColor::SVertex* pVertexBufferData = static_cast<CVertexBufferPositionColor::SVertex*>(pSourceData->m_pVertexBuffer->Lock());
+        //glm::vec3* pPositionData = pSourceData->m_pVertexBuffer->GetOrCreate_PositionSourceData();
+        //glm::u8vec4* pColorData = pSourceData->m_pVertexBuffer->GetOrCreate_ColorSourceData();
     
-        pPositionData[0] = glm::vec3( m_vMin.x,  m_vMin.y, m_vMax.z);
-        pPositionData[1] = glm::vec3( m_vMax.x,  m_vMin.y, m_vMax.z);
-        pPositionData[2] = glm::vec3( m_vMax.x,  m_vMax.y, m_vMax.z);
-        pPositionData[3] = glm::vec3( m_vMin.x,  m_vMax.y, m_vMax.z);
+        pVertexBufferData[0] = glm::vec3( m_vMin.x,  m_vMin.y, m_vMax.z);
+        pVertexBufferData[1] = glm::vec3( m_vMax.x,  m_vMin.y, m_vMax.z);
+        pVertexBufferData[2] = glm::vec3( m_vMax.x,  m_vMax.y, m_vMax.z);
+        pVertexBufferData[3] = glm::vec3( m_vMin.x,  m_vMax.y, m_vMax.z);
     
-        pPositionData[4] = glm::vec3( m_vMin.x,  m_vMin.y,  m_vMin.z);
-        pPositionData[5] = glm::vec3( m_vMin.x,  m_vMax.y,  m_vMin.z);
-        pPositionData[6] = glm::vec3( m_vMax.x,  m_vMax.y,  m_vMin.z);
-        pPositionData[7] = glm::vec3( m_vMax.x,  m_vMin.y,  m_vMin.z);
+        pVertexBufferData[4] = glm::vec3( m_vMin.x,  m_vMin.y,  m_vMin.z);
+        pVertexBufferData[5] = glm::vec3( m_vMin.x,  m_vMax.y,  m_vMin.z);
+        pVertexBufferData[6] = glm::vec3( m_vMax.x,  m_vMax.y,  m_vMin.z);
+        pVertexBufferData[7] = glm::vec3( m_vMax.x,  m_vMin.y,  m_vMin.z);
     
         for(unsigned int i = 0; i < pSourceData->m_iNumVertexes; i++)
         {

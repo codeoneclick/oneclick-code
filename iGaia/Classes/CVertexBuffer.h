@@ -9,7 +9,7 @@
 #ifndef iGaia_CVertexBuffer_h
 #define iGaia_CVertexBuffer_h
 
-#include <OpenGLES/ES2/gl.h>
+/*#include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_precision.hpp>
@@ -129,6 +129,6 @@ public:
     void AppendWorkingSourceData(void);
     void CommitFromRAMToVRAM(void);
     
-};
+};*/
 
 #endif
