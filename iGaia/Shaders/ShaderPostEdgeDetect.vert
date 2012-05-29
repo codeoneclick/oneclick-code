@@ -13,7 +13,7 @@ void main(void)
 {
     OUT_TexCoord = IN_SLOT_TexCoord;
     
-    lowp vec2 vEdgeOffset = vec2(1.0 / 480.0, 1.0 / 320.0);
+    highp vec2 vEdgeOffset = vec2(1.0 / 480.0, 1.0 / 320.0);
     OUT_TexCoord_01.xy = IN_SLOT_TexCoord + vec2(-1.0, -1.0) * vEdgeOffset;
     OUT_TexCoord_01.zw = IN_SLOT_TexCoord + vec2( 1.0,  1.0) * vEdgeOffset;
     OUT_TexCoord_02.xy = IN_SLOT_TexCoord + vec2(-1.0,  1.0) * vEdgeOffset;

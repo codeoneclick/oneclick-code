@@ -55,7 +55,7 @@ void CBullet::_MoveForward(void)
     float fHeight = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_HeightValue(m_vPosition.x + sinf(glm::radians(m_vRotation.y)) * m_fMoveSpeed, m_vPosition.z + cosf(glm::radians(m_vRotation.y)) * m_fMoveSpeed);
     int iWidth = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_Width();
     int iHeight = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_Height();
-    if(/*fHeight > m_vPosition.y && */(m_vPosition.x < 0.0f || m_vPosition.z > iWidth || m_vPosition.z < 0.0f || m_vPosition.z > iHeight))
+    if(/*fHeight > m_vPosition.y && */(m_vPosition.x < 0.0f || m_vPosition.x > iWidth || m_vPosition.z < 0.0f || m_vPosition.z > iHeight))
     {
         _SelfDestroy();
     }
