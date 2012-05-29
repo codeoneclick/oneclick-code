@@ -27,6 +27,9 @@ CCharacterControllerPlayer::CCharacterControllerPlayer(void)
     m_fLeftTrackMoveSpeed = 0.0f;
     m_fRightTrackMoveSpeed = 0.0f;
     m_fSteerSpeed = 2.0f;
+    m_fTowerSteerSpeed = 4.0f;
+    
+    m_fTowerRotationY = 0.0f;
     
     m_vTowerModelTarget = glm::vec3(0.0f, 0.0f, 0.0f);
 }
@@ -43,8 +46,8 @@ void CCharacterControllerPlayer::Load(void)
     m_pTowerModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("tower_model.mdl", IResource::E_THREAD_BACKGROUND);
     m_pTowerModel->Set_Texture("model_01.pvr", 0, CTexture::E_WRAP_MODE_REPEAT);
     m_pTowerModel->Set_Scale(vScale);
-    m_pTowerModel->Set_Shader(INode::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_UNIT);
-    m_pTowerModel->Set_Shader(INode::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
+    m_pTowerModel->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_UNIT);
+    m_pTowerModel->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
     m_pTowerModel->Create_BoundingBox();
     m_pTowerModel->Set_RenderModeScreenNormalEnable(true);
     //m_pTowerModel->Set_RenderModeShadowMapEnable(true);
@@ -52,8 +55,8 @@ void CCharacterControllerPlayer::Load(void)
     m_pLeftTrackModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("left_track_model.mdl", IResource::E_THREAD_BACKGROUND);
     m_pLeftTrackModel->Set_Texture("model_02.pvr", 0, CTexture::E_WRAP_MODE_REPEAT);
     m_pLeftTrackModel->Set_Scale(vScale);
-    m_pLeftTrackModel->Set_Shader(INode::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_ANIM_TEXCOORD_UNIT);
-    m_pLeftTrackModel->Set_Shader(INode::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
+    m_pLeftTrackModel->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_ANIM_TEXCOORD_UNIT);
+    m_pLeftTrackModel->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
     m_pLeftTrackModel->Create_BoundingBox();
     m_pLeftTrackModel->Set_RenderModeScreenNormalEnable(true);
     //m_pLeftTrackModel->Set_RenderModeShadowMapEnable(true);
@@ -61,8 +64,8 @@ void CCharacterControllerPlayer::Load(void)
     m_pRightTrackModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("right_track_model.mdl", IResource::E_THREAD_BACKGROUND);
     m_pRightTrackModel->Set_Texture("model_02.pvr", 0, CTexture::E_WRAP_MODE_REPEAT);
     m_pRightTrackModel->Set_Scale(vScale);
-    m_pRightTrackModel->Set_Shader(INode::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_ANIM_TEXCOORD_UNIT);
-    m_pRightTrackModel->Set_Shader(INode::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
+    m_pRightTrackModel->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_ANIM_TEXCOORD_UNIT);
+    m_pRightTrackModel->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
     m_pRightTrackModel->Create_BoundingBox();
     m_pRightTrackModel->Set_RenderModeScreenNormalEnable(true);
     //m_pRightTrackModel->Set_RenderModeShadowMapEnable(true);
@@ -70,8 +73,8 @@ void CCharacterControllerPlayer::Load(void)
     m_pBodyModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("base_model.mdl", IResource::E_THREAD_BACKGROUND);
     m_pBodyModel->Set_Texture("model_01.pvr", 0, CTexture::E_WRAP_MODE_REPEAT);
     m_pBodyModel->Set_Scale(vScale);
-    m_pBodyModel->Set_Shader(INode::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_UNIT);
-    m_pBodyModel->Set_Shader(INode::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
+    m_pBodyModel->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_UNIT);
+    m_pBodyModel->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
     m_pBodyModel->Create_BoundingBox();
     m_pBodyModel->Set_RenderModeScreenNormalEnable(true);
     //m_pBodyModel->Set_RenderModeShadowMapEnable(true);
@@ -82,7 +85,7 @@ void CCharacterControllerPlayer::Load(void)
     //m_pExplosionEmitter->Set_Position(glm::vec3(0.0f, 0.33f, 0.0f));
     
     m_pShadowDecal = CSceneMgr::Instance()->Get_DecalMgr()->Add_Decal();
-    m_pShadowDecal->Set_Shader(INode::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_DECAL);
+    m_pShadowDecal->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_DECAL);
     m_pShadowDecal->Set_Texture("shadow.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
 
     CSceneMgr::Instance()->AddEventListener(m_pBodyModel, CEventMgr::E_EVENT_TOUCH);
@@ -128,7 +131,7 @@ void CCharacterControllerPlayer::Set_Rotation(const glm::vec3 &_vRotation)
     }
     if(m_pTowerModel != NULL)
     {
-        m_pTowerModel->Set_Rotation(_vRotation);
+        m_pTowerModel->Set_Rotation(glm::vec3(_vRotation.x, m_fTowerRotationY, _vRotation.z));
     }
     if(m_pLeftTrackModel != NULL)
     {
@@ -152,7 +155,9 @@ void CCharacterControllerPlayer::OnTouchEvent(ITouchDelegate* _pDelegateOwner)
 
 void CCharacterControllerPlayer::Shoot(void)
 {
-    CWorld::Instance()->Get_GameShooterMgr()->CreateBullet(glm::vec3(m_vPosition.x, m_vPosition.y + 0.5f, m_vPosition.z), glm::vec3(m_vPosition.x, m_vPosition.y + 0.5f, m_vPosition.z), m_pTowerModel->Get_Rotation());
+    //m_vPosition.x += sinf(glm::radians(m_vRotation.y)) * m_fMoveSpeed;
+    //m_vPosition.z += cosf(glm::radians(m_vRotation.y)) * m_fMoveSpeed;
+    CWorld::Instance()->Get_GameShooterMgr()->CreateBullet(glm::vec3(m_vPosition.x + sinf(glm::radians(m_fTowerRotationY)) * 1.8f, m_vPosition.y + 1.6f, m_vPosition.z + cosf(glm::radians(m_fTowerRotationY)) * 2.0f), glm::vec3(m_vPosition.x, m_vPosition.y + 1.8f, m_vPosition.z), m_pTowerModel->Get_Rotation());
 }
 
 void CCharacterControllerPlayer::Update(void)
@@ -308,6 +313,26 @@ void CCharacterControllerPlayer::Update(void)
             break;
     }
     
+    switch (m_eSteerTowerState)
+    {
+        case ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_TOWER_NONE:
+            
+            break;
+        case ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_TOWER_RIGHT:
+        {
+            m_fTowerRotationY += m_fTowerSteerSpeed;
+        }
+            break;
+        case ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_TOWER_LEFT:
+        {
+            m_fTowerRotationY -= m_fTowerSteerSpeed;
+        }
+            break;
+            
+        default:
+            break;
+    }
+    
     m_pLeftTrackModel->Set_TexCoordOffset(vLeftTrackTexCoordOffset);
     m_pRightTrackModel->Set_TexCoordOffset(vRightTrackTexCoordOffset);
 
@@ -322,8 +347,8 @@ void CCharacterControllerPlayer::Update(void)
     
     //m_pExplosionEmitter->Set_Position(m_vPosition);
     
-    float fTowerTargetAngle = _GetRotationBetweenPoints(m_vPosition, m_vTowerModelTarget);
-    m_pTowerModel->Set_Rotation(glm::vec3(m_vRotation.x, glm::degrees(fTowerTargetAngle + 1.57f), m_vRotation.z));
+    //float fTowerTargetAngle = _GetRotationBetweenPoints(m_vPosition, m_vTowerModelTarget);
+    //m_pTowerModel->Set_Rotation(glm::vec3(m_vRotation.x, glm::degrees(fTowerTargetAngle + 1.57f), m_vRotation.z));
 }
 
 

@@ -9,6 +9,7 @@
 #include <iostream>
 #include "CGrass.h"
 #include "CSceneMgr.h"
+#include "CVertexBufferPositionTexcoord.h"
 
 const float CGrass::k_ELEMENT_SIZE = 1.0f;
 const float CGrass::k_ELEMENT_HEIGHT = 1.75f;
@@ -37,25 +38,26 @@ CGrass::CGrass(void)
     m_pSingleElementIndexBuffer[10] = 7;
     m_pSingleElementIndexBuffer[11] = 5;*/
     
-    m_pSingleElementVertexBuffer = new CVertexBuffer(k_ELEMENT_NUM_VERTEXES);
-    glm::vec3* pPositionData = m_pSingleElementVertexBuffer->GetOrCreate_PositionSourceData();
+    m_pSingleElementVertexBuffer = new CVertexBufferPositionTexcoord(k_ELEMENT_NUM_VERTEXES, GL_STATIC_DRAW);
+    CVertexBufferPositionTexcoord::SVertex* pVertexBufferData = static_cast<CVertexBufferPositionTexcoord::SVertex*>(m_pSingleElementVertexBuffer->Lock());
+    //glm::vec3* pPositionData = m_pSingleElementVertexBuffer->GetOrCreate_PositionSourceData();
 
-    pPositionData[0] = glm::vec3(-k_ELEMENT_SIZE / 2, 0.0f, 0.0f);
-    pPositionData[1] = glm::vec3(-k_ELEMENT_SIZE / 2, k_ELEMENT_HEIGHT, 0.0f);
-    pPositionData[2] = glm::vec3( k_ELEMENT_SIZE / 2, 0.0f, 0.0f);
-    pPositionData[3] = glm::vec3( k_ELEMENT_SIZE / 2, k_ELEMENT_HEIGHT, 0.0f);
+    pVertexBufferData[0].m_vPosition = glm::vec3(-k_ELEMENT_SIZE / 2, 0.0f, 0.0f);
+    pVertexBufferData[1].m_vPosition = glm::vec3(-k_ELEMENT_SIZE / 2, k_ELEMENT_HEIGHT, 0.0f);
+    pVertexBufferData[2].m_vPosition = glm::vec3( k_ELEMENT_SIZE / 2, 0.0f, 0.0f);
+    pVertexBufferData[3].m_vPosition = glm::vec3( k_ELEMENT_SIZE / 2, k_ELEMENT_HEIGHT, 0.0f);
     
     /*pPositionData[4] = glm::vec3(0.0f, 0.0f, -k_ELEMENT_SIZE / 2);
     pPositionData[5] = glm::vec3(0.0f, k_ELEMENT_HEIGHT, -k_ELEMENT_SIZE / 2);
     pPositionData[6] = glm::vec3(0.0f, 0.0f,  k_ELEMENT_SIZE / 2);
     pPositionData[7] = glm::vec3(0.0f, k_ELEMENT_HEIGHT,  k_ELEMENT_SIZE / 2);*/
     
-    glm::vec2* pTexCoordData = m_pSingleElementVertexBuffer->GetOrCreate_TexcoordSourceData();
+    //glm::vec2* pTexCoordData = m_pSingleElementVertexBuffer->GetOrCreate_TexcoordSourceData();
     
-    pTexCoordData[0] = glm::vec2(0.0f,1.0f);
-    pTexCoordData[1] = glm::vec2(0.0f,0.0f);
-    pTexCoordData[2] = glm::vec2(1.0f,1.0f);
-    pTexCoordData[3] = glm::vec2(1.0f,0.0f);
+    pVertexBufferData[0].m_vTexcoord = glm::vec2(0.0f,1.0f);
+    pVertexBufferData[1].m_vTexcoord = glm::vec2(0.0f,0.0f);
+    pVertexBufferData[2].m_vTexcoord = glm::vec2(1.0f,1.0f);
+    pVertexBufferData[3].m_vTexcoord = glm::vec2(1.0f,0.0f);
     
     /*pTexCoordData[4] = glm::vec2(0.0f,1.0f);
     pTexCoordData[5] = glm::vec2(0.0f,0.0f);
@@ -97,16 +99,18 @@ void CGrass::Load(const std::string &_sName, IResource::E_THREAD _eThread)
     pSourceData->m_iNumVertexes = m_lGrassElementsPosition.size() * k_ELEMENT_NUM_VERTEXES;
     pSourceData->m_iNumIndexes  = m_lGrassElementsPosition.size() * k_ELEMENT_NUM_INDEXES;
     
-    pSourceData->m_pVertexBuffer = new CVertexBuffer(pSourceData->m_iNumVertexes);
+    pSourceData->m_pVertexBuffer = new CVertexBufferPositionTexcoord(pSourceData->m_iNumVertexes, GL_STREAM_DRAW);
     pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes);
     
-    glm::vec3* pPositionData = pSourceData->m_pVertexBuffer->GetOrCreate_PositionSourceData();
-    glm::vec2* pTextCoordData = pSourceData->m_pVertexBuffer->GetOrCreate_TexcoordSourceData();
+    CVertexBufferPositionTexcoord::SVertex* pVertexBufferData = static_cast<CVertexBufferPositionTexcoord::SVertex*>(pSourceData->m_pVertexBuffer->Lock());
+    CVertexBufferPositionTexcoord::SVertex* pSingleElementVertexBufferData = static_cast<CVertexBufferPositionTexcoord::SVertex*>(m_pSingleElementVertexBuffer->Lock());
+    //glm::vec3* pPositionData = pSourceData->m_pVertexBuffer->GetOrCreate_PositionSourceData();
+    //glm::vec2* pTextCoordData = pSourceData->m_pVertexBuffer->GetOrCreate_TexcoordSourceData();
     
     unsigned short* pIndexesBufferData = pSourceData->m_pIndexBuffer->Get_SourceData();
     
-    glm::vec3* pSingleElementPositionData = m_pSingleElementVertexBuffer->GetOrCreate_PositionSourceData();
-    glm::vec2* pSingleElementTextCoordData = m_pSingleElementVertexBuffer->GetOrCreate_TexcoordSourceData();
+    //glm::vec3* pSingleElementPositionData = m_pSingleElementVertexBuffer->GetOrCreate_PositionSourceData();
+    //glm::vec2* pSingleElementTextCoordData = m_pSingleElementVertexBuffer->GetOrCreate_TexcoordSourceData();
     
     std::vector<glm::vec3>::iterator pElementsSourceDataBegin = m_lGrassElementsPosition.begin();
     std::vector<glm::vec3>::iterator pElementsSourceDataEnd   = m_lGrassElementsPosition.end();
@@ -116,8 +120,8 @@ void CGrass::Load(const std::string &_sName, IResource::E_THREAD _eThread)
     {
         for(unsigned int i = 0; i < k_ELEMENT_NUM_VERTEXES; ++i)
         {
-            pPositionData[i + iVertexesDataOffset] = pSingleElementPositionData[i] + (*pElementsSourceDataBegin);
-            pTextCoordData[i +iVertexesDataOffset] = pSingleElementTextCoordData[i];
+            pVertexBufferData[i + iVertexesDataOffset].m_vPosition = pSingleElementVertexBufferData[i].m_vPosition + (*pElementsSourceDataBegin);
+            pVertexBufferData[i +iVertexesDataOffset].m_vTexcoord = pSingleElementVertexBufferData[i].m_vTexcoord;
         }
         
         for(unsigned int i = 0; i < k_ELEMENT_NUM_INDEXES; ++i)
@@ -132,11 +136,9 @@ void CGrass::Load(const std::string &_sName, IResource::E_THREAD _eThread)
     
     m_pMesh = new CMesh(IResource::E_CREATION_MODE_CUSTOM);
     m_pMesh->Set_SourceData(pSourceData);
-    m_pMesh->Get_VertexBufferRef()->Set_Mode(GL_STREAM_DRAW);
-    m_pMesh->Get_VertexBufferRef()->AppendWorkingSourceData();
-    m_pMesh->Get_VertexBufferRef()->CommitFromRAMToVRAM();
+    m_pMesh->Get_VertexBufferRef()->Commit();
     m_pMesh->Get_IndexBufferRef()->Set_Mode(GL_STREAM_DRAW);
-    m_pMesh->Get_IndexBufferRef()->CommitFromRAMToVRAM();
+    m_pMesh->Get_IndexBufferRef()->Commit();
     
     unsigned int iNumIndexes = m_pMesh->Get_NumIndexes();
     unsigned short* pIndexBufferData = m_pMesh->Get_IndexBufferRef()->Get_SourceData();
@@ -201,7 +203,8 @@ void CGrass::_CreateQuadTreeNode(int _iSize, CGrass::SQuadTreeNode *_pParentNode
 
 void CGrass::_CreateIndexBufferRefForQuadTreeNode(CGrass::SQuadTreeNode *_pNode)
 {
-    glm::vec3* pPositionData = m_pMesh->Get_VertexBufferRef()->GetOrCreate_PositionSourceData();
+    CVertexBufferPositionTexcoord::SVertex* pVertexBufferData = static_cast<CVertexBufferPositionTexcoord::SVertex*>(m_pMesh->Get_VertexBufferRef()->Lock());
+    //glm::vec3* pPositionData = m_pMesh->Get_VertexBufferRef()->GetOrCreate_PositionSourceData();
     unsigned int iParentNumIndexes = _pNode->m_pParent->m_iNumIndexes;
     _pNode->m_pIndexes = static_cast<unsigned short*>(malloc(sizeof(unsigned short)));
     float fMaxY = -4096.0f;
@@ -217,9 +220,9 @@ void CGrass::_CreateIndexBufferRefForQuadTreeNode(CGrass::SQuadTreeNode *_pNode)
     
     for(unsigned int i = 0; i < iParentNumIndexes; i += 3)
     {
-        if(_IsPointInBoundBox(pPositionData[_pNode->m_pParent->m_pIndexes[i + 0]], _pNode->m_vMinBound, _pNode->m_vMaxBound) ||
-           _IsPointInBoundBox(pPositionData[_pNode->m_pParent->m_pIndexes[i + 1]], _pNode->m_vMinBound, _pNode->m_vMaxBound) ||
-           _IsPointInBoundBox(pPositionData[_pNode->m_pParent->m_pIndexes[i + 2]], _pNode->m_vMinBound, _pNode->m_vMaxBound))
+        if(_IsPointInBoundBox(pVertexBufferData[_pNode->m_pParent->m_pIndexes[i + 0]].m_vPosition, _pNode->m_vMinBound, _pNode->m_vMaxBound) ||
+           _IsPointInBoundBox(pVertexBufferData[_pNode->m_pParent->m_pIndexes[i + 1]].m_vPosition, _pNode->m_vMinBound, _pNode->m_vMaxBound) ||
+           _IsPointInBoundBox(pVertexBufferData[_pNode->m_pParent->m_pIndexes[i + 2]].m_vPosition, _pNode->m_vMinBound, _pNode->m_vMaxBound))
         {
             if(_pNode->m_pParent->m_pIndexesId[i + 0] == iQuadTreeNodeId ||
                _pNode->m_pParent->m_pIndexesId[i + 1] == iQuadTreeNodeId ||
@@ -239,35 +242,35 @@ void CGrass::_CreateIndexBufferRefForQuadTreeNode(CGrass::SQuadTreeNode *_pNode)
             _pNode->m_pParent->m_pIndexesId[i + 1] = iQuadTreeNodeId;
             _pNode->m_pParent->m_pIndexesId[i + 2] = iQuadTreeNodeId;
             
-            if(pPositionData[_pNode->m_pParent->m_pIndexes[i + 0]].y > fMaxY)
+            if(pVertexBufferData[_pNode->m_pParent->m_pIndexes[i + 0]].m_vPosition.y > fMaxY)
             {
-                fMaxY = pPositionData[_pNode->m_pParent->m_pIndexes[i + 0]].y;
+                fMaxY = pVertexBufferData[_pNode->m_pParent->m_pIndexes[i + 0]].m_vPosition.y;
             }
             
-            if(pPositionData[_pNode->m_pParent->m_pIndexes[i + 1]].y > fMaxY)
+            if(pVertexBufferData[_pNode->m_pParent->m_pIndexes[i + 1]].m_vPosition.y > fMaxY)
             {
-                fMaxY = pPositionData[_pNode->m_pParent->m_pIndexes[i + 1]].y;
+                fMaxY = pVertexBufferData[_pNode->m_pParent->m_pIndexes[i + 1]].m_vPosition.y;
             }
             
-            if(pPositionData[_pNode->m_pParent->m_pIndexes[i + 2]].y > fMaxY)
+            if(pVertexBufferData[_pNode->m_pParent->m_pIndexes[i + 2]].m_vPosition.y > fMaxY)
             {
-                fMaxY = pPositionData[_pNode->m_pParent->m_pIndexes[i + 2]].y;
+                fMaxY = pVertexBufferData[_pNode->m_pParent->m_pIndexes[i + 2]].m_vPosition.y;
             }
             
             
-            if(pPositionData[_pNode->m_pParent->m_pIndexes[i + 0]].y < fMinY)
+            if(pVertexBufferData[_pNode->m_pParent->m_pIndexes[i + 0]].m_vPosition.y < fMinY)
             {
-                fMinY = pPositionData[_pNode->m_pParent->m_pIndexes[i + 0]].y;
+                fMinY = pVertexBufferData[_pNode->m_pParent->m_pIndexes[i + 0]].m_vPosition.y;
             }
             
-            if(pPositionData[_pNode->m_pParent->m_pIndexes[i + 1]].y < fMinY)
+            if(pVertexBufferData[_pNode->m_pParent->m_pIndexes[i + 1]].m_vPosition.y < fMinY)
             {
-                fMinY = pPositionData[_pNode->m_pParent->m_pIndexes[i + 1]].y;
+                fMinY = pVertexBufferData[_pNode->m_pParent->m_pIndexes[i + 1]].m_vPosition.y;
             }
             
-            if(pPositionData[_pNode->m_pParent->m_pIndexes[i + 2]].y < fMinY)
+            if(pVertexBufferData[_pNode->m_pParent->m_pIndexes[i + 2]].m_vPosition.y < fMinY)
             {
-                fMinY = pPositionData[_pNode->m_pParent->m_pIndexes[i + 2]].y;
+                fMinY = pVertexBufferData[_pNode->m_pParent->m_pIndexes[i + 2]].m_vPosition.y;
             }
         }
     }
@@ -353,58 +356,61 @@ void CGrass::_CheckVisibleQuadTreeNode(CGrass::SQuadTreeNode *_pNode)
     }
 }
 
-void CGrass::Update()
+void CGrass::Update(void)
 {
     INode::Update();
     
     m_iWorkingNumIndexes = 0;
     _CheckVisibleQuadTreeNode(m_pQuadTree);
     m_pMesh->Get_IndexBufferRef()->Set_NumWorkingIndexes(m_iWorkingNumIndexes);
-    m_pMesh->Get_IndexBufferRef()->CommitFromRAMToVRAM();
+    m_pMesh->Get_IndexBufferRef()->Commit();
     
     ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
     unsigned int iNumGrassElements = m_lGrassElementsPosition.size();
-    glm::vec3* pSingleElementPositionData = m_pSingleElementVertexBuffer->GetOrCreate_PositionSourceData();
-    glm::vec3* pPositionData = m_pMesh->Get_VertexBufferRef()->GetOrCreate_PositionSourceData();
+    CVertexBufferPositionTexcoord::SVertex* pVertexBufferData = static_cast<CVertexBufferPositionTexcoord::SVertex*>( m_pMesh->Get_VertexBufferRef()->Lock());
+    CVertexBufferPositionTexcoord::SVertex* pSingleElementVertexBufferData = static_cast<CVertexBufferPositionTexcoord::SVertex*>(m_pSingleElementVertexBuffer->Lock());
+
+    //glm::vec3* pSingleElementPositionData = m_pSingleElementVertexBuffer->GetOrCreate_PositionSourceData();
+    //glm::vec3* pPositionData = m_pMesh->Get_VertexBufferRef()->GetOrCreate_PositionSourceData();
     for(unsigned int index = 0; index < iNumGrassElements; index++)
     {
         glm::mat4 mWorld = pCamera->Get_BillboardMatrix(m_lGrassElementsPosition[index]);
         
-        glm::vec3 vVertexPosition = pSingleElementPositionData[0];
+        glm::vec3 vVertexPosition = pSingleElementVertexBufferData[0].m_vPosition;
         glm::vec4 vTransform = glm::vec4(vVertexPosition.x, vVertexPosition.y, vVertexPosition.z, 1.0f);
         vTransform = mWorld * vTransform;
-        pPositionData[index * 4 + 0] = glm::vec3(vTransform.x, vTransform.y, vTransform.z);
+        pVertexBufferData[index * 4 + 0].m_vPosition = glm::vec3(vTransform.x, vTransform.y, vTransform.z);
         
-        vVertexPosition = pSingleElementPositionData[1];
+        vVertexPosition = pSingleElementVertexBufferData[1].m_vPosition;
         vTransform = glm::vec4(vVertexPosition.x, vVertexPosition.y, vVertexPosition.z, 1.0f);
         vTransform = mWorld * vTransform;
-        pPositionData[index * 4 + 1] = glm::vec3(vTransform.x, vTransform.y, vTransform.z);
+        pVertexBufferData[index * 4 + 1].m_vPosition = glm::vec3(vTransform.x, vTransform.y, vTransform.z);
         
-        vVertexPosition = pSingleElementPositionData[2];
+        vVertexPosition = pSingleElementVertexBufferData[2].m_vPosition;
         vTransform = glm::vec4(vVertexPosition.x, vVertexPosition.y, vVertexPosition.z, 1.0f);
         vTransform = mWorld * vTransform;
-        pPositionData[index * 4 + 2] = glm::vec3(vTransform.x, vTransform.y, vTransform.z);
+        pVertexBufferData[index * 4 + 2].m_vPosition = glm::vec3(vTransform.x, vTransform.y, vTransform.z);
 
-        vVertexPosition = pSingleElementPositionData[3];
+        vVertexPosition = pSingleElementVertexBufferData[3].m_vPosition;
         vTransform = glm::vec4(vVertexPosition.x, vVertexPosition.y, vVertexPosition.z, 1.0f);
         vTransform = mWorld * vTransform;
-        pPositionData[index * 4 + 3] = glm::vec3(vTransform.x, vTransform.y, vTransform.z);
+        pVertexBufferData[index * 4 + 3].m_vPosition = glm::vec3(vTransform.x, vTransform.y, vTransform.z);
     }
-    m_pMesh->Get_VertexBufferRef()->AppendWorkingSourceData();
-    m_pMesh->Get_VertexBufferRef()->CommitFromRAMToVRAM();
+    m_pMesh->Get_VertexBufferRef()->Commit();
 }
 
-void CGrass::Render(INode::E_RENDER_MODE _eMode)
+void CGrass::Render(CShader::E_RENDER_MODE _eMode)
 {
     INode::Render(_eMode);
     
     glDisable(GL_CULL_FACE);
     glDepthMask(GL_FALSE);
     ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
+    static float fTimer = 0.0f;
     
     switch (_eMode)
     {
-        case INode::E_RENDER_MODE_SIMPLE:
+        case CShader::E_RENDER_MODE_SIMPLE:
         {
             if(m_pShaders[_eMode] == NULL)
             {
@@ -412,53 +418,69 @@ void CGrass::Render(INode::E_RENDER_MODE _eMode)
                 return;
             }
             
-            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShaders[_eMode]->Get_ProgramHandle());
             m_pShaders[_eMode]->Enable();
-            m_pShaders[_eMode]->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD);
-            m_pShaders[_eMode]->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
-            m_pShaders[_eMode]->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
-            static float fTimer = 0.0f;
-            fTimer += 0.1f;
-            m_pShaders[_eMode]->SetCustomFloat(fTimer, "EXT_Timer");
+            m_pShaders[_eMode]->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
+            m_pShaders[_eMode]->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
+            m_pShaders[_eMode]->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
             
-            char pStrTextureId[256];
+            fTimer += 0.1f;
+            m_pShaders[_eMode]->Set_CustomFloat(fTimer, "EXT_Timer");
+            
             for(unsigned int i = 0; i < TEXTURES_MAX_COUNT; ++i)
             {
                 if( m_pTextures[i] == NULL )
                 {
                     continue;
                 }
-                sprintf(pStrTextureId, "EXT_TEXTURE_0%i",i + 1);
-                std::string k_TEXTURE_ID = pStrTextureId;
-                m_pShaders[_eMode]->SetTexture(m_pTextures[i]->Get_Handle(), k_TEXTURE_ID);
+                m_pShaders[_eMode]->Set_Texture(m_pTextures[i]->Get_Handle(), static_cast<CShader::E_TEXTURE_SLOT>(i));
             }
         }
             break;
-        case INode::E_RENDER_MODE_REFLECTION:
+        case CShader::E_RENDER_MODE_REFLECTION:
         {
             
         }
             break;
-        case INode::E_RENDER_MODE_REFRACTION:
+        case CShader::E_RENDER_MODE_REFRACTION:
         {
             
         }
             break;
-        case INode::E_RENDER_MODE_SCREEN_NORMAL_MAP:
+        case CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP:
         {
+            if(m_pShaders[_eMode] == NULL)
+            {
+                std::cout<<"[CModel::Render] Shader MODE_SCREEN_NORMAL_MAP is NULL"<<std::endl;
+                return;
+            }
             
+            m_pShaders[_eMode]->Enable();
+            m_pShaders[_eMode]->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
+            m_pShaders[_eMode]->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
+            m_pShaders[_eMode]->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
+            
+            m_pShaders[_eMode]->Set_CustomFloat(fTimer, "EXT_Timer");
+            
+            for(unsigned int i = 0; i < TEXTURES_MAX_COUNT; ++i)
+            {
+                if( m_pTextures[i] == NULL )
+                {
+                    continue;
+                }
+                m_pShaders[_eMode]->Set_Texture(m_pTextures[i]->Get_Handle(), static_cast<CShader::E_TEXTURE_SLOT>(i));
+            }
         }
             break;
         default:
             break;
     }
          
-    m_pMesh->Get_VertexBufferRef()->Enable();
+    m_pMesh->Get_VertexBufferRef()->Enable(_eMode);
     m_pMesh->Get_IndexBufferRef()->Enable();
     unsigned int iNumIndexes = m_pMesh->Get_IndexBufferRef()->Get_NumWorkingIndexes();
     glDrawElements(GL_TRIANGLES, iNumIndexes, GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_SourceDataFromVRAM());
     m_pMesh->Get_IndexBufferRef()->Disable();
-    m_pMesh->Get_VertexBufferRef()->Disable();
+    m_pMesh->Get_VertexBufferRef()->Disable(_eMode);
     m_pShaders[_eMode]->Disable();
     
     glEnable(GL_CULL_FACE);

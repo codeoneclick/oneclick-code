@@ -263,12 +263,12 @@ void CSceneMgr::_DrawSimpleStep(void)
     
     if(m_pSkyBox != NULL)
     {
-        m_pSkyBox->Render(INode::E_RENDER_MODE_SIMPLE);
+        m_pSkyBox->Render(CShader::E_RENDER_MODE_SIMPLE);
     }
     
     while (pBeginNodeIterator != pEndNodeIterator)
     {
-        (*pBeginNodeIterator)->Render(INode::E_RENDER_MODE_SIMPLE);
+        (*pBeginNodeIterator)->Render(CShader::E_RENDER_MODE_SIMPLE);
         ++pBeginNodeIterator;
     }
     
@@ -283,12 +283,12 @@ void CSceneMgr::_DrawSimpleStep(void)
     
     if(m_pDecalMgr != NULL)
     {
-        m_pDecalMgr->Render(INode::E_RENDER_MODE_SIMPLE);
+        m_pDecalMgr->Render(CShader::E_RENDER_MODE_SIMPLE);
     }
     
     if(m_pParticleMgr != NULL)
     {
-        m_pParticleMgr->Render(INode::E_RENDER_MODE_SIMPLE);
+        m_pParticleMgr->Render(CShader::E_RENDER_MODE_SIMPLE);
     }
     
     
@@ -312,7 +312,7 @@ void CSceneMgr::_DrawReflectionStep(void)
     if(m_pSkyBox != NULL)
     {
         m_pSkyBox->Update();
-        m_pSkyBox->Render(INode::E_RENDER_MODE_SIMPLE);
+        m_pSkyBox->Render(CShader::E_RENDER_MODE_SIMPLE);
     }
     
     while (pBeginNodeIterator != pEndNodeIterator)
@@ -320,7 +320,7 @@ void CSceneMgr::_DrawReflectionStep(void)
         if((*pBeginNodeIterator)->Get_RenderModeReflectionEnable())
         {
             (*pBeginNodeIterator)->Update();
-            (*pBeginNodeIterator)->Render(INode::E_RENDER_MODE_REFLECTION);
+            (*pBeginNodeIterator)->Render(CShader::E_RENDER_MODE_REFLECTION);
         }
         ++pBeginNodeIterator;
     }
@@ -339,7 +339,7 @@ void CSceneMgr::_DrawRefractionStep(void)
         if((*pBeginNodeIterator)->Get_RenderModeRefractionEnable())
         {
             (*pBeginNodeIterator)->Update();
-            (*pBeginNodeIterator)->Render(INode::E_RENDER_MODE_REFRACTION);
+            (*pBeginNodeIterator)->Render(CShader::E_RENDER_MODE_REFRACTION);
         }
         ++pBeginNodeIterator;
     }
@@ -358,14 +358,14 @@ void CSceneMgr::_DrawScreenNormalMapStep(void)
     {
         if((*pBeginNodeIterator)->Get_RenderModeScreenNormalEnable())
         {
-            (*pBeginNodeIterator)->Render(INode::E_RENDER_MODE_SCREEN_NORMAL_MAP);
+            (*pBeginNodeIterator)->Render(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP);
         }
         ++pBeginNodeIterator;
     }
     
     if(m_pParticleMgr != NULL)
     {
-        m_pParticleMgr->Render(INode::E_RENDER_MODE_SCREEN_NORMAL_MAP);
+        m_pParticleMgr->Render(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP);
     }
     
     m_pRenderMgr->EndDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_SCREEN_NORMAL_MAP);

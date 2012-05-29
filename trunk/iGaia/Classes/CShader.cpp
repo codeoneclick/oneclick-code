@@ -24,14 +24,14 @@ const std::string CShader::k_ATTRIBUTE_VECTOR_CLIP_PLANE = "EXT_Clip_Plane";
 const std::string CShader::k_ATTRIBUTE_FLOAT_TIMER = "EXT_Timer";
 const std::string CShader::k_ATTRIBUTE_VECTOR_TEXCOORD_OFFSET = "EXT_Texcoord_Offset";
 
-const std::string k_TEXTURE_SLOT_01 = "EXT_TEXTURE_01";
-const std::string k_TEXTURE_SLOT_02 = "EXT_TEXTURE_02";
-const std::string k_TEXTURE_SLOT_03 = "EXT_TEXTURE_03";
-const std::string k_TEXTURE_SLOT_04 = "EXT_TEXTURE_04";
-const std::string k_TEXTURE_SLOT_05 = "EXT_TEXTURE_05";
-const std::string k_TEXTURE_SLOT_06 = "EXT_TEXTURE_06";
-const std::string k_TEXTURE_SLOT_07 = "EXT_TEXTURE_07";
-const std::string k_TEXTURE_SLOT_08 = "EXT_TEXTURE_08";
+const std::string CShader::k_TEXTURE_SLOT_01 = "EXT_TEXTURE_01";
+const std::string CShader::k_TEXTURE_SLOT_02 = "EXT_TEXTURE_02";
+const std::string CShader::k_TEXTURE_SLOT_03 = "EXT_TEXTURE_03";
+const std::string CShader::k_TEXTURE_SLOT_04 = "EXT_TEXTURE_04";
+const std::string CShader::k_TEXTURE_SLOT_05 = "EXT_TEXTURE_05";
+const std::string CShader::k_TEXTURE_SLOT_06 = "EXT_TEXTURE_06";
+const std::string CShader::k_TEXTURE_SLOT_07 = "EXT_TEXTURE_07";
+const std::string CShader::k_TEXTURE_SLOT_08 = "EXT_TEXTURE_08";
 
 CShader::CShader(GLuint _hHandle)
 {
@@ -55,11 +55,11 @@ CShader::CShader(GLuint _hHandle)
     m_lTextureSlotContainer[E_TEXTURE_SLOT_07] = glGetUniformLocation(m_hHandle, k_TEXTURE_SLOT_07.c_str());
     m_lTextureSlotContainer[E_TEXTURE_SLOT_08] = glGetUniformLocation(m_hHandle, k_TEXTURE_SLOT_08.c_str());
     
-    m_lVertexSlotContainer[E_VERTEX_SLOT_POSITION] = glGetUniformLocation(m_hHandle, k_VERTEX_SLOT_POSITION.c_str());
-    m_lVertexSlotContainer[E_VERTEX_SLOT_TEXCOORD] = glGetUniformLocation(m_hHandle, k_VERTEX_SLOT_TEXCOORD.c_str());
-    m_lVertexSlotContainer[E_VERTEX_SLOT_NORMAL] = glGetUniformLocation(m_hHandle, k_VERTEX_SLOT_NORMAL.c_str());
-    m_lVertexSlotContainer[E_VERTEX_SLOT_TANGENT] = glGetUniformLocation(m_hHandle, k_VERTEX_SLOT_TANGENT.c_str());
-    m_lVertexSlotContainer[E_VERTEX_SLOT_COLOR] = glGetUniformLocation(m_hHandle, k_VERTEX_SLOT_COLOR.c_str());
+    m_lVertexSlotContainer[E_VERTEX_SLOT_POSITION] = glGetAttribLocation(m_hHandle, k_VERTEX_SLOT_POSITION.c_str());
+    m_lVertexSlotContainer[E_VERTEX_SLOT_TEXCOORD] = glGetAttribLocation(m_hHandle, k_VERTEX_SLOT_TEXCOORD.c_str());
+    m_lVertexSlotContainer[E_VERTEX_SLOT_NORMAL] = glGetAttribLocation(m_hHandle, k_VERTEX_SLOT_NORMAL.c_str());
+    m_lVertexSlotContainer[E_VERTEX_SLOT_TANGENT] = glGetAttribLocation(m_hHandle, k_VERTEX_SLOT_TANGENT.c_str());
+    m_lVertexSlotContainer[E_VERTEX_SLOT_COLOR] = glGetAttribLocation(m_hHandle, k_VERTEX_SLOT_COLOR.c_str());
 }
 
 CShader::~CShader(void)
@@ -120,6 +120,18 @@ void CShader::Set_Texture(GLuint _hHandle, CShader::E_TEXTURE_SLOT _eSlot)
     glActiveTexture(GL_TEXTURE0 + _eSlot);
     glBindTexture(GL_TEXTURE_2D, _hHandle);
     glUniform1i(m_lTextureSlotContainer[_eSlot], _eSlot);
+}
+
+void CShader::Set_Float(float _fValue, CShader::E_ATTRIBUTE _eAttribute)
+{
+    GLint hHandle = m_lAttributeContainer[_eAttribute];
+    glUniform1f(hHandle, _fValue);
+}
+
+void CShader::Set_CustomFloat(float _fValue, const std::string &_sAttribute)
+{
+    GLint hHandle = glGetUniformLocation(m_hHandle, _sAttribute.c_str());
+    glUniform1f(hHandle, _fValue);
 }
 
 void CShader::Enable(void)

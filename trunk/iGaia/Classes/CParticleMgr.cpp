@@ -41,7 +41,7 @@ void CParticleMgr::Remove_ParticleEmitter(CParticleEmitter *_pParticleEmitter)
             m_lEmitterContainer.erase(pBeginEmitterIterator);
             delete _pParticleEmitter;
             _pParticleEmitter = NULL;
-            return;
+            break;
         }
         ++pBeginEmitterIterator;
     }
@@ -59,7 +59,7 @@ void CParticleMgr::Update(void)
     }
 }
 
-void CParticleMgr::Render(INode::E_RENDER_MODE _eMode)
+void CParticleMgr::Render(CShader::E_RENDER_MODE _eMode)
 {
     std::vector<CParticleEmitter*>::iterator pBeginEmitterIterator = m_lEmitterContainer.begin();
     std::vector<CParticleEmitter*>::iterator pEndEmitterIterator = m_lEmitterContainer.end();

@@ -44,7 +44,7 @@ void CDecalMgr::Update(void)
     }
 }
 
-void CDecalMgr::Render(INode::E_RENDER_MODE _eMode)
+void CDecalMgr::Render(CShader::E_RENDER_MODE _eMode)
 {
     std::vector<CDecal*>::iterator pBeginIterator = m_lDecalContainer.begin();
     std::vector<CDecal*>::iterator pEndIterator = m_lDecalContainer.end();

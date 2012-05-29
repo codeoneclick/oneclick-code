@@ -8,6 +8,7 @@
 
 #include "CDecal.h"
 #include "CSceneMgr.h"
+#include "CVertexBufferPositionTexcoord.h"
 
 CDecal::CDecal(void)
 {
@@ -27,12 +28,14 @@ void CDecal::Load(const std::string& _sName, IResource::E_THREAD _eThread)
     pSourceData->m_iNumVertexes = iWidth * iHeight;
     pSourceData->m_iNumIndexes  = (iWidth - 1) * (iHeight - 1) * 6;
     
-    pSourceData->m_pVertexBuffer = new CVertexBuffer(pSourceData->m_iNumVertexes);
+    pSourceData->m_pVertexBuffer = new CVertexBufferPositionTexcoord(pSourceData->m_iNumVertexes, GL_STREAM_DRAW);
     
-    glm::vec3* pPositionData = pSourceData->m_pVertexBuffer->GetOrCreate_PositionSourceData();
-    glm::vec2* pTexCoordData = pSourceData->m_pVertexBuffer->GetOrCreate_TexcoordSourceData();
+    CVertexBufferPositionTexcoord::SVertex* pVertexBufferData = static_cast<CVertexBufferPositionTexcoord::SVertex*>(pSourceData->m_pVertexBuffer->Lock());
     
-    memset(pPositionData, 0x0, pSourceData->m_iNumVertexes * sizeof(glm::vec3));
+    //glm::vec3* pPositionData = pSourceData->m_pVertexBuffer->GetOrCreate_PositionSourceData();
+    //glm::vec2* pTexCoordData = pSourceData->m_pVertexBuffer->GetOrCreate_TexcoordSourceData();
+    
+    //memset(pPositionData, 0x0, pSourceData->m_iNumVertexes * sizeof(glm::vec3));
     
     unsigned int index = 0;
     float fScale = 0.25f;
@@ -40,8 +43,8 @@ void CDecal::Load(const std::string& _sName, IResource::E_THREAD _eThread)
     {
         for(unsigned int j = 0; j < iHeight; ++j)
         {
-            pPositionData[index] = glm::vec3(static_cast<float>(i) * fScale - 2.0f, 0.0f, static_cast<float>(j) * fScale - 2.0f);
-            pTexCoordData[index] = glm::vec2(static_cast<float>(i) / static_cast<float>(iWidth), static_cast<float>(j) / static_cast<float>(iHeight));
+            pVertexBufferData[index].m_vPosition = glm::vec3(static_cast<float>(i) * fScale - 2.0f, 0.0f, static_cast<float>(j) * fScale - 2.0f);
+            pVertexBufferData[index].m_vTexcoord = glm::vec2(static_cast<float>(i) / static_cast<float>(iWidth), static_cast<float>(j) / static_cast<float>(iHeight));
             ++index;
         }
     }
@@ -69,10 +72,8 @@ void CDecal::Load(const std::string& _sName, IResource::E_THREAD _eThread)
         }
     }
     
-    pSourceData->m_pVertexBuffer->Set_Mode(GL_STREAM_DRAW);
-    pSourceData->m_pVertexBuffer->AppendWorkingSourceData();
-    pSourceData->m_pVertexBuffer->CommitFromRAMToVRAM();
-    pSourceData->m_pIndexBuffer->CommitFromRAMToVRAM();
+    pSourceData->m_pVertexBuffer->Commit();
+    pSourceData->m_pIndexBuffer->Commit();
     
     m_pMesh = new CMesh(IResource::E_CREATION_MODE_CUSTOM);
     m_pMesh->Set_SourceData(pSourceData);
@@ -118,7 +119,8 @@ void CDecal::Update()
     int iRoundPositionZ = m_vPosition.z;
     float* pHeightmapData = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_SourceData();
     unsigned int index = 0;
-    glm::vec3* pPositionData = m_pMesh->Get_VertexBufferRef()->GetOrCreate_PositionSourceData();
+    CVertexBufferPositionTexcoord::SVertex* pVertexBufferData = static_cast<CVertexBufferPositionTexcoord::SVertex*>(m_pMesh->Get_VertexBufferRef()->Lock());
+    //glm::vec3* pPositionData = m_pMesh->Get_VertexBufferRef()->GetOrCreate_PositionSourceData();
     int iHeightmapWidth = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_Width();
     int iHeightmapHeight = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_Height();
     for(int i = -3; i <= 3; ++i)
@@ -127,32 +129,31 @@ void CDecal::Update()
         {
             if((iRoundPositionX + i) < 0 || (iRoundPositionZ + j) < 0 || (iRoundPositionX + i) >= iHeightmapWidth || (iRoundPositionZ +j) > iHeightmapHeight)
             {
-                pPositionData[index].x = iRoundPositionX;
-                pPositionData[index].y = pHeightmapData[iRoundPositionX + iRoundPositionZ * iHeightmapWidth] + 0.1f;
-                pPositionData[index].z = iRoundPositionZ;
+                pVertexBufferData[index].m_vPosition.x = iRoundPositionX;
+                pVertexBufferData[index].m_vPosition.y = pHeightmapData[iRoundPositionX + iRoundPositionZ * iHeightmapWidth] + 0.1f;
+                pVertexBufferData[index].m_vPosition.z = iRoundPositionZ;
             }
             else
             {
-                pPositionData[index].x = iRoundPositionX + i;
-                pPositionData[index].y = pHeightmapData[iRoundPositionX + i + (iRoundPositionZ + j) * iHeightmapWidth] + 0.1f;
-                pPositionData[index].z = iRoundPositionZ + j;
+                pVertexBufferData[index].m_vPosition.x = iRoundPositionX + i;
+                pVertexBufferData[index].m_vPosition.y = pHeightmapData[iRoundPositionX + i + (iRoundPositionZ + j) * iHeightmapWidth] + 0.1f;
+                pVertexBufferData[index].m_vPosition.z = iRoundPositionZ + j;
             }
             index++;
         }
     }
     
-    m_pMesh->Get_VertexBufferRef()->AppendWorkingSourceData();
-    m_pMesh->Get_VertexBufferRef()->CommitFromRAMToVRAM();
+    m_pMesh->Get_VertexBufferRef()->Commit();
 }
 
-void CDecal::Render(INode::E_RENDER_MODE _eMode)
+void CDecal::Render(CShader::E_RENDER_MODE _eMode)
 {
     INode::Render(_eMode);
     
     ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
     switch (_eMode)
     {
-        case INode::E_RENDER_MODE_SIMPLE:
+        case CShader::E_RENDER_MODE_SIMPLE:
         {
             if(m_pShaders[_eMode] == NULL)
             {
@@ -160,33 +161,29 @@ void CDecal::Render(INode::E_RENDER_MODE _eMode)
                 return;
             }
 
-            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShaders[_eMode] ->Get_ProgramHandle());
             m_pShaders[_eMode]->Enable();
-            m_pShaders[_eMode]->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD);
-            m_pShaders[_eMode]->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
-            m_pShaders[_eMode]->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
-            m_pShaders[_eMode]->SetCustomVector3(m_vPosition, "EXT_CenterPosition");
-            m_pShaders[_eMode]->SetCustomFloat(glm::radians(m_vRotation.y), "EXT_Angle");
+            m_pShaders[_eMode]->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
+            m_pShaders[_eMode]->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
+            m_pShaders[_eMode]->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
+            m_pShaders[_eMode]->Set_CustomVector3(m_vPosition, "EXT_CenterPosition");
+            m_pShaders[_eMode]->Set_CustomFloat(glm::radians(m_vRotation.y), "EXT_Angle");
             
-            char pStrTextureId[256];
             for(unsigned int i = 0; i < TEXTURES_MAX_COUNT; ++i)
             {
                 if( m_pTextures[i] == NULL )
                 {
                     continue;
                 }
-                sprintf(pStrTextureId, "EXT_TEXTURE_0%i",i + 1);
-                std::string k_TEXTURE_ID = pStrTextureId;
-                m_pShaders[_eMode] ->SetTexture(m_pTextures[i]->Get_Handle(), k_TEXTURE_ID);
+                m_pShaders[_eMode]->Set_Texture(m_pTextures[i]->Get_Handle(), static_cast<CShader::E_TEXTURE_SLOT>(i));
             }
         }
             break;
-        case INode::E_RENDER_MODE_REFLECTION:
+        case CShader::E_RENDER_MODE_REFLECTION:
         {
             
         }
             break;
-        case INode::E_RENDER_MODE_REFRACTION:
+        case CShader::E_RENDER_MODE_REFRACTION:
         {
             
         }
@@ -195,11 +192,11 @@ void CDecal::Render(INode::E_RENDER_MODE _eMode)
             break;
     }
     
-    m_pMesh->Get_VertexBufferRef()->Enable();
+    m_pMesh->Get_VertexBufferRef()->Enable(_eMode);
     m_pMesh->Get_IndexBufferRef()->Enable();
     glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_SourceDataFromVRAM());
     m_pMesh->Get_IndexBufferRef()->Disable();
-    m_pMesh->Get_VertexBufferRef()->Disable();
+    m_pMesh->Get_VertexBufferRef()->Disable(_eMode);
     m_pShaders[_eMode] ->Disable();
 }
 

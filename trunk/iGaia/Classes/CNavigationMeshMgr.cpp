@@ -228,7 +228,7 @@ void CNavigationMeshMgr::Create_VisualMesh(void)
 
 void CNavigationMeshMgr::Set_NavigationModel(INode *_pNode)
 {
-    size_t iNumVertexes = _pNode->Get_Mesh()->Get_NumVertexes();
+    /*size_t iNumVertexes = _pNode->Get_Mesh()->Get_NumVertexes();
     glm::vec3* pPositionData = _pNode->Get_Mesh()->Get_VertexBufferRef()->GetOrCreate_PositionSourceData();
     float* pNavigationMeshVertexesData = new float[iNumVertexes * 3];
     
@@ -454,7 +454,7 @@ void CNavigationMeshMgr::Set_NavigationModel(INode *_pNode)
     }
     
     std::cout<<"[CNavigationMeshWrapper::SetupNavigationMesh] Created Vertexes : "<<m_pPolygonMesh->nverts<<" Created Polygons "<<m_pPolygonMesh->npolys<<"\n"; 
-    Create_VisualMesh();
+    Create_VisualMesh();*/
 }
 
 

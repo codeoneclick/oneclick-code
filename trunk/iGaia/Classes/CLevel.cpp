@@ -30,10 +30,10 @@ void CLevel::Load(void)
     m_pLandscape->Set_Texture("layer_02_bump.pvr",    3, CTexture::E_WRAP_MODE_REPEAT, IResource::E_THREAD_BACKGROUND);
     m_pLandscape->Set_Texture("layer_03_diffuse.pvr", 4, CTexture::E_WRAP_MODE_REPEAT, IResource::E_THREAD_BACKGROUND);
     m_pLandscape->Set_Texture("layer_01_normal.pvr",  5, CTexture::E_WRAP_MODE_REPEAT, IResource::E_THREAD_BACKGROUND);
-    m_pLandscape->Set_Shader(INode::E_RENDER_MODE_SIMPLE,IResource::E_SHADER_LANDSCAPE);
-    m_pLandscape->Set_Shader(INode::E_RENDER_MODE_REFLECTION,IResource::E_SHADER_LANDSCAPE);
-    m_pLandscape->Set_Shader(INode::E_RENDER_MODE_REFRACTION,IResource::E_SHADER_LANDSCAPE);
-    m_pLandscape->Set_Shader(INode::E_RENDER_MODE_SCREEN_NORMAL_MAP,IResource::E_SHADER_NORMAL_DEPTH);
+    m_pLandscape->Set_Shader(CShader::E_RENDER_MODE_SIMPLE,IResource::E_SHADER_LANDSCAPE);
+    m_pLandscape->Set_Shader(CShader::E_RENDER_MODE_REFLECTION,IResource::E_SHADER_LANDSCAPE);
+    m_pLandscape->Set_Shader(CShader::E_RENDER_MODE_REFRACTION,IResource::E_SHADER_LANDSCAPE);
+    m_pLandscape->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP,IResource::E_SHADER_NORMAL_DEPTH);
     CSceneMgr::Instance()->AddEventListener(m_pLandscape, CEventMgr::E_EVENT_TOUCH);
     CSceneMgr::Instance()->Get_PhysicMgr()->Add_CollisionLandscape(m_pLandscape);
     m_pLandscape->Set_Position(glm::vec3(0.0f, 0.0f, 0.0f));
@@ -43,15 +43,17 @@ void CLevel::Load(void)
     m_pLandscape->Set_RenderModeScreenNormalEnable(true);
     
     m_pWater = (CWater*)CSceneMgr::Instance()->AddWaterModel("water");
-    m_pWater->Set_Shader(INode::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_WATER);
+    m_pWater->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_WATER);
     m_pWater->Set_Texture("layer_02_bump.pvr", 2, CTexture::E_WRAP_MODE_REPEAT, IResource::E_THREAD_BACKGROUND);
     
     m_pGrass = (CGrass*)CSceneMgr::Instance()->AddLandscapeGrassModel("grass");
-    m_pGrass->Set_Shader(INode::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_GRASS);
+    m_pGrass->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_GRASS);
+    m_pGrass->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
     m_pGrass->Set_Texture("mod_03.pvr", 0, CTexture::E_WRAP_MODE_REPEAT, IResource::E_THREAD_BACKGROUND);
+    m_pGrass->Set_RenderModeScreenNormalEnable(true);
     
     m_pSkyBox = (CSkyBox*)CSceneMgr::Instance()->AddSkyBoxModel("skybox");
-    m_pSkyBox->Set_Shader(INode::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_LAMBERT);
+    m_pSkyBox->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_LAMBERT);
     m_pSkyBox->Set_Texture("clouds.pvr", 0, CTexture::E_WRAP_MODE_REPEAT);
 }
 

@@ -6,9 +6,11 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "CInGameMenu.h"
+#include "CInGameMenu.h"
 #include "CWorld.h"
 #include "CJoystick.h"
+#include "CSlider.h"
+#include <QuartzCore/QuartzCore.h>
 
 @implementation CInGameMenu
 @synthesize m_pGLView;
@@ -21,16 +23,23 @@
         CJoystick* pJoystick = [[CJoystick alloc] initWithFrame:CGRectMake(0, frame.size.height - 128, 128, 128)];
         [self addSubview:pJoystick];
         
+        CSlider* pSlider = [[CSlider alloc] initWithFrame:CGRectMake(frame.size.width - 128, frame.size.height - 128, 128, 128)];
+        [self addSubview:pSlider];
+        
         UIButton* pCameraButton = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width - 69, 5, 64, 64)];
         [pCameraButton setBackgroundColor:[UIColor clearColor]];
         [pCameraButton setImage:[UIImage imageNamed:@"camera_button.png"] forState:UIControlStateNormal];
         [pCameraButton addTarget:self action:@selector(onCameraButtonPress:) forControlEvents:UIControlEventTouchUpInside];
+        pCameraButton.layer.cornerRadius = 8;
+        pCameraButton.clipsToBounds = YES;
         [self addSubview:pCameraButton];
         
-        UIButton* pShootButton = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width - 69, frame.size.height - 69, 64, 64)];
+        UIButton* pShootButton = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width - 96, frame.size.height - 192, 64, 64)];
         [pShootButton setBackgroundColor:[UIColor clearColor]];
-        [pShootButton setImage:[UIImage imageNamed:@"camera_button.png"] forState:UIControlStateNormal];
+        [pShootButton setBackgroundColor:[UIColor redColor]];
         [pShootButton addTarget:self action:@selector(OnShootButtonPress:) forControlEvents:UIControlEventTouchUpInside];
+        pShootButton.layer.cornerRadius = 24;
+        pShootButton.clipsToBounds = YES;
         [self addSubview:pShootButton];
     }
     return self;
