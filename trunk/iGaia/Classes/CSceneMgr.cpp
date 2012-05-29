@@ -431,9 +431,9 @@ void CSceneMgr::Render(void)
 {
     CWindow::g_iTrianglesPerFrame = 0;
     
-    _DrawReflectionStep();
-    _DrawRefractionStep();
-    _DrawShadowMapStep();
+    //_DrawReflectionStep();
+    //_DrawRefractionStep();
+    //_DrawShadowMapStep();
     _DrawSimpleStep();
     _DrawScreenNormalMapStep();
     m_pRenderMgr->DrawResult();

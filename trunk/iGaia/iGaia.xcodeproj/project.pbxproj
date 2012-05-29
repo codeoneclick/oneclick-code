@@ -12,6 +12,7 @@
 		1560F186157265B7000F9F96 /* CVertexBufferPositionColor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1560F185157265B6000F9F96 /* CVertexBufferPositionColor.cpp */; };
 		1560F189157265F1000F9F96 /* CVertexBufferPositionTexcoordNormal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1560F188157265F0000F9F96 /* CVertexBufferPositionTexcoordNormal.cpp */; };
 		1560F18C15726620000F9F96 /* CVertexBufferPositionTexcoordNormalTangent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1560F18B1572661F000F9F96 /* CVertexBufferPositionTexcoordNormalTangent.cpp */; };
+		1560F1AA15755EC9000F9F96 /* CSlider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1560F1A915755EC9000F9F96 /* CSlider.mm */; };
 		1D3623260D0F684500981E51 /* MainAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* MainAppDelegate.mm */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
@@ -419,6 +420,8 @@
 		1560F188157265F0000F9F96 /* CVertexBufferPositionTexcoordNormal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CVertexBufferPositionTexcoordNormal.cpp; sourceTree = "<group>"; };
 		1560F18A1572660F000F9F96 /* CVertexBufferPositionTexcoordNormalTangent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CVertexBufferPositionTexcoordNormalTangent.h; sourceTree = "<group>"; };
 		1560F18B1572661F000F9F96 /* CVertexBufferPositionTexcoordNormalTangent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CVertexBufferPositionTexcoordNormalTangent.cpp; sourceTree = "<group>"; };
+		1560F1A815755EC9000F9F96 /* CSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSlider.h; sourceTree = "<group>"; };
+		1560F1A915755EC9000F9F96 /* CSlider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CSlider.mm; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* MainAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainAppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* MainAppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MainAppDelegate.mm; sourceTree = "<group>"; };
@@ -1993,6 +1996,8 @@
 		A153D5BE153DA3A400FBFFD5 /* GUI */ = {
 			isa = PBXGroup;
 			children = (
+				1560F1A815755EC9000F9F96 /* CSlider.h */,
+				1560F1A915755EC9000F9F96 /* CSlider.mm */,
 				A153D5C0153DA3D000FBFFD5 /* CInGameMenu.h */,
 				A153D5C1153DA3D000FBFFD5 /* CInGameMenu.mm */,
 				A1F690451557CCAC00A2920A /* CJoystick.h */,
@@ -3075,6 +3080,7 @@
 				1560F186157265B7000F9F96 /* CVertexBufferPositionColor.cpp in Sources */,
 				1560F189157265F1000F9F96 /* CVertexBufferPositionTexcoordNormal.cpp in Sources */,
 				1560F18C15726620000F9F96 /* CVertexBufferPositionTexcoordNormalTangent.cpp in Sources */,
+				1560F1AA15755EC9000F9F96 /* CSlider.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
