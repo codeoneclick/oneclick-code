@@ -26,9 +26,5 @@ CMesh::~CMesh(void)
 
 void CMesh::Set_SourceData(void *_pSourceData)
 {
-    /*if(m_pSourceData != NULL && m_pSourceData->m_pVertexBuffer != NULL)
-    {
-        static_cast<SSourceData*>(_pSourceData)->m_pVertexBuffer->Set_ShaderRef(m_pSourceData->m_pVertexBuffer->Get_ShaderRef());
-    }*/
     m_pSourceData = static_cast<SSourceData*>(_pSourceData);
 }

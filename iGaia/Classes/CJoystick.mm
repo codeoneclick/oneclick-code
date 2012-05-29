@@ -59,7 +59,6 @@
 {
     for (UITouch*touch in touches)
     {
-        CGPoint TouchLocation = [touch locationInView:self];
         CWorld::Instance()->Get_PlayerCharacterController()->Set_SteerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_NONE);
         CWorld::Instance()->Get_PlayerCharacterController()->Set_MoveState(ICharacterController::E_CHARACTER_CONTROLLER_MOVE_STATE_NONE);
         CGRect tRect = m_pControl.frame;
@@ -71,10 +70,7 @@
 
 - (void)touchesCancelled:(NSSet*)touches withEvent:(UIEvent*)event 
 {
-    for (UITouch*touch in touches)
-    {
-        CGPoint TouchLocation = [touch locationInView:self];
-    }
+
 }
 
 - (void)update:(CGPoint)touchPoint

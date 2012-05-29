@@ -14,19 +14,20 @@ CBullet::CBullet(void)
     m_pExplosionEmitter = NULL;
     m_pModel = NULL;
     m_bIsDestroyed = false;
-    m_fMoveSpeed = 0.1f;
+    m_fMoveSpeed = 0.66f;
 }
 
 CBullet::~CBullet(void)
 {
-    
-}
+    CSceneMgr::Instance()->Get_ParticleMgr()->Remove_ParticleEmitter(m_pFireEmmiter);
+    CSceneMgr::Instance()->Get_ParticleMgr()->Remove_ParticleEmitter(m_pExplosionEmitter);
+}   
 
 void CBullet::Load(void)
 {
     m_pFireEmmiter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitter();
-    m_pFireEmmiter->Set_Shader(INode::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_UNIT);
-    m_pFireEmmiter->Set_Shader(INode::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
+    m_pFireEmmiter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_UNIT);
+    m_pFireEmmiter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
     m_pFireEmmiter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
     m_pFireEmmiter->Set_Position(glm::vec3(0.0f, 0.33f, 0.0f));
 }
@@ -56,7 +57,7 @@ void CBullet::_MoveForward(void)
     int iHeight = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_Height();
     if(/*fHeight > m_vPosition.y && */(m_vPosition.x < 0.0f || m_vPosition.z > iWidth || m_vPosition.z < 0.0f || m_vPosition.z > iHeight))
     {
-        m_bIsDestroyed = true;
+        _SelfDestroy();
     }
     m_vPosition.x += sinf(glm::radians(m_vRotation.y)) * m_fMoveSpeed;
     m_vPosition.z += cosf(glm::radians(m_vRotation.y)) * m_fMoveSpeed;
@@ -65,7 +66,7 @@ void CBullet::_MoveForward(void)
 
 void CBullet::_SelfDestroy(void)
 {
-    
+    m_bIsDestroyed = true;
 }
 
 void CBullet::Update(void)

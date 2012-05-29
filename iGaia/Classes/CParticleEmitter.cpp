@@ -8,10 +8,12 @@
 
 #include "CParticleEmitter.h"
 #include "CSceneMgr.h"
+#include "CVertexBufferPositionTexcoord.h"
+
 
 CParticleEmitter::CParticleEmitter(void)
 {
-    m_iNumParticles = 64;
+    m_iNumParticles = 16;
     m_pParticles = NULL;
 }
 
@@ -19,7 +21,6 @@ CParticleEmitter::~CParticleEmitter(void)
 {
     std::cout<<"[CParticleEmitter::~CParticleEmitter] delete"<<std::endl;
     SAFE_DELETE_ARRAY(m_pParticles);
-    SAFE_DELETE(m_pMesh);
 }
 
 void CParticleEmitter::Load(const std::string& _sName, IResource::E_THREAD _eThread)
@@ -30,10 +31,11 @@ void CParticleEmitter::Load(const std::string& _sName, IResource::E_THREAD _eThr
     
     pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes);
     unsigned short* pIndexBufferData = pSourceData->m_pIndexBuffer->Get_SourceData();
-    pSourceData->m_pVertexBuffer = new CVertexBuffer(pSourceData->m_iNumVertexes);
-    glm::vec3*   pPositionData = pSourceData->m_pVertexBuffer->GetOrCreate_PositionSourceData();
-    glm::vec2*   pTexCoordData = pSourceData->m_pVertexBuffer->GetOrCreate_TexcoordSourceData();
-    glm::u8vec4* pColorData = pSourceData->m_pVertexBuffer->GetOrCreate_ColorSourceData();
+    pSourceData->m_pVertexBuffer = new CVertexBufferPositionTexcoord(pSourceData->m_iNumVertexes, GL_STREAM_DRAW);
+    CVertexBufferPositionTexcoord::SVertex* pVertexBufferData = static_cast<CVertexBufferPositionTexcoord::SVertex*>(pSourceData->m_pVertexBuffer->Lock());
+    //glm::vec3*   pPositionData = pSourceData->m_pVertexBuffer->GetOrCreate_PositionSourceData();
+    //glm::vec2*   pTexCoordData = pSourceData->m_pVertexBuffer->GetOrCreate_TexcoordSourceData();
+    //glm::u8vec4* pColorData = pSourceData->m_pVertexBuffer->GetOrCreate_ColorSourceData();
     
     m_pParticles = new SParticle[m_iNumParticles];
     
@@ -45,20 +47,20 @@ void CParticleEmitter::Load(const std::string& _sName, IResource::E_THREAD _eThr
         m_pParticles[index].m_fTime = 0.0f;
         m_pParticles[index].m_vSize = glm::vec2(0.5f, 0.5f);
         
-        pPositionData[index * 4 + 0] = glm::vec3(m_pParticles[index].m_vPosition.x - m_pParticles[index].m_vSize.x, m_pParticles[index].m_vPosition.y, m_pParticles[index].m_vPosition.z - m_pParticles[index].m_vSize.y);
-        pPositionData[index * 4 + 1] = glm::vec3(m_pParticles[index].m_vPosition.x + m_pParticles[index].m_vSize.x, m_pParticles[index].m_vPosition.y, m_pParticles[index].m_vPosition.z - m_pParticles[index].m_vSize.y);
-        pPositionData[index * 4 + 2] = glm::vec3(m_pParticles[index].m_vPosition.x + m_pParticles[index].m_vSize.x, m_pParticles[index].m_vPosition.y, m_pParticles[index].m_vPosition.z + m_pParticles[index].m_vSize.y);
-        pPositionData[index * 4 + 3] = glm::vec3(m_pParticles[index].m_vPosition.x - m_pParticles[index].m_vSize.x, m_pParticles[index].m_vPosition.y, m_pParticles[index].m_vPosition.z + m_pParticles[index].m_vSize.y);
+        pVertexBufferData[index * 4 + 0].m_vPosition = glm::vec3(m_pParticles[index].m_vPosition.x - m_pParticles[index].m_vSize.x, m_pParticles[index].m_vPosition.y, m_pParticles[index].m_vPosition.z - m_pParticles[index].m_vSize.y);
+        pVertexBufferData[index * 4 + 1].m_vPosition = glm::vec3(m_pParticles[index].m_vPosition.x + m_pParticles[index].m_vSize.x, m_pParticles[index].m_vPosition.y, m_pParticles[index].m_vPosition.z - m_pParticles[index].m_vSize.y);
+        pVertexBufferData[index * 4 + 2].m_vPosition = glm::vec3(m_pParticles[index].m_vPosition.x + m_pParticles[index].m_vSize.x, m_pParticles[index].m_vPosition.y, m_pParticles[index].m_vPosition.z + m_pParticles[index].m_vSize.y);
+        pVertexBufferData[index * 4 + 3].m_vPosition = glm::vec3(m_pParticles[index].m_vPosition.x - m_pParticles[index].m_vSize.x, m_pParticles[index].m_vPosition.y, m_pParticles[index].m_vPosition.z + m_pParticles[index].m_vSize.y);
         
-        pTexCoordData[index * 4 + 0] = glm::vec2( 0.0f,  0.0f);
-        pTexCoordData[index * 4 + 1] = glm::vec2( 1.0f,  0.0f);
-        pTexCoordData[index * 4 + 2] = glm::vec2( 1.0f,  1.0f);
-        pTexCoordData[index * 4 + 3] = glm::vec2( 0.0f,  1.0f);
+        pVertexBufferData[index * 4 + 0].m_vTexcoord = glm::vec2( 0.0f,  0.0f);
+        pVertexBufferData[index * 4 + 1].m_vTexcoord = glm::vec2( 1.0f,  0.0f);
+        pVertexBufferData[index * 4 + 2].m_vTexcoord = glm::vec2( 1.0f,  1.0f);
+        pVertexBufferData[index * 4 + 3].m_vTexcoord = glm::vec2( 0.0f,  1.0f);
         
-        pColorData[index * 4 + 0] = m_pParticles[index].m_vColor;
+        /*pColorData[index * 4 + 0] = m_pParticles[index].m_vColor;
         pColorData[index * 4 + 1] = m_pParticles[index].m_vColor;
         pColorData[index * 4 + 2] = m_pParticles[index].m_vColor;
-        pColorData[index * 4 + 3] = m_pParticles[index].m_vColor;
+        pColorData[index * 4 + 3] = m_pParticles[index].m_vColor;*/
     }
     
     for(unsigned int index = 0; index < m_iNumParticles; index++)
@@ -72,10 +74,8 @@ void CParticleEmitter::Load(const std::string& _sName, IResource::E_THREAD _eThr
         pIndexBufferData[index * 6 + 5] = static_cast<unsigned short>(index * 4 + 3);
     }
     
-    pSourceData->m_pVertexBuffer->Set_Mode(GL_STREAM_DRAW);
-    pSourceData->m_pVertexBuffer->AppendWorkingSourceData();
-    pSourceData->m_pVertexBuffer->CommitFromRAMToVRAM();
-    pSourceData->m_pIndexBuffer->CommitFromRAMToVRAM();
+    pSourceData->m_pVertexBuffer->Commit();
+    pSourceData->m_pIndexBuffer->Commit();
     
     m_pMesh = new CMesh(IResource::E_CREATION_MODE_CUSTOM);
     m_pMesh->Set_SourceData(pSourceData);
@@ -136,8 +136,9 @@ void CParticleEmitter::Update(void)
         }
     }
     
-    glm::vec3* pPositionData = m_pMesh->Get_VertexBufferRef()->GetOrCreate_PositionSourceData();
-    glm::u8vec4* pColorData = m_pMesh->Get_VertexBufferRef()->GetOrCreate_ColorSourceData();
+    CVertexBufferPositionTexcoord::SVertex* pVertexBufferData = static_cast<CVertexBufferPositionTexcoord::SVertex*>(m_pMesh->Get_VertexBufferRef()->Lock());
+    //glm::vec3* pPositionData = m_pMesh->Get_VertexBufferRef()->GetOrCreate_PositionSourceData();
+    //glm::u8vec4* pColorData = m_pMesh->Get_VertexBufferRef()->GetOrCreate_ColorSourceData();
     
     ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
     
@@ -152,30 +153,29 @@ void CParticleEmitter::Update(void)
                 
         glm::vec4 vTransform = glm::vec4(-m_pParticles[index].m_vSize.x, -m_pParticles[index].m_vSize.y, 0.0f, 1.0f);
         vTransform = mWorld * vTransform;
-        pPositionData[index * 4 + 0] = glm::vec3(vTransform.x, vTransform.y, vTransform.z);
+        pVertexBufferData[index * 4 + 0].m_vPosition = glm::vec3(vTransform.x, vTransform.y, vTransform.z);
        
         vTransform = glm::vec4(m_pParticles[index].m_vSize.x, -m_pParticles[index].m_vSize.y, 0.0f, 1.0f);
         vTransform = mWorld * vTransform;
-        pPositionData[index * 4 + 1] = glm::vec3(vTransform.x, vTransform.y, vTransform.z);
+        pVertexBufferData[index * 4 + 1].m_vPosition = glm::vec3(vTransform.x, vTransform.y, vTransform.z);
         
         vTransform = glm::vec4(m_pParticles[index].m_vSize.x, m_pParticles[index].m_vSize.y, 0.0f, 1.0f);
         vTransform = mWorld * vTransform;
-        pPositionData[index * 4 + 2] = glm::vec3(vTransform.x, vTransform.y, vTransform.z);
+        pVertexBufferData[index * 4 + 2].m_vPosition = glm::vec3(vTransform.x, vTransform.y, vTransform.z);
         
         vTransform = glm::vec4(-m_pParticles[index].m_vSize.x, m_pParticles[index].m_vSize.y, 0.0f, 1.0f);
         vTransform = mWorld * vTransform;
-        pPositionData[index * 4 + 3] = glm::vec3(vTransform.x, vTransform.y, vTransform.z);
+        pVertexBufferData[index * 4 + 3].m_vPosition = glm::vec3(vTransform.x, vTransform.y, vTransform.z);
         
-        pColorData[index * 4 + 0] = m_pParticles[index].m_vColor;
+        /*pColorData[index * 4 + 0] = m_pParticles[index].m_vColor;
         pColorData[index * 4 + 1] = m_pParticles[index].m_vColor;
         pColorData[index * 4 + 2] = m_pParticles[index].m_vColor;
-        pColorData[index * 4 + 3] = m_pParticles[index].m_vColor;
+        pColorData[index * 4 + 3] = m_pParticles[index].m_vColor;*/
     }
-    m_pMesh->Get_VertexBufferRef()->AppendWorkingSourceData();
-    m_pMesh->Get_VertexBufferRef()->CommitFromRAMToVRAM();
+    m_pMesh->Get_VertexBufferRef()->Commit();
 }
 
-void CParticleEmitter::Render(E_RENDER_MODE _eMode)
+void CParticleEmitter::Render(CShader::E_RENDER_MODE _eMode)
 {
     INode::Render(_eMode);
     
@@ -185,7 +185,7 @@ void CParticleEmitter::Render(E_RENDER_MODE _eMode)
     ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
     switch (_eMode)
     {
-        case INode::E_RENDER_MODE_SIMPLE:
+        case CShader::E_RENDER_MODE_SIMPLE:
         {
             if(m_pShaders[_eMode] == NULL)
             {
@@ -193,27 +193,23 @@ void CParticleEmitter::Render(E_RENDER_MODE _eMode)
                 return;
             }
 
-            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShaders[_eMode]->Get_ProgramHandle());
             m_pShaders[_eMode]->Enable();
-            m_pShaders[_eMode]->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD);
-            m_pShaders[_eMode]->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
-            m_pShaders[_eMode]->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
-            m_pShaders[_eMode]->SetVector3(pCamera->Get_Position(), CShader::k_VECTOR_VIEW);
+            m_pShaders[_eMode]->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
+            m_pShaders[_eMode]->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
+            m_pShaders[_eMode]->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
+            m_pShaders[_eMode]->Set_Vector3(pCamera->Get_Position(), CShader::E_ATTRIBUTE_VECTOR_CAMERA_POSITION);
             
-            char pStrTextureId[256];
             for(unsigned int i = 0; i < TEXTURES_MAX_COUNT; ++i)
             {
                 if( m_pTextures[i] == NULL )
                 {
                     continue;
                 }
-                sprintf(pStrTextureId, "EXT_TEXTURE_0%i",i + 1);
-                std::string k_TEXTURE_ID = pStrTextureId;
-                m_pShaders[_eMode]->SetTexture(m_pTextures[i]->Get_Handle(), k_TEXTURE_ID);
+                m_pShaders[_eMode]->Set_Texture(m_pTextures[i]->Get_Handle(), static_cast<CShader::E_TEXTURE_SLOT>(i));
             }
         }
             break;
-        case INode::E_RENDER_MODE_SCREEN_NORMAL_MAP:
+        case CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP:
         {
             if(m_pShaders[_eMode] == NULL)
             {
@@ -221,22 +217,18 @@ void CParticleEmitter::Render(E_RENDER_MODE _eMode)
                 return;
             }
             
-            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShaders[_eMode]->Get_ProgramHandle());
             m_pShaders[_eMode]->Enable();
-            m_pShaders[_eMode]->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD); 
-            m_pShaders[_eMode]->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
-            m_pShaders[_eMode]->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
+            m_pShaders[_eMode]->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
+            m_pShaders[_eMode]->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
+            m_pShaders[_eMode]->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
             
-            char pStrTextureId[256];
             for(unsigned int i = 0; i < TEXTURES_MAX_COUNT; ++i)
             {
                 if( m_pTextures[i] == NULL )
                 {
                     continue;
                 }
-                sprintf(pStrTextureId, "EXT_TEXTURE_0%i",i + 1);
-                std::string k_TEXTURE_ID = pStrTextureId;
-                m_pShaders[_eMode]->SetTexture(m_pTextures[i]->Get_Handle(), k_TEXTURE_ID);
+                m_pShaders[_eMode]->Set_Texture(m_pTextures[i]->Get_Handle(), static_cast<CShader::E_TEXTURE_SLOT>(i));
             }
         }
             break;
@@ -244,11 +236,11 @@ void CParticleEmitter::Render(E_RENDER_MODE _eMode)
             break;
     }
     
-    m_pMesh->Get_VertexBufferRef()->Enable();
+    m_pMesh->Get_VertexBufferRef()->Enable(_eMode);
     m_pMesh->Get_IndexBufferRef()->Enable();
     glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_SourceDataFromVRAM());
     m_pMesh->Get_IndexBufferRef()->Disable();
-    m_pMesh->Get_VertexBufferRef()->Disable();
+    m_pMesh->Get_VertexBufferRef()->Disable(_eMode);
     m_pShaders[_eMode]->Disable();
     glEnable(GL_CULL_FACE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

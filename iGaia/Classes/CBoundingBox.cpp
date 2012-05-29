@@ -31,22 +31,20 @@ CMesh* CBoundingBox::Get_BoundingBoxMesh(void)
         pSourceData->m_pVertexBuffer = new CVertexBufferPositionColor(pSourceData->m_iNumVertexes, GL_STATIC_DRAW);
         
         CVertexBufferPositionColor::SVertex* pVertexBufferData = static_cast<CVertexBufferPositionColor::SVertex*>(pSourceData->m_pVertexBuffer->Lock());
-        //glm::vec3* pPositionData = pSourceData->m_pVertexBuffer->GetOrCreate_PositionSourceData();
-        //glm::u8vec4* pColorData = pSourceData->m_pVertexBuffer->GetOrCreate_ColorSourceData();
     
-        pVertexBufferData[0] = glm::vec3( m_vMin.x,  m_vMin.y, m_vMax.z);
-        pVertexBufferData[1] = glm::vec3( m_vMax.x,  m_vMin.y, m_vMax.z);
-        pVertexBufferData[2] = glm::vec3( m_vMax.x,  m_vMax.y, m_vMax.z);
-        pVertexBufferData[3] = glm::vec3( m_vMin.x,  m_vMax.y, m_vMax.z);
+        pVertexBufferData[0].m_vPosition = glm::vec3( m_vMin.x,  m_vMin.y, m_vMax.z);
+        pVertexBufferData[1].m_vPosition = glm::vec3( m_vMax.x,  m_vMin.y, m_vMax.z);
+        pVertexBufferData[2].m_vPosition = glm::vec3( m_vMax.x,  m_vMax.y, m_vMax.z);
+        pVertexBufferData[3].m_vPosition = glm::vec3( m_vMin.x,  m_vMax.y, m_vMax.z);
     
-        pVertexBufferData[4] = glm::vec3( m_vMin.x,  m_vMin.y,  m_vMin.z);
-        pVertexBufferData[5] = glm::vec3( m_vMin.x,  m_vMax.y,  m_vMin.z);
-        pVertexBufferData[6] = glm::vec3( m_vMax.x,  m_vMax.y,  m_vMin.z);
-        pVertexBufferData[7] = glm::vec3( m_vMax.x,  m_vMin.y,  m_vMin.z);
+        pVertexBufferData[4].m_vPosition = glm::vec3( m_vMin.x,  m_vMin.y,  m_vMin.z);
+        pVertexBufferData[5].m_vPosition = glm::vec3( m_vMin.x,  m_vMax.y,  m_vMin.z);
+        pVertexBufferData[6].m_vPosition = glm::vec3( m_vMax.x,  m_vMax.y,  m_vMin.z);
+        pVertexBufferData[7].m_vPosition = glm::vec3( m_vMax.x,  m_vMin.y,  m_vMin.z);
     
         for(unsigned int i = 0; i < pSourceData->m_iNumVertexes; i++)
         {
-            pColorData[i] = glm::u8vec4(0, 255, 0, 255);
+            pVertexBufferData[i].m_vColor = glm::u8vec4(0, 255, 0, 255);
         }
     
         pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes);
@@ -81,9 +79,8 @@ CMesh* CBoundingBox::Get_BoundingBoxMesh(void)
     
         m_pMesh = new CMesh(IResource::E_CREATION_MODE_CUSTOM);
         m_pMesh->Set_SourceData(pSourceData);
-        m_pMesh->Get_VertexBufferRef()->AppendWorkingSourceData();
-        m_pMesh->Get_VertexBufferRef()->CommitFromRAMToVRAM();
-        m_pMesh->Get_IndexBufferRef()->CommitFromRAMToVRAM();
+        m_pMesh->Get_VertexBufferRef()->Commit();
+        m_pMesh->Get_IndexBufferRef()->Commit();
     }
     return m_pMesh;
 }
@@ -99,10 +96,10 @@ CBoundingBox::CBoundingBox(const glm::vec3 &_vMax, const glm::vec3 &_vMin)
     m_pShader = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_COLOR);
     Get_BoundingBoxMesh();
     
-    m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShader->Get_ProgramHandle());
+    m_pMesh->Get_VertexBufferRef()->Add_ShaderRef(CShader::E_RENDER_MODE_SIMPLE, m_pShader);
 }
 
-CBoundingBox::~CBoundingBox()
+CBoundingBox::~CBoundingBox(void)
 {
     
 }
@@ -120,18 +117,18 @@ void CBoundingBox::Set_MaxMinPoints(const glm::vec3 &_vMax, const glm::vec3 &_vM
     m_vScale = m_vMin - m_vMax;
 }
 
-void CBoundingBox::Render()
+void CBoundingBox::Render(void)
 {
-    m_pShader->Enable();
-    m_pShader->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD);
     ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
-    m_pShader->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
-    m_pShader->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
-    m_pMesh->Get_VertexBufferRef()->Enable();
+    m_pShader->Enable();
+    m_pShader->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
+    m_pShader->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
+    m_pShader->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
+    m_pMesh->Get_VertexBufferRef()->Enable(CShader::E_RENDER_MODE_SIMPLE);
     m_pMesh->Get_IndexBufferRef()->Enable();
     glDrawElements(GL_LINES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_SourceDataFromVRAM());
     m_pMesh->Get_IndexBufferRef()->Disable();
-    m_pMesh->Get_VertexBufferRef()->Disable();
+    m_pMesh->Get_VertexBufferRef()->Disable(CShader::E_RENDER_MODE_SIMPLE);
     m_pShader->Disable();
 }
 

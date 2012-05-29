@@ -102,6 +102,10 @@ void INode::Set_Texture(const std::string &_sName, int index, CTexture::E_WRAP_M
 void INode::Set_Shader(CShader::E_RENDER_MODE _eRenderMode, IResource::E_SHADER _eShader)
 {
     m_pShaders[_eRenderMode] = CShaderComposite::Instance()->Get_Shader(_eShader);
+    if(m_pMesh != NULL)
+    {
+        m_pMesh->Get_VertexBufferRef()->Add_ShaderRef(_eRenderMode, m_pShaders[_eRenderMode]);
+    }
 }
 
 void INode::Create_BoundingBox()

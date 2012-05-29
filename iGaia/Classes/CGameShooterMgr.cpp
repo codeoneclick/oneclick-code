@@ -38,4 +38,18 @@ void CGameShooterMgr::Update(void)
         (*pBeginBulletIterator)->Update();
         ++pBeginBulletIterator;
     }
+    
+    pBeginBulletIterator = m_lBulletsContainer.begin();
+    pEndBulletIterator = m_lBulletsContainer.end();
+    while (pBeginBulletIterator != pEndBulletIterator)
+    {
+        if((*pBeginBulletIterator)->Get_Destroyed())
+        {
+            CBullet* pBullet = (*pBeginBulletIterator);
+            m_lBulletsContainer.erase(pBeginBulletIterator);
+            delete pBullet;
+            break;
+        }
+        ++pBeginBulletIterator;
+    }
 }

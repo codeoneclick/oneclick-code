@@ -8,6 +8,7 @@
 
 #include "CSkyBox.h"
 #include "CSceneMgr.h"
+#include "CVertexBufferPositionTexcoord.h"
 
 CSkyBox::CSkyBox(void)
 {
@@ -25,75 +26,77 @@ void CSkyBox::Load(const std::string& _sName, IResource::E_THREAD _eThread)
     pSourceData->m_iNumVertexes = 24;
     pSourceData->m_iNumIndexes  = 36;
     
-    pSourceData->m_pVertexBuffer = new CVertexBuffer(pSourceData->m_iNumVertexes);
+    pSourceData->m_pVertexBuffer = new CVertexBufferPositionTexcoord(pSourceData->m_iNumVertexes, GL_STATIC_DRAW);
     
-    glm::vec3* pPositionData = pSourceData->m_pVertexBuffer->GetOrCreate_PositionSourceData();
-    glm::vec2* pTexCoordData = pSourceData->m_pVertexBuffer->GetOrCreate_TexcoordSourceData();
+    CVertexBufferPositionTexcoord::SVertex* pVertexBufferData = static_cast<CVertexBufferPositionTexcoord::SVertex*>(pSourceData->m_pVertexBuffer->Lock());
+    
+    //glm::vec3* pPositionData = pSourceData->m_pVertexBuffer->GetOrCreate_PositionSourceData();
+    //glm::vec2* pTexCoordData = pSourceData->m_pVertexBuffer->GetOrCreate_TexcoordSourceData();
     
     glm::vec3 m_vMin = glm::vec3( -1.0f, -1.0f, -1.0f);
     glm::vec3 m_vMax = glm::vec3(  1.0f,  1.0f,  1.0f);
     
     // Front
-    pPositionData[0] = glm::vec3( m_vMin.x,  m_vMin.y, m_vMax.z);
-    pPositionData[1] = glm::vec3( m_vMax.x,  m_vMin.y, m_vMax.z);
-    pPositionData[2] = glm::vec3( m_vMax.x,  m_vMax.y, m_vMax.z);
-    pPositionData[3] = glm::vec3( m_vMin.x,  m_vMax.y, m_vMax.z);
+    pVertexBufferData[0].m_vPosition = glm::vec3( m_vMin.x,  m_vMin.y, m_vMax.z);
+    pVertexBufferData[1].m_vPosition = glm::vec3( m_vMax.x,  m_vMin.y, m_vMax.z);
+    pVertexBufferData[2].m_vPosition = glm::vec3( m_vMax.x,  m_vMax.y, m_vMax.z);
+    pVertexBufferData[3].m_vPosition = glm::vec3( m_vMin.x,  m_vMax.y, m_vMax.z);
     // Back
-    pPositionData[4] = glm::vec3( m_vMin.x,  m_vMin.y,  m_vMin.z);
-    pPositionData[5] = glm::vec3( m_vMin.x,  m_vMax.y,  m_vMin.z);
-    pPositionData[6] = glm::vec3( m_vMax.x,  m_vMax.y,  m_vMin.z);
-    pPositionData[7] = glm::vec3( m_vMax.x,  m_vMin.y,  m_vMin.z);
+    pVertexBufferData[4].m_vPosition = glm::vec3( m_vMin.x,  m_vMin.y,  m_vMin.z);
+    pVertexBufferData[5].m_vPosition = glm::vec3( m_vMin.x,  m_vMax.y,  m_vMin.z);
+    pVertexBufferData[6].m_vPosition = glm::vec3( m_vMax.x,  m_vMax.y,  m_vMin.z);
+    pVertexBufferData[7].m_vPosition = glm::vec3( m_vMax.x,  m_vMin.y,  m_vMin.z);
     // Left
-    pPositionData[8] = glm::vec3( m_vMin.x,  m_vMax.y,  m_vMin.z);
-    pPositionData[9] = glm::vec3( m_vMin.x,  m_vMax.y,  m_vMax.z);
-    pPositionData[10] = glm::vec3( m_vMax.x,  m_vMax.y,  m_vMax.z);
-    pPositionData[11] = glm::vec3( m_vMax.x,  m_vMax.y,  m_vMin.z);
+    pVertexBufferData[8].m_vPosition = glm::vec3( m_vMin.x,  m_vMax.y,  m_vMin.z);
+    pVertexBufferData[9].m_vPosition = glm::vec3( m_vMin.x,  m_vMax.y,  m_vMax.z);
+    pVertexBufferData[10].m_vPosition = glm::vec3( m_vMax.x,  m_vMax.y,  m_vMax.z);
+    pVertexBufferData[11].m_vPosition = glm::vec3( m_vMax.x,  m_vMax.y,  m_vMin.z);
     // Right
-    pPositionData[12] = glm::vec3( m_vMin.x,  m_vMin.y,  m_vMin.z);
-    pPositionData[13] = glm::vec3( m_vMax.x,  m_vMin.y,  m_vMin.z);
-    pPositionData[14] = glm::vec3( m_vMax.x,  m_vMin.y,  m_vMax.z);
-    pPositionData[15] = glm::vec3( m_vMin.x,  m_vMin.y,  m_vMax.z);
+    pVertexBufferData[12].m_vPosition = glm::vec3( m_vMin.x,  m_vMin.y,  m_vMin.z);
+    pVertexBufferData[13].m_vPosition = glm::vec3( m_vMax.x,  m_vMin.y,  m_vMin.z);
+    pVertexBufferData[14].m_vPosition = glm::vec3( m_vMax.x,  m_vMin.y,  m_vMax.z);
+    pVertexBufferData[15].m_vPosition = glm::vec3( m_vMin.x,  m_vMin.y,  m_vMax.z);
     // Top
-    pPositionData[16] = glm::vec3( m_vMax.x,  m_vMin.y,  m_vMin.z);
-    pPositionData[17] = glm::vec3( m_vMax.x,  m_vMax.y,  m_vMin.z);
-    pPositionData[18] = glm::vec3( m_vMax.x,  m_vMax.y,  m_vMax.z);
-    pPositionData[19] = glm::vec3( m_vMax.x,  m_vMin.y,  m_vMax.z);
+    pVertexBufferData[16].m_vPosition = glm::vec3( m_vMax.x,  m_vMin.y,  m_vMin.z);
+    pVertexBufferData[17].m_vPosition = glm::vec3( m_vMax.x,  m_vMax.y,  m_vMin.z);
+    pVertexBufferData[18].m_vPosition = glm::vec3( m_vMax.x,  m_vMax.y,  m_vMax.z);
+    pVertexBufferData[19].m_vPosition = glm::vec3( m_vMax.x,  m_vMin.y,  m_vMax.z);
     // Bottom
-    pPositionData[20] = glm::vec3( m_vMin.x,  m_vMin.y,  m_vMin.z);
-    pPositionData[21] = glm::vec3( m_vMin.x,  m_vMin.y,  m_vMax.z);
-    pPositionData[22] = glm::vec3( m_vMin.x,  m_vMax.y,  m_vMax.z);
-    pPositionData[23] = glm::vec3( m_vMin.x,  m_vMax.y,  m_vMin.z);
+    pVertexBufferData[20].m_vPosition = glm::vec3( m_vMin.x,  m_vMin.y,  m_vMin.z);
+    pVertexBufferData[21].m_vPosition = glm::vec3( m_vMin.x,  m_vMin.y,  m_vMax.z);
+    pVertexBufferData[22].m_vPosition = glm::vec3( m_vMin.x,  m_vMax.y,  m_vMax.z);
+    pVertexBufferData[23].m_vPosition = glm::vec3( m_vMin.x,  m_vMax.y,  m_vMin.z);
     
     // Front
-    pTexCoordData[0] = glm::vec2(0.0f, 0.0f);
-    pTexCoordData[1] = glm::vec2(1.0f, 0.0f);
-    pTexCoordData[2] = glm::vec2(1.0f, 1.0f);
-    pTexCoordData[3] = glm::vec2(0.0f, 1.0f);
+    pVertexBufferData[0].m_vTexcoord = glm::vec2(0.0f, 0.0f);
+    pVertexBufferData[1].m_vTexcoord = glm::vec2(1.0f, 0.0f);
+    pVertexBufferData[2].m_vTexcoord = glm::vec2(1.0f, 1.0f);
+    pVertexBufferData[3].m_vTexcoord = glm::vec2(0.0f, 1.0f);
     // Back
-    pTexCoordData[4] = glm::vec2(1.0f, 0.0f);
-    pTexCoordData[5] = glm::vec2(1.0f, 1.0f);
-    pTexCoordData[6] = glm::vec2(0.0f, 1.0f);
-    pTexCoordData[7] = glm::vec2(0.0f, 0.0f);
+    pVertexBufferData[4].m_vTexcoord = glm::vec2(1.0f, 0.0f);
+    pVertexBufferData[5].m_vTexcoord = glm::vec2(1.0f, 1.0f);
+    pVertexBufferData[6].m_vTexcoord = glm::vec2(0.0f, 1.0f);
+    pVertexBufferData[7].m_vTexcoord = glm::vec2(0.0f, 0.0f);
     // Left
-    pTexCoordData[8] = glm::vec2(1.0f, 0.0f);
-    pTexCoordData[9] = glm::vec2(1.0f, 1.0f);
-    pTexCoordData[10] = glm::vec2(0.0f, 1.0f);
-    pTexCoordData[11] = glm::vec2(0.0f, 0.0f);
+    pVertexBufferData[8].m_vTexcoord = glm::vec2(1.0f, 0.0f);
+    pVertexBufferData[9].m_vTexcoord = glm::vec2(1.0f, 1.0f);
+    pVertexBufferData[10].m_vTexcoord = glm::vec2(0.0f, 1.0f);
+    pVertexBufferData[11].m_vTexcoord = glm::vec2(0.0f, 0.0f);
     // Right
-    pTexCoordData[12] = glm::vec2(0.0f, 0.0f);
-    pTexCoordData[13] = glm::vec2(1.0f, 0.0f);
-    pTexCoordData[14] = glm::vec2(1.0f, 1.0f);
-    pTexCoordData[15] = glm::vec2(0.0f, 1.0f);
+    pVertexBufferData[12].m_vTexcoord = glm::vec2(0.0f, 0.0f);
+    pVertexBufferData[13].m_vTexcoord = glm::vec2(1.0f, 0.0f);
+    pVertexBufferData[14].m_vTexcoord = glm::vec2(1.0f, 1.0f);
+    pVertexBufferData[15].m_vTexcoord = glm::vec2(0.0f, 1.0f);
     // Top
-    pTexCoordData[16] = glm::vec2(1.0f, 0.0f);
-    pTexCoordData[17] = glm::vec2(1.0f, 1.0f);
-    pTexCoordData[18] = glm::vec2(0.0f, 1.0f);
-    pTexCoordData[19] = glm::vec2(0.0f, 0.0f);
+    pVertexBufferData[16].m_vTexcoord = glm::vec2(1.0f, 0.0f);
+    pVertexBufferData[17].m_vTexcoord = glm::vec2(1.0f, 1.0f);
+    pVertexBufferData[18].m_vTexcoord = glm::vec2(0.0f, 1.0f);
+    pVertexBufferData[19].m_vTexcoord = glm::vec2(0.0f, 0.0f);
     // Bottom
-    pTexCoordData[20] = glm::vec2(0.0f, 0.0f);
-    pTexCoordData[21] = glm::vec2(1.0f, 0.0f);
-    pTexCoordData[22] = glm::vec2(1.0f, 1.0f);
-    pTexCoordData[23] = glm::vec2(0.0f, 1.0f);
+    pVertexBufferData[20].m_vTexcoord = glm::vec2(0.0f, 0.0f);
+    pVertexBufferData[21].m_vTexcoord = glm::vec2(1.0f, 0.0f);
+    pVertexBufferData[22].m_vTexcoord = glm::vec2(1.0f, 1.0f);
+    pVertexBufferData[23].m_vTexcoord = glm::vec2(0.0f, 1.0f);
     
     pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes);
     unsigned short* pIndexBufferData = pSourceData->m_pIndexBuffer->Get_SourceData();
@@ -141,9 +144,8 @@ void CSkyBox::Load(const std::string& _sName, IResource::E_THREAD _eThread)
     pIndexBufferData[34] = 22;
     pIndexBufferData[35] = 23;
     
-    pSourceData->m_pVertexBuffer->AppendWorkingSourceData();
-    pSourceData->m_pVertexBuffer->CommitFromRAMToVRAM();
-    pSourceData->m_pIndexBuffer->CommitFromRAMToVRAM();
+    pSourceData->m_pVertexBuffer->Commit();
+    pSourceData->m_pIndexBuffer->Commit();
     
     m_pMesh = new CMesh(IResource::E_CREATION_MODE_CUSTOM);
     m_pMesh->Set_SourceData(pSourceData);
@@ -174,7 +176,7 @@ void CSkyBox::Update()
     INode::Update();
 }
 
-void CSkyBox::Render(INode::E_RENDER_MODE _eMode)
+void CSkyBox::Render(CShader::E_RENDER_MODE _eMode)
 {
     INode::Render(_eMode);
     
@@ -185,7 +187,7 @@ void CSkyBox::Render(INode::E_RENDER_MODE _eMode)
     
     switch (_eMode)
     {
-        case INode::E_RENDER_MODE_SIMPLE:
+        case CShader::E_RENDER_MODE_SIMPLE:
         {
             if(m_pShaders[_eMode] == NULL)
             {
@@ -193,31 +195,27 @@ void CSkyBox::Render(INode::E_RENDER_MODE _eMode)
                 return;
             }
             
-            m_pMesh->Get_VertexBufferRef()->Set_ShaderRef(m_pShaders[_eMode]->Get_ProgramHandle());
             m_pShaders[_eMode]->Enable();
-            m_pShaders[_eMode]->SetMatrix(m_mWorld, CShader::k_MATRIX_WORLD);
-            m_pShaders[_eMode]->SetMatrix(pCamera->Get_Projection(), CShader::k_MATRIX_PROJECTION);
-            m_pShaders[_eMode]->SetMatrix(pCamera->Get_View(), CShader::k_MATRIX_VIEW);
+            m_pShaders[_eMode]->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
+            m_pShaders[_eMode]->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
+            m_pShaders[_eMode]->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
             
-            char pStrTextureId[256];
             for(unsigned int i = 0; i < TEXTURES_MAX_COUNT; ++i)
             {
                 if( m_pTextures[i] == NULL )
                 {
                     continue;
                 }
-                sprintf(pStrTextureId, "EXT_TEXTURE_0%i",i + 1);
-                std::string k_TEXTURE_ID = pStrTextureId;
-                m_pShaders[_eMode]->SetTexture(m_pTextures[i]->Get_Handle(), k_TEXTURE_ID);
+                m_pShaders[_eMode]->Set_Texture(m_pTextures[i]->Get_Handle(), static_cast<CShader::E_TEXTURE_SLOT>(i));
             }
         }
             break;
-        case INode::E_RENDER_MODE_REFLECTION:
+        case CShader::E_RENDER_MODE_REFLECTION:
         {
             
         }
             break;
-        case INode::E_RENDER_MODE_REFRACTION:
+        case CShader::E_RENDER_MODE_REFRACTION:
         {
             
         }
@@ -226,11 +224,11 @@ void CSkyBox::Render(INode::E_RENDER_MODE _eMode)
             break;
     }
     
-    m_pMesh->Get_VertexBufferRef()->Enable();
+    m_pMesh->Get_VertexBufferRef()->Enable(_eMode);
     m_pMesh->Get_IndexBufferRef()->Enable();
     glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_SourceDataFromVRAM());
     m_pMesh->Get_IndexBufferRef()->Disable();
-    m_pMesh->Get_VertexBufferRef()->Disable();
+    m_pMesh->Get_VertexBufferRef()->Disable(_eMode);
     m_pShaders[_eMode]->Disable();
     glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
