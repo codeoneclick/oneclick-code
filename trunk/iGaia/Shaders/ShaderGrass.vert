@@ -13,13 +13,6 @@ const char* ShaderGrassV = STRINGIFY(
 void main(void)
 {
     vec4 vWorldPosition = EXT_MATRIX_World * vec4(IN_SLOT_Position, 1.0);
-    
-	if(IN_SLOT_TexCoord.y == 0.0)  
-	{
-		vWorldPosition.x += sin(EXT_Timer) * 0.33;
-		vWorldPosition.z += cos(EXT_Timer) * 0.33;
-	}
-    
     gl_Position = EXT_MATRIX_Projection * EXT_MATRIX_View * vWorldPosition;
     OUT_TexCoord = IN_SLOT_TexCoord;
 }
