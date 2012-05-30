@@ -84,6 +84,12 @@ void CCharacterControllerPlayer::Load(void)
     //m_pExplosionEmitter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
     //m_pExplosionEmitter->Set_Position(glm::vec3(0.0f, 0.33f, 0.0f));
     
+    m_pFireEmmiter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitter();
+    m_pFireEmmiter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_UNIT);
+    m_pFireEmmiter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
+    m_pFireEmmiter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
+    m_pFireEmmiter->Set_Position(glm::vec3(0.0f, 0.33f, 0.0f));
+    
     m_pShadowDecal = CSceneMgr::Instance()->Get_DecalMgr()->Add_Decal();
     m_pShadowDecal->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_DECAL);
     m_pShadowDecal->Set_Texture("shadow.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
@@ -119,6 +125,11 @@ void CCharacterControllerPlayer::Set_Position(const glm::vec3 &_vPosition)
     if(m_pShadowDecal != NULL)
     {
         m_pShadowDecal->Set_Position(glm::vec3(_vPosition.x, 0.0f, _vPosition.z));
+    }
+    if(m_pFireEmmiter != NULL)
+    {
+        glm::vec3 vCenter = m_pLeftTrackModel->Get_BoundingBox()->Get_Center();
+        m_pFireEmmiter->Set_Position(glm::vec3(_vPosition.x + vCenter.x, _vPosition.y + vCenter.y, _vPosition.z + vCenter.z));
     }
     m_vPosition = _vPosition;
 }

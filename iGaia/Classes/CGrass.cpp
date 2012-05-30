@@ -90,7 +90,7 @@ void CGrass::Load(const std::string &_sName, IResource::E_THREAD _eThread)
             float fHeight = m_pHeightMapSetter->Get_HeightValue(i + fOffetX, j + fOffetY);
             if(fHeight < 1.25f && fHeight > 0.05f)
             {
-                m_lGrassElementsPosition.push_back(glm::vec3(i + fOffetX, fHeight + 0.025f, j + fOffetY));
+                m_lGrassElementsPosition.push_back(glm::vec3(i + fOffetX, fHeight + 0.5f, j + fOffetY));
             }
         }
     }
@@ -374,7 +374,7 @@ void CGrass::Update(void)
     //glm::vec3* pPositionData = m_pMesh->Get_VertexBufferRef()->GetOrCreate_PositionSourceData();
     for(unsigned int index = 0; index < iNumGrassElements; index++)
     {
-        glm::mat4 mWorld = pCamera->Get_BillboardMatrix(m_lGrassElementsPosition[index]);
+        glm::mat4 mWorld = pCamera->Get_BillboardCylindricalMatrix(m_lGrassElementsPosition[index]);
         
         glm::vec3 vVertexPosition = pSingleElementVertexBufferData[0].m_vPosition;
         glm::vec4 vTransform = glm::vec4(vVertexPosition.x, vVertexPosition.y, vVertexPosition.z, 1.0f);
@@ -395,6 +395,16 @@ void CGrass::Update(void)
         vTransform = glm::vec4(vVertexPosition.x, vVertexPosition.y, vVertexPosition.z, 1.0f);
         vTransform = mWorld * vTransform;
         pVertexBufferData[index * 4 + 3].m_vPosition = glm::vec3(vTransform.x, vTransform.y, vTransform.z);
+        
+        static float fTimer = 0.0f;
+        fTimer += 0.1f;
+        
+        pVertexBufferData[index * 4 + 1].m_vPosition.x += sinf(fTimer) * 0.33f;
+        pVertexBufferData[index * 4 + 1].m_vPosition.z += cosf(fTimer) * 0.33f;
+        
+        pVertexBufferData[index * 4 + 3].m_vPosition.x += sinf(fTimer) * 0.33f;
+        pVertexBufferData[index * 4 + 3].m_vPosition.z += cosf(fTimer) * 0.33f;
+        
     }
     m_pMesh->Get_VertexBufferRef()->Commit();
 }

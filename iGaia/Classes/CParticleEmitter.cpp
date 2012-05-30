@@ -13,7 +13,7 @@
 
 CParticleEmitter::CParticleEmitter(void)
 {
-    m_iNumParticles = 16;
+    m_iNumParticles = 128;
     m_pParticles = NULL;
 }
 
@@ -120,19 +120,24 @@ void CParticleEmitter::OnTouchEvent(ITouchDelegate *_pDelegateOwner)
 
 void CParticleEmitter::Update(void)
 {
+    m_vRotation = glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::vec3 vTempPosition = m_vPosition;
+    m_vPosition = glm::vec3(0.0f, 0.0f, 0.0f);
     INode::Update();
     
     for(unsigned short i = 0; i < m_iNumParticles; i++)
     {
         glm::vec3 vPosition = m_pParticles[i].m_vPosition;
-        float fUpper = _Get_RandomFromRange(0.0f, 20.0f);
+        float fUpper = _Get_RandomFromRange(0.0f, 250.0f);
         vPosition.y += fUpper / 500.0f;
         m_pParticles[i].m_vPosition = vPosition;
         m_pParticles[i].m_vRotation.y += fUpper;
+        m_pParticles[i].m_vSize += glm::vec2(0.05f, 0.05f);
         //m_pParticles[i].m_vRotation.z += fUpper;
-        if(m_pParticles[i].m_vPosition.y >= 0.5f)
+        if(m_pParticles[i].m_vPosition.y >= 2.5f)
         {
             m_pParticles[i].m_vPosition.y = 0.0f;
+            m_pParticles[i].m_vSize = glm::vec2(0.05f, 0.05f);
         }
     }
     
@@ -149,7 +154,7 @@ void CParticleEmitter::Update(void)
         glm::mat4x4 mRotationZ = glm::rotate(mRotationY, m_pParticles[index].m_vRotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
         glm::mat4x4 mWorld = glm::translate(glm::mat4(1.0f), m_pParticles[index].m_vPosition) * mRotationZ;*/
         
-        glm::mat4x4 mWorld = pCamera->Get_BillboardMatrix(m_pParticles[index].m_vPosition);
+        glm::mat4x4 mWorld = pCamera->Get_BillboardSphericalMatrix(m_pParticles[index].m_vPosition + vTempPosition);
                 
         glm::vec4 vTransform = glm::vec4(-m_pParticles[index].m_vSize.x, -m_pParticles[index].m_vSize.y, 0.0f, 1.0f);
         vTransform = mWorld * vTransform;
