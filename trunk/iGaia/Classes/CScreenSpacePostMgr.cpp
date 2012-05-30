@@ -14,8 +14,8 @@
 #include "CVertexBufferPositionTexcoord.h"
 
 
-int CScreenSpacePostMgr::k_REFLECTION_TEXTURE_SIZE = 256;
-int CScreenSpacePostMgr::k_REFRACTION_TEXTURE_SIZE = 256;
+int CScreenSpacePostMgr::k_REFLECTION_TEXTURE_SIZE = 128;
+int CScreenSpacePostMgr::k_REFRACTION_TEXTURE_SIZE = 128;
 
 CScreenSpacePostMgr::CScreenSpacePostMgr(void)
 {
@@ -31,8 +31,9 @@ CScreenSpacePostMgr::CScreenSpacePostMgr(void)
     m_pOffScreenSize[E_OFFSCREEN_MODE_SHADOW_MAP] = glm::vec2(CWindow::Get_OffScreenWidth(), CWindow::Get_OffScreenHeight());
     
     glGenTextures(E_OFFSCREEN_MODE_MAX, m_hOffScreenTextures);
+    glGenTextures(E_OFFSCREEN_MODE_MAX, m_hOffScreenDepthTextures);
     glGenFramebuffers(E_OFFSCREEN_MODE_MAX, m_hOffScreenFBOs);
-    glGenRenderbuffers(E_OFFSCREEN_MODE_MAX, m_hOffScreenDepthBuffers);
+    //glGenRenderbuffers(E_OFFSCREEN_MODE_MAX, m_hOffScreenDepthBuffers);
     
     for(unsigned int i = 0; i < E_OFFSCREEN_MODE_MAX; ++i)
     {
@@ -64,15 +65,26 @@ CScreenSpacePostMgr::CScreenSpacePostMgr(void)
             m_pOffScreenClearColor[i] = glm::vec4(0.0,0.0,0.0,0.0);;
         }
       
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_pOffScreenSize[i].x, m_pOffScreenSize[i].y, 0, GL_RGBA, GL_UNSIGNED_SHORT_5_5_5_1, 0);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_pOffScreenSize[i].x, m_pOffScreenSize[i].y, 0, GL_RGBA, GL_UNSIGNED_SHORT_5_5_5_1, NULL);
+        
+        glBindTexture(GL_TEXTURE_2D, m_hOffScreenDepthTextures[i]);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE_EXT, GL_COMPARE_R_TO_TEXTURE_ARB );
+        //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC_EXT, GL_LEQUAL );
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, m_pOffScreenSize[i].x, m_pOffScreenSize[i].y, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, NULL);
         
         glBindFramebuffer(GL_FRAMEBUFFER, m_hOffScreenFBOs[i]);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_hOffScreenTextures[i],0);
-		glClear(GL_COLOR_BUFFER_BIT);
-		glBindRenderbuffer(GL_RENDERBUFFER, m_hOffScreenDepthBuffers[i]);
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, m_pOffScreenSize[i].x, m_pOffScreenSize[i].y);
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_hOffScreenDepthBuffers[i]);
+		
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_hOffScreenTextures[i],0);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,  GL_TEXTURE_2D, m_hOffScreenDepthTextures[i], 0);
         
+		//glBindRenderbuffer(GL_RENDERBUFFER, m_hOffScreenDepthBuffers[i]);
+		//glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, m_pOffScreenSize[i].x, m_pOffScreenSize[i].y);
+		//glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_hOffScreenDepthBuffers[i]);
+
 		if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		{
 			std::cout<<"[CScreenSpacePostMgr::CScreenSpacePostMgr] Offscreen Framebuffer FAILURE with INDEX: " <<i<<"\n";
@@ -167,9 +179,9 @@ void CScreenSpacePostMgr::EnableOffScreenMode(CScreenSpacePostMgr::E_OFFSCREEN_M
 
 void CScreenSpacePostMgr::DisableOffScreenMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE _eMode)
 {
-    glBindFramebuffer(GL_FRAMEBUFFER, m_hOffScreenFBOs[_eMode]);
-    const GLenum tDiscards[]  = { GL_COLOR_ATTACHMENT0, GL_DEPTH_ATTACHMENT };
-    glDiscardFramebufferEXT(GL_FRAMEBUFFER, 2, tDiscards);
+    //glBindFramebuffer(GL_FRAMEBUFFER, m_hOffScreenFBOs[_eMode]);
+    //const GLenum tDiscards[]  = { GL_COLOR_ATTACHMENT0, GL_DEPTH_ATTACHMENT };
+    //glDiscardFramebufferEXT(GL_FRAMEBUFFER, 2, tDiscards);
 }
 
 void CScreenSpacePostMgr::EnableScreenMode(void)

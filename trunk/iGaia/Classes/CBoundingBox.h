@@ -18,6 +18,7 @@ class CBoundingBox
 protected:
     glm::vec3   m_vMax;
     glm::vec3   m_vMin;
+    glm::vec3   m_vCenter;
     glm::vec3   m_vScale;
     glm::mat4x4 m_mWorld;
     CShader* m_pShader;
@@ -37,6 +38,7 @@ public:
     CMesh* Get_Mesh(void) { return m_pMesh; }
     void Set_MaxMinPoints(const glm::vec3 &_vMax, const glm::vec3 &_vMin);
     void Set_Batching(bool _bValue) { m_bIsBatching = _bValue; }
+    inline glm::vec3 Get_Center(void) { return m_vCenter; }
     
     void Render(void);
 };

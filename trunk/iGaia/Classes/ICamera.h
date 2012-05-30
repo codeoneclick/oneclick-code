@@ -45,7 +45,8 @@ public:
     const void Set_Projection(glm::mat4x4 _mProjection) { m_mProjection = _mProjection; }
     const void Set_View(glm::mat4x4 _mView) { m_mView = _mView; }
     
-    glm::mat4x4 Get_BillboardMatrix(glm::vec3 _vPosition);
+    glm::mat4x4 Get_BillboardSphericalMatrix(glm::vec3 _vPosition);
+    glm::mat4x4 Get_BillboardCylindricalMatrix(glm::vec3 _vPosition);
     
     void Set_FovY(float _fFovY);
     float Get_FovY(void) { return m_fFovY; }

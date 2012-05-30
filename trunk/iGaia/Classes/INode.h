@@ -71,6 +71,8 @@ public:
     void Set_Texture(const std::string &_sName, int _index, CTexture::E_WRAP_MODE _eWrap, IResource::E_THREAD _eThread = IResource::E_THREAD_MAIN);
     void Set_Shader(CShader::E_RENDER_MODE _eRenderMode, IResource::E_SHADER _eShader);
     
+    CBoundingBox* Get_BoundingBox(void) { return m_pBoundingBox; }
+    
     void Set_Position(const glm::vec3& _vPosition) { m_vPosition = _vPosition; }
     glm::vec3 Get_Position(void) { return m_vPosition; }
     

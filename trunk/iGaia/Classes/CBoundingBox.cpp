@@ -115,6 +115,7 @@ void CBoundingBox::Set_MaxMinPoints(const glm::vec3 &_vMax, const glm::vec3 &_vM
     m_vMax = _vMax;
     m_vMin = _vMin;
     m_vScale = m_vMin - m_vMax;
+    m_vCenter = m_vMax - m_vMin;
 }
 
 void CBoundingBox::Render(void)
