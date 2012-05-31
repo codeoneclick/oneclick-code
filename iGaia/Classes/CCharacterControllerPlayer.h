@@ -11,6 +11,7 @@
 
 #include "ICharacterController.h"
 #include "CParticleEmitter.h"
+#include "CCrossBoxEffect.h"
 #include "CDecal.h"
 
 class CCharacterControllerPlayer : public ICharacterController
@@ -21,6 +22,7 @@ protected:
     CModel* m_pLeftTrackModel;
     CModel* m_pRightTrackModel;
     CParticleEmitter* m_pFireEmmiter;
+    CCrossBoxEffect* m_pFireCross;
     glm::vec3 m_vTowerModelTarget;
     E_CHARACTER_CONTROLLER_STATE m_eLeftTrackState;
     E_CHARACTER_CONTROLLER_STATE m_eRightTrackState;

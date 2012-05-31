@@ -21,23 +21,36 @@ protected:
         glm::vec3 m_vRotation;
         glm::vec3 m_vScale;
         glm::vec2 m_vSize;
-        glm::vec3 m_vVelocity;  
+        glm::vec3 m_vVelocity;
+        glm::vec3 m_vDirection;
         glm::u8vec4 m_vColor;
-        float m_fTime;         
+        int m_iTime;
     };
-    float _Get_RandomFromRange(float _fMin, float _fMax);
-    unsigned int m_iNumParticles;
     SParticle* m_pParticles;
+   
+    
+    unsigned int m_iNumParticles;
+    glm::vec2 m_vMinSize;
+    glm::vec2 m_vMaxSize;
+    int m_iLifeTime;
+
+    float _Get_RandomFromRange(float _fMin, float _fMax);
+    uint64_t _Get_TickCount(void);
 public:
     CParticleEmitter(void);
-    ~CParticleEmitter(void);
+    virtual ~CParticleEmitter(void);
     virtual void Load(const std::string& _sName, IResource::E_THREAD _eThread);
-    virtual void Create_BoundingBox(void) { }
+    void Create_BoundingBox(void) { }
     virtual void Update(void);
-    virtual void Render(CShader::E_RENDER_MODE _eMode);
+    void Render(CShader::E_RENDER_MODE _eMode);
 
-    virtual void OnTouchEvent(ITouchDelegate* _pDelegateOwner);
-    virtual void OnResourceLoadDoneEvent(IResource::E_RESOURCE_TYPE _eType, IResource* _pResource);
+    void OnTouchEvent(ITouchDelegate* _pDelegateOwner);
+    void OnResourceLoadDoneEvent(IResource::E_RESOURCE_TYPE _eType, IResource* _pResource);
+
+    void Set_NumParticles(unsigned int _iNumParticles) { m_iNumParticles = _iNumParticles; }
+    void Set_MinSize(glm::vec2 _vSize) { m_vMinSize = _vSize; }
+    void Set_MaxSize(glm::vec2 _vSize) { m_vMaxSize = _vSize; }
+    void Set_LifeTime(int _fTime) { m_iLifeTime = _fTime; }
 };
 
 #endif /* defined(__iGaia__CParticleEmitter__) */

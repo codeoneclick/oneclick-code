@@ -84,11 +84,16 @@ void CCharacterControllerPlayer::Load(void)
     //m_pExplosionEmitter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
     //m_pExplosionEmitter->Set_Position(glm::vec3(0.0f, 0.33f, 0.0f));
     
-    m_pFireEmmiter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitter();
+    m_pFireEmmiter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(128, glm::vec2(0.05f), glm::vec2(2.5f), 1000);
     m_pFireEmmiter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_UNIT);
     m_pFireEmmiter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
     m_pFireEmmiter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
     m_pFireEmmiter->Set_Position(glm::vec3(0.0f, 0.33f, 0.0f));
+    
+    m_pFireCross = CSceneMgr::Instance()->Get_ParticleMgr()->Add_CrossBoxEffect(4, glm::vec2(256.0f, 256.0f), glm::vec2(512.0f, 512.0f));
+    m_pFireCross->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_UNIT);
+    m_pFireCross->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
+    m_pFireCross->Set_Texture("model_01.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
     
     m_pShadowDecal = CSceneMgr::Instance()->Get_DecalMgr()->Add_Decal();
     m_pShadowDecal->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_DECAL);
@@ -131,6 +136,11 @@ void CCharacterControllerPlayer::Set_Position(const glm::vec3 &_vPosition)
         glm::vec3 vCenter = m_pLeftTrackModel->Get_BoundingBox()->Get_Center();
         m_pFireEmmiter->Set_Position(glm::vec3(_vPosition.x + vCenter.x, _vPosition.y + vCenter.y, _vPosition.z + vCenter.z));
     }
+    if(m_pFireCross != NULL)
+    {
+        m_pFireCross->Set_Position(glm::vec3(_vPosition.x, _vPosition.y + 2.0f, _vPosition.z));
+    }
+    
     m_vPosition = _vPosition;
 }
 

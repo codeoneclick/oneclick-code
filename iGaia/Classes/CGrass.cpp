@@ -90,7 +90,7 @@ void CGrass::Load(const std::string &_sName, IResource::E_THREAD _eThread)
             float fHeight = m_pHeightMapSetter->Get_HeightValue(i + fOffetX, j + fOffetY);
             if(fHeight < 1.25f && fHeight > 0.05f)
             {
-                m_lGrassElementsPosition.push_back(glm::vec3(i + fOffetX, fHeight + 0.5f, j + fOffetY));
+                m_lGrassElementsPosition.push_back(glm::vec3(i + fOffetX, fHeight + 0.025f, j + fOffetY));
             }
         }
     }
@@ -397,7 +397,7 @@ void CGrass::Update(void)
         pVertexBufferData[index * 4 + 3].m_vPosition = glm::vec3(vTransform.x, vTransform.y, vTransform.z);
         
         static float fTimer = 0.0f;
-        fTimer += 0.1f;
+        fTimer += 0.001f;
         
         pVertexBufferData[index * 4 + 1].m_vPosition.x += sinf(fTimer) * 0.33f;
         pVertexBufferData[index * 4 + 1].m_vPosition.z += cosf(fTimer) * 0.33f;
@@ -416,7 +416,6 @@ void CGrass::Render(CShader::E_RENDER_MODE _eMode)
     glDisable(GL_CULL_FACE);
     glDepthMask(GL_FALSE);
     ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
-    static float fTimer = 0.0f;
     
     switch (_eMode)
     {
@@ -432,9 +431,6 @@ void CGrass::Render(CShader::E_RENDER_MODE _eMode)
             m_pShaders[_eMode]->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
             m_pShaders[_eMode]->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
             m_pShaders[_eMode]->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
-            
-            fTimer += 0.1f;
-            m_pShaders[_eMode]->Set_CustomFloat(fTimer, "EXT_Timer");
             
             for(unsigned int i = 0; i < TEXTURES_MAX_COUNT; ++i)
             {
@@ -468,8 +464,6 @@ void CGrass::Render(CShader::E_RENDER_MODE _eMode)
             m_pShaders[_eMode]->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
             m_pShaders[_eMode]->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
             m_pShaders[_eMode]->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
-            
-            m_pShaders[_eMode]->Set_CustomFloat(fTimer, "EXT_Timer");
             
             for(unsigned int i = 0; i < TEXTURES_MAX_COUNT; ++i)
             {

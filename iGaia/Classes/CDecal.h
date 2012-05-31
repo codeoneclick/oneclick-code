@@ -19,12 +19,12 @@ public:
     CDecal(void);
     ~CDecal(void);
     
-    virtual void Load(const std::string& _sName, IResource::E_THREAD _eThread);
-    virtual void Update(void);
-    virtual void Render(CShader::E_RENDER_MODE _eMode);
+    void Load(const std::string& _sName, IResource::E_THREAD _eThread);
+    void Update(void);
+    void Render(CShader::E_RENDER_MODE _eMode);
     
-    virtual void OnTouchEvent(ITouchDelegate* _pDelegateOwner);
-    virtual void OnResourceLoadDoneEvent(IResource::E_RESOURCE_TYPE _eType, IResource* _pResource);
+    void OnTouchEvent(ITouchDelegate* _pDelegateOwner);
+    void OnResourceLoadDoneEvent(IResource::E_RESOURCE_TYPE _eType, IResource* _pResource);
 };
 
 #endif /* defined(__iGaia__CDecal__) */

@@ -15,7 +15,6 @@
 #include "CGrass.h"
 #include "CWater.h"
 #include "CSkyBox.h"
-#include "CShadowPlane.h"
 #include "CRenderMgr.h"
 #include "CCollisionMgr.h"
 #include "CCameraFree.h"

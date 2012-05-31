@@ -10,7 +10,6 @@
 #define iGaia_ICharacterController_h
 
 #include "CModel.h"
-#include "CShadowPlane.h"
 #include "CSceneMgr.h"
 #include "ITouchDelegate.h"
 #include "CLandscape.h"
