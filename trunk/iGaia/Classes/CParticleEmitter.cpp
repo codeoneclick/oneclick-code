@@ -8,12 +8,13 @@
 
 #include "CParticleEmitter.h"
 #include "CSceneMgr.h"
-#include "CVertexBufferPositionTexcoord.h"
-
+#include "CVertexBufferPositionTexcoordColor.h"
+#include <mach/mach.h>
+#include <mach/mach_time.h>
 
 CParticleEmitter::CParticleEmitter(void)
 {
-    m_iNumParticles = 128;
+    m_iNumParticles = 2;
     m_pParticles = NULL;
 }
 
@@ -31,11 +32,8 @@ void CParticleEmitter::Load(const std::string& _sName, IResource::E_THREAD _eThr
     
     pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes);
     unsigned short* pIndexBufferData = pSourceData->m_pIndexBuffer->Get_SourceData();
-    pSourceData->m_pVertexBuffer = new CVertexBufferPositionTexcoord(pSourceData->m_iNumVertexes, GL_STREAM_DRAW);
-    CVertexBufferPositionTexcoord::SVertex* pVertexBufferData = static_cast<CVertexBufferPositionTexcoord::SVertex*>(pSourceData->m_pVertexBuffer->Lock());
-    //glm::vec3*   pPositionData = pSourceData->m_pVertexBuffer->GetOrCreate_PositionSourceData();
-    //glm::vec2*   pTexCoordData = pSourceData->m_pVertexBuffer->GetOrCreate_TexcoordSourceData();
-    //glm::u8vec4* pColorData = pSourceData->m_pVertexBuffer->GetOrCreate_ColorSourceData();
+    pSourceData->m_pVertexBuffer = new CVertexBufferPositionTexcoordColor(pSourceData->m_iNumVertexes, GL_STREAM_DRAW);
+    CVertexBufferPositionTexcoordColor::SVertex* pVertexBufferData = static_cast<CVertexBufferPositionTexcoordColor::SVertex*>(pSourceData->m_pVertexBuffer->Lock());
     
     m_pParticles = new SParticle[m_iNumParticles];
     
@@ -44,8 +42,8 @@ void CParticleEmitter::Load(const std::string& _sName, IResource::E_THREAD _eThr
         m_pParticles[index].m_vPosition = glm::vec3(0.0f, 0.0f, 0.0f);
         m_pParticles[index].m_vVelocity = glm::vec3(0.0f, 0.0f, 0.0f);
         m_pParticles[index].m_vColor = glm::u8vec4(0, 0, 0, 0);
-        m_pParticles[index].m_fTime = 0.0f;
-        m_pParticles[index].m_vSize = glm::vec2(0.5f, 0.5f);
+        m_pParticles[index].m_iTime = 0;
+        m_pParticles[index].m_vSize = m_vMinSize;
         
         pVertexBufferData[index * 4 + 0].m_vPosition = glm::vec3(m_pParticles[index].m_vPosition.x - m_pParticles[index].m_vSize.x, m_pParticles[index].m_vPosition.y, m_pParticles[index].m_vPosition.z - m_pParticles[index].m_vSize.y);
         pVertexBufferData[index * 4 + 1].m_vPosition = glm::vec3(m_pParticles[index].m_vPosition.x + m_pParticles[index].m_vSize.x, m_pParticles[index].m_vPosition.y, m_pParticles[index].m_vPosition.z - m_pParticles[index].m_vSize.y);
@@ -57,10 +55,10 @@ void CParticleEmitter::Load(const std::string& _sName, IResource::E_THREAD _eThr
         pVertexBufferData[index * 4 + 2].m_vTexcoord = glm::vec2( 1.0f,  1.0f);
         pVertexBufferData[index * 4 + 3].m_vTexcoord = glm::vec2( 0.0f,  1.0f);
         
-        /*pColorData[index * 4 + 0] = m_pParticles[index].m_vColor;
-        pColorData[index * 4 + 1] = m_pParticles[index].m_vColor;
-        pColorData[index * 4 + 2] = m_pParticles[index].m_vColor;
-        pColorData[index * 4 + 3] = m_pParticles[index].m_vColor;*/
+        pVertexBufferData[index * 4 + 0].m_vColor = m_pParticles[index].m_vColor;
+        pVertexBufferData[index * 4 + 1].m_vColor = m_pParticles[index].m_vColor;
+        pVertexBufferData[index * 4 + 2].m_vColor = m_pParticles[index].m_vColor;
+        pVertexBufferData[index * 4 + 3].m_vColor = m_pParticles[index].m_vColor;
     }
     
     for(unsigned int index = 0; index < m_iNumParticles; index++)
@@ -80,16 +78,6 @@ void CParticleEmitter::Load(const std::string& _sName, IResource::E_THREAD _eThr
     m_pMesh = new CMesh(IResource::E_CREATION_MODE_CUSTOM);
     m_pMesh->Set_SourceData(pSourceData);
     m_pMesh->Set_Name("emitter");
-    
-    for(unsigned short i = 0; i < m_iNumParticles; i++)
-    {
-        glm::vec3 vPosition = m_pParticles[i].m_vPosition;
-        float fOffset = _Get_RandomFromRange(0.0f, 0.33f);
-        vPosition.x = fOffset;
-        fOffset = _Get_RandomFromRange(0.0f, 0.33f);
-        vPosition.z = fOffset;
-        m_pParticles[i].m_vPosition = vPosition;
-    }
 }
 
 float CParticleEmitter::_Get_RandomFromRange(float _fMin, float _fMax)
@@ -118,32 +106,29 @@ void CParticleEmitter::OnTouchEvent(ITouchDelegate *_pDelegateOwner)
     
 }
 
+uint64_t CParticleEmitter::_Get_TickCount(void)
+{
+    static mach_timebase_info_data_t sTimebaseInfo;
+    uint64_t machTime = mach_absolute_time();
+    
+    if (sTimebaseInfo.denom == 0 )
+    {
+        (void)mach_timebase_info(&sTimebaseInfo);
+    }
+    
+    uint64_t millis = ((machTime / 1000000) * sTimebaseInfo.numer) / sTimebaseInfo.denom;
+    return millis;
+}
+
 void CParticleEmitter::Update(void)
 {
     m_vRotation = glm::vec3(0.0f, 0.0f, 0.0f);
-    glm::vec3 vTempPosition = m_vPosition;
+    glm::vec3 vWorldPosition = m_vPosition;
     m_vPosition = glm::vec3(0.0f, 0.0f, 0.0f);
+    
     INode::Update();
     
-    for(unsigned short i = 0; i < m_iNumParticles; i++)
-    {
-        glm::vec3 vPosition = m_pParticles[i].m_vPosition;
-        float fUpper = _Get_RandomFromRange(0.0f, 250.0f);
-        vPosition.y += fUpper / 500.0f;
-        m_pParticles[i].m_vPosition = vPosition;
-        m_pParticles[i].m_vRotation.y += fUpper;
-        m_pParticles[i].m_vSize += glm::vec2(0.05f, 0.05f);
-        //m_pParticles[i].m_vRotation.z += fUpper;
-        if(m_pParticles[i].m_vPosition.y >= 2.5f)
-        {
-            m_pParticles[i].m_vPosition.y = 0.0f;
-            m_pParticles[i].m_vSize = glm::vec2(0.05f, 0.05f);
-        }
-    }
-    
-    CVertexBufferPositionTexcoord::SVertex* pVertexBufferData = static_cast<CVertexBufferPositionTexcoord::SVertex*>(m_pMesh->Get_VertexBufferRef()->Lock());
-    //glm::vec3* pPositionData = m_pMesh->Get_VertexBufferRef()->GetOrCreate_PositionSourceData();
-    //glm::u8vec4* pColorData = m_pMesh->Get_VertexBufferRef()->GetOrCreate_ColorSourceData();
+    CVertexBufferPositionTexcoordColor::SVertex* pVertexBufferData = static_cast<CVertexBufferPositionTexcoordColor::SVertex*>(m_pMesh->Get_VertexBufferRef()->Lock());
     
     ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
     
@@ -154,7 +139,7 @@ void CParticleEmitter::Update(void)
         glm::mat4x4 mRotationZ = glm::rotate(mRotationY, m_pParticles[index].m_vRotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
         glm::mat4x4 mWorld = glm::translate(glm::mat4(1.0f), m_pParticles[index].m_vPosition) * mRotationZ;*/
         
-        glm::mat4x4 mWorld = pCamera->Get_BillboardSphericalMatrix(m_pParticles[index].m_vPosition + vTempPosition);
+        glm::mat4x4 mWorld = pCamera->Get_BillboardSphericalMatrix(m_pParticles[index].m_vPosition + vWorldPosition);
                 
         glm::vec4 vTransform = glm::vec4(-m_pParticles[index].m_vSize.x, -m_pParticles[index].m_vSize.y, 0.0f, 1.0f);
         vTransform = mWorld * vTransform;
@@ -172,10 +157,10 @@ void CParticleEmitter::Update(void)
         vTransform = mWorld * vTransform;
         pVertexBufferData[index * 4 + 3].m_vPosition = glm::vec3(vTransform.x, vTransform.y, vTransform.z);
         
-        /*pColorData[index * 4 + 0] = m_pParticles[index].m_vColor;
-        pColorData[index * 4 + 1] = m_pParticles[index].m_vColor;
-        pColorData[index * 4 + 2] = m_pParticles[index].m_vColor;
-        pColorData[index * 4 + 3] = m_pParticles[index].m_vColor;*/
+        pVertexBufferData[index * 4 + 0].m_vColor = m_pParticles[index].m_vColor;
+        pVertexBufferData[index * 4 + 1].m_vColor = m_pParticles[index].m_vColor;
+        pVertexBufferData[index * 4 + 2].m_vColor = m_pParticles[index].m_vColor;
+        pVertexBufferData[index * 4 + 3].m_vColor = m_pParticles[index].m_vColor;
     }
     m_pMesh->Get_VertexBufferRef()->Commit();
 }

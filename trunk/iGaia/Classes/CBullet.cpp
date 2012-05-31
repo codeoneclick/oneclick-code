@@ -25,7 +25,7 @@ CBullet::~CBullet(void)
 
 void CBullet::Load(void)
 {
-    m_pFireEmmiter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitter();
+    m_pFireEmmiter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(64, glm::vec2(0.05f), glm::vec2(1.5f), 3000);
     m_pFireEmmiter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_UNIT);
     m_pFireEmmiter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
     m_pFireEmmiter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
