@@ -1,29 +1,29 @@
 //
-//  CBillboardEffect.cpp
+//  CBillboard.cpp
 //  iGaia
 //
 //  Created by sergey sergeev on 5/31/12.
 //
 //
 
-#include "CBillboardEffect.h"
+#include "CBillboard.h"
 
-CBillboardEffect::CBillboardEffect(void)
+CBillboard::CBillboard(void)
 {
     
 }
 
-CBillboardEffect::~CBillboardEffect(void)
+CBillboard::~CBillboard(void)
 {
     
 }
 
-void CBillboardEffect::Load(const std::string &_sName, IResource::E_THREAD _eThread)
+void CBillboard::Load(const std::string &_sName, IResource::E_THREAD _eThread)
 {
     
 }
 
-void CBillboardEffect::OnResourceLoadDoneEvent(IResource::E_RESOURCE_TYPE _eType, IResource *_pResource)
+void CBillboard::OnResourceLoadDoneEvent(IResource::E_RESOURCE_TYPE _eType, IResource *_pResource)
 {
     switch (_eType)
     {
@@ -38,17 +38,17 @@ void CBillboardEffect::OnResourceLoadDoneEvent(IResource::E_RESOURCE_TYPE _eType
     }
 }
 
-void CBillboardEffect::OnTouchEvent(ITouchDelegate *_pDelegateOwner)
+void CBillboard::OnTouchEvent(ITouchDelegate *_pDelegateOwner)
 {
     
 }
 
-void CBillboardEffect::Update(void)
+void CBillboard::Update(void)
 {
     INode::Update();
 }
 
-void CBillboardEffect::Render(CShader::E_RENDER_MODE _eMode)
+void CBillboard::Render(CShader::E_RENDER_MODE _eMode)
 {
     
 }
