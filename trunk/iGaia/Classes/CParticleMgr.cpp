@@ -31,17 +31,6 @@ CParticleEmmiterFire* CParticleMgr::Add_ParticleEmitterFire(unsigned int _iNumPa
     return pParticleEmitter;
 }
 
-CCrossBoxEffect* CParticleMgr::Add_CrossBoxEffect(unsigned int _iNumTextureChunks, const glm::vec2 &_vSizeTextureChunk, const glm::vec2 &_vSizeTextureAtlas)
-{
-    CCrossBoxEffect* pEffect = new CCrossBoxEffect();
-    pEffect->Set_NumTextureChunks(_iNumTextureChunks);
-    pEffect->Set_SizeTextureChunk(_vSizeTextureChunk);
-    pEffect->Set_SizeTextureAtlas(_vSizeTextureAtlas);
-    m_lEffectContainer.push_back(pEffect);
-    pEffect->Load("effect", IResource::E_THREAD_MAIN);
-    return pEffect;
-}
-
 void CParticleMgr::Remove_ParticleEmitter(CParticleEmitter *_pParticleEmitter)
 {
     std::vector<CParticleEmitter*>::iterator pBeginEmitterIterator = m_lEmitterContainer.begin();
@@ -75,16 +64,6 @@ void CParticleMgr::Update(void)
         (*pBeginEmitterIterator)->Update();
         ++pBeginEmitterIterator;
     }
-    
-    std::vector<INode*>::iterator pBeginEffectIterator = m_lEffectContainer.begin();
-    std::vector<INode*>::iterator pEndEffectIterator = m_lEffectContainer.end();
-    
-    while(pBeginEffectIterator != pEndEffectIterator)
-    {
-        (*pBeginEffectIterator)->Update();
-        ++pBeginEffectIterator;
-    }
-
 }
 
 void CParticleMgr::Render(CShader::E_RENDER_MODE _eMode)
@@ -96,15 +75,6 @@ void CParticleMgr::Render(CShader::E_RENDER_MODE _eMode)
     {
         (*pBeginEmitterIterator)->Render(_eMode);
         ++pBeginEmitterIterator;
-    }
-    
-    std::vector<INode*>::iterator pBeginEffectIterator = m_lEffectContainer.begin();
-    std::vector<INode*>::iterator pEndEffectIterator = m_lEffectContainer.end();
-    
-    while(pBeginEffectIterator != pEndEffectIterator)
-    {
-        (*pBeginEffectIterator)->Render(_eMode);
-        ++pBeginEffectIterator;
     }
 }
 

@@ -42,6 +42,7 @@ CSceneMgr::CSceneMgr(void)
     m_pPhysicMgr = new CPhysicMgr();
     m_pParticleMgr = new CParticleMgr();
     m_pDecalMgr = new CDecalMgr();
+    m_pSpriteMgr = new CSpriteMgr();
     
     m_lLights[ILight::E_LIGHT_MODE_DIRECTION] = new CLightPoint();
     static_cast<CLightPoint*>(m_lLights[ILight::E_LIGHT_MODE_DIRECTION])->Set_Visible(false);
@@ -247,6 +248,11 @@ void CSceneMgr::Update()
         m_pParticleMgr->Update();
     }
     
+    if(m_pSpriteMgr != NULL)
+    {
+        m_pSpriteMgr->Update();
+    }
+    
     if(m_pSkyBox != NULL)
     {
         m_pSkyBox->Set_Position(m_pCamera->Get_Position());
@@ -290,6 +296,10 @@ void CSceneMgr::_DrawSimpleStep(void)
         m_pParticleMgr->Render(CShader::E_RENDER_MODE_SIMPLE);
     }
     
+    if(m_pSpriteMgr != NULL)
+    {
+        m_pSpriteMgr->Render(CShader::E_RENDER_MODE_SIMPLE);
+    }
     
     m_pRenderMgr->EndDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_SIMPLE);
 }

@@ -90,7 +90,7 @@ void CCharacterControllerPlayer::Load(void)
     m_pFireEmmiter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
     m_pFireEmmiter->Set_Position(glm::vec3(0.0f, 0.33f, 0.0f));
     
-    m_pFireCross = CSceneMgr::Instance()->Get_ParticleMgr()->Add_CrossBoxEffect(4, glm::vec2(256.0f, 256.0f), glm::vec2(512.0f, 512.0f));
+    m_pFireCross = CSceneMgr::Instance()->Get_SpriteMgr()->Add_SpriteCross(4, glm::vec2(256.0f, 256.0f), glm::vec2(512.0f, 512.0f));
     m_pFireCross->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_UNIT);
     m_pFireCross->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
     m_pFireCross->Set_Texture("model_01.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);

@@ -20,6 +20,7 @@
 #include "CNavigationMeshMgr.h"
 #include "CParticleMgr.h"
 #include "CDecalMgr.h"
+#include "CSpriteMgr.h"
 #include "CFrustum.h"
 
 class CSceneMgr
@@ -42,6 +43,7 @@ private:
     CPhysicMgr* m_pPhysicMgr;
     CParticleMgr* m_pParticleMgr;
     CDecalMgr* m_pDecalMgr;
+    CSpriteMgr* m_pSpriteMgr;
     
     CNavigationMeshMgr* m_pNavigationMeshMgrRef;
     CHeightMapSetter* m_pHeightMapSetterRef;
@@ -82,6 +84,7 @@ public:
     CPhysicMgr* Get_PhysicMgr(void) { return m_pPhysicMgr; }
     CParticleMgr* Get_ParticleMgr(void) { return m_pParticleMgr; }
     CDecalMgr* Get_DecalMgr(void) { return m_pDecalMgr; }
+    CSpriteMgr* Get_SpriteMgr(void) { return m_pSpriteMgr; }
     
     CNavigationMeshMgr* Get_NavigationMeshRef(void) { return m_pNavigationMeshMgrRef; }
     void Set_NavigationMeshRef(CNavigationMeshMgr* _pNavigationMeshMgrRef) { m_pNavigationMeshMgrRef = _pNavigationMeshMgrRef; }

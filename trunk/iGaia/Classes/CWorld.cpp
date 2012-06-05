@@ -46,7 +46,7 @@ void CWorld::Load(void)
     m_pCharaterControllerMgr = new CGameCharaterControllerMgr();
     m_pGameAIMgr = new CGameAIMgr();
     m_pGameShooterMgr = new CGameShooterMgr();
-    
+      
     m_pLevel = new CLevel();
     m_pLevel->Load();
     
@@ -120,7 +120,6 @@ void CWorld::Update(void)
     glm::vec3 vCameraRotation = glm::mix(vOldCameraRotation, vCurrentCameraRotation, 0.25f);
     m_pCamera->Set_Rotation(vCameraRotation);
     
-       
     //CVector3d vLightPosition = CVector3d(m_pHero->Get_Model()->Get_Position().x, 8.0f, m_pHero->Get_Model()->Get_Position().z);
     //m_pLight->Set_Position(vLightPosition);
 }
