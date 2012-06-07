@@ -30,7 +30,6 @@ const unsigned int CSceneMgr::k_MAX_LIGHTS = 8;
 CSceneMgr::CSceneMgr(void)
 {
     m_pCamera = NULL;
-    m_pNavigationMeshMgrRef = NULL;
     m_pHeightMapSetterRef = NULL;
     m_pSkyBox = NULL;
     m_pLandscape = NULL;
@@ -39,7 +38,6 @@ CSceneMgr::CSceneMgr(void)
     
     m_pRenderMgr = new CRenderMgr();
     m_pCollisionMgr = new CCollisionMgr();
-    m_pPhysicMgr = new CPhysicMgr();
     m_pParticleMgr = new CParticleMgr();
     m_pDecalMgr = new CDecalMgr();
     m_pSpriteMgr = new CSpriteMgr();
@@ -236,7 +234,6 @@ void CSceneMgr::Update()
     }
 
     m_pCollisionMgr->Update();
-    m_pPhysicMgr->Update();
     
     if(m_pDecalMgr != NULL)
     {

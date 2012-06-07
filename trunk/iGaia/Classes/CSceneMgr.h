@@ -13,11 +13,9 @@
 #include "ILight.h"
 #include "ICamera.h"
 #include "CRenderMgr.h"
-#include "CPhysicMgr.h"
 #include "CCollisionMgr.h"
 #include "CEventMgr.h"
 #include "CHeightMapSetter.h"
-#include "CNavigationMeshMgr.h"
 #include "CParticleMgr.h"
 #include "CDecalMgr.h"
 #include "CSpriteMgr.h"
@@ -40,12 +38,9 @@ private:
     
     CRenderMgr* m_pRenderMgr;
     CCollisionMgr* m_pCollisionMgr;
-    CPhysicMgr* m_pPhysicMgr;
     CParticleMgr* m_pParticleMgr;
     CDecalMgr* m_pDecalMgr;
     CSpriteMgr* m_pSpriteMgr;
-    
-    CNavigationMeshMgr* m_pNavigationMeshMgrRef;
     CHeightMapSetter* m_pHeightMapSetterRef;
     
     void _DrawSimpleStep(void);
@@ -81,13 +76,10 @@ public:
     
     CRenderMgr* Get_RenderMgr(void) { return m_pRenderMgr; }
     CCollisionMgr* Get_CollisionMgr(void) { return m_pCollisionMgr; }
-    CPhysicMgr* Get_PhysicMgr(void) { return m_pPhysicMgr; }
     CParticleMgr* Get_ParticleMgr(void) { return m_pParticleMgr; }
     CDecalMgr* Get_DecalMgr(void) { return m_pDecalMgr; }
     CSpriteMgr* Get_SpriteMgr(void) { return m_pSpriteMgr; }
     
-    CNavigationMeshMgr* Get_NavigationMeshRef(void) { return m_pNavigationMeshMgrRef; }
-    void Set_NavigationMeshRef(CNavigationMeshMgr* _pNavigationMeshMgrRef) { m_pNavigationMeshMgrRef = _pNavigationMeshMgrRef; }
     CHeightMapSetter* Get_HeightMapSetterRef(void) { return m_pHeightMapSetterRef; }
     void Set_HeightMapSetterRef(CHeightMapSetter* _pHeightMapSetterRef) { m_pHeightMapSetterRef = _pHeightMapSetterRef; }                                                         
     
