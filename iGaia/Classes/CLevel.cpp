@@ -35,7 +35,6 @@ void CLevel::Load(void)
     m_pLandscape->Set_Shader(CShader::E_RENDER_MODE_REFRACTION,IResource::E_SHADER_LANDSCAPE);
     m_pLandscape->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP,IResource::E_SHADER_NORMAL_DEPTH);
     CSceneMgr::Instance()->AddEventListener(m_pLandscape, CEventMgr::E_EVENT_TOUCH);
-    CSceneMgr::Instance()->Get_PhysicMgr()->Add_CollisionLandscape(m_pLandscape);
     m_pLandscape->Set_Position(glm::vec3(0.0f, 0.0f, 0.0f));
     m_pLandscape->Add_DelegateOwner(this);
     m_pLandscape->Set_RenderModeReflectionEnable(true);
