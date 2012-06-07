@@ -49,15 +49,15 @@ void CSpriteCross::Load(const std::string &_sName, IResource::E_THREAD _eThread)
     pIndexBufferData[10] = 7;
     pIndexBufferData[11] = 5;
     
-    pVertexBufferData[0].m_vPosition = glm::vec3(-m_vSize.x / 2, 0.0f, 0.0f);
-    pVertexBufferData[1].m_vPosition = glm::vec3(-m_vSize.x / 2, m_vSize.y, 0.0f);
-    pVertexBufferData[2].m_vPosition = glm::vec3( m_vSize.x / 2, 0.0f, 0.0f);
-    pVertexBufferData[3].m_vPosition = glm::vec3( m_vSize.x / 2, m_vSize.y, 0.0f);
+    pVertexBufferData[0].m_vPosition = glm::vec3(-m_vSize.y / 2.0f, 0.0f, -m_vSize.x / 2.0f);
+    pVertexBufferData[1].m_vPosition = glm::vec3( m_vSize.y / 2.0f, 0.0f, -m_vSize.x / 2.0f);
+    pVertexBufferData[2].m_vPosition = glm::vec3(-m_vSize.y / 2.0f, 0.0f,  m_vSize.x / 2.0f);
+    pVertexBufferData[3].m_vPosition = glm::vec3( m_vSize.y / 2.0f, 0.0f,  m_vSize.x / 2.0f);
     
-    pVertexBufferData[4].m_vPosition = glm::vec3(0.0f, 0.0f,     -m_vSize.x / 2);
-    pVertexBufferData[5].m_vPosition = glm::vec3(0.0f, m_vSize.y,-m_vSize.x / 2);
-    pVertexBufferData[6].m_vPosition = glm::vec3(0.0f, 0.0f,      m_vSize.x / 2);
-    pVertexBufferData[7].m_vPosition = glm::vec3(0.0f, m_vSize.y, m_vSize.x / 2);
+    pVertexBufferData[4].m_vPosition = glm::vec3(0.0f,-m_vSize.y / 2.0f,-m_vSize.x / 2.0f);
+    pVertexBufferData[5].m_vPosition = glm::vec3(0.0f, m_vSize.y / 2.0f,-m_vSize.x / 2.0f);
+    pVertexBufferData[6].m_vPosition = glm::vec3(0.0f,-m_vSize.y / 2.0f, m_vSize.x / 2.0f);
+    pVertexBufferData[7].m_vPosition = glm::vec3(0.0f, m_vSize.y / 2.0f, m_vSize.x / 2.0f);
     
     pVertexBufferData[0].m_vTexcoord = glm::vec2(0.0f,1.0f);
     pVertexBufferData[1].m_vTexcoord = glm::vec2(0.0f,0.0f);

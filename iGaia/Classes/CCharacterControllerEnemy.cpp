@@ -84,16 +84,11 @@ void CCharacterControllerEnemy::Load(void)
     m_pBodyModel->Set_RenderModeScreenNormalEnable(true);
     
     CSceneMgr::Instance()->AddEventListener(m_pBodyModel, CEventMgr::E_EVENT_TOUCH);
-    CSceneMgr::Instance()->Get_PhysicMgr()->Add_CollisionModelAsVehicle(m_pBodyModel, 2000, glm::vec3(2.0f, 2.0f, 2.0f));
-    CSceneMgr::Instance()->Get_PhysicMgr()->Add_WheelToVehicleModel(m_pBodyModel, glm::vec3(-1.0f, 1.0f,  1.0f));
-    CSceneMgr::Instance()->Get_PhysicMgr()->Add_WheelToVehicleModel(m_pBodyModel, glm::vec3(-1.0f, 1.0f, -1.0f));
-    CSceneMgr::Instance()->Get_PhysicMgr()->Add_WheelToVehicleModel(m_pBodyModel, glm::vec3( 1.0f, 1.0f, -1.0f));
-    CSceneMgr::Instance()->Get_PhysicMgr()->Add_WheelToVehicleModel(m_pBodyModel, glm::vec3( 1.0f, 1.0f,  1.0f));
     m_pBodyModel->Add_DelegateOwner(this);
     CWorld::Instance()->Get_Level()->Get_Model()->Add_DelegateOwner(this);
 }
 
-void CCharacterControllerEnemy::Set_Position(const glm::vec3 &_vPosition)
+/*void CCharacterControllerEnemy::Set_Position(const glm::vec3 &_vPosition)
 {
     if(m_pBodyModel != NULL)
     {
@@ -133,7 +128,7 @@ void CCharacterControllerEnemy::Set_Rotation(const glm::vec3 &_vRotation)
         m_pRightTrackModel->Set_Rotation(_vRotation);
     }
     m_vRotation = _vRotation;
-}
+}*/
 
 void CCharacterControllerEnemy::OnTouchEvent(ITouchDelegate* _pDelegateOwner)
 {
@@ -184,7 +179,7 @@ void CCharacterControllerEnemy::Update(void)
             Set_Position(m_vPosition);
             glm::vec2 vRotationOnHeightMap = _Get_RotationOnHeightmap(m_vPosition);
             m_vRotation.x = -glm::degrees(vRotationOnHeightMap.x);
-            m_vRotation.z = glm::degrees(vRotationOnHeightMap.y);
+            m_vRotation.z =  glm::degrees(vRotationOnHeightMap.y);
             Set_Rotation(m_vRotation);
             
             float fTowerTargetAngle = _GetRotationBetweenPoints(m_vPosition, m_vTargetPoint);

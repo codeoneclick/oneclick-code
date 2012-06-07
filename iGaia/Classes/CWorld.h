@@ -22,7 +22,10 @@
 #define k_CAMERA_DISTANCE_MODE_2 7.0f
 #define k_CAMERA_HEIGHT_MODE_1 4.0f
 #define k_CAMERA_HEIGHT_MODE_2 14.0f
-#define k_CAMERA_DISPLACE_INC 0.5f
+#define k_CAMERA_DISPLACE_INC 0.33f
+#define k_CAMERA_HEIGHT_LERP_VALUE 0.01f
+#define k_CAMERA_HEIGHT_OUT_MAP 5.0f
+#define k_CAMERA_ROTATION_LERP 0.1f
 
 class CWorld
 {
@@ -40,9 +43,10 @@ private:
     ILight* m_pLight;
     bool m_bIsHeroUnderControl;
     static CWorld* m_pInstance;
+    
     E_CAMERA_MODE m_eCameraMode;
-    unsigned int m_iCurrentCameraDistance;
-    float m_iCurrentCameraHeight;
+    float m_fCurrentCameraHeight;
+    float m_fNeedCameraHeight;
 public:
     CWorld(void);
     ~CWorld(void);

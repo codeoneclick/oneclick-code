@@ -13,7 +13,14 @@
 #include "CSceneMgr.h"
 #include "ITouchDelegate.h"
 #include "CLandscape.h"
+#include "CMathHelper.h"
 #include <time.h>
+
+#define k_MIN_HEIGHTMAP_VALUE -8.0f
+#define k_EXHAUST_EMITTER_OFFSET  1.5f
+#define k_EXHAUST_EMITTER_HEIGHT  1.5f
+#define k_CROSS_FIRE_OFFSET 1.5f
+#define k_CROSS_FIRE_HEIGHT 0.75f
 
 class ICharacterController : public ITouchDelegate
 {
@@ -39,13 +46,42 @@ protected:
     E_CHARACTER_CONTROLLER_MOVE_STATE m_eMoveState;
     E_CHARACTER_CONTROLLER_STEER_STATE m_eSteerState;
     E_CHARACTER_CONTROLLER_STEER_TOWER_STATE m_eSteerTowerState;
+    
+    
+    CModel* m_pBodyModel;
+    CModel* m_pTowerModel;
+    CModel* m_pLeftTrackModel;
+    CModel* m_pRightTrackModel;
+    
+    CParticleEmitter* m_pExhaustSmokeEmitter;
+    CDecal* m_pShadowDecal;
+    CSpriteCross* m_pFireCross;
+    
+    CParticleEmitter* m_pLeftTrackSmokeEmitter;
+    CParticleEmitter* m_pRightTrackSmokeEmitter;
+    CParticleEmitter* m_pBodySmokeEmitter;
+    
+    CParticleEmitter* m_pLeftTrackFireEmitter;
+    CParticleEmitter* m_pRightTrackFireEmitter;
+    CParticleEmitter* m_pBodyFireEmitter;
+    
+    glm::vec3 m_vLeftTrackEmitterNodePosition;
+    glm::vec3 m_vRightTrackEmitterNodePosition;
+    glm::vec3 m_vBodyEmitterNodePosition;
+    
+    glm::vec3 m_vExhaustEmitterPosition;
+    glm::vec3 m_vFireCrossEffectPosition;
+    
+    glm::vec4 m_vTransformHelper;
+    glm::mat4x4 m_mRotationHelper;
+
 public:
     ICharacterController(void);
     ~ICharacterController(void);
     virtual void Load(void) = 0;
     virtual void Update(void) = 0;
-    virtual void Set_Position(const glm::vec3& _vPosition) = 0;
-    virtual void Set_Rotation(const glm::vec3& _vRotation) = 0;
+    virtual void Set_Position(const glm::vec3& _vPosition);
+    virtual void Set_Rotation(const glm::vec3& _vRotation);
     glm::vec3 Get_Position(void) { return m_vPosition; }
     glm::vec3 Get_Rotation(void) { return m_vRotation; }
     bool MoveForward(void);

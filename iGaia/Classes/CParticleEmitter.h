@@ -27,8 +27,7 @@ protected:
         int m_iTime;
     };
     SParticle* m_pParticles;
-   
-    
+     
     unsigned int m_iNumParticles;
     glm::vec2 m_vMinSize;
     glm::vec2 m_vMaxSize;
