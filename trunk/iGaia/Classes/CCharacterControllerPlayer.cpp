@@ -41,8 +41,8 @@ CCharacterControllerPlayer::~CCharacterControllerPlayer(void)
 
 void CCharacterControllerPlayer::Load(void)
 {
-    
     glm::vec3 vScale = glm::vec3(1.0f, 1.0f, 1.0f);
+    
     m_pTowerModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("tower_model.mdl", IResource::E_THREAD_BACKGROUND);
     m_pTowerModel->Set_Texture("model_01.pvr", 0, CTexture::E_WRAP_MODE_REPEAT);
     m_pTowerModel->Set_Scale(vScale);
@@ -50,7 +50,6 @@ void CCharacterControllerPlayer::Load(void)
     m_pTowerModel->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
     m_pTowerModel->Create_BoundingBox();
     m_pTowerModel->Set_RenderModeScreenNormalEnable(true);
-    //m_pTowerModel->Set_RenderModeShadowMapEnable(true);
     
     m_pLeftTrackModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("left_track_model.mdl", IResource::E_THREAD_BACKGROUND);
     m_pLeftTrackModel->Set_Texture("model_02.pvr", 0, CTexture::E_WRAP_MODE_REPEAT);
@@ -59,7 +58,6 @@ void CCharacterControllerPlayer::Load(void)
     m_pLeftTrackModel->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
     m_pLeftTrackModel->Create_BoundingBox();
     m_pLeftTrackModel->Set_RenderModeScreenNormalEnable(true);
-    //m_pLeftTrackModel->Set_RenderModeShadowMapEnable(true);
 
     m_pRightTrackModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("right_track_model.mdl", IResource::E_THREAD_BACKGROUND);
     m_pRightTrackModel->Set_Texture("model_02.pvr", 0, CTexture::E_WRAP_MODE_REPEAT);
@@ -68,7 +66,6 @@ void CCharacterControllerPlayer::Load(void)
     m_pRightTrackModel->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
     m_pRightTrackModel->Create_BoundingBox();
     m_pRightTrackModel->Set_RenderModeScreenNormalEnable(true);
-    //m_pRightTrackModel->Set_RenderModeShadowMapEnable(true);
     
     m_pBodyModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("base_model.mdl", IResource::E_THREAD_BACKGROUND);
     m_pBodyModel->Set_Texture("model_01.pvr", 0, CTexture::E_WRAP_MODE_REPEAT);
@@ -77,18 +74,6 @@ void CCharacterControllerPlayer::Load(void)
     m_pBodyModel->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
     m_pBodyModel->Create_BoundingBox();
     m_pBodyModel->Set_RenderModeScreenNormalEnable(true);
-    //m_pBodyModel->Set_RenderModeShadowMapEnable(true);
-    
-    //m_pExplosionEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitter();
-    //m_pExplosionEmitter->Set_Shader(INode::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_UNIT);
-    //m_pExplosionEmitter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
-    //m_pExplosionEmitter->Set_Position(glm::vec3(0.0f, 0.33f, 0.0f));
-    
-    m_pFireEmmiter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(128, glm::vec2(0.05f), glm::vec2(2.5f), 1000);
-    m_pFireEmmiter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_UNIT);
-    m_pFireEmmiter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
-    m_pFireEmmiter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
-    m_pFireEmmiter->Set_Position(glm::vec3(0.0f, 0.33f, 0.0f));
     
     m_pFireCross = CSceneMgr::Instance()->Get_SpriteMgr()->Add_SpriteCross(4, glm::vec2(256.0f, 256.0f), glm::vec2(512.0f, 512.0f));
     m_pFireCross->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_UNIT);
@@ -98,18 +83,48 @@ void CCharacterControllerPlayer::Load(void)
     m_pShadowDecal = CSceneMgr::Instance()->Get_DecalMgr()->Add_Decal();
     m_pShadowDecal->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_DECAL);
     m_pShadowDecal->Set_Texture("shadow.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
+    
+    m_pExhaustSmokeEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(64, glm::vec2(0.05f), glm::vec2(2.5f), 1000);
+    m_pExhaustSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_UNIT);
+    m_pExhaustSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
+    m_pExhaustSmokeEmitter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
+    
+    m_pLeftTrackSmokeEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(64, glm::vec2(0.05f), glm::vec2(2.5f), 1000);
+    m_pLeftTrackSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_UNIT);
+    m_pLeftTrackSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
+    m_pLeftTrackSmokeEmitter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
+    
+    m_pRightTrackSmokeEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(64, glm::vec2(0.05f), glm::vec2(2.5f), 1000);
+    m_pRightTrackSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_UNIT);
+    m_pRightTrackSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
+    m_pRightTrackSmokeEmitter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
+    
+    m_pBodySmokeEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(64, glm::vec2(0.05f), glm::vec2(2.5f), 1000);
+    m_pBodySmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_UNIT);
+    m_pBodySmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
+    m_pBodySmokeEmitter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
+    
+    m_pLeftTrackFireEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(64, glm::vec2(0.05f), glm::vec2(2.5f), 1000);
+    m_pLeftTrackFireEmitter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_UNIT);
+    m_pLeftTrackFireEmitter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
+    m_pLeftTrackFireEmitter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
+    
+    m_pRightTrackFireEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(64, glm::vec2(0.05f), glm::vec2(2.5f), 1000);
+    m_pRightTrackFireEmitter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_UNIT);
+    m_pRightTrackFireEmitter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
+    m_pRightTrackFireEmitter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
+    
+    m_pBodyFireEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(64, glm::vec2(0.05f), glm::vec2(2.5f), 1000);
+    m_pBodyFireEmitter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_UNIT);
+    m_pBodyFireEmitter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_UNIT);
+    m_pBodyFireEmitter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
 
     CSceneMgr::Instance()->AddEventListener(m_pBodyModel, CEventMgr::E_EVENT_TOUCH);
-    CSceneMgr::Instance()->Get_PhysicMgr()->Add_CollisionModelAsVehicle(m_pBodyModel, 2000, glm::vec3(2.0f, 2.0f, 2.0f));
-    CSceneMgr::Instance()->Get_PhysicMgr()->Add_WheelToVehicleModel(m_pBodyModel, glm::vec3(-1.0f, 1.0f,  1.0f));
-    CSceneMgr::Instance()->Get_PhysicMgr()->Add_WheelToVehicleModel(m_pBodyModel, glm::vec3(-1.0f, 1.0f, -1.0f));
-    CSceneMgr::Instance()->Get_PhysicMgr()->Add_WheelToVehicleModel(m_pBodyModel, glm::vec3( 1.0f, 1.0f, -1.0f));
-    CSceneMgr::Instance()->Get_PhysicMgr()->Add_WheelToVehicleModel(m_pBodyModel, glm::vec3( 1.0f, 1.0f,  1.0f));
     m_pBodyModel->Add_DelegateOwner(this);
     CWorld::Instance()->Get_Level()->Get_Model()->Add_DelegateOwner(this);
 }
 
-void CCharacterControllerPlayer::Set_Position(const glm::vec3 &_vPosition)
+/*void CCharacterControllerPlayer::Set_Position(const glm::vec3 &_vPosition)
 {
     if(m_pBodyModel != NULL)
     {
@@ -134,7 +149,12 @@ void CCharacterControllerPlayer::Set_Position(const glm::vec3 &_vPosition)
     if(m_pFireEmmiter != NULL)
     {
         glm::vec3 vCenter = m_pLeftTrackModel->Get_BoundingBox()->Get_Center();
-        m_pFireEmmiter->Set_Position(glm::vec3(_vPosition.x + vCenter.x, _vPosition.y + vCenter.y, _vPosition.z + vCenter.z));
+        glm::vec4 vTransform = glm::vec4(vCenter.x, vCenter.y, vCenter.z, 1.0f);
+        glm::mat4x4 mRotation = glm::rotate(glm::mat4(1.0f), m_vRotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
+        mRotation = glm::rotate(mRotation, m_vRotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
+        mRotation = glm::rotate(mRotation, m_vRotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
+        vTransform = mRotation * vTransform;
+        m_pFireEmmiter->Set_Position(glm::vec3(_vPosition.x + vTransform.x, _vPosition.y + vTransform.y, _vPosition.z + vTransform.z));
     }
     if(m_pFireCross != NULL)
     {
@@ -167,7 +187,7 @@ void CCharacterControllerPlayer::Set_Rotation(const glm::vec3 &_vRotation)
         m_pShadowDecal->Set_Rotation(m_vRotation);
     }
     m_vRotation = _vRotation;
-}
+}*/
 
 void CCharacterControllerPlayer::OnTouchEvent(ITouchDelegate* _pDelegateOwner)
 {
@@ -182,87 +202,7 @@ void CCharacterControllerPlayer::Shoot(void)
 }
 
 void CCharacterControllerPlayer::Update(void)
-{
-    switch (m_eLeftTrackState)
-    {
-        case E_CHARACTER_CONTROLLER_STATE_NONE:
-        {
-            if(m_fLeftTrackMoveSpeed > 0.0f)
-            {
-                m_fLeftTrackMoveSpeed -= m_fMoveAcceleration;
-            }
-            else if(m_fLeftTrackMoveSpeed < 0.0f)
-            {
-                m_fLeftTrackMoveSpeed += m_fMoveAcceleration;
-            }
-        }
-            break;
-        case E_CHARACTER_CONTROLLER_STATE_INC_MOVE:
-            if(m_fLeftTrackMoveSpeed < m_fMaxMoveSpeed)
-            {
-                m_fLeftTrackMoveSpeed += m_fMoveAcceleration;
-            }
-            break;
-        case E_CHARACTER_CONTROLLER_STATE_DEC_MOVE:
-            if(m_fLeftTrackMoveSpeed > -m_fMaxMoveSpeed)
-            {
-                m_fLeftTrackMoveSpeed -= m_fMoveAcceleration;
-            }
-            break;
-        default:
-            break;
-    }
-    
-    switch (m_eRightTrackState)
-    {
-        case E_CHARACTER_CONTROLLER_STATE_NONE:
-        {
-            if(m_fRightTrackMoveSpeed > 0.0f)
-            {
-                m_fRightTrackMoveSpeed -= m_fMoveAcceleration;
-            }
-            else if(m_fRightTrackMoveSpeed < 0.0f)
-            {
-                m_fRightTrackMoveSpeed += m_fMoveAcceleration;
-            }
-        }
-            break;
-        case E_CHARACTER_CONTROLLER_STATE_INC_MOVE:
-            if(m_fRightTrackMoveSpeed < m_fMaxMoveSpeed)
-            {
-                m_fRightTrackMoveSpeed += m_fMoveAcceleration;
-            }
-            break;
-        case E_CHARACTER_CONTROLLER_STATE_DEC_MOVE:
-            if(m_fRightTrackMoveSpeed > -m_fMaxMoveSpeed)
-            {
-                m_fRightTrackMoveSpeed -= m_fMoveAcceleration;
-            }
-            break;
-        default:
-            break;
-    }
-    
-    m_fMoveSpeed = fabs(m_fLeftTrackMoveSpeed + m_fRightTrackMoveSpeed);
-    
-    if((m_fLeftTrackMoveSpeed + m_fRightTrackMoveSpeed) > 0.0f)
-    {
-        MoveForward();
-    }
-    else if ((m_fLeftTrackMoveSpeed + m_fRightTrackMoveSpeed) < 0.0f)
-    {
-        MoveBackward();
-    }
-    
-    if(m_fLeftTrackMoveSpeed > m_fRightTrackMoveSpeed)
-    {
-        SteerLeft();
-    }
-    else if(m_fRightTrackMoveSpeed > m_fLeftTrackMoveSpeed)
-    {
-        SteerRight();
-    }
-    
+{   
     m_fMoveSpeed = m_fMaxMoveSpeed;
     
     glm::vec2 vRightTrackTexCoordOffset = glm::vec2(0.0f, 0.0f);
@@ -274,9 +214,9 @@ void CCharacterControllerPlayer::Update(void)
     switch (m_eMoveState)
     {
         case ICharacterController::E_CHARACTER_CONTROLLER_MOVE_STATE_NONE:
-            if(pCamera->Get_FovY() > 45.0f)
+            if(pCamera->Get_FovY() > k_CAMERA_FOV_Y_STATE_NONE)
             {
-                //pCamera->Set_FovY(pCamera->Get_FovY() - 0.66f);
+                pCamera->Set_FovY(pCamera->Get_FovY() - k_CAMERA_FOV_Y_DELTA_STATE_NONE);
             }
             break;
         case ICharacterController::E_CHARACTER_CONTROLLER_MOVE_STATE_FORWARD:
@@ -286,9 +226,9 @@ void CCharacterControllerPlayer::Update(void)
             vRightTrackTexCoordOffset.x = m_pRightTrackModel->Get_TexCoordOffset().x - fTrackTexCoordOffsetMoveFactor;
             vLeftTrackTexCoordOffset.x = m_pLeftTrackModel->Get_TexCoordOffset().x - fTrackTexCoordOffsetMoveFactor;
             
-            if(pCamera->Get_FovY() < 55.0f)
+            if(pCamera->Get_FovY() < k_CAMERA_FOV_Y_STATE_FORWARD)
             {
-                //pCamera->Set_FovY(pCamera->Get_FovY() + 0.33f);
+                pCamera->Set_FovY(pCamera->Get_FovY() + k_CAMERA_FOV_Y_DELTA_STATE_FORWARD);
             }
             
             break;
@@ -299,9 +239,9 @@ void CCharacterControllerPlayer::Update(void)
             vRightTrackTexCoordOffset.x = m_pRightTrackModel->Get_TexCoordOffset().x + fTrackTexCoordOffsetMoveFactor;
             vLeftTrackTexCoordOffset.x = m_pLeftTrackModel->Get_TexCoordOffset().x + fTrackTexCoordOffsetMoveFactor;
             
-            if(pCamera->Get_FovY() > 45.0f)
+            if(pCamera->Get_FovY() > k_CAMERA_FOV_Y_STATE_BACKWARD)
             {
-                //pCamera->Set_FovY(pCamera->Get_FovY() - 0.99f);
+                pCamera->Set_FovY(pCamera->Get_FovY() - k_CAMERA_FOV_Y_DELTA_STATE_BACKWARD);
             }
             
             break;

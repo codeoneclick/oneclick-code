@@ -9,6 +9,7 @@
 #include <iostream>
 #include "CWorld.h"
 #include "CLightPoint.h"
+#include "CMathHelper.h"
 
 #define MATH_PI 3.14f
 
@@ -68,7 +69,8 @@ void CWorld::Load(void)
     CSceneMgr::Instance()->Set_Camera(m_pCamera);
     m_pCamera->Set_DistanceToLookAt(k_CAMERA_DISTANCE_MODE_1);
     m_pCamera->Set_HeightFromLookAt(k_CAMERA_HEIGHT_MODE_1);
-    m_iCurrentCameraHeight = k_CAMERA_HEIGHT_MODE_1;
+    m_fNeedCameraHeight = k_CAMERA_HEIGHT_MODE_1;
+    m_fCurrentCameraHeight = k_CAMERA_HEIGHT_MODE_1;
 }
 
 void CWorld::SwitchCameraMode(CWorld::E_CAMERA_MODE _eCameraMode)
@@ -103,25 +105,43 @@ void CWorld::Update(void)
     
     glm::vec3 vCameraPosition = m_pCamera->Get_Position();
     float fCameraHeight = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_HeightValue(vCameraPosition.x, vCameraPosition.z);
+    if(vCameraPosition.x <= 0.0f || vCameraPosition.z <= 0.0f || vCameraPosition.x >= (CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_Width() - 1.0f) || (vCameraPosition.z >= CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_Height() - 1.0f))
+    {
+         fCameraHeight = k_CAMERA_HEIGHT_OUT_MAP;
+    }
     
-    if(m_eCameraMode == E_CAMERA_MODE_1 && m_iCurrentCameraHeight > k_CAMERA_HEIGHT_MODE_1)
+    if(fCameraHeight < 0.0f)
     {
-        m_iCurrentCameraHeight -= k_CAMERA_DISPLACE_INC;
+        fCameraHeight = 0.0f;
     }
-    else if(m_eCameraMode == E_CAMERA_MODE_2 && m_iCurrentCameraHeight < k_CAMERA_HEIGHT_MODE_2)
+    
+    if(m_eCameraMode == E_CAMERA_MODE_1)
     {
-        m_iCurrentCameraHeight += k_CAMERA_DISPLACE_INC;
+        m_fNeedCameraHeight = k_CAMERA_HEIGHT_MODE_1 + fCameraHeight;
     }
-    m_pCamera->Set_HeightFromLookAt(m_iCurrentCameraHeight + fCameraHeight);
+    else if(m_eCameraMode == E_CAMERA_MODE_2)
+    {
+        m_fNeedCameraHeight = k_CAMERA_HEIGHT_MODE_2 + fCameraHeight;
+    }
+    
+    m_fCurrentCameraHeight = vCameraPosition.y;
+    
+    if(!CMathHelper::Instance()->IsFloatEqualWithDelta(m_fCurrentCameraHeight, m_fNeedCameraHeight, k_CAMERA_DISPLACE_INC * 1.33f) && m_fCurrentCameraHeight > m_fNeedCameraHeight)
+    {
+        m_fCurrentCameraHeight -= std::fabs(m_fCurrentCameraHeight - m_fNeedCameraHeight) * 0.1f;
+    }
+    else if(!CMathHelper::Instance()->IsFloatEqualWithDelta(m_fCurrentCameraHeight, m_fNeedCameraHeight, k_CAMERA_DISPLACE_INC * 1.33f) && m_fCurrentCameraHeight < m_fNeedCameraHeight)
+    {
+         m_fCurrentCameraHeight += std::fabs(m_fCurrentCameraHeight - m_fNeedCameraHeight) * 0.1f;
+    }
+    
+    m_pCamera->Set_HeightFromLookAt(m_fCurrentCameraHeight);
     
     glm::vec3 vCurrentCameraRotation = m_pCamera->Get_Rotation();
-    vCurrentCameraRotation.y = glm::radians(m_pCharacterControllerPlayer->Get_Rotation().y) - 1.57f;
+    vCurrentCameraRotation.y = glm::radians(m_pCharacterControllerPlayer->Get_Rotation().y) - CMathHelper::k_HALF_PI;
     glm::vec3 vOldCameraRotation = m_pCamera->Get_Rotation();
-    glm::vec3 vCameraRotation = glm::mix(vOldCameraRotation, vCurrentCameraRotation, 0.25f);
+    glm::vec3 vCameraRotation = glm::mix(vOldCameraRotation, vCurrentCameraRotation, k_CAMERA_ROTATION_LERP);
     m_pCamera->Set_Rotation(vCameraRotation);
-    
-    //CVector3d vLightPosition = CVector3d(m_pHero->Get_Model()->Get_Position().x, 8.0f, m_pHero->Get_Model()->Get_Position().z);
-    //m_pLight->Set_Position(vLightPosition);
 }
 
 

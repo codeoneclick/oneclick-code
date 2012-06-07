@@ -74,7 +74,7 @@ float ICharacterController::_GetRotationBetweenPoints(glm::vec3 _vPoint_01, glm:
 bool ICharacterController::MoveForward(void)
 {
     float fHeight = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_HeightValue(m_vPosition.x + sinf(glm::radians(m_vRotation.y)) * m_fMoveSpeed, m_vPosition.z + cosf(glm::radians(m_vRotation.y)) * m_fMoveSpeed);
-    if(fHeight < -0.15f)
+    if(fHeight < k_MIN_HEIGHTMAP_VALUE)
     {
         return false;
     }
@@ -87,7 +87,7 @@ bool ICharacterController::MoveForward(void)
 bool ICharacterController::MoveBackward(void)
 {
     float fHeight = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_HeightValue(m_vPosition.x - sinf(glm::radians(m_vRotation.y)) * m_fMoveSpeed, m_vPosition.z - cosf(glm::radians(m_vRotation.y)) * m_fMoveSpeed);
-    if(fHeight < -0.15f)
+    if(fHeight < k_MIN_HEIGHTMAP_VALUE)
     {
         return false;
     }
@@ -110,6 +110,124 @@ bool ICharacterController::SteerLeft(void)
     Set_Rotation(m_vRotation);
     return true;
 }
+
+
+void ICharacterController::Set_Position(const glm::vec3 &_vPosition)
+{
+    if(m_pBodyModel != NULL)
+    {
+        m_pBodyModel->Set_Position(_vPosition);
+    }
+    if(m_pTowerModel != NULL)
+    {
+        m_pTowerModel->Set_Position(_vPosition);
+    }
+    if(m_pLeftTrackModel != NULL)
+    {
+        m_pLeftTrackModel->Set_Position(_vPosition);
+    }
+    if(m_pRightTrackModel != NULL)
+    {
+        m_pRightTrackModel->Set_Position(_vPosition);
+    }
+    
+    
+    if(m_pShadowDecal != NULL)
+    {
+        m_pShadowDecal->Set_Position(glm::vec3(_vPosition.x, 0.0f, _vPosition.z));
+    }
+    if(m_pExhaustSmokeEmitter != NULL)
+    {
+        m_vBodyEmitterNodePosition = m_pBodyModel->Get_BoundingBox()->Get_Center();
+        m_vTransformHelper = glm::vec4(m_vBodyEmitterNodePosition.x, m_vBodyEmitterNodePosition.y, m_vBodyEmitterNodePosition.z - k_EXHAUST_EMITTER_OFFSET, 1.0f);
+        m_mRotationHelper = glm::rotate(glm::mat4(1.0f),   m_vRotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
+        m_mRotationHelper = glm::rotate(m_mRotationHelper, m_vRotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
+        m_mRotationHelper = glm::rotate(m_mRotationHelper, m_vRotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
+        m_vTransformHelper = m_mRotationHelper * m_vTransformHelper;
+        m_pExhaustSmokeEmitter->Set_Position(glm::vec3(_vPosition.x + m_vTransformHelper.x, _vPosition.y + m_vTransformHelper.y, _vPosition.z + m_vTransformHelper.z));
+    }
+    if(m_pFireCross != NULL)
+    {
+        m_vBodyEmitterNodePosition = m_pBodyModel->Get_BoundingBox()->Get_Center();
+        m_vTransformHelper = glm::vec4(m_vBodyEmitterNodePosition.x, m_vBodyEmitterNodePosition.y + k_CROSS_FIRE_HEIGHT, m_vBodyEmitterNodePosition.z + k_CROSS_FIRE_OFFSET, 1.0f);
+        m_mRotationHelper = glm::rotate(glm::mat4(1.0f),   m_vRotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
+        m_mRotationHelper = glm::rotate(m_mRotationHelper, m_vRotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
+        m_mRotationHelper = glm::rotate(m_mRotationHelper, m_fTowerRotationY, glm::vec3(0.0f, 1.0f, 0.0f));
+        m_vTransformHelper = m_mRotationHelper * m_vTransformHelper;
+        m_pFireCross->Set_Position(glm::vec3(_vPosition.x + m_vTransformHelper.x, _vPosition.y + m_vTransformHelper.y, _vPosition.z + m_vTransformHelper.z));
+    }
+    
+    /*if(m_pFireEmmiter != NULL)
+    {
+        glm::vec3 vCenter = m_pLeftTrackModel->Get_BoundingBox()->Get_Center();
+        glm::vec4 vTransform = glm::vec4(vCenter.x, vCenter.y, vCenter.z, 1.0f);
+        glm::mat4x4 mRotation = glm::rotate(glm::mat4(1.0f), m_vRotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
+        mRotation = glm::rotate(mRotation, m_vRotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
+        mRotation = glm::rotate(mRotation, m_vRotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
+        vTransform = mRotation * vTransform;
+        m_pFireEmmiter->Set_Position(glm::vec3(_vPosition.x + vTransform.x, _vPosition.y + vTransform.y, _vPosition.z + vTransform.z));
+    }*/
+        
+    m_vPosition = _vPosition;
+}
+
+void ICharacterController::Set_Rotation(const glm::vec3 &_vRotation)
+{
+    if(m_pBodyModel != NULL)
+    {
+        m_pBodyModel->Set_Rotation(_vRotation);
+    }
+    if(m_pTowerModel != NULL)
+    {
+        m_pTowerModel->Set_Rotation(glm::vec3(_vRotation.x, m_fTowerRotationY, _vRotation.z));
+    }
+    if(m_pLeftTrackModel != NULL)
+    {
+        m_pLeftTrackModel->Set_Rotation(_vRotation);
+    }
+    if(m_pRightTrackModel != NULL)
+    {
+        m_pRightTrackModel->Set_Rotation(_vRotation);
+    }
+    if(m_pShadowDecal != NULL)
+    {
+        m_pShadowDecal->Set_Rotation(m_vRotation);
+    }
+    if(m_pFireCross != NULL)
+    {
+        m_pFireCross->Set_Rotation(glm::vec3(_vRotation.x, m_fTowerRotationY, _vRotation.z));
+    }
+    m_vRotation = _vRotation;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

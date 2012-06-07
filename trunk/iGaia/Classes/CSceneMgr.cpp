@@ -125,7 +125,7 @@ void CSceneMgr::Set_Camera(ICamera* _pCamera)
 {
     m_pCamera = _pCamera;
     m_pFrustum = new CFrustum();
-    m_pFrustum->Set_InternalParams(m_pCamera->Get_FovY(), m_pCamera->Get_AspectRatio(), m_pCamera->Get_NearPlane(), m_pCamera->Get_FarPlane());
+    m_pFrustum->Set_InternalParams(60.0f, m_pCamera->Get_AspectRatio(), m_pCamera->Get_NearPlane(), m_pCamera->Get_FarPlane());
     m_pFrustum->Set_CameraRef(m_pCamera);
 }
 

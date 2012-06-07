@@ -121,7 +121,7 @@ float CHeightMapSetter::Get_HeightValue(float _x, float _z)
     float dy = _z - z;
     
     if((x <= 0) || (z <= 0) || (x >= (m_iWidth - 1)) || (z >= (m_iHeight - 1)))
-        return -1.0f;
+        return -16.0f;
     
     float fHeight_00 = m_pDataSource[x + z * m_iWidth];
     float fHeight_01 = m_pDataSource[x + (z + 1) * m_iWidth];
