@@ -185,6 +185,7 @@ void CCharacterControllerEnemy::Update(void)
             glm::vec2 vRotationOnHeightMap = _Get_RotationOnHeightmap(m_vPosition);
             m_vRotation.x = -glm::degrees(vRotationOnHeightMap.x);
             m_vRotation.z =  glm::degrees(vRotationOnHeightMap.y);
+            m_vRotation.y =  glm::degrees(_GetRotationBetweenPoints(m_vTargetPoint, m_vPosition) - 1.57f);
             Set_Rotation(m_vRotation);
             
             float fTowerTargetAngle = _GetRotationBetweenPoints(m_vPosition, m_vTargetPoint);

@@ -690,7 +690,7 @@
 		A100AB7215775CCE003BB7BA /* CVertexBufferPositionTexcoordColor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CVertexBufferPositionTexcoordColor.cpp; sourceTree = "<group>"; };
 		A100AB7315775CCE003BB7BA /* CVertexBufferPositionTexcoordColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVertexBufferPositionTexcoordColor.h; sourceTree = "<group>"; };
 		A100AB7B15776E57003BB7BA /* CParticleEmitterFire.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CParticleEmitterFire.cpp; sourceTree = "<group>"; };
-		A100AB7C15776E57003BB7BA /* CParticleEmitterFire.h */ = {isa = PBXFileReference; fileEncoding = 4; path = CParticleEmitterFire.h; sourceTree = "<group>"; };
+		A100AB7C15776E57003BB7BA /* CParticleEmitterFire.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CParticleEmitterFire.h; sourceTree = "<group>"; };
 		A100AB8215777FC3003BB7BA /* CBillboard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CBillboard.cpp; sourceTree = "<group>"; };
 		A100AB8315777FC3003BB7BA /* CBillboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBillboard.h; sourceTree = "<group>"; };
 		A100AB8615777FD8003BB7BA /* CSpriteCross.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CSpriteCross.cpp; sourceTree = "<group>"; };
@@ -1972,11 +1972,11 @@
 				GCC_THUMB_SUPPORT = NO;
 				HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}\"/**";
 				INFOPLIST_FILE = Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				PRODUCT_NAME = iGaia;
 				PROVISIONING_PROFILE = "CD9430FE-2575-48EE-B662-645884640140";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -1998,11 +1998,11 @@
 				GCC_THUMB_SUPPORT = NO;
 				HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}\"/**";
 				INFOPLIST_FILE = Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				PRODUCT_NAME = iGaia;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
