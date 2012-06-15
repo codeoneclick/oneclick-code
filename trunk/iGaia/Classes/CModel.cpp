@@ -177,7 +177,7 @@ void CModel::Render(CShader::E_RENDER_MODE _eMode)
     
     if(m_pBoundingBox != NULL && CShader::E_RENDER_MODE_SIMPLE == _eMode)
     {
-        m_pBoundingBox->Render();
+        //m_pBoundingBox->Render();
     }
 
 }

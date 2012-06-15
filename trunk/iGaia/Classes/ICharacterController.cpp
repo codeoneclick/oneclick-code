@@ -10,6 +10,8 @@
 #include "ICharacterController.h"
 #include "CSceneMgr.h"
 
+#define M_PI 3.14159265358979323846264338327950288
+
 ICharacterController::ICharacterController(void)
 {
     m_eMoveState = E_CHARACTER_CONTROLLER_MOVE_STATE_NONE;
@@ -46,27 +48,14 @@ glm::vec2 ICharacterController::_Get_RotationOnHeightmap(glm::vec3 _vPosition)
 
 float ICharacterController::_GetRotationBetweenPoints(glm::vec3 _vPoint_01, glm::vec3 _vPoint_02)
 {
-    float fVectorLength = sqrt(pow(_vPoint_02.x - _vPoint_01.x, 2) + pow(_vPoint_02.z - _vPoint_01.z, 2));
-    float fAngle_01 = 3.14f * (_vPoint_02.x - _vPoint_01.x) / fVectorLength;
-    float fAngle_02 = 3.14f * (_vPoint_02.z - _vPoint_01.z) / fVectorLength;
+    float fVectorLength = sqrtf(pow(_vPoint_02.x - _vPoint_01.x, 2) + pow(_vPoint_02.z - _vPoint_01.z, 2));
+    float fAngle_01 = M_PI * (_vPoint_02.x - _vPoint_01.x) / fVectorLength;
+    float fAngle_02 = M_PI * (_vPoint_02.z - _vPoint_01.z) / fVectorLength;
     float fAngle_03 = 0.0f;
     if (fAngle_01 > 0.0f)
-        fAngle_03 = fAngle_02 / 2.0f;
+        fAngle_03 =  fAngle_02 / 2.0f;
     if (fAngle_01 < 0.0f)
-        fAngle_03 = -fAngle_02 / 2.0f - 3.14f;
-    
-    //
-    
-    //glm::vec2 vPoint_03 = glm::vec2(0.0f, 1.0f);
-    glm::vec2 vPoint_01 = glm::vec2(_vPoint_01.x, _vPoint_01.z);
-    vPoint_01 = glm::normalize(vPoint_01);
-    glm::vec2 vPoint_02 = glm::vec2(_vPoint_02.x, _vPoint_02.z);
-    vPoint_02 = glm::normalize(vPoint_02);
-    float fDot = glm::dot(vPoint_01, vPoint_02);
-    float fTempAngle = acosf(fDot);
-    //std::cout<<"[ICharacterController::_GetRotationBetweenPoints] DOT PRODUCT : "<<fDot<<::std::endl;
-    //std::cout<<"[ICharacterController::_GetRotationBetweenPoints] DOT angle : "<<glm::degrees(fTempAngle)<<::std::endl;
-    //std::cout<<"[ICharacterController::_GetRotationBetweenPoints] TRIANGLE angle : "<<glm::degrees(fAngle_03)<<::std::endl;
+        fAngle_03 = -fAngle_02 / 2.0f - M_PI;
     return -fAngle_03;
 }
 

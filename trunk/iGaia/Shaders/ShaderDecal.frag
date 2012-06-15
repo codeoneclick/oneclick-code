@@ -15,8 +15,8 @@ const char* ShaderDecalF = STRINGIFY(
 void main(void)
 {
     lowp float fRadius = 2.0;
-    lowp vec3 UVector = vec3(1.0, 0.0, 0.0) / (2.0 * fRadius);
-    lowp vec3 VVector = vec3(0.0, 0.0, 1.0) / (2.0 * fRadius);
+    lowp vec3 UVector = vec3(1.0, 0.0, 0.0) / (fRadius);
+    lowp vec3 VVector = vec3(0.0, 0.0, 1.0) / (fRadius);
     lowp vec2 vTexCoord;
     vTexCoord.x = dot(OUT_WorldPosition - EXT_CenterPosition, UVector);
     vTexCoord.y = dot(OUT_WorldPosition - EXT_CenterPosition, VVector);

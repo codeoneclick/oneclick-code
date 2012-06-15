@@ -142,7 +142,7 @@ void CCharacterControllerPlayer::Shoot(void)
 {
     CWorld::Instance()->Get_GameShooterMgr()->CreateBullet(glm::vec3(m_vPosition.x + sinf(glm::radians(m_fTowerRotationY)) * 1.8f, m_vPosition.y + 1.6f, m_vPosition.z + cosf(glm::radians(m_fTowerRotationY)) * 2.0f), glm::vec3(m_vPosition.x, m_vPosition.y + 1.8f, m_vPosition.z), m_pTowerModel->Get_Rotation());
     m_pFireCross->Enable();
-    m_iLastCrossFireTime = CTimer::Instance()->Get_TickCount();
+    //m_iLastCrossFireTime = CTimer::Instance()->Get_TickCount();
 }
 
 void CCharacterControllerPlayer::Update(void)
