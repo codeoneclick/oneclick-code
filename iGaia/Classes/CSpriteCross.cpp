@@ -18,6 +18,7 @@ CSpriteCross::CSpriteCross(void)
     m_vSize = glm::vec2(1.0f, 1.0f);
     m_iNumFrames = 0;
     m_iCurrentFrame = 0;
+    m_bIsEnable = false;
 }
 
 CSpriteCross::~CSpriteCross(void)
@@ -127,8 +128,27 @@ void CSpriteCross::OnTouchEvent(ITouchDelegate *_pDelegateOwner)
     
 }
 
+void CSpriteCross::Enable(void)
+{
+    if(!m_bIsEnable)
+    {
+        m_iCurrentFrame = 0;
+    }
+    m_bIsEnable = true;
+}
+
+void CSpriteCross::Disable(void)
+{
+    m_bIsEnable = false;
+}
+
 void CSpriteCross::Update(void)
 {
+    if(!m_bIsEnable)
+    {
+        return;
+    }
+    
     INode::Update();
     
     m_iCurrentFrame++;
@@ -154,6 +174,11 @@ void CSpriteCross::Update(void)
 
 void CSpriteCross::Render(CShader::E_RENDER_MODE _eMode)
 {
+    if(!m_bIsEnable)
+    {
+        return;
+    }
+    
     INode::Render(_eMode);
     
     glDisable(GL_CULL_FACE);

@@ -33,7 +33,7 @@ CScreenSpacePostMgr::CScreenSpacePostMgr(void)
     glGenTextures(E_OFFSCREEN_MODE_MAX, m_hOffScreenTextures);
     glGenTextures(E_OFFSCREEN_MODE_MAX, m_hOffScreenDepthTextures);
     glGenFramebuffers(E_OFFSCREEN_MODE_MAX, m_hOffScreenFBOs);
-    //glGenRenderbuffers(E_OFFSCREEN_MODE_MAX, m_hOffScreenDepthBuffers);
+    glGenRenderbuffers(E_OFFSCREEN_MODE_MAX, m_hOffScreenDepthBuffers);
     
     for(unsigned int i = 0; i < E_OFFSCREEN_MODE_MAX; ++i)
     {
@@ -79,11 +79,11 @@ CScreenSpacePostMgr::CScreenSpacePostMgr(void)
         glBindFramebuffer(GL_FRAMEBUFFER, m_hOffScreenFBOs[i]);
 		
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_hOffScreenTextures[i],0);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,  GL_TEXTURE_2D, m_hOffScreenDepthTextures[i], 0);
+		//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,  GL_TEXTURE_2D, m_hOffScreenDepthTextures[i], 0);
         
-		//glBindRenderbuffer(GL_RENDERBUFFER, m_hOffScreenDepthBuffers[i]);
-		//glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, m_pOffScreenSize[i].x, m_pOffScreenSize[i].y);
-		//glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_hOffScreenDepthBuffers[i]);
+		glBindRenderbuffer(GL_RENDERBUFFER, m_hOffScreenDepthBuffers[i]);
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, m_pOffScreenSize[i].x, m_pOffScreenSize[i].y);
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_hOffScreenDepthBuffers[i]);
 
 		if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		{

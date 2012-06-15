@@ -24,6 +24,9 @@ protected:
         glm::vec3 m_vVelocity;
         glm::vec3 m_vDirection;
         glm::u8vec4 m_vColor;
+        glm::vec3 m_vLastPosition;
+        glm::vec3 m_vStartPosition;
+        glm::vec3 m_vEndPosition;
         int m_iTime;
     };
     SParticle* m_pParticles;
@@ -32,9 +35,10 @@ protected:
     glm::vec2 m_vMinSize;
     glm::vec2 m_vMaxSize;
     int m_iLifeTime;
+    bool m_bIsEnable;
+    float m_fMaxY;
 
     float _Get_RandomFromRange(float _fMin, float _fMax);
-    uint64_t _Get_TickCount(void);
 public:
     CParticleEmitter(void);
     virtual ~CParticleEmitter(void);
@@ -50,6 +54,10 @@ public:
     void Set_MinSize(glm::vec2 _vSize) { m_vMinSize = _vSize; }
     void Set_MaxSize(glm::vec2 _vSize) { m_vMaxSize = _vSize; }
     void Set_LifeTime(int _fTime) { m_iLifeTime = _fTime; }
+void Set_MaxY(float _fMaxY) { m_fMaxY = _fMaxY; }
+
+    void Enable(void);
+    void Disable(void);
 };
 
 #endif /* defined(__iGaia__CParticleEmitter__) */

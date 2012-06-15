@@ -17,7 +17,7 @@ class CBullet
 protected:
     glm::vec3 m_vPosition;
     glm::vec3 m_vRotation;
-    CParticleEmitter* m_pFireEmmiter;
+    CParticleEmitterFireTrail* m_pFireEmmiter;
     CParticleEmitter* m_pExplosionEmitter;
     INode* m_pModel;
     glm::vec3 m_vStartPoint;

@@ -56,6 +56,14 @@ protected:
     bool m_bIsRenderModeShadowMapEnable;
     
     std::vector<IDelegate*> m_lDelegateOwners;
+    
+    float _Get_WrapAngle(float _fValue, float _fMin, float _fMax)
+    {
+        float fDistance = _fMax - _fMin;
+        float fTimes = static_cast<float>(floorf((_fValue - _fMin) / fDistance));
+        return _fValue - (fTimes * fDistance);
+    }
+    
 public:
     INode(void);
     virtual ~INode(void);
@@ -76,7 +84,13 @@ public:
     void Set_Position(const glm::vec3& _vPosition) { m_vPosition = _vPosition; }
     glm::vec3 Get_Position(void) { return m_vPosition; }
     
-    void Set_Rotation(const glm::vec3& _vRotation) { m_vRotation = _vRotation; }
+    void Set_Rotation(const glm::vec3& _vRotation)
+    {
+        m_vRotation = _vRotation;
+        m_vRotation.x = _Get_WrapAngle(m_vRotation.x, 0.0f, 360.0f);
+        m_vRotation.y = _Get_WrapAngle(m_vRotation.y, 0.0f, 360.0f);
+        m_vRotation.z = _Get_WrapAngle(m_vRotation.z, 0.0f, 360.0f);
+    }
     glm::vec3 Get_Rotation(void) { return m_vRotation; }
     
     void Set_Scale(const glm::vec3& _vScale) { m_vScale = _vScale; }

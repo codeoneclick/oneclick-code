@@ -17,10 +17,15 @@
 #include <time.h>
 
 #define k_MIN_HEIGHTMAP_VALUE -8.0f
-#define k_EXHAUST_EMITTER_OFFSET  1.5f
-#define k_EXHAUST_EMITTER_HEIGHT  1.5f
+#define k_EXHAUST_EMITTER_OFFSET_X  0.25f
+#define k_EXHAUST_EMITTER_OFFSET_Z  1.25f
+#define k_EXHAUST_EMITTER_HEIGHT  0.75f
 #define k_CROSS_FIRE_OFFSET 1.5f
 #define k_CROSS_FIRE_HEIGHT 0.75f
+#define k_TRACK_EMITTER_HEIGHT 0.1f
+#define k_TOWER_EMITTER_HEIGHT 0.75f
+
+#define k_CROSS_FIRE_TIME_MAX 1000
 
 class ICharacterController : public ITouchDelegate
 {
@@ -47,33 +52,43 @@ protected:
     E_CHARACTER_CONTROLLER_STEER_STATE m_eSteerState;
     E_CHARACTER_CONTROLLER_STEER_TOWER_STATE m_eSteerTowerState;
     
+    int m_iLastCrossFireTime;
     
     CModel* m_pBodyModel;
     CModel* m_pTowerModel;
     CModel* m_pLeftTrackModel;
     CModel* m_pRightTrackModel;
     
-    CParticleEmitter* m_pExhaustSmokeEmitter;
+    CParticleEmitter* m_pLeftExhaustSmokeEmitter;
+    CParticleEmitter* m_pRightExhaustSmokeEmitter;
     CDecal* m_pShadowDecal;
     CSpriteCross* m_pFireCross;
     
     CParticleEmitter* m_pLeftTrackSmokeEmitter;
     CParticleEmitter* m_pRightTrackSmokeEmitter;
-    CParticleEmitter* m_pBodySmokeEmitter;
+    CParticleEmitter* m_pTowerSmokeEmitter;
     
     CParticleEmitter* m_pLeftTrackFireEmitter;
     CParticleEmitter* m_pRightTrackFireEmitter;
-    CParticleEmitter* m_pBodyFireEmitter;
+    CParticleEmitter* m_pTowerFireEmitter;
     
     glm::vec3 m_vLeftTrackEmitterNodePosition;
     glm::vec3 m_vRightTrackEmitterNodePosition;
-    glm::vec3 m_vBodyEmitterNodePosition;
+    glm::vec3 m_vTowerEmitterNodePosition;
     
-    glm::vec3 m_vExhaustEmitterPosition;
+    glm::vec3 m_vLeftExhaustEmitterPosition;
+    glm::vec3 m_vRightExhaustEmitterPosition;
     glm::vec3 m_vFireCrossEffectPosition;
     
     glm::vec4 m_vTransformHelper;
     glm::mat4x4 m_mRotationHelper;
+    
+    inline float _Get_WrapAngle(float _fValue, float _fMin, float _fMax)
+    {
+        float fDistance = _fMax - _fMin;
+        float fTimes = static_cast<float>(floorf((_fValue - _fMin) / fDistance));
+        return _fValue - (fTimes * fDistance);
+    }
 
 public:
     ICharacterController(void);

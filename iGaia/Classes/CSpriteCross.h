@@ -34,6 +34,8 @@ protected:
     unsigned int m_iNumFrames;
     unsigned int m_iCurrentFrame;
 
+    bool m_bIsEnable;
+
     SFrame* m_pSequence;
 public:
     CSpriteCross(void);
@@ -59,6 +61,9 @@ public:
 
     inline void Set_TexcoordOffset(const glm::vec2& _vOffset) { m_vTexcoordOffset = _vOffset; }
     inline void Set_TexcoordRepeat(const glm::vec2& _vRepeat) { m_vTexcoordRepeat = _vRepeat; }
+
+    void Enable(void);
+    void Disable(void);
 };
 
 

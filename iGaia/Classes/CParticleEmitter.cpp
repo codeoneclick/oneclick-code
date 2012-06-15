@@ -15,7 +15,9 @@
 CParticleEmitter::CParticleEmitter(void)
 {
     m_iNumParticles = 2;
+    m_fMaxY = 1.0f;
     m_pParticles = NULL;
+    m_bIsEnable = false;
 }
 
 CParticleEmitter::~CParticleEmitter(void)
@@ -41,7 +43,7 @@ void CParticleEmitter::Load(const std::string& _sName, IResource::E_THREAD _eThr
     {
         m_pParticles[index].m_vPosition = glm::vec3(0.0f, 0.0f, 0.0f);
         m_pParticles[index].m_vVelocity = glm::vec3(0.0f, 0.0f, 0.0f);
-        m_pParticles[index].m_vColor = glm::u8vec4(0, 0, 0, 0);
+        m_pParticles[index].m_vColor = glm::u8vec4(255, 255, 255, 255);
         m_pParticles[index].m_iTime = 0;
         m_pParticles[index].m_vSize = m_vMinSize;
         
@@ -106,18 +108,23 @@ void CParticleEmitter::OnTouchEvent(ITouchDelegate *_pDelegateOwner)
     
 }
 
-uint64_t CParticleEmitter::_Get_TickCount(void)
+void CParticleEmitter::Enable(void)
 {
-    static mach_timebase_info_data_t sTimebaseInfo;
-    uint64_t machTime = mach_absolute_time();
-    
-    if (sTimebaseInfo.denom == 0 )
+    /*if(!m_bIsEnable)
     {
-        (void)mach_timebase_info(&sTimebaseInfo);
-    }
-    
-    uint64_t millis = ((machTime / 1000000) * sTimebaseInfo.numer) / sTimebaseInfo.denom;
-    return millis;
+        for(unsigned short i = 0; i < m_iNumParticles; i++)
+        {
+            m_pParticles[i].m_vPosition = glm::vec3(0.0f, 0.0f, 0.0f);
+            m_pParticles[i].m_vSize = m_vMinSize;
+            m_pParticles[i].m_iTime = _Get_TickCount();
+        }
+    }*/
+    m_bIsEnable = true;
+}
+
+void CParticleEmitter::Disable(void)
+{
+    m_bIsEnable = false;
 }
 
 void CParticleEmitter::Update(void)

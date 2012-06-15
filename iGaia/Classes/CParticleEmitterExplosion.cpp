@@ -7,6 +7,7 @@
 //
 
 #include "CParticleEmitterExplosion.h"
+#include "CTimer.h"
 
 CParticleEmitterExplosion::CParticleEmitterExplosion(void)
 {
@@ -65,15 +66,20 @@ void CParticleEmitterExplosion::Update(void)
         vPosition.y += m_fMoveSpeed;
         m_pParticles[i].m_vPosition = vPosition;
         m_pParticles[i].m_vSize += m_vMinSize;
-        int iCurrentTime = _Get_TickCount();
-        if(m_pParticles[i].m_vPosition.y > 1.5f)
+        int iCurrentTime = CTimer::Instance()->Get_TickCount();
+        if(m_pParticles[i].m_vPosition.y > 1.5f && m_bIsEnable)
         {
             m_pParticles[i].m_vPosition.y = 0.0f;
             m_pParticles[i].m_vSize = m_vMinSize;
             if((iCurrentTime - m_pParticles[i].m_iTime) > m_iLifeTime)
             {
-                m_pParticles[i].m_iTime = _Get_TickCount();
+                m_pParticles[i].m_iTime = CTimer::Instance()->Get_TickCount();
             }
+            m_pParticles[i].m_vColor.a = 255;
+        }
+        else if(!m_bIsEnable && m_pParticles[i].m_vColor.a > 0)
+        {
+            m_pParticles[i].m_vColor.a -= 1;
         }
     }
     CParticleEmitter::Update();
