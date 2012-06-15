@@ -82,6 +82,12 @@
 #include "../Shaders/ShaderGrass.vert"
 #include "../Shaders/ShaderGrass.frag"
 
+#include "../Shaders/ShaderParticleEmitter.vert"
+#include "../Shaders/ShaderParticleEmitter.frag"
+
+#include "../Shaders/ShaderPreNormalDepthParticleEmitter.vert"
+#include "../Shaders/ShaderPreNormalDepthParticleEmitter.frag"
+
 CShaderComposite* CShaderComposite::m_pInstance = NULL;
 
 CShaderComposite::CShaderComposite()
@@ -184,6 +190,14 @@ CShaderComposite::CShaderComposite()
     pData = pParser->Load(ShaderGrassV, ShaderGrassF);
     pShader = new CShader(pData.s_pHandle);
     m_lContainer[IResource::E_SHADER_GRASS] = pShader;
+    
+    pData = pParser->Load(ShaderParticleEmitterV, ShaderParticleEmitterF);
+    pShader = new CShader(pData.s_pHandle);
+    m_lContainer[IResource::E_SHADER_PARTICLE_EMITTER] = pShader;
+    
+    pData = pParser->Load(ShaderPreNormalDepthParticleEmitterV, ShaderPreNormalDepthParticleEmitterF);
+    pShader = new CShader(pData.s_pHandle);
+    m_lContainer[IResource::E_SHADER_PRE_NORMAL_DEPTH_PARTICLE_EMITTER] = pShader;
 }
 
 CShaderComposite::~CShaderComposite()

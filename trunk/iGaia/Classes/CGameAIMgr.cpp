@@ -52,9 +52,9 @@ void CGameAIMgr::Update(void)
         CCharacterControllerEnemy::E_AI_STATE eState = (*pBeginIterator)->Get_AIState();
         if(eState == CCharacterControllerEnemy::E_AI_STATE_NONE)
         {
-            (*pBeginIterator)->Set_AIState(CCharacterControllerEnemy::E_AI_STATE_MOVE, 0);
             glm::vec2 vGeneratedPoint = _GenerateMovePoint();
             (*pBeginIterator)->Set_AITargetPoint(glm::vec3(vGeneratedPoint.x, 0.0f, vGeneratedPoint.y));
+            (*pBeginIterator)->Set_AIState(CCharacterControllerEnemy::E_AI_STATE_MOVE, 0);
         }
         ++pBeginIterator;
     }

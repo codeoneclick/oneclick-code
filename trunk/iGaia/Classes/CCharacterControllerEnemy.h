@@ -17,17 +17,20 @@ class CCharacterControllerEnemy : public ICharacterController
 public:
     enum E_AI_STATE { E_AI_STATE_NONE = 0, E_AI_STATE_STAND, E_AI_STATE_MOVE, E_AI_STATE_CHASE, E_AI_STATE_CHASE_ATTACK, E_AI_STATE_BACK, E_AI_STATE_BACK_ATTACK };
 protected:
-    CModel* m_pBodyModel;
-    CModel* m_pTowerModel;
-    CModel* m_pLeftTrackModel;
-    CModel* m_pRightTrackModel;
     E_AI_STATE m_eState;
     long m_iAIStateDuration;
     long m_iAIStateTimeStamp;
     glm::vec3 m_vTargetPoint;
+    glm::vec3 m_vMoveDirection;
     
     long _Get_TimeStamp(void);
     bool _IsStateTimeElapsed(void);
+    
+    bool _MoveForwardAI(void);
+    bool _MoveBackwardAI(void);
+    bool _SteerRightAI(void);
+    bool _SteerLeftAI(void);
+
 public:
     CCharacterControllerEnemy(void);
     ~CCharacterControllerEnemy(void);

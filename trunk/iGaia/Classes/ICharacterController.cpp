@@ -136,26 +136,68 @@ void ICharacterController::Set_Position(const glm::vec3 &_vPosition)
     {
         m_pShadowDecal->Set_Position(glm::vec3(_vPosition.x, 0.0f, _vPosition.z));
     }
-    if(m_pExhaustSmokeEmitter != NULL)
+    if(m_pLeftExhaustSmokeEmitter != NULL)
     {
-        m_vBodyEmitterNodePosition = m_pBodyModel->Get_BoundingBox()->Get_Center();
-        m_vTransformHelper = glm::vec4(m_vBodyEmitterNodePosition.x, m_vBodyEmitterNodePosition.y, m_vBodyEmitterNodePosition.z - k_EXHAUST_EMITTER_OFFSET, 1.0f);
+        m_vTowerEmitterNodePosition = m_pBodyModel->Get_BoundingBox()->Get_Center();
+        m_vTransformHelper = glm::vec4(m_vTowerEmitterNodePosition.x + k_EXHAUST_EMITTER_OFFSET_X, m_vTowerEmitterNodePosition.y, m_vTowerEmitterNodePosition.z - k_EXHAUST_EMITTER_OFFSET_Z, 1.0f);
         m_mRotationHelper = glm::rotate(glm::mat4(1.0f),   m_vRotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
         m_mRotationHelper = glm::rotate(m_mRotationHelper, m_vRotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
         m_mRotationHelper = glm::rotate(m_mRotationHelper, m_vRotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
         m_vTransformHelper = m_mRotationHelper * m_vTransformHelper;
-        m_pExhaustSmokeEmitter->Set_Position(glm::vec3(_vPosition.x + m_vTransformHelper.x, _vPosition.y + m_vTransformHelper.y, _vPosition.z + m_vTransformHelper.z));
+        m_pLeftExhaustSmokeEmitter->Set_Position(glm::vec3(_vPosition.x + m_vTransformHelper.x, _vPosition.y + m_vTransformHelper.y + k_EXHAUST_EMITTER_HEIGHT, _vPosition.z + m_vTransformHelper.z));
+    }
+    if(m_pRightExhaustSmokeEmitter != NULL)
+    {
+        m_vTowerEmitterNodePosition = m_pBodyModel->Get_BoundingBox()->Get_Center();
+        m_vTransformHelper = glm::vec4(m_vTowerEmitterNodePosition.x - k_EXHAUST_EMITTER_OFFSET_X, m_vTowerEmitterNodePosition.y + k_EXHAUST_EMITTER_HEIGHT, m_vTowerEmitterNodePosition.z - k_EXHAUST_EMITTER_OFFSET_Z, 1.0f);
+        m_mRotationHelper = glm::rotate(glm::mat4(1.0f),   m_vRotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
+        m_mRotationHelper = glm::rotate(m_mRotationHelper, m_vRotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
+        m_mRotationHelper = glm::rotate(m_mRotationHelper, m_vRotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
+        m_vTransformHelper = m_mRotationHelper * m_vTransformHelper;
+        m_pRightExhaustSmokeEmitter->Set_Position(glm::vec3(_vPosition.x + m_vTransformHelper.x, _vPosition.y + m_vTransformHelper.y, _vPosition.z + m_vTransformHelper.z));
     }
     if(m_pFireCross != NULL)
     {
-        m_vBodyEmitterNodePosition = m_pBodyModel->Get_BoundingBox()->Get_Center();
-        m_vTransformHelper = glm::vec4(m_vBodyEmitterNodePosition.x, m_vBodyEmitterNodePosition.y + k_CROSS_FIRE_HEIGHT, m_vBodyEmitterNodePosition.z + k_CROSS_FIRE_OFFSET, 1.0f);
+        m_vTowerEmitterNodePosition = m_pBodyModel->Get_BoundingBox()->Get_Center();
+        m_vTransformHelper = glm::vec4(m_vTowerEmitterNodePosition.x, m_vTowerEmitterNodePosition.y + k_CROSS_FIRE_HEIGHT, m_vTowerEmitterNodePosition.z + k_CROSS_FIRE_OFFSET, 1.0f);
         m_mRotationHelper = glm::rotate(glm::mat4(1.0f),   m_vRotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
         m_mRotationHelper = glm::rotate(m_mRotationHelper, m_vRotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
         m_mRotationHelper = glm::rotate(m_mRotationHelper, m_fTowerRotationY, glm::vec3(0.0f, 1.0f, 0.0f));
         m_vTransformHelper = m_mRotationHelper * m_vTransformHelper;
         m_pFireCross->Set_Position(glm::vec3(_vPosition.x + m_vTransformHelper.x, _vPosition.y + m_vTransformHelper.y, _vPosition.z + m_vTransformHelper.z));
     }
+    if(m_pLeftTrackFireEmitter != NULL)
+    {
+        m_vLeftTrackEmitterNodePosition = m_pLeftTrackModel->Get_BoundingBox()->Get_Center();
+        m_vTransformHelper = glm::vec4(m_vLeftTrackEmitterNodePosition.x, m_vLeftTrackEmitterNodePosition.y + k_TRACK_EMITTER_HEIGHT, m_vLeftTrackEmitterNodePosition.z, 1.0f);
+        m_mRotationHelper = glm::rotate(glm::mat4(1.0f),   m_vRotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
+        m_mRotationHelper = glm::rotate(m_mRotationHelper, m_vRotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
+        m_mRotationHelper = glm::rotate(m_mRotationHelper, m_vRotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
+        m_vTransformHelper = m_mRotationHelper * m_vTransformHelper;
+        m_pLeftTrackFireEmitter->Set_Position(glm::vec3(_vPosition.x + m_vTransformHelper.x, _vPosition.y + m_vTransformHelper.y, _vPosition.z + m_vTransformHelper.z));
+    }
+    if(m_pRightTrackFireEmitter != NULL)
+    {
+        m_vRightTrackEmitterNodePosition = m_pRightTrackModel->Get_BoundingBox()->Get_Center();
+        m_vTransformHelper = glm::vec4(m_vRightTrackEmitterNodePosition.x, m_vRightTrackEmitterNodePosition.y + k_TRACK_EMITTER_HEIGHT, m_vRightTrackEmitterNodePosition.z, 1.0f);
+        m_mRotationHelper = glm::rotate(glm::mat4(1.0f),   m_vRotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
+        m_mRotationHelper = glm::rotate(m_mRotationHelper, m_vRotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
+        m_mRotationHelper = glm::rotate(m_mRotationHelper, m_vRotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
+        m_vTransformHelper = m_mRotationHelper * m_vTransformHelper;
+        m_pRightTrackFireEmitter->Set_Position(glm::vec3(_vPosition.x + m_vTransformHelper.x, _vPosition.y + m_vTransformHelper.y, _vPosition.z + m_vTransformHelper.z));
+    }
+    if(m_pTowerFireEmitter != NULL)
+    {
+        m_vTowerEmitterNodePosition = m_pBodyModel->Get_BoundingBox()->Get_Center();
+        m_vTransformHelper = glm::vec4(m_vTowerEmitterNodePosition.x, m_vTowerEmitterNodePosition.y + k_TOWER_EMITTER_HEIGHT, m_vTowerEmitterNodePosition.z, 1.0f);
+        m_mRotationHelper = glm::rotate(glm::mat4(1.0f),   m_vRotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
+        m_mRotationHelper = glm::rotate(m_mRotationHelper, m_vRotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
+        m_mRotationHelper = glm::rotate(m_mRotationHelper, m_vRotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
+        m_vTransformHelper = m_mRotationHelper * m_vTransformHelper;
+        m_pTowerFireEmitter->Set_Position(glm::vec3(_vPosition.x + m_vTransformHelper.x, _vPosition.y + m_vTransformHelper.y, _vPosition.z + m_vTransformHelper.z));
+    }
+
+
     
     /*if(m_pFireEmmiter != NULL)
     {

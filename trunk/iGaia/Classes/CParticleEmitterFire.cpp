@@ -1,24 +1,25 @@
 //
-//  CParticleEmmiterFire.cpp
+//  ~CParticleEmitterFire.cpp
 //  iGaia
 //
 //  Created by sergey sergeev on 5/31/12.
 //
 //
 
-#include "CParticleEmmiterFire.h"
+#include "CParticleEmitterFire.h"
+#include "CTimer.h"
 
-CParticleEmmiterFire::CParticleEmmiterFire(void)
+CParticleEmitterFire::CParticleEmitterFire(void)
 {
     m_fMoveSpeed = 0.0f;
 }
 
-CParticleEmmiterFire::~CParticleEmmiterFire(void)
+CParticleEmitterFire::~CParticleEmitterFire(void)
 {
     
 }
 
-void CParticleEmmiterFire::Load(const std::string &_sName, IResource::E_THREAD _eThread)
+void CParticleEmitterFire::Load(const std::string &_sName, IResource::E_THREAD _eThread)
 {
     CParticleEmitter::Load(_sName, _eThread);
     
@@ -33,7 +34,7 @@ void CParticleEmmiterFire::Load(const std::string &_sName, IResource::E_THREAD _
     }
 }
 
-void CParticleEmmiterFire::Update(void)
+void CParticleEmitterFire::Update(void)
 {
     for(unsigned short i = 0; i < m_iNumParticles; i++)
     {
@@ -42,16 +43,32 @@ void CParticleEmmiterFire::Update(void)
         vPosition.y += m_fMoveSpeed;
         m_pParticles[i].m_vPosition = vPosition;
         m_pParticles[i].m_vSize += m_vMinSize;
-        int iCurrentTime = _Get_TickCount();
-        if(m_pParticles[i].m_vPosition.y > 1.5f)
+        int iCurrentTime = CTimer::Instance()->Get_TickCount();
+        m_pParticles[i].m_vColor.a -= 15;
+        if(m_pParticles[i].m_vPosition.y > m_fMaxY && m_bIsEnable)
         {
             m_pParticles[i].m_vPosition.y = 0.0f;
             m_pParticles[i].m_vSize = m_vMinSize;
             if((iCurrentTime - m_pParticles[i].m_iTime) > m_iLifeTime)
             {
-                m_pParticles[i].m_iTime = _Get_TickCount();
+                m_pParticles[i].m_iTime = CTimer::Instance()->Get_TickCount();
             }
+            m_pParticles[i].m_vColor.a = 255;
+        }
+        else if(!m_bIsEnable && m_pParticles[i].m_vColor.a > 0 && m_pParticles[i].m_vPosition.y > m_fMaxY * 0.33f)
+        {
+            //m_pParticles[i].m_vColor.a -= 15;
+        }
+        
+        if(m_pParticles[i].m_vColor.a == 0)
+        {
+            m_pParticles[i].m_vPosition.y = 128.0f;
         }
     }
     CParticleEmitter::Update();
 }
+
+
+
+
+

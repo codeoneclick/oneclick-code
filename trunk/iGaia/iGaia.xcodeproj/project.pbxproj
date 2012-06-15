@@ -7,12 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1560F179157252B7000F9F96 /* IVertexBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1560F178157252B7000F9F96 /* IVertexBuffer.cpp */; };
-		1560F18315726592000F9F96 /* CVertexBufferPositionTexcoord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1560F18215726592000F9F96 /* CVertexBufferPositionTexcoord.cpp */; };
-		1560F186157265B7000F9F96 /* CVertexBufferPositionColor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1560F185157265B6000F9F96 /* CVertexBufferPositionColor.cpp */; };
-		1560F189157265F1000F9F96 /* CVertexBufferPositionTexcoordNormal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1560F188157265F0000F9F96 /* CVertexBufferPositionTexcoordNormal.cpp */; };
-		1560F18C15726620000F9F96 /* CVertexBufferPositionTexcoordNormalTangent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1560F18B1572661F000F9F96 /* CVertexBufferPositionTexcoordNormalTangent.cpp */; };
-		1560F1AA15755EC9000F9F96 /* CSlider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1560F1A915755EC9000F9F96 /* CSlider.mm */; };
 		1D3623260D0F684500981E51 /* MainAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* MainAppDelegate.mm */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
@@ -207,10 +201,12 @@
 		93FB5AB31517CF9800E096A9 /* wrap.inl in Resources */ = {isa = PBXBuildFile; fileRef = 93FB5A491517CF9800E096A9 /* wrap.inl */; };
 		A10074FE156130A8000E324E /* clouds.pvr in Resources */ = {isa = PBXBuildFile; fileRef = A10074FD156130A8000E324E /* clouds.pvr */; };
 		A100AB7415775CCE003BB7BA /* CVertexBufferPositionTexcoordColor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A100AB7215775CCE003BB7BA /* CVertexBufferPositionTexcoordColor.cpp */; };
-		A100AB7D15776E57003BB7BA /* CParticleEmmiterFire.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A100AB7B15776E57003BB7BA /* CParticleEmmiterFire.cpp */; };
+		A100AB7D15776E57003BB7BA /* CParticleEmitterFire.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A100AB7B15776E57003BB7BA /* CParticleEmitterFire.cpp */; };
 		A100AB8415777FC3003BB7BA /* CBillboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A100AB8215777FC3003BB7BA /* CBillboard.cpp */; };
 		A100AB8815777FD8003BB7BA /* CSpriteCross.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A100AB8615777FD8003BB7BA /* CSpriteCross.cpp */; };
 		A100AB931577C4CD003BB7BA /* CParticleEmitterExplosion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A100AB911577C4CD003BB7BA /* CParticleEmitterExplosion.cpp */; };
+		A10DC48815863C4D007EB83B /* ShaderParticleEmitter.frag in Sources */ = {isa = PBXBuildFile; fileRef = A10DC48615863C4D007EB83B /* ShaderParticleEmitter.frag */; };
+		A10DC48915863C4D007EB83B /* ShaderParticleEmitter.vert in Sources */ = {isa = PBXBuildFile; fileRef = A10DC48715863C4D007EB83B /* ShaderParticleEmitter.vert */; };
 		A10E64A9157F3360007B576A /* CMathHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A10E64A7157F3360007B576A /* CMathHelper.cpp */; };
 		A10E64AD157F3373007B576A /* CTimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A10E64AB157F3373007B576A /* CTimer.cpp */; };
 		A11AA3CA1547218800113AA3 /* smoke.pvr in Resources */ = {isa = PBXBuildFile; fileRef = A11AA3C91547218800113AA3 /* smoke.pvr */; };
@@ -257,6 +253,9 @@
 		A1E1ED321563CC01009FD066 /* ShaderShadowPlane.frag in Sources */ = {isa = PBXBuildFile; fileRef = A1E1ED301563CC01009FD066 /* ShaderShadowPlane.frag */; };
 		A1E1ED331563CC01009FD066 /* ShaderShadowPlane.vert in Sources */ = {isa = PBXBuildFile; fileRef = A1E1ED311563CC01009FD066 /* ShaderShadowPlane.vert */; };
 		A1ED8E8915591C6B00B82AE3 /* joystick.png in Resources */ = {isa = PBXBuildFile; fileRef = A1ED8E8815591C6B00B82AE3 /* joystick.png */; };
+		A1F05DA5158732A300812D02 /* ShaderPreNormalDepthParticleEmitter.frag in Sources */ = {isa = PBXBuildFile; fileRef = A1F05DA3158732A300812D02 /* ShaderPreNormalDepthParticleEmitter.frag */; };
+		A1F05DA6158732A300812D02 /* ShaderPreNormalDepthParticleEmitter.vert in Sources */ = {isa = PBXBuildFile; fileRef = A1F05DA4158732A300812D02 /* ShaderPreNormalDepthParticleEmitter.vert */; };
+		A1F05DAA15877EF200812D02 /* CParticleEmitterFireTrail.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1F05DA815877EF200812D02 /* CParticleEmitterFireTrail.cpp */; };
 		A1F68E5C157E399E0048A717 /* CSpriteMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1F68E5A157E399E0048A717 /* CSpriteMgr.cpp */; };
 		A1F68E60157E39C00048A717 /* CSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1F68E5E157E39C00048A717 /* CSprite.cpp */; };
 		A1F690471557CCAC00A2920A /* CJoystick.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1F690461557CCAC00A2920A /* CJoystick.mm */; };
@@ -269,16 +268,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1560F178157252B7000F9F96 /* IVertexBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IVertexBuffer.cpp; sourceTree = "<group>"; };
-		1560F17B157252CB000F9F96 /* IVertexBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IVertexBuffer.h; sourceTree = "<group>"; };
-		1560F1801572657C000F9F96 /* CVertexBufferPositionTexcoord.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CVertexBufferPositionTexcoord.h; sourceTree = "<group>"; };
-		1560F18215726592000F9F96 /* CVertexBufferPositionTexcoord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CVertexBufferPositionTexcoord.cpp; sourceTree = "<group>"; };
-		1560F184157265A4000F9F96 /* CVertexBufferPositionColor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CVertexBufferPositionColor.h; sourceTree = "<group>"; };
-		1560F185157265B6000F9F96 /* CVertexBufferPositionColor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CVertexBufferPositionColor.cpp; sourceTree = "<group>"; };
-		1560F187157265D8000F9F96 /* CVertexBufferPositionTexcoordNormal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CVertexBufferPositionTexcoordNormal.h; sourceTree = "<group>"; };
-		1560F188157265F0000F9F96 /* CVertexBufferPositionTexcoordNormal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CVertexBufferPositionTexcoordNormal.cpp; sourceTree = "<group>"; };
-		1560F18A1572660F000F9F96 /* CVertexBufferPositionTexcoordNormalTangent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CVertexBufferPositionTexcoordNormalTangent.h; sourceTree = "<group>"; };
-		1560F18B1572661F000F9F96 /* CVertexBufferPositionTexcoordNormalTangent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CVertexBufferPositionTexcoordNormalTangent.cpp; sourceTree = "<group>"; };
 		1560F1A815755EC9000F9F96 /* CSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSlider.h; sourceTree = "<group>"; };
 		1560F1A915755EC9000F9F96 /* CSlider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CSlider.mm; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -700,14 +689,16 @@
 		A10074FD156130A8000E324E /* clouds.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = clouds.pvr; path = Resources/Textures/clouds.pvr; sourceTree = "<group>"; };
 		A100AB7215775CCE003BB7BA /* CVertexBufferPositionTexcoordColor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CVertexBufferPositionTexcoordColor.cpp; sourceTree = "<group>"; };
 		A100AB7315775CCE003BB7BA /* CVertexBufferPositionTexcoordColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVertexBufferPositionTexcoordColor.h; sourceTree = "<group>"; };
-		A100AB7B15776E57003BB7BA /* CParticleEmmiterFire.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CParticleEmmiterFire.cpp; sourceTree = "<group>"; };
-		A100AB7C15776E57003BB7BA /* CParticleEmmiterFire.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CParticleEmmiterFire.h; sourceTree = "<group>"; };
+		A100AB7B15776E57003BB7BA /* CParticleEmitterFire.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CParticleEmitterFire.cpp; sourceTree = "<group>"; };
+		A100AB7C15776E57003BB7BA /* CParticleEmitterFire.h */ = {isa = PBXFileReference; fileEncoding = 4; path = CParticleEmitterFire.h; sourceTree = "<group>"; };
 		A100AB8215777FC3003BB7BA /* CBillboard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CBillboard.cpp; sourceTree = "<group>"; };
 		A100AB8315777FC3003BB7BA /* CBillboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBillboard.h; sourceTree = "<group>"; };
 		A100AB8615777FD8003BB7BA /* CSpriteCross.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CSpriteCross.cpp; sourceTree = "<group>"; };
 		A100AB8715777FD8003BB7BA /* CSpriteCross.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSpriteCross.h; sourceTree = "<group>"; };
 		A100AB911577C4CD003BB7BA /* CParticleEmitterExplosion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CParticleEmitterExplosion.cpp; sourceTree = "<group>"; };
 		A100AB921577C4CD003BB7BA /* CParticleEmitterExplosion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CParticleEmitterExplosion.h; sourceTree = "<group>"; };
+		A10DC48615863C4D007EB83B /* ShaderParticleEmitter.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderParticleEmitter.frag; path = Shaders/ShaderParticleEmitter.frag; sourceTree = "<group>"; };
+		A10DC48715863C4D007EB83B /* ShaderParticleEmitter.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderParticleEmitter.vert; path = Shaders/ShaderParticleEmitter.vert; sourceTree = "<group>"; };
 		A10E64A7157F3360007B576A /* CMathHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMathHelper.cpp; sourceTree = "<group>"; };
 		A10E64A8157F3360007B576A /* CMathHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMathHelper.h; sourceTree = "<group>"; };
 		A10E64AB157F3373007B576A /* CTimer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CTimer.cpp; sourceTree = "<group>"; };
@@ -780,6 +771,10 @@
 		A1E1ED301563CC01009FD066 /* ShaderShadowPlane.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderShadowPlane.frag; path = Shaders/ShaderShadowPlane.frag; sourceTree = "<group>"; };
 		A1E1ED311563CC01009FD066 /* ShaderShadowPlane.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderShadowPlane.vert; path = Shaders/ShaderShadowPlane.vert; sourceTree = "<group>"; };
 		A1ED8E8815591C6B00B82AE3 /* joystick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = joystick.png; path = Resources/Textures/joystick.png; sourceTree = "<group>"; };
+		A1F05DA3158732A300812D02 /* ShaderPreNormalDepthParticleEmitter.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderPreNormalDepthParticleEmitter.frag; path = Shaders/ShaderPreNormalDepthParticleEmitter.frag; sourceTree = "<group>"; };
+		A1F05DA4158732A300812D02 /* ShaderPreNormalDepthParticleEmitter.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderPreNormalDepthParticleEmitter.vert; path = Shaders/ShaderPreNormalDepthParticleEmitter.vert; sourceTree = "<group>"; };
+		A1F05DA815877EF200812D02 /* CParticleEmitterFireTrail.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CParticleEmitterFireTrail.cpp; sourceTree = "<group>"; };
+		A1F05DA915877EF200812D02 /* CParticleEmitterFireTrail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CParticleEmitterFireTrail.h; sourceTree = "<group>"; };
 		A1F68E5A157E399E0048A717 /* CSpriteMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CSpriteMgr.cpp; sourceTree = "<group>"; };
 		A1F68E5B157E399E0048A717 /* CSpriteMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSpriteMgr.h; sourceTree = "<group>"; };
 		A1F68E5E157E39C00048A717 /* CSprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CSprite.cpp; sourceTree = "<group>"; };
@@ -1155,6 +1150,10 @@
 		935D65061504AE0B00FBE552 /* CustomEffect */ = {
 			isa = PBXGroup;
 			children = (
+				A1F05DA3158732A300812D02 /* ShaderPreNormalDepthParticleEmitter.frag */,
+				A1F05DA4158732A300812D02 /* ShaderPreNormalDepthParticleEmitter.vert */,
+				A10DC48615863C4D007EB83B /* ShaderParticleEmitter.frag */,
+				A10DC48715863C4D007EB83B /* ShaderParticleEmitter.vert */,
 				A1201A8B156B75710099EE9D /* ShaderGrass.frag */,
 				A1201A8C156B75710099EE9D /* ShaderGrass.vert */,
 				A1BE199F156A2053004C3610 /* ShaderDecal.frag */,
@@ -1548,10 +1547,12 @@
 			children = (
 				A1AB4E3D1546B71D00434639 /* CParticleEmitter.h */,
 				A1AB4E3C1546B71D00434639 /* CParticleEmitter.cpp */,
-				A100AB7C15776E57003BB7BA /* CParticleEmmiterFire.h */,
-				A100AB7B15776E57003BB7BA /* CParticleEmmiterFire.cpp */,
+				A100AB7C15776E57003BB7BA /* CParticleEmitterFire.h */,
+				A100AB7B15776E57003BB7BA /* CParticleEmitterFire.cpp */,
 				A100AB921577C4CD003BB7BA /* CParticleEmitterExplosion.h */,
 				A100AB911577C4CD003BB7BA /* CParticleEmitterExplosion.cpp */,
+				A1F05DA915877EF200812D02 /* CParticleEmitterFireTrail.h */,
+				A1F05DA815877EF200812D02 /* CParticleEmitterFireTrail.cpp */,
 			);
 			name = ParticleEmitters;
 			sourceTree = "<group>";
@@ -1933,7 +1934,7 @@
 				A1D8068415735D2500EF81D0 /* IVertexBuffer.cpp in Sources */,
 				A14C157315750A1900470E90 /* CSlider.mm in Sources */,
 				A100AB7415775CCE003BB7BA /* CVertexBufferPositionTexcoordColor.cpp in Sources */,
-				A100AB7D15776E57003BB7BA /* CParticleEmmiterFire.cpp in Sources */,
+				A100AB7D15776E57003BB7BA /* CParticleEmitterFire.cpp in Sources */,
 				A100AB8415777FC3003BB7BA /* CBillboard.cpp in Sources */,
 				A100AB8815777FD8003BB7BA /* CSpriteCross.cpp in Sources */,
 				A100AB931577C4CD003BB7BA /* CParticleEmitterExplosion.cpp in Sources */,
@@ -1941,6 +1942,11 @@
 				A1F68E60157E39C00048A717 /* CSprite.cpp in Sources */,
 				A10E64A9157F3360007B576A /* CMathHelper.cpp in Sources */,
 				A10E64AD157F3373007B576A /* CTimer.cpp in Sources */,
+				A10DC48815863C4D007EB83B /* ShaderParticleEmitter.frag in Sources */,
+				A10DC48915863C4D007EB83B /* ShaderParticleEmitter.vert in Sources */,
+				A1F05DA5158732A300812D02 /* ShaderPreNormalDepthParticleEmitter.frag in Sources */,
+				A1F05DA6158732A300812D02 /* ShaderPreNormalDepthParticleEmitter.vert in Sources */,
+				A1F05DAA15877EF200812D02 /* CParticleEmitterFireTrail.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1969,7 +1975,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PRODUCT_NAME = iGaia;
 				PROVISIONING_PROFILE = "CD9430FE-2575-48EE-B662-645884640140";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "CD9430FE-2575-48EE-B662-645884640140";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};

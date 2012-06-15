@@ -53,11 +53,12 @@ void CWorld::Load(void)
     
     m_pCharaterControllerMgr->Add_MainCharacterController();
     m_pCharacterControllerPlayer = static_cast<CCharacterControllerPlayer*>(m_pCharaterControllerMgr->Get_MainCharacterController());
-    m_pCharacterControllerPlayer->Set_Position(glm::vec3(2.0f, 0.0f, 2.0f));
+    m_pCharacterControllerPlayer->Set_Position(glm::vec3(5.0f, 0.0f, 5.0f));
     
-    CCharacterControllerEnemy* pCharacterControllerEnemy = static_cast<CCharacterControllerEnemy*>(m_pCharaterControllerMgr->Add_EnemyCharacterController());
-    m_pGameAIMgr->Add_AICharacterController(pCharacterControllerEnemy);
-    pCharacterControllerEnemy->Set_Position(glm::vec3(3.0f, 0.0f, 3.0f));
+    m_pCharacterControllerEnemy = static_cast<CCharacterControllerEnemy*>(m_pCharaterControllerMgr->Add_EnemyCharacterController());
+    m_pCharacterControllerEnemy->Set_Position(glm::vec3(8.0f, 0.0f, 8.0f));
+    m_pGameAIMgr->Add_AICharacterController(m_pCharacterControllerEnemy);
+    
     
     m_pLight = CSceneMgr::Instance()->Get_Light(ILight::E_LIGHT_MODE_POINT, 0);
     m_pLight->Set_Position(glm::vec3(0.0f, 4.0f, 0.0f));

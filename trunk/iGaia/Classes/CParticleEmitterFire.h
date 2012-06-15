@@ -6,22 +6,22 @@
 //
 //
 
-#ifndef __iGaia__CParticleEmmiterFire__
-#define __iGaia__CParticleEmmiterFire__
+#ifndef __iGaia__CParticleEmitterFire__
+#define __iGaia__CParticleEmitterFire__
 
 #include <iostream>
 #include "CParticleEmitter.h"
-class CParticleEmmiterFire : public CParticleEmitter
+class CParticleEmitterFire : public CParticleEmitter
 {
 protected:
     float m_fMoveSpeed;
 public:
-    CParticleEmmiterFire(void);
-    ~CParticleEmmiterFire(void);
+    CParticleEmitterFire(void);
+    ~CParticleEmitterFire(void);
     
     void Load(const std::string& _sName, IResource::E_THREAD _eThread);
     void Update(void);
 };
 
 
-#endif /* defined(__iGaia__CParticleEmmiterFire__) */
+#endif /* defined(__iGaia__CParticleEmitterFire__) */

@@ -7,8 +7,6 @@
 //
 
 #include <iostream>
-#include <mach/mach.h>
-#include <mach/mach_time.h>
 #include "CSceneMgr.h"
 #include "CModel.h"
 #include "CLandscape.h"
@@ -22,7 +20,7 @@
 #include "CWindow.h"
 #include "CRenderMgr.h"
 #include "CLightPoint.h"
-
+#include "CTimer.h"
 
 CSceneMgr* CSceneMgr::m_pInsatnce = NULL;
 const unsigned int CSceneMgr::k_MAX_LIGHTS = 8;
@@ -418,21 +416,6 @@ void CSceneMgr::_DrawShadowMapStep(void)
     m_pRenderMgr->EndDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_SHADOW_MAP);*/
 }
 
-uint64_t getTickCount(void)
-{
-    static mach_timebase_info_data_t sTimebaseInfo;
-    uint64_t machTime = mach_absolute_time();
-    
-    if (sTimebaseInfo.denom == 0 )
-    {
-        (void)mach_timebase_info(&sTimebaseInfo);
-    }
-    
-    uint64_t millis = ((machTime / 1000000) * sTimebaseInfo.numer) / sTimebaseInfo.denom;
-    return millis;
-}
-
-
 void CSceneMgr::Render(void)
 {
     CWindow::g_iTrianglesPerFrame = 0;
@@ -446,7 +429,7 @@ void CSceneMgr::Render(void)
     std::cout<<"[CSceneMgr::Render] Triangles Per Frame : "<<CWindow::g_iTrianglesPerFrame<<std::endl;
     
     static int iLastTime = 0;
-    int iCurrentTime = getTickCount();
+    int iCurrentTime = CTimer::Instance()->Get_TickCount();
     ++CWindow::g_iFramesPerSecond;
     
     if(iCurrentTime - iLastTime > 1000 )

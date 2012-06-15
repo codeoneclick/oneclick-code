@@ -19,13 +19,15 @@ CCharacterControllerEnemy::CCharacterControllerEnemy(void)
     m_fMaxMoveSpeed = 0.05f;
     m_fMoveAcceleration = 0.01f;
     
-    m_fMoveSpeed = 0.05f;
+    m_fMoveSpeed = 0.1f;
     m_fLeftTrackMoveSpeed = 0.0f;
     m_fRightTrackMoveSpeed = 0.0f;
     m_fSteerSpeed = 1.0f;
     
     m_eState = E_AI_STATE_NONE;
     m_iAIStateDuration = 0;
+    
+    m_vMoveDirection = glm::vec3(0.0f, 0.0, 0.0f);
 }
 
 CCharacterControllerEnemy::~CCharacterControllerEnemy(void)
@@ -88,48 +90,6 @@ void CCharacterControllerEnemy::Load(void)
     CWorld::Instance()->Get_Level()->Get_Model()->Add_DelegateOwner(this);
 }
 
-/*void CCharacterControllerEnemy::Set_Position(const glm::vec3 &_vPosition)
-{
-    if(m_pBodyModel != NULL)
-    {
-        m_pBodyModel->Set_Position(_vPosition);
-    }
-    if(m_pTowerModel != NULL)
-    {
-        m_pTowerModel->Set_Position(_vPosition);
-    }
-    if(m_pLeftTrackModel != NULL)
-    {
-        m_pLeftTrackModel->Set_Position(_vPosition);
-    }
-    if(m_pRightTrackModel != NULL)
-    {
-        m_pRightTrackModel->Set_Position(_vPosition);
-    }
-    m_vPosition = _vPosition;
-}
-
-void CCharacterControllerEnemy::Set_Rotation(const glm::vec3 &_vRotation)
-{
-    if(m_pBodyModel != NULL)
-    {
-        m_pBodyModel->Set_Rotation(_vRotation);
-    }
-    if(m_pTowerModel != NULL)
-    {
-        m_pTowerModel->Set_Rotation(_vRotation);
-    }
-    if(m_pLeftTrackModel != NULL)
-    {
-        m_pLeftTrackModel->Set_Rotation(_vRotation);
-    }
-    if(m_pRightTrackModel != NULL)
-    {
-        m_pRightTrackModel->Set_Rotation(_vRotation);
-    }
-    m_vRotation = _vRotation;
-}*/
-
 void CCharacterControllerEnemy::OnTouchEvent(ITouchDelegate* _pDelegateOwner)
 {
 
@@ -140,6 +100,40 @@ void CCharacterControllerEnemy::Set_AIState(E_AI_STATE _eState, long _iAIStateDu
     m_eState = _eState;
     m_iAIStateDuration = _iAIStateDuration;
     m_iAIStateTimeStamp = _Get_TimeStamp();
+    
+    if(m_eState == E_AI_STATE_MOVE)
+    {
+        m_vMoveDirection = glm::normalize(m_vPosition - m_vTargetPoint);
+    }
+}
+
+bool CCharacterControllerEnemy::_MoveForwardAI(void)
+{
+    glm::vec2 vPoint_01 = glm::vec2(m_vPosition.x, m_vPosition.z);
+    glm::vec2 vPoint_02 = glm::vec2(m_vTargetPoint.x, m_vTargetPoint.z);
+    glm::vec2 vPoint_03 = glm::mix(vPoint_01, vPoint_02, m_fMoveSpeed);
+    glm::vec3 vPosition = glm::vec3(vPoint_03.x, 0.0f, vPoint_03.y);
+    vPosition.y = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_HeightValue(vPoint_03.x, vPoint_03.y);
+    Set_Position(vPosition);
+
+    std::cout<<"[CCharacterControllerEnemy::_MoveForwardAI] Current Position : "<<m_vPosition.x<<","<<m_vPosition.z<<std::endl;
+    std::cout<<"[CCharacterControllerEnemy::_MoveForwardAI] Target Position : "<<m_vTargetPoint.x<<","<<m_vTargetPoint.z<<std::endl;
+    return true;
+}
+
+bool CCharacterControllerEnemy::_MoveBackwardAI(void)
+{
+    return true;
+}
+
+bool CCharacterControllerEnemy::_SteerLeftAI(void)
+{
+    return true;
+}
+
+bool CCharacterControllerEnemy::_SteerRightAI(void)
+{
+    return true;
 }
 
 void CCharacterControllerEnemy::Update(void)
@@ -156,8 +150,9 @@ void CCharacterControllerEnemy::Update(void)
             break;
         case E_AI_STATE_MOVE:
         {
-            float fAngleToTarget =  glm::degrees(_GetRotationBetweenPoints(m_vTargetPoint, m_vPosition) - 1.57f);
-            if(fabs(fabs(fAngleToTarget) - fabs(m_vRotation.y)) > 45.0f)
+            /*float fAngleToTarget =  glm::degrees(_GetRotationBetweenPoints(m_vTargetPoint, m_vPosition) - 1.57f);
+            std::cout<<"[CCharacterControllerEnemy::Update] Angle :"<<fAngleToTarget - m_vRotation.y<<std::endl;
+            if(fabs(fAngleToTarget - m_vRotation.y) > 45.0f)
             {
                 SteerLeft();
             }
@@ -177,6 +172,16 @@ void CCharacterControllerEnemy::Update(void)
             
             m_vPosition.y = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_HeightValue(m_vPosition.x, m_vPosition.z);
             Set_Position(m_vPosition);
+            */
+            
+            _MoveForwardAI();
+            glm::vec2 vPoint_01 = glm::vec2(m_vPosition.x, m_vPosition.z);
+            glm::vec2 vPoint_02 = glm::vec2(m_vTargetPoint.x, m_vTargetPoint.z);
+            if(glm::distance(vPoint_01, vPoint_02) < 1.0f)
+            {
+                m_eState = E_AI_STATE_NONE;
+            }
+            
             glm::vec2 vRotationOnHeightMap = _Get_RotationOnHeightmap(m_vPosition);
             m_vRotation.x = -glm::degrees(vRotationOnHeightMap.x);
             m_vRotation.z =  glm::degrees(vRotationOnHeightMap.y);
