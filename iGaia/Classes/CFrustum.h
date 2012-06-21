@@ -23,8 +23,8 @@ public:
         float d;
         CFrustumPlane(void);
         ~CFrustumPlane(void);
-        void Set_Points(glm::vec3& _vPoint_01, glm::vec3& _vPoint_02, glm::vec3& _vPoint_03);
-        float Get_Distance(glm::vec3& _vPoint);
+        void Set_Points(const glm::vec3& _vPoint_01, const glm::vec3& _vPoint_02, const glm::vec3& _vPoint_03);
+        float Get_Distance(const glm::vec3& _vPoint);
     };
     enum E_FRUSTUM_RESULT { E_FRUSTUM_RESULT_OUTSIDE = 0, E_FRUSTUM_RESULT_INTERSECT, E_FRUSTUM_RESULT_INSIDE };
 protected:
@@ -40,9 +40,9 @@ public:
     void Update(void);
     void Set_CameraRef(ICamera* _pCameraRef);
     void Set_InternalParams(float _fAngle, float _fAspectRation, float _fNearD, float _fFarD);
-    int IsPointInFrustum(glm::vec3& _vPoint);
-    int IsSphereInFrustum(glm::vec3& _vPoint, float _fRadius);
-    int IsBoxInFrustum(glm::vec3& _vMaxBound, glm::vec3& _vMinBound);
+    int IsPointInFrustum(const glm::vec3& _vPoint);
+    int IsSphereInFrustum(const glm::vec3& _vPoint, float _fRadius);
+    int IsBoxInFrustum(const glm::vec3& _vMaxBound, const glm::vec3& _vMinBound);
     
 };
 

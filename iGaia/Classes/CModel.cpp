@@ -24,9 +24,6 @@ CModel::~CModel(void)
 void CModel::Load(const std::string& _sName, IResource::E_THREAD _eThread)
 {
     m_pMesh = static_cast<CMesh*>(CResourceMgr::Instance()->Load(_sName, IResource::E_MGR_MESH, _eThread, this));
-    
-    m_pMesh->Get_VertexBufferRef()->Commit();
-    m_pMesh->Get_IndexBufferRef()->Commit();
 }
 
 void CModel::OnResourceLoadDoneEvent(IResource::E_RESOURCE_TYPE _eType, IResource *_pResource)
@@ -36,13 +33,6 @@ void CModel::OnResourceLoadDoneEvent(IResource::E_RESOURCE_TYPE _eType, IResourc
         case IResource::E_RESOURCE_TYPE_MESH:
             std::cout<<"[CModel::OnLoadDone] Resource Mesh loaded : "<<_pResource->Get_Name()<<"\n";
             m_pMesh = static_cast<CMesh*>(_pResource);
-            if(m_pBoundingBox != NULL)
-            {
-                m_pBoundingBox->Set_MaxMinPoints(m_pMesh->Get_MaxBound(), m_pMesh->Get_MinBound());
-            }
-            m_pMesh->Get_VertexBufferRef()->Commit();
-            m_pMesh->Get_IndexBufferRef()->Commit();
-            
             for(unsigned int i = 0; i < CShader::E_RENDER_MODE_MAX; ++i)
             {
                 if(m_pShaders[i] != NULL)
@@ -90,7 +80,6 @@ void CModel::Update()
 
 void CModel::Render(CShader::E_RENDER_MODE _eMode)
 {
-    
     if(CSceneMgr::Instance()->Get_Frustum()->IsPointInFrustum(m_vPosition) == CFrustum::E_FRUSTUM_RESULT_OUTSIDE)
     {
         return;

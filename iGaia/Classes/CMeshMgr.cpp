@@ -68,7 +68,6 @@ IResource* CMeshMgr::Load(const std::string& _sName, IResource::E_THREAD _eThrea
             m_lContainer[_sName] = pMesh;
         }
     }
-    
     return pMesh;
 }
 

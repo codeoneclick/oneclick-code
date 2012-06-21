@@ -12,34 +12,41 @@
 #include <iostream>
 #include "ICharacterController.h"
 
+#define k_AI_SHOOT_INTERVAL 2000
+#define k_AI_SHOOT_DISTANCE 10.0f
+
 class CCharacterControllerEnemy : public ICharacterController
 {
 public:
     enum E_AI_STATE { E_AI_STATE_NONE = 0, E_AI_STATE_STAND, E_AI_STATE_MOVE, E_AI_STATE_CHASE, E_AI_STATE_CHASE_ATTACK, E_AI_STATE_BACK, E_AI_STATE_BACK_ATTACK };
 protected:
     E_AI_STATE m_eState;
-    long m_iAIStateDuration;
-    long m_iAIStateTimeStamp;
-    glm::vec3 m_vTargetPoint;
+    
+    int m_iAIStateDuration;
+    int m_iAIStateTimeStamp;
+    int m_iAIShootTimeStamp;
+    
+    glm::vec3 m_vMovePoint;
     glm::vec3 m_vMoveDirection;
     
     long _Get_TimeStamp(void);
     bool _IsStateTimeElapsed(void);
     
-    bool _MoveForwardAI(void);
-    bool _MoveBackwardAI(void);
-    bool _SteerRightAI(void);
-    bool _SteerLeftAI(void);
-
 public:
     CCharacterControllerEnemy(void);
     ~CCharacterControllerEnemy(void);
+    
     void Load(void);
     void Update(void);
+    
+    void Shoot(void);
+    
     INode* Get_TargetForCamera(void) { return m_pBodyModel; }
+    
     void Set_AIState(E_AI_STATE _eState, long _iAIStateDuration);
     E_AI_STATE Get_AIState(void) { return m_eState; }
-    void Set_AITargetPoint(glm::vec3 _vPoint) { m_vTargetPoint = _vPoint; }
+    
+    void Set_AIMovePoint(glm::vec3 _vPoint) { m_vMovePoint = _vPoint; }
     
     void OnTouchEvent(ITouchDelegate* _pDelegateOwner);
 };

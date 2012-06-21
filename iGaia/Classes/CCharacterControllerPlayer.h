@@ -25,22 +25,15 @@
 class CCharacterControllerPlayer : public ICharacterController
 {
 protected:
-    glm::vec3 m_vTowerModelTarget;
-    E_CHARACTER_CONTROLLER_STATE m_eLeftTrackState;
-    E_CHARACTER_CONTROLLER_STATE m_eRightTrackState;
-    float m_fLeftTrackMoveOffset;
-    float m_fRightTrackMoveOffset;
+
 public:
     CCharacterControllerPlayer(void);
     ~CCharacterControllerPlayer(void);
+    
     void Load(void);
     void Update(void);
+    
     INode* Get_TargetForCamera(void) { return m_pBodyModel; }
-    void Set_LeftTrackMoveOffset(float _fOffset) { m_fLeftTrackMoveOffset = _fOffset; }
-    void Set_RightTrackMoveOffset(float _fOffset) { m_fRightTrackMoveOffset = _fOffset; }
-    void Set_LeftTrackState(E_CHARACTER_CONTROLLER_STATE _eState) { m_eLeftTrackState = _eState; }
-    void Set_RightTrackState(E_CHARACTER_CONTROLLER_STATE _eState) { m_eRightTrackState = _eState; }
-    void Shoot(void);
     
     void OnTouchEvent(ITouchDelegate* _pDelegateOwner);
 };

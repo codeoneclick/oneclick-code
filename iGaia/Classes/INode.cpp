@@ -166,6 +166,7 @@ void INode::Update(void)
     
     if(m_pBoundingBox != NULL)
     {
+        m_pBoundingBox->Set_MaxMinPoints(m_pMesh->Get_MaxBound(), m_pMesh->Get_MinBound());
         m_pBoundingBox->Set_WorldMatrix(m_mWorld);
     }
 }

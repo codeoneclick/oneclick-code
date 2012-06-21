@@ -29,7 +29,7 @@ void CBullet::Load(void)
     m_pFireEmmiter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_PARTICLE_EMITTER);
     m_pFireEmmiter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_PARTICLE_EMITTER);
     m_pFireEmmiter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
-    m_pFireEmmiter->Set_Position(glm::vec3(0.0f, 0.33f, 0.0f));
+    m_pFireEmmiter->Set_Batching(true, "fire-emitter");
 }
 
 void CBullet::Set_Position(const glm::vec3& _vPosition)
@@ -48,6 +48,23 @@ void CBullet::Set_Position(const glm::vec3& _vPosition)
     }
     std::cout<<"[CBullet::Set_Position] Position : "<<_vPosition.x<<","<<_vPosition.y<<","<<_vPosition.z<<std::endl;
     m_vPosition = _vPosition;
+}
+
+void CBullet::Set_Rotation(const glm::vec3 &_vRotation)
+{
+    if(m_pExplosionEmitter != NULL)
+    {
+        m_pExplosionEmitter->Set_Rotation(_vRotation);
+    }
+    if(m_pFireEmmiter != NULL)
+    {
+        m_pFireEmmiter->Set_Rotation(_vRotation);
+    }
+    if(m_pModel != NULL)
+    {
+        m_pModel->Set_Rotation(_vRotation);
+    }
+    m_vRotation = _vRotation;
 }
 
 void CBullet::_MoveForward(void)
@@ -76,11 +93,5 @@ void CBullet::Update(void)
         _MoveForward();
     }
 }
-
-
-
-
-
-
 
 

@@ -18,7 +18,7 @@
 
 #define k_MIN_HEIGHTMAP_VALUE -8.0f
 #define k_EXHAUST_EMITTER_OFFSET_X  0.25f
-#define k_EXHAUST_EMITTER_OFFSET_Z  1.25f
+#define k_EXHAUST_EMITTER_OFFSET_Z  1.1f
 #define k_EXHAUST_EMITTER_HEIGHT  0.75f
 #define k_CROSS_FIRE_OFFSET 1.5f
 #define k_CROSS_FIRE_HEIGHT 0.75f
@@ -37,9 +37,12 @@ public:
 protected:
     glm::vec3 m_vPosition;
     glm::vec3 m_vRotation;
+    
     float _Get_RotationForPlane(glm::vec3 _vPoint_01, glm::vec3 _vPoint_02, glm::vec3 _vPoint_03);
     glm::vec2 _Get_RotationOnHeightmap(glm::vec3 _vPosition);
     float _GetRotationBetweenPoints(glm::vec3 _vPoint_01, glm::vec3 _vPoint_02);
+    float _GetRotationBetweenPointsDot(glm::vec2 _vPoint_01, glm::vec2 _vPoint_02);
+    
     float m_fMaxMoveSpeed;
     float m_fMoveAcceleration;
     float m_fLeftTrackMoveSpeed;
@@ -83,31 +86,42 @@ protected:
     glm::vec4 m_vTransformHelper;
     glm::mat4x4 m_mRotationHelper;
     
+    ICharacterController* m_pTarget;
+    
     inline float _Get_WrapAngle(float _fValue, float _fMin, float _fMax)
     {
         float fDistance = _fMax - _fMin;
         float fTimes = static_cast<float>(floorf((_fValue - _fMin) / fDistance));
         return _fValue - (fTimes * fDistance);
     }
-
+    void _SmoothRotation(void);
 public:
     ICharacterController(void);
     ~ICharacterController(void);
+    
     virtual void Load(void) = 0;
     virtual void Update(void) = 0;
-    virtual void Set_Position(const glm::vec3& _vPosition);
-    virtual void Set_Rotation(const glm::vec3& _vRotation);
+    
+    void Set_Position(const glm::vec3& _vPosition);
+    void Set_Rotation(const glm::vec3& _vRotation);
+    
     glm::vec3 Get_Position(void) { return m_vPosition; }
     glm::vec3 Get_Rotation(void) { return m_vRotation; }
-    bool MoveForward(void);
-    bool MoveBackward(void);
-    bool SteerRight(void);
-    bool SteerLeft(void);
+    
+    virtual bool MoveForward(void);
+    virtual bool MoveBackward(void);
+    virtual void SteerRight(void);
+    virtual void SteerLeft(void);
+    
+    virtual void Shoot(void);
+    
     void Set_MoveState(E_CHARACTER_CONTROLLER_MOVE_STATE _eMoveState) { m_eMoveState = _eMoveState; }
     void Set_SteerState(E_CHARACTER_CONTROLLER_STEER_STATE _eSteerState) { m_eSteerState = _eSteerState; }
     void Set_SteerTowerState(E_CHARACTER_CONTROLLER_STEER_TOWER_STATE _eSteerTowerState) { m_eSteerTowerState = _eSteerTowerState; }
     
     virtual void OnTouchEvent(ITouchDelegate* _pDelegateOwner) = 0;
+    void Set_Target(ICharacterController* _pTarget) { m_pTarget = _pTarget; }
+    ICharacterController* Get_Target(void) { return m_pTarget; }
 };
 
 

@@ -19,6 +19,7 @@
 #include "CParticleMgr.h"
 #include "CDecalMgr.h"
 #include "CSpriteMgr.h"
+#include "CBatchMgr.h"
 #include "CFrustum.h"
 
 class CSceneMgr
@@ -41,6 +42,7 @@ private:
     CParticleMgr* m_pParticleMgr;
     CDecalMgr* m_pDecalMgr;
     CSpriteMgr* m_pSpriteMgr;
+    CBatchMgr* m_pBatchMgr;
     CHeightMapSetter* m_pHeightMapSetterRef;
     
     void _DrawSimpleStep(void);
@@ -79,6 +81,7 @@ public:
     CParticleMgr* Get_ParticleMgr(void) { return m_pParticleMgr; }
     CDecalMgr* Get_DecalMgr(void) { return m_pDecalMgr; }
     CSpriteMgr* Get_SpriteMgr(void) { return m_pSpriteMgr; }
+    CBatchMgr* Get_BatchMgr(void) { return m_pBatchMgr; }
     
     CHeightMapSetter* Get_HeightMapSetterRef(void) { return m_pHeightMapSetterRef; }
     void Set_HeightMapSetterRef(CHeightMapSetter* _pHeightMapSetterRef) { m_pHeightMapSetterRef = _pHeightMapSetterRef; }                                                         

@@ -18,7 +18,7 @@ CFrustum::CFrustumPlane::~CFrustumPlane(void)
     
 }
 
-void CFrustum::CFrustumPlane::Set_Points(glm::vec3 &_vPoint_01, glm::vec3 &_vPoint_02, glm::vec3 &_vPoint_03)
+void CFrustum::CFrustumPlane::Set_Points(const glm::vec3 &_vPoint_01, const glm::vec3 &_vPoint_02, const glm::vec3 &_vPoint_03)
 {
     glm::vec3 vEdge_01, vEdge_02;
     
@@ -30,7 +30,7 @@ void CFrustum::CFrustumPlane::Set_Points(glm::vec3 &_vPoint_01, glm::vec3 &_vPoi
 	d = -glm::dot(m_vNormal, m_vPoint);
 }
 
-float CFrustum::CFrustumPlane::Get_Distance(glm::vec3 &_vPoint)
+float CFrustum::CFrustumPlane::Get_Distance(const glm::vec3 &_vPoint)
 {
     float fDot = glm::dot(m_vNormal, _vPoint);
     return (d + fDot) * -1.0f;
@@ -102,7 +102,7 @@ void CFrustum::Set_InternalParams(float _fAngle, float _fAspectRation, float _fN
 	fw = fh * m_fAspectRation;
 }
 
-int CFrustum::IsPointInFrustum(glm::vec3 &_vPoint)
+int CFrustum::IsPointInFrustum(const glm::vec3 &_vPoint)
 {
     int iResult = E_FRUSTUM_RESULT_INSIDE;
 	for(int i=0; i < 6; i++)
@@ -115,7 +115,7 @@ int CFrustum::IsPointInFrustum(glm::vec3 &_vPoint)
 	return(iResult);
 }
 
-int CFrustum::IsSphereInFrustum(glm::vec3& _vPoint, float _fRadius)
+int CFrustum::IsSphereInFrustum(const glm::vec3& _vPoint, float _fRadius)
 {
     int iRresult = E_FRUSTUM_RESULT_INSIDE;
 	float fDistance;
@@ -131,7 +131,7 @@ int CFrustum::IsSphereInFrustum(glm::vec3& _vPoint, float _fRadius)
 	return(iRresult);
 }
 
-int CFrustum::IsBoxInFrustum(glm::vec3& _vMaxBound, glm::vec3& _vMinBound)
+int CFrustum::IsBoxInFrustum(const glm::vec3& _vMaxBound, const glm::vec3& _vMinBound)
 {
     int iResult = E_FRUSTUM_RESULT_INSIDE; 
     glm::vec3 vMin, vMax;

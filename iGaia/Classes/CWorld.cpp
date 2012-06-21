@@ -55,10 +55,25 @@ void CWorld::Load(void)
     m_pCharacterControllerPlayer = static_cast<CCharacterControllerPlayer*>(m_pCharaterControllerMgr->Get_MainCharacterController());
     m_pCharacterControllerPlayer->Set_Position(glm::vec3(5.0f, 0.0f, 5.0f));
     
-    m_pCharacterControllerEnemy = static_cast<CCharacterControllerEnemy*>(m_pCharaterControllerMgr->Add_EnemyCharacterController());
-    m_pCharacterControllerEnemy->Set_Position(glm::vec3(8.0f, 0.0f, 8.0f));
-    m_pGameAIMgr->Add_AICharacterController(m_pCharacterControllerEnemy);
+    CCharacterControllerEnemy* pEnemy = static_cast<CCharacterControllerEnemy*>(m_pCharaterControllerMgr->Add_EnemyCharacterController());
+    pEnemy->Set_Position(glm::vec3(8.0f, 0.0f, 8.0f));
+    m_pGameAIMgr->Add_AICharacterController(pEnemy);
+    pEnemy->Set_Target(m_pCharacterControllerPlayer);
     
+    pEnemy = static_cast<CCharacterControllerEnemy*>(m_pCharaterControllerMgr->Add_EnemyCharacterController());
+    pEnemy->Set_Position(glm::vec3(64.0f - 8.0f, 0.0f, 8.0f));
+    m_pGameAIMgr->Add_AICharacterController(pEnemy);
+    pEnemy->Set_Target(m_pCharacterControllerPlayer);
+    
+    pEnemy = static_cast<CCharacterControllerEnemy*>(m_pCharaterControllerMgr->Add_EnemyCharacterController());
+    pEnemy->Set_Position(glm::vec3(8.0f, 0.0f, 64.0f - 8.0f));
+    m_pGameAIMgr->Add_AICharacterController(pEnemy);
+    pEnemy->Set_Target(m_pCharacterControllerPlayer);
+    
+    pEnemy = static_cast<CCharacterControllerEnemy*>(m_pCharaterControllerMgr->Add_EnemyCharacterController());
+    pEnemy->Set_Position(glm::vec3(64.0f - 8.0f, 0.0f, 64.0f - 8.0f));
+    m_pGameAIMgr->Add_AICharacterController(pEnemy);
+    pEnemy->Set_Target(m_pCharacterControllerPlayer);
     
     m_pLight = CSceneMgr::Instance()->Get_Light(ILight::E_LIGHT_MODE_POINT, 0);
     m_pLight->Set_Position(glm::vec3(0.0f, 4.0f, 0.0f));
@@ -144,8 +159,6 @@ void CWorld::Update(void)
     glm::vec3 vCameraRotation = glm::mix(vOldCameraRotation, vCurrentCameraRotation, k_CAMERA_ROTATION_LERP);
     m_pCamera->Set_Rotation(vCameraRotation);
 }
-
-
 
 
 

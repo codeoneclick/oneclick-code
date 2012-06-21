@@ -114,7 +114,6 @@ void CParser_MDL::Commit(void)
 {
     m_pSourceData->m_pVertexBuffer = new CVertexBufferPositionTexcoordNormalTangent(m_pSourceData->m_iNumVertexes, GL_STATIC_DRAW);
     CVertexBufferPositionTexcoordNormalTangent::SVertex* pVertexBufferData = static_cast<CVertexBufferPositionTexcoordNormalTangent::SVertex*>(m_pSourceData->m_pVertexBuffer->Lock());
-    
     for(unsigned int index = 0; index < m_pSourceData->m_iNumVertexes; index++)
     {
         pVertexBufferData[index].m_vPosition = m_pSourceData->m_pData[index].m_vPosition;
@@ -122,6 +121,9 @@ void CParser_MDL::Commit(void)
         pVertexBufferData[index].m_vNormal = IVertexBuffer::CompressVEC3(m_pSourceData->m_pData[index].m_vNormal);
         pVertexBufferData[index].m_vTangent = IVertexBuffer::CompressVEC3(m_pSourceData->m_pData[index].m_vTangent);
     }
+    
+    m_pSourceData->m_pVertexBuffer->Commit();
+    m_pSourceData->m_pIndexBuffer->Commit();
 }
 
 

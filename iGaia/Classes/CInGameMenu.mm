@@ -47,7 +47,7 @@
 
 - (void)OnMoveBtnAction:(UIButton *)sender
 {
-    switch (sender.tag)
+    /*switch (sender.tag)
     {
         case k_MOVE_LEFT_TRACK_INC:
             CWorld::Instance()->Get_PlayerCharacterController()->Set_LeftTrackState(CCharacterControllerPlayer::E_CHARACTER_CONTROLLER_STATE_INC_MOVE);
@@ -69,7 +69,7 @@
             break;
         default:
             break;
-    }
+    }*/
 }
 
 - (void)onCameraButtonPress:(UIButton*)sender
@@ -92,7 +92,7 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    CGFloat fOffset = scrollView.contentOffset.y;
+    /*CGFloat fOffset = scrollView.contentOffset.y;
     NSInteger iMode = round(fOffset / scrollView.bounds.size.height);
     if(scrollView.tag == k_SCROLL_LEFT_TRACK)
     {
@@ -128,7 +128,7 @@
             default:
                 break;
         }
-    }
+    }*/
 }
 
 @end
