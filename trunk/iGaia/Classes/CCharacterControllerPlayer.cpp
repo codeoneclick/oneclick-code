@@ -30,9 +30,6 @@ CCharacterControllerPlayer::CCharacterControllerPlayer(void)
     m_fTowerSteerSpeed = 4.0f;
     
     m_fTowerRotationY = 0.0f;
-    
-    m_vTowerModelTarget = glm::vec3(0.0f, 0.0f, 0.0f);
-    
     m_iLastCrossFireTime = 0;
 }
 
@@ -91,42 +88,50 @@ void CCharacterControllerPlayer::Load(void)
     m_pLeftExhaustSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_PARTICLE_EMITTER);
     m_pLeftExhaustSmokeEmitter->Set_Texture("smoke.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
     m_pLeftExhaustSmokeEmitter->Set_MaxY(2.5f);
+    m_pLeftExhaustSmokeEmitter->Set_Batching(true, "smoke-emitter");
     
     m_pRightExhaustSmokeEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(64, glm::vec2(0.033f), glm::vec2(1.25f), 1000);
     m_pRightExhaustSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_PARTICLE_EMITTER);
     m_pRightExhaustSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_PARTICLE_EMITTER);
     m_pRightExhaustSmokeEmitter->Set_Texture("smoke.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
     m_pRightExhaustSmokeEmitter->Set_MaxY(2.5f);
+    m_pRightExhaustSmokeEmitter->Set_Batching(true, "smoke-emitter");
     
     m_pLeftTrackSmokeEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(64, glm::vec2(0.05f), glm::vec2(2.5f), 1000);
     m_pLeftTrackSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_PARTICLE_EMITTER);
     m_pLeftTrackSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_PARTICLE_EMITTER);
     m_pLeftTrackSmokeEmitter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
+    m_pLeftTrackSmokeEmitter->Set_Batching(true, "fire-emitter");
     
     m_pRightTrackSmokeEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(64, glm::vec2(0.05f), glm::vec2(2.5f), 1000);
     m_pRightTrackSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_PARTICLE_EMITTER);
     m_pRightTrackSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_PARTICLE_EMITTER);
     m_pRightTrackSmokeEmitter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
+    m_pRightTrackSmokeEmitter->Set_Batching(true, "fire-emitter");
     
     m_pTowerSmokeEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(64, glm::vec2(0.05f), glm::vec2(2.5f), 1000);
     m_pTowerSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_PARTICLE_EMITTER);
     m_pTowerSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_PARTICLE_EMITTER);
     m_pTowerSmokeEmitter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
+    m_pTowerSmokeEmitter->Set_Batching(true, "fire-emitter");
     
     m_pLeftTrackFireEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(64, glm::vec2(0.05f), glm::vec2(2.5f), 1000);
     m_pLeftTrackFireEmitter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_PARTICLE_EMITTER);
     m_pLeftTrackFireEmitter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_PARTICLE_EMITTER);
     m_pLeftTrackFireEmitter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
+    m_pLeftTrackFireEmitter->Set_Batching(true, "fire-emitter");
     
     m_pRightTrackFireEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(64, glm::vec2(0.05f), glm::vec2(2.5f), 1000);
     m_pRightTrackFireEmitter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_PARTICLE_EMITTER);
     m_pRightTrackFireEmitter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_PARTICLE_EMITTER);
     m_pRightTrackFireEmitter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
+    m_pRightTrackFireEmitter->Set_Batching(true, "fire-emitter");
     
     m_pTowerFireEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(64, glm::vec2(0.05f), glm::vec2(2.5f), 1000);
     m_pTowerFireEmitter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_PARTICLE_EMITTER);
     m_pTowerFireEmitter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_PARTICLE_EMITTER);
     m_pTowerFireEmitter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
+    m_pTowerFireEmitter->Set_Batching(true, "fire-emitter");
 
     CSceneMgr::Instance()->AddEventListener(m_pBodyModel, CEventMgr::E_EVENT_TOUCH);
     m_pBodyModel->Add_DelegateOwner(this);
@@ -135,14 +140,7 @@ void CCharacterControllerPlayer::Load(void)
 
 void CCharacterControllerPlayer::OnTouchEvent(ITouchDelegate* _pDelegateOwner)
 {
-    m_vTowerModelTarget = CSceneMgr::Instance()->Get_CollisionMgr()->Get_Touch3DPoint();
-}
-
-void CCharacterControllerPlayer::Shoot(void)
-{
-    CWorld::Instance()->Get_GameShooterMgr()->CreateBullet(glm::vec3(m_vPosition.x + sinf(glm::radians(m_fTowerRotationY)) * 1.8f, m_vPosition.y + 1.6f, m_vPosition.z + cosf(glm::radians(m_fTowerRotationY)) * 2.0f), glm::vec3(m_vPosition.x, m_vPosition.y + 1.8f, m_vPosition.z), m_pTowerModel->Get_Rotation());
-    m_pFireCross->Enable();
-    //m_iLastCrossFireTime = CTimer::Instance()->Get_TickCount();
+    //CSceneMgr::Instance()->Get_CollisionMgr()->Get_Touch3DPoint();
 }
 
 void CCharacterControllerPlayer::Update(void)
@@ -251,13 +249,8 @@ void CCharacterControllerPlayer::Update(void)
     m_pLeftTrackModel->Set_TexCoordOffset(vLeftTrackTexCoordOffset);
     m_pRightTrackModel->Set_TexCoordOffset(vRightTrackTexCoordOffset);
 
-    m_vPosition.y = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_HeightValue(m_vPosition.x, m_vPosition.z);
     Set_Position(m_vPosition);
-    glm::vec3 vCurrentRotation = glm::vec3(0.0f, m_vRotation.y, 0.0f);
-    glm::vec2 vRotationOnHeightMap = _Get_RotationOnHeightmap(m_vPosition);
-    vCurrentRotation.x = -glm::degrees(vRotationOnHeightMap.x);
-    vCurrentRotation.z =  glm::degrees(vRotationOnHeightMap.y);
-    m_vRotation = glm::mix(m_vRotation, vCurrentRotation, 0.25f);
+    _SmoothRotation();
     Set_Rotation(m_vRotation);
     
     int iCurrentCrossFireTime = CTimer::Instance()->Get_TickCount();
@@ -265,11 +258,6 @@ void CCharacterControllerPlayer::Update(void)
     {
         m_pFireCross->Disable();
     }
-    
-    //m_pExplosionEmitter->Set_Position(m_vPosition);
-    
-    //float fTowerTargetAngle = _GetRotationBetweenPoints(m_vPosition, m_vTowerModelTarget);
-    //m_pTowerModel->Set_Rotation(glm::vec3(m_vRotation.x, glm::degrees(fTowerTargetAngle + 1.57f), m_vRotation.z));
 }
 
 

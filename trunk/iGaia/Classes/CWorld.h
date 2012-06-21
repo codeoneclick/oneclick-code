@@ -39,7 +39,6 @@ private:
     CGameAIMgr* m_pGameAIMgr;
     CLevel* m_pLevel;
     CCharacterControllerPlayer* m_pCharacterControllerPlayer;
-    CCharacterControllerEnemy* m_pCharacterControllerEnemy;
     ICamera* m_pCamera;
     ILight* m_pLight;
     bool m_bIsHeroUnderControl;

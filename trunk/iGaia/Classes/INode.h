@@ -55,6 +55,9 @@ protected:
     bool m_bIsRenderModeScreenNormalEnable;
     bool m_bIsRenderModeShadowMapEnable;
     
+    bool m_bIsBatching;
+    std::string m_sBatchingName;
+    
     std::vector<IDelegate*> m_lDelegateOwners;
     
     float _Get_WrapAngle(float _fValue, float _fMin, float _fMax)
@@ -71,9 +74,12 @@ public:
     virtual void Update(void);
     virtual void Render(CShader::E_RENDER_MODE _eMode);
     
-    CShader*  Get_Shader(CShader::E_RENDER_MODE _eRenderMode);
-    CTexture* Get_Texture(unsigned int index);
+    CShader*  Get_Shader(CShader::E_RENDER_MODE _eRenderMode) { return m_pShaders[_eRenderMode]; }
+    CTexture* Get_Texture(unsigned int index) { if(index >= TEXTURES_MAX_COUNT) return NULL; else return m_pTextures[index]; }
     CMesh*    Get_Mesh(void) { return m_pMesh; }
+    
+    void Set_Batching(bool _bValue,  const std::string& _sBatchingName) { m_bIsBatching = _bValue; m_sBatchingName = _sBatchingName; }
+    std::string Get_BatchingName(void) { return m_sBatchingName; }
     
     void Set_Texture(CTexture* _pTexture, int index, CTexture::E_WRAP_MODE _eWrap);
     void Set_Texture(const std::string &_sName, int _index, CTexture::E_WRAP_MODE _eWrap, IResource::E_THREAD _eThread = IResource::E_THREAD_MAIN);

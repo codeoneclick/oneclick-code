@@ -110,15 +110,6 @@ void CParticleEmitter::OnTouchEvent(ITouchDelegate *_pDelegateOwner)
 
 void CParticleEmitter::Enable(void)
 {
-    /*if(!m_bIsEnable)
-    {
-        for(unsigned short i = 0; i < m_iNumParticles; i++)
-        {
-            m_pParticles[i].m_vPosition = glm::vec3(0.0f, 0.0f, 0.0f);
-            m_pParticles[i].m_vSize = m_vMinSize;
-            m_pParticles[i].m_iTime = _Get_TickCount();
-        }
-    }*/
     m_bIsEnable = true;
 }
 
@@ -130,10 +121,10 @@ void CParticleEmitter::Disable(void)
 void CParticleEmitter::Update(void)
 {
     m_vRotation = glm::vec3(0.0f, 0.0f, 0.0f);
-    glm::vec3 vWorldPosition = m_vPosition;
+    glm::vec3 vPositionCached = m_vPosition;
     m_vPosition = glm::vec3(0.0f, 0.0f, 0.0f);
-    
     INode::Update();
+    m_vPosition = vPositionCached;
     
     CVertexBufferPositionTexcoordColor::SVertex* pVertexBufferData = static_cast<CVertexBufferPositionTexcoordColor::SVertex*>(m_pMesh->Get_VertexBufferRef()->Lock());
     
@@ -146,7 +137,7 @@ void CParticleEmitter::Update(void)
         glm::mat4x4 mRotationZ = glm::rotate(mRotationY, m_pParticles[index].m_vRotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
         glm::mat4x4 mWorld = glm::translate(glm::mat4(1.0f), m_pParticles[index].m_vPosition) * mRotationZ;*/
         
-        glm::mat4x4 mWorld = pCamera->Get_BillboardSphericalMatrix(m_pParticles[index].m_vPosition + vWorldPosition);
+        glm::mat4x4 mWorld = pCamera->Get_BillboardSphericalMatrix(m_pParticles[index].m_vPosition + vPositionCached);
                 
         glm::vec4 vTransform = glm::vec4(-m_pParticles[index].m_vSize.x, -m_pParticles[index].m_vSize.y, 0.0f, 1.0f);
         vTransform = mWorld * vTransform;
@@ -174,7 +165,18 @@ void CParticleEmitter::Update(void)
 
 void CParticleEmitter::Render(CShader::E_RENDER_MODE _eMode)
 {
+    if(CSceneMgr::Instance()->Get_Frustum()->IsPointInFrustum(m_vPosition) == CFrustum::E_FRUSTUM_RESULT_OUTSIDE)
+    {
+        return;
+    }
+    
     INode::Render(_eMode);
+    
+    if(m_bIsBatching)
+    {
+        CSceneMgr::Instance()->Get_BatchMgr()->Push(this, CBatch::E_BATCH_MODE_PARTICLE_EMITTER);
+        return;
+    }
     
     glDisable(GL_CULL_FACE);
     glDepthMask(GL_FALSE);

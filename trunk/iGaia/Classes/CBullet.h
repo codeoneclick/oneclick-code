@@ -35,7 +35,7 @@ public:
     void Set_Position(const glm::vec3& _vPosition);
     glm::vec3 Get_Position(void) { return m_vPosition; }
     
-    void Set_Rotation(const glm::vec3& _vRotation) { m_vRotation = _vRotation; }
+    void Set_Rotation(const glm::vec3& _vRotation);
     glm::vec3 Get_Rotation(void) { return m_vRotation; }
     
     bool Get_Destroyed(void) { return m_bIsDestroyed; }
