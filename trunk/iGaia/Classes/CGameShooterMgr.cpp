@@ -10,7 +10,12 @@
 
 CGameShooterMgr::CGameShooterMgr(void)
 {
-    
+    for(unsigned int i = 0; i < k_MAX_NUM_BULLETS; ++i)
+    {
+        CBullet* pBullet = new CBullet();
+        pBullet->Load();
+        m_lUnUsedBulletsContainer.push_back(pBullet);
+    }
 }
 
 CGameShooterMgr::~CGameShooterMgr(void)
@@ -18,38 +23,48 @@ CGameShooterMgr::~CGameShooterMgr(void)
     
 }
 
-void CGameShooterMgr::CreateBullet(const glm::vec3 &_vStartPosition, const glm::vec3 &_vEndPosition, const glm::vec3 &_vRotation)
+void CGameShooterMgr::CreateBullet(const glm::vec3& _vPosition, const glm::vec3& _vDirection)
 {
-    CBullet* pBullet = new CBullet();
-    pBullet->Load();
-    pBullet->Set_StartPoint(_vStartPosition);
-    pBullet->Set_EndPoint(_vEndPosition);
-    pBullet->Set_Position(_vStartPosition);
-    pBullet->Set_Rotation(_vRotation);
-    m_lBulletsContainer.push_back(pBullet);
+    if(m_lUnUsedBulletsContainer.size() > 0)
+    {
+        CBullet* pBullet = m_lUnUsedBulletsContainer.back();
+        m_lUnUsedBulletsContainer.pop_back();
+        pBullet->Set_Position(_vPosition);
+        pBullet->Set_Rotation(_vDirection);
+        pBullet->Set_IsDead(false);
+        m_lUsedBulletsContainer.push_back(pBullet);
+    }
+    else
+    {
+        std::cout<<"[CGameShooterMgr::CreateBullet] bullet container is empty"<<std::endl;
+    }
 }
 
 void CGameShooterMgr::Update(void)
 {
-    std::vector<CBullet*>::iterator pBeginBulletIterator = m_lBulletsContainer.begin();
-    std::vector<CBullet*>::iterator pEndBulletIterator = m_lBulletsContainer.end();
+    std::vector<CBullet*>::iterator pBeginBulletIterator = m_lUsedBulletsContainer.begin();
+    std::vector<CBullet*>::iterator pEndBulletIterator = m_lUsedBulletsContainer.end();
     while (pBeginBulletIterator != pEndBulletIterator)
     {
         (*pBeginBulletIterator)->Update();
         ++pBeginBulletIterator;
     }
     
-    pBeginBulletIterator = m_lBulletsContainer.begin();
-    pEndBulletIterator = m_lBulletsContainer.end();
+    pBeginBulletIterator = m_lUsedBulletsContainer.begin();
+    pEndBulletIterator = m_lUsedBulletsContainer.end();
     while (pBeginBulletIterator != pEndBulletIterator)
     {
-        if((*pBeginBulletIterator)->Get_Destroyed())
+        if((*pBeginBulletIterator)->Get_IsDead())
         {
             CBullet* pBullet = (*pBeginBulletIterator);
-            m_lBulletsContainer.erase(pBeginBulletIterator);
-            delete pBullet;
+            m_lUsedBulletsContainer.erase(pBeginBulletIterator);
+            m_lUnUsedBulletsContainer.push_back(pBullet);
             break;
         }
         ++pBeginBulletIterator;
     }
 }
+
+
+
+

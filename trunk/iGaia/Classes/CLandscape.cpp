@@ -15,8 +15,8 @@
 
 CLandscape::CLandscape(void)
 {
-    m_iWidth = 64;
-    m_iHeight = 64;
+    m_iWidth = 48;
+    m_iHeight = 48;
     m_pHeightMapSetter = NULL;
 }
 

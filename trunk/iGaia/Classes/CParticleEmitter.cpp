@@ -9,15 +9,16 @@
 #include "CParticleEmitter.h"
 #include "CSceneMgr.h"
 #include "CVertexBufferPositionTexcoordColor.h"
-#include <mach/mach.h>
-#include <mach/mach_time.h>
+#include "CTimer.h"
 
 CParticleEmitter::CParticleEmitter(void)
 {
-    m_iNumParticles = 2;
-    m_fMaxY = 1.0f;
+    m_iNumParticles = k_DEFAULT_NUM_PARTICLES;
     m_pParticles = NULL;
-    m_bIsEnable = false;
+    
+    m_bIsRepeat = false;
+    m_bIsDead = false;
+    m_bIsStop = true;
 }
 
 CParticleEmitter::~CParticleEmitter(void)
@@ -44,8 +45,11 @@ void CParticleEmitter::Load(const std::string& _sName, IResource::E_THREAD _eThr
         m_pParticles[index].m_vPosition = glm::vec3(0.0f, 0.0f, 0.0f);
         m_pParticles[index].m_vVelocity = glm::vec3(0.0f, 0.0f, 0.0f);
         m_pParticles[index].m_vColor = glm::u8vec4(255, 255, 255, 255);
-        m_pParticles[index].m_iTime = 0;
+        m_pParticles[index].m_iLifeTime = 0;
         m_pParticles[index].m_vSize = m_vMinSize;
+        m_pParticles[index].m_bIsDead = false;
+        m_pParticles[index].m_iLifeTime = _Get_RandomFromRange(m_iMinLifeTime, m_iMaxLifeTime);
+        m_pParticles[index].m_iTimeStamp = 0;
         
         pVertexBufferData[index * 4 + 0].m_vPosition = glm::vec3(m_pParticles[index].m_vPosition.x - m_pParticles[index].m_vSize.x, m_pParticles[index].m_vPosition.y, m_pParticles[index].m_vPosition.z - m_pParticles[index].m_vSize.y);
         pVertexBufferData[index * 4 + 1].m_vPosition = glm::vec3(m_pParticles[index].m_vPosition.x + m_pParticles[index].m_vSize.x, m_pParticles[index].m_vPosition.y, m_pParticles[index].m_vPosition.z - m_pParticles[index].m_vSize.y);
@@ -108,18 +112,27 @@ void CParticleEmitter::OnTouchEvent(ITouchDelegate *_pDelegateOwner)
     
 }
 
-void CParticleEmitter::Enable(void)
+void CParticleEmitter::Reset(void)
 {
-    m_bIsEnable = true;
-}
-
-void CParticleEmitter::Disable(void)
-{
-    m_bIsEnable = false;
+    m_bIsDead = false;
+    int iCurrentTimeStamp = CTimer::Instance()->Get_TickCount();
+    for(unsigned int i = 0; i < m_iNumParticles; ++i)
+    {
+        m_pParticles[i].m_vPosition = glm::vec3(0.0f, 0.0f, 0.0f);
+        m_pParticles[i].m_vSize = m_vMinSize;
+        m_pParticles[i].m_vColor.a = 255;
+        m_pParticles[i].m_bIsDead = false;
+        m_pParticles[i].m_iTimeStamp = iCurrentTimeStamp;
+    }
 }
 
 void CParticleEmitter::Update(void)
 {
+    if(m_bIsDead)
+    {
+        return;
+    }
+    
     m_vRotation = glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 vPositionCached = m_vPosition;
     m_vPosition = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -129,13 +142,16 @@ void CParticleEmitter::Update(void)
     CVertexBufferPositionTexcoordColor::SVertex* pVertexBufferData = static_cast<CVertexBufferPositionTexcoordColor::SVertex*>(m_pMesh->Get_VertexBufferRef()->Lock());
     
     ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
+   
+    m_iNumDeadParticles = 0;
     
     for(unsigned int index = 0; index < m_iNumParticles; index++)
     {
-        /*glm::mat4x4 mRotationX = glm::rotate(glm::mat4(1.0f), m_pParticles[index].m_vRotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
-        glm::mat4x4 mRotationY = glm::rotate(mRotationX, m_pParticles[index].m_vRotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
-        glm::mat4x4 mRotationZ = glm::rotate(mRotationY, m_pParticles[index].m_vRotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
-        glm::mat4x4 mWorld = glm::translate(glm::mat4(1.0f), m_pParticles[index].m_vPosition) * mRotationZ;*/
+        if(m_pParticles[index].m_bIsDead)
+        {
+            m_iNumDeadParticles++;
+            continue;
+        }
         
         glm::mat4x4 mWorld = pCamera->Get_BillboardSphericalMatrix(m_pParticles[index].m_vPosition + vPositionCached);
                 
@@ -161,10 +177,20 @@ void CParticleEmitter::Update(void)
         pVertexBufferData[index * 4 + 3].m_vColor = m_pParticles[index].m_vColor;
     }
     m_pMesh->Get_VertexBufferRef()->Commit();
+    
+    if(m_iNumDeadParticles == m_iNumParticles && !m_bIsRepeat && !m_bIsStop)
+    {
+        m_bIsDead = true;
+    }
 }
 
 void CParticleEmitter::Render(CShader::E_RENDER_MODE _eMode)
 {
+    if(m_bIsDead)
+    {
+        return;
+    }
+    
     if(CSceneMgr::Instance()->Get_Frustum()->IsPointInFrustum(m_vPosition) == CFrustum::E_FRUSTUM_RESULT_OUTSIDE)
     {
         return;

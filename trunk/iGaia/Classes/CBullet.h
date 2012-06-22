@@ -12,6 +12,8 @@
 #include <iostream>
 #include "CSceneMgr.h"
 
+#define k_BULLET_HEIGHT_OFFSET 1.45f
+
 class CBullet
 {
 protected:
@@ -20,12 +22,9 @@ protected:
     CParticleEmitterFireTrail* m_pFireEmmiter;
     CParticleEmitter* m_pExplosionEmitter;
     INode* m_pModel;
-    glm::vec3 m_vStartPoint;
-    glm::vec3 m_vEndPoint;
     float m_fMoveSpeed;
-    bool m_bIsDestroyed;
     void _MoveForward(void);
-    void _SelfDestroy(void);
+    bool m_bIsDead;
 public:
     CBullet(void);
     ~CBullet(void);
@@ -38,10 +37,8 @@ public:
     void Set_Rotation(const glm::vec3& _vRotation);
     glm::vec3 Get_Rotation(void) { return m_vRotation; }
     
-    bool Get_Destroyed(void) { return m_bIsDestroyed; }
-    
-    void Set_StartPoint(const glm::vec3& _vPoint) { m_vStartPoint = _vPoint; }
-    void Set_EndPoint(const glm::vec3& _vPoint) { m_vEndPoint = _vPoint; }
+    bool Get_IsDead(void) { return m_bIsDead; }
+    void Set_IsDead(bool _bValue) { m_bIsDead = _bValue; if(!m_bIsDead) { m_pFireEmmiter->Reset(); m_pFireEmmiter->Start(); } }
 };
 
 #endif /* defined(__iGaia__CBullet__) */

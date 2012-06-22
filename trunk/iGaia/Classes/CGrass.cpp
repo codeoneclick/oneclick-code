@@ -20,8 +20,8 @@ const int CGrass::k_ELEMENT_NUM_VERTEXES = 4;
 
 CGrass::CGrass(void)
 {
-    m_iWidth = 64;
-    m_iHeight = 64;
+    m_iWidth = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_Width();
+    m_iHeight = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_Height();
     
     m_pSingleElementIndexBuffer = new unsigned short[k_ELEMENT_NUM_INDEXES];
     m_pSingleElementIndexBuffer[0] = 0;

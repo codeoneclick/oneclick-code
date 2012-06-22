@@ -16,12 +16,12 @@ CParticleEmitterExplosion::CParticleEmitterExplosion(void)
 
 CParticleEmitterExplosion::~CParticleEmitterExplosion(void)
 {
-    
+    std::cout<<"[CParticleEmitterExplosion::~CParticleEmitterExplosion] delete"<<std::endl;
 }
 
 void CParticleEmitterExplosion::Load(const std::string &_sName, IResource::E_THREAD _eThread)
 {
-    CParticleEmitter::Load(_sName, _eThread);
+    /*CParticleEmitter::Load(_sName, _eThread);
     
     unsigned int iNumParticlesPerAxis = m_iNumParticles / 3;
     float fStepAngle = 360.0f / iNumParticlesPerAxis;
@@ -54,12 +54,12 @@ void CParticleEmitterExplosion::Load(const std::string &_sName, IResource::E_THR
         m_pParticles[index].m_vDirection.z += cosf(glm::radians(fCurrentAngle));
         fCurrentAngle += fStepAngle;
         ++index;
-    }
+    }*/
 }
 
 void CParticleEmitterExplosion::Update(void)
 {
-    for(unsigned short i = 0; i < m_iNumParticles; i++)
+    /*for(unsigned short i = 0; i < m_iNumParticles; i++)
     {
         glm::vec3 vPosition = m_pParticles[i].m_vPosition;
         m_fMoveSpeed = _Get_RandomFromRange(0.0f, 250.0f) / 500.0f;
@@ -82,7 +82,7 @@ void CParticleEmitterExplosion::Update(void)
             m_pParticles[i].m_vColor.a -= 1;
         }
     }
-    CParticleEmitter::Update();
+    CParticleEmitter::Update();*/
 }
 
 

@@ -235,7 +235,7 @@ void ICharacterController::Set_Rotation(const glm::vec3 &_vRotation)
 
 void ICharacterController::Shoot(void)
 {
-    CWorld::Instance()->Get_GameShooterMgr()->CreateBullet(glm::vec3(m_vPosition.x + sinf(glm::radians(m_fTowerRotationY)) * 1.33f, m_vPosition.y + 1.33f, m_vPosition.z + cosf(glm::radians(m_fTowerRotationY)) * 1.33f), glm::vec3(m_vPosition.x, m_vPosition.y + 1.33f, m_vPosition.z), m_pTowerModel->Get_Rotation());
+    CWorld::Instance()->Get_GameShooterMgr()->CreateBullet(glm::vec3(m_vPosition.x + sinf(glm::radians(m_fTowerRotationY)) * 1.11f, m_vPosition.y + 1.33f, m_vPosition.z + cosf(glm::radians(m_fTowerRotationY)) * 1.11f), m_pTowerModel->Get_Rotation());
 }
 
 

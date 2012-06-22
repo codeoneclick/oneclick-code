@@ -21,8 +21,8 @@ protected:
 public:
     CParticleMgr(void);
     ~CParticleMgr(void);
-    CParticleEmitterFire* Add_ParticleEmitterFire(unsigned int _iNumParticles, const glm::vec2& _vMinSize, const glm::vec2& _vMaxSize, int _iLifeTime);
-    CParticleEmitterFireTrail* Add_ParticleEmitterFireTrail(unsigned int _iNumParticles, const glm::vec2& _vMinSize, const glm::vec2& _vMaxSize, int _iLifeTime);
+    CParticleEmitterFire* Add_ParticleEmitterFire(unsigned int _iNumParticles, const glm::vec2& _vMinSize, const glm::vec2& _vMaxSize, int _iLifeTime, bool _bIsRepeat);
+    CParticleEmitterFireTrail* Add_ParticleEmitterFireTrail(unsigned int _iNumParticles, const glm::vec2& _vMinSize, const glm::vec2& _vMaxSize, int _iLifeTime, bool _bIsRepeat);
     void Remove_ParticleEmitter(CParticleEmitter* _pParticleEmitter);
     void Remove_Effect(INode* _pEffect);
     void Update(void);
