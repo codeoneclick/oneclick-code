@@ -16,8 +16,8 @@ const int CWater::k_ELEMENT_NUM_VERTEXES = 4;
 
 CWater::CWater(void)
 {
-    m_iWidth = 64;
-    m_iHeight = 64;
+    m_iWidth = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_Width();
+    m_iHeight = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_Height();
     m_fWaterHeight = -0.1f;
 }
 
@@ -148,3 +148,7 @@ void CWater::Render(CShader::E_RENDER_MODE _eMode)
     m_pShaders[_eMode]->Disable();
     glEnable(GL_CULL_FACE);
 }
+
+
+
+

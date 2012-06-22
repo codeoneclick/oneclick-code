@@ -16,7 +16,7 @@ CParticleEmitterFire::CParticleEmitterFire(void)
 
 CParticleEmitterFire::~CParticleEmitterFire(void)
 {
-    
+    std::cout<<"[CParticleEmitterFire::~CParticleEmitterFire] delete"<<std::endl;
 }
 
 void CParticleEmitterFire::Load(const std::string &_sName, IResource::E_THREAD _eThread)
@@ -26,43 +26,69 @@ void CParticleEmitterFire::Load(const std::string &_sName, IResource::E_THREAD _
     for(unsigned short i = 0; i < m_iNumParticles; i++)
     {
         glm::vec3 vPosition = m_pParticles[i].m_vPosition;
-        float fOffset = _Get_RandomFromRange(0.0f, 0.33f);
-        vPosition.x = fOffset;
-        fOffset = _Get_RandomFromRange(0.0f, 0.33f);
-        vPosition.z = fOffset;
+        vPosition.x = _Get_RandomFromRange(-k_PARTICLE_START_OFFSET_X * k_RANDOM_MODIFICATOR, k_PARTICLE_START_OFFSET_X * k_RANDOM_MODIFICATOR) / k_RANDOM_MODIFICATOR;
+        vPosition.z = _Get_RandomFromRange(-k_PARTICLE_START_OFFSET_Z * k_RANDOM_MODIFICATOR, k_PARTICLE_START_OFFSET_Z * k_RANDOM_MODIFICATOR) / k_RANDOM_MODIFICATOR;
         m_pParticles[i].m_vPosition = vPosition;
+        m_pParticles[i].m_vVelocity = glm::vec3(0.0f, 1.0f, 0.0f);
     }
+}
+
+void CParticleEmitterFire::Start(void)
+{
+    CParticleEmitter::Start();
+}
+
+void CParticleEmitterFire::Stop(void)
+{
+    CParticleEmitter::Stop();
+}
+
+void CParticleEmitterFire::Reset(void)
+{
+    CParticleEmitter::Reset();
 }
 
 void CParticleEmitterFire::Update(void)
 {
+    if(m_bIsDead)
+    {
+        return;
+    }
+    
     for(unsigned short i = 0; i < m_iNumParticles; i++)
     {
         glm::vec3 vPosition = m_pParticles[i].m_vPosition;
-        m_fMoveSpeed = _Get_RandomFromRange(0.0f, 250.0f) / 500.0f;
-        vPosition.y += m_fMoveSpeed;
-        m_pParticles[i].m_vPosition = vPosition;
-        m_pParticles[i].m_vSize += m_vMinSize;
-        int iCurrentTime = CTimer::Instance()->Get_TickCount();
-        m_pParticles[i].m_vColor.a -= 15;
-        if(m_pParticles[i].m_vPosition.y > m_fMaxY && m_bIsEnable)
+        m_fMoveSpeed = _Get_RandomFromRange(k_PARTICLE_MIN_MOVE_SPEED * k_RANDOM_MODIFICATOR, k_PARTICLE_MAX_MOVE_SPEED * k_RANDOM_MODIFICATOR) / k_RANDOM_MODIFICATOR;
+        m_pParticles[i].m_vVelocity = glm::vec3(0.0f, m_fMoveSpeed, 0.0f);
+        m_pParticles[i].m_vPosition += m_pParticles[i].m_vVelocity;
+        
+        if(m_pParticles[i].m_vSize.x < m_vMaxSize.x && m_pParticles[i].m_vSize.y < m_vMaxSize.y)
         {
-            m_pParticles[i].m_vPosition.y = 0.0f;
-            m_pParticles[i].m_vSize = m_vMinSize;
-            if((iCurrentTime - m_pParticles[i].m_iTime) > m_iLifeTime)
-            {
-                m_pParticles[i].m_iTime = CTimer::Instance()->Get_TickCount();
-            }
-            m_pParticles[i].m_vColor.a = 255;
-        }
-        else if(!m_bIsEnable && m_pParticles[i].m_vColor.a > 0 && m_pParticles[i].m_vPosition.y > m_fMaxY * 0.33f)
-        {
-            //m_pParticles[i].m_vColor.a -= 15;
+            m_pParticles[i].m_vSize += m_vMinSize;
         }
         
-        if(m_pParticles[i].m_vColor.a == 0)
+        int iCurrentTimeStamp = CTimer::Instance()->Get_TickCount();
+        int iTimeStampDelta = iCurrentTimeStamp - m_pParticles[i].m_iTimeStamp;
+        float iLifeDelta = static_cast<float>(iTimeStampDelta) / static_cast<float>(m_pParticles[i].m_iLifeTime);
+        if(iLifeDelta <= 1)
         {
-            m_pParticles[i].m_vPosition.y = 128.0f;
+            m_pParticles[i].m_vColor.a = (1 - iLifeDelta) * 255;
+        }
+        else if(!m_bIsRepeat || m_bIsStop)
+        {
+            m_pParticles[i].m_bIsDead = true;
+        }
+        else
+        {
+            glm::vec3 vPosition;
+            vPosition.x = _Get_RandomFromRange(-k_PARTICLE_START_OFFSET_X * k_RANDOM_MODIFICATOR, k_PARTICLE_START_OFFSET_X * k_RANDOM_MODIFICATOR) / k_RANDOM_MODIFICATOR;
+            vPosition.z = _Get_RandomFromRange(-k_PARTICLE_START_OFFSET_Z * k_RANDOM_MODIFICATOR, k_PARTICLE_START_OFFSET_Z * k_RANDOM_MODIFICATOR) / k_RANDOM_MODIFICATOR;
+            vPosition.y = 0.0f;
+            m_pParticles[i].m_vPosition = vPosition;
+            m_pParticles[i].m_vSize = m_vMinSize;
+            m_pParticles[i].m_vColor.a = 255;
+            m_pParticles[i].m_bIsDead = false;
+            m_pParticles[i].m_iTimeStamp = iCurrentTimeStamp;
         }
     }
     CParticleEmitter::Update();

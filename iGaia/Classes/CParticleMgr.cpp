@@ -19,25 +19,27 @@ CParticleMgr::~CParticleMgr(void)
     
 }
 
-CParticleEmitterFire* CParticleMgr::Add_ParticleEmitterFire(unsigned int _iNumParticles,const glm::vec2& _vMinSize,const glm::vec2& _vMaxSize, int _iLifeTime)
+CParticleEmitterFire* CParticleMgr::Add_ParticleEmitterFire(unsigned int _iNumParticles,const glm::vec2& _vMinSize,const glm::vec2& _vMaxSize, int _iLifeTime, bool _bIsRepeat)
 {
     CParticleEmitterFire* pParticleEmitter = new CParticleEmitterFire();
     pParticleEmitter->Set_NumParticles(_iNumParticles);
     pParticleEmitter->Set_MinSize(_vMinSize);
-    pParticleEmitter->Set_MaxSize(_vMinSize);
+    pParticleEmitter->Set_MaxSize(_vMaxSize);
     pParticleEmitter->Set_LifeTime(_iLifeTime);
+    pParticleEmitter->Set_IsRepeat(_bIsRepeat);
     m_lEmitterContainer.push_back(pParticleEmitter);
     pParticleEmitter->Load("emitter", IResource::E_THREAD_MAIN);
     return pParticleEmitter;
 }
 
-CParticleEmitterFireTrail* CParticleMgr::Add_ParticleEmitterFireTrail(unsigned int _iNumParticles, const glm::vec2 &_vMinSize, const glm::vec2 &_vMaxSize, int _iLifeTime)
+CParticleEmitterFireTrail* CParticleMgr::Add_ParticleEmitterFireTrail(unsigned int _iNumParticles, const glm::vec2 &_vMinSize, const glm::vec2 &_vMaxSize, int _iLifeTime, bool _bIsRepeat)
 {
     CParticleEmitterFireTrail* pParticleEmitter = new CParticleEmitterFireTrail();
     pParticleEmitter->Set_NumParticles(_iNumParticles);
     pParticleEmitter->Set_MinSize(_vMinSize);
-    pParticleEmitter->Set_MaxSize(_vMinSize);
+    pParticleEmitter->Set_MaxSize(_vMaxSize);
     pParticleEmitter->Set_LifeTime(_iLifeTime);
+    pParticleEmitter->Set_IsRepeat(_bIsRepeat);
     m_lEmitterContainer.push_back(pParticleEmitter);
     pParticleEmitter->Load("emitter", IResource::E_THREAD_MAIN);
     return pParticleEmitter;

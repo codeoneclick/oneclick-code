@@ -90,7 +90,6 @@ void CBatch::Push_MeshRef(INode *_pNode)
 
 void CBatch::Update(void)
 {
-    return;
     switch (m_eMode)
     {
         case E_BATCH_MODE_MODEL:
@@ -176,7 +175,6 @@ void CBatch::_RenderBatchModeModel(CShader::E_RENDER_MODE _eMode)
 
 void CBatch::_RenderBatchModeParticleEmitter(CShader::E_RENDER_MODE _eMode)
 {
-    return;
     glDisable(GL_CULL_FACE);
     glDepthMask(GL_FALSE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE);

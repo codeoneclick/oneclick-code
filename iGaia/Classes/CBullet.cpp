@@ -13,8 +13,8 @@ CBullet::CBullet(void)
     m_pFireEmmiter = NULL;
     m_pExplosionEmitter = NULL;
     m_pModel = NULL;
-    m_bIsDestroyed = false;
-    m_fMoveSpeed = 0.66f;
+    m_bIsDead = false;
+    m_fMoveSpeed = 0.33f;
 }
 
 CBullet::~CBullet(void)
@@ -25,11 +25,11 @@ CBullet::~CBullet(void)
 
 void CBullet::Load(void)
 {
-    m_pFireEmmiter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFireTrail(64, glm::vec2(0.15f), glm::vec2(0.75f), 1000);
+    m_pFireEmmiter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFireTrail(32, glm::vec2(0.05f), glm::vec2(0.5f), 2000, false);
     m_pFireEmmiter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_PARTICLE_EMITTER);
     m_pFireEmmiter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PRE_NORMAL_DEPTH_PARTICLE_EMITTER);
     m_pFireEmmiter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
-    m_pFireEmmiter->Set_Batching(true, "fire-emitter");
+    //m_pFireEmmiter->Set_Batching(true, "fire-emitter");
 }
 
 void CBullet::Set_Position(const glm::vec3& _vPosition)
@@ -72,23 +72,19 @@ void CBullet::_MoveForward(void)
     float fHeight = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_HeightValue(m_vPosition.x + sinf(glm::radians(m_vRotation.y)) * m_fMoveSpeed, m_vPosition.z + cosf(glm::radians(m_vRotation.y)) * m_fMoveSpeed);
     int iWidth = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_Width();
     int iHeight = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_Height();
-    if(/*fHeight > m_vPosition.y && */(m_vPosition.x < 0.0f || m_vPosition.x > iWidth || m_vPosition.z < 0.0f || m_vPosition.z > iHeight))
+    if((m_vPosition.x < 0.0f || m_vPosition.x > iWidth || m_vPosition.z < 0.0f || m_vPosition.z > iHeight))
     {
-        _SelfDestroy();
+        m_bIsDead = true;
     }
+    m_vPosition.y = fHeight + k_BULLET_HEIGHT_OFFSET;
     m_vPosition.x += sinf(glm::radians(m_vRotation.y)) * m_fMoveSpeed;
     m_vPosition.z += cosf(glm::radians(m_vRotation.y)) * m_fMoveSpeed;
     Set_Position(m_vPosition);
 }
 
-void CBullet::_SelfDestroy(void)
-{
-    m_bIsDestroyed = true;
-}
-
 void CBullet::Update(void)
 {
-    if(!m_bIsDestroyed)
+    if(!m_bIsDead)
     {
         _MoveForward();
     }

@@ -20,6 +20,8 @@ public:
     
     void Load(const std::string& _sName, IResource::E_THREAD _eThread);
     void Update(void);
+    
+    void Reset(void);
 };
 
 #endif /* defined(__iGaia__CParticleEmitterExplosion__) */
