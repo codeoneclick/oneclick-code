@@ -160,7 +160,7 @@ void CDecal::Render(CShader::E_RENDER_MODE _eMode)
     ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
     CShader* pShader = m_pMaterial->Get_Shader(_eMode);
     
-    m_pMaterial->Commit();
+    m_pMaterial->Commit(_eMode);
     
     switch (_eMode)
     {
@@ -172,11 +172,10 @@ void CDecal::Render(CShader::E_RENDER_MODE _eMode)
                 return;
             }
 
-            pShader->Enable();
             pShader->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
             pShader->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
             pShader->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
-            pShader->Set_CustomVector3(m_vPosition, "EXT_CenterPosition");
+            pShader->Set_CustomVector3(m_vPosition, "EXT_Center");
             pShader->Set_CustomFloat(glm::radians(m_vRotation.y), "EXT_Angle");
             
             for(unsigned int i = 0; i < k_TEXTURES_MAX_COUNT; ++i)
@@ -209,7 +208,6 @@ void CDecal::Render(CShader::E_RENDER_MODE _eMode)
     glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_SourceDataFromVRAM());
     m_pMesh->Get_IndexBufferRef()->Disable();
     m_pMesh->Get_VertexBufferRef()->Disable(_eMode);
-    pShader->Disable();
 }
 
 

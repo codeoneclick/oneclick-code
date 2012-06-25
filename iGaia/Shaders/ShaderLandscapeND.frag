@@ -1,4 +1,4 @@
-const char* ShaderPostNormalDepthF = STRINGIFY(                                    
+const char* ShaderLandscapeNDF = STRINGIFY(                                    
                                                    varying lowp vec4   OUT_Color;
                                                    varying lowp float  OUT_Clip;
                                                    uniform sampler2D EXT_TEXTURE_01;

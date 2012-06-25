@@ -14,7 +14,7 @@ bool CMaterial::m_pStatesCommited[CMaterial::E_RENDER_STATE_MAX];
 GLenum CMaterial::m_eCullFaceCommited;
 GLenum CMaterial::m_eBlendFuncSourceCommited;
 GLenum CMaterial::m_eBlendFuncDestCommited;
-GLuint CMaterial::m_hShaderHandle;
+GLuint CMaterial::m_hShaderHandleCommited;
 
 void CMaterial::InitStates(void)
 {
@@ -31,13 +31,11 @@ void CMaterial::InitStates(void)
     m_pStatesCommited[CMaterial::E_RENDER_STATE_BLEND_MODE] = true;
     m_pStatesCommited[CMaterial::E_RENDER_STATE_DEPTH_MASK] = true;
     
-    m_hShaderHandle = 0;
+    m_hShaderHandleCommited = 0;
 }
 
-CMaterial::CMaterial(INode* _pNodeRef)
+CMaterial::CMaterial(void)
 {
-    m_pNodeRef = _pNodeRef;
-    
     m_pTextures = new CTexture*[k_TEXTURES_MAX_COUNT];
     for(unsigned int i = 0; i < k_TEXTURES_MAX_COUNT; ++i)
     {
@@ -81,7 +79,7 @@ void CMaterial::Set_Texture(CTexture *_pTexture, int _index, CTexture::E_WRAP_MO
     m_pTextures[_index] = _pTexture;
 }
 
-void CMaterial::Set_Texture(const std::string &_sName, int _index, CTexture::E_WRAP_MODE _eWrap, IResource::E_THREAD _eThread )
+void CMaterial::Set_Texture(INode* _pNodeRef, const std::string &_sName, int _index, CTexture::E_WRAP_MODE _eWrap, IResource::E_THREAD _eThread )
 {
     if(_index >= k_TEXTURES_MAX_COUNT)
     {
@@ -101,15 +99,15 @@ void CMaterial::Set_Texture(const std::string &_sName, int _index, CTexture::E_W
     {
         lParams["WRAP"] = "CLAMP";
     }
-    m_pTextures[_index] = static_cast<CTexture*>(CResourceMgr::Instance()->Load(_sName, IResource::E_MGR_TEXTURE, _eThread, static_cast<IDelegate*>(m_pNodeRef), &lParams));
+    m_pTextures[_index] = static_cast<CTexture*>(CResourceMgr::Instance()->Load(_sName, IResource::E_MGR_TEXTURE, _eThread, static_cast<IDelegate*>(_pNodeRef), &lParams));
 }
 
-void CMaterial::Set_Shader(CShader::E_RENDER_MODE _eMode, IResource::E_SHADER _eShader)
+void CMaterial::Set_Shader(INode* _pNodeRef, CShader::E_RENDER_MODE _eMode, IResource::E_SHADER _eShader)
 {
     m_pShaders[_eMode] = CShaderComposite::Instance()->Get_Shader(_eShader);
-    if(m_pNodeRef->Get_Mesh() != NULL)
+    if(_pNodeRef->Get_Mesh() != NULL)
     {
-        m_pNodeRef->Get_Mesh()->Get_VertexBufferRef()->Add_ShaderRef(_eMode, m_pShaders[_eMode]);
+        _pNodeRef->Get_Mesh()->Get_VertexBufferRef()->Add_ShaderRef(_eMode, m_pShaders[_eMode]);
     }
 }
 
@@ -159,7 +157,7 @@ void CMaterial::Set_BlendFunc(GLenum _eFuncSource, GLenum _eFuncDest)
     m_eBlendFuncDest = _eFuncDest;
 }
 
-void CMaterial::Commit(void)
+void CMaterial::Commit(CShader::E_RENDER_MODE _eMode)
 {
     if(m_pStatesCommited[CMaterial::E_RENDER_STATE_DEPTH_TEST] != m_pStates[CMaterial::E_RENDER_STATE_DEPTH_TEST])
     {
@@ -224,6 +222,12 @@ void CMaterial::Commit(void)
         glBlendFunc(m_eBlendFuncSource, m_eBlendFuncDest);
         m_eBlendFuncSourceCommited = m_eBlendFuncSource;
         m_eBlendFuncDestCommited = m_eBlendFuncDest;
+    }
+    
+    if(m_hShaderHandleCommited != m_pShaders[_eMode]->Get_Handle())
+    {
+        m_pShaders[_eMode]->Enable();
+        m_hShaderHandleCommited = m_pShaders[_eMode]->Get_Handle();
     }
 }
 

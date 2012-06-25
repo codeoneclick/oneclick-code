@@ -94,7 +94,7 @@ void CModel::Render(CShader::E_RENDER_MODE _eMode)
     
     INode::Render(_eMode);
     
-    m_pMaterial->Commit();
+    m_pMaterial->Commit(_eMode);
     
     ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
     ILight* pLight = CSceneMgr::Instance()->Get_GlobalLight();
@@ -109,8 +109,7 @@ void CModel::Render(CShader::E_RENDER_MODE _eMode)
                 std::cout<<"[CModel::Render] Shader MODE_SIMPLE is NULL"<<std::endl;
                 return;
             }
-
-            pShader->Enable();
+            
             pShader->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
             pShader->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
             pShader->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
@@ -147,7 +146,6 @@ void CModel::Render(CShader::E_RENDER_MODE _eMode)
                 return;
             }
             
-            pShader->Enable();
             pShader->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
             pShader->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
             pShader->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
@@ -172,7 +170,6 @@ void CModel::Render(CShader::E_RENDER_MODE _eMode)
     glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_SourceDataFromVRAM());
     m_pMesh->Get_IndexBufferRef()->Disable();
     m_pMesh->Get_VertexBufferRef()->Disable(_eMode);
-    pShader->Disable();
     
     if(m_pBoundingBox != NULL && CShader::E_RENDER_MODE_SIMPLE == _eMode)
     {

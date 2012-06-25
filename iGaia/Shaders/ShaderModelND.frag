@@ -1,8 +1,5 @@
-const char* ShaderPreNormalDepthUnitF = STRINGIFY(
+const char* ShaderModelNDF = STRINGIFY(
                                                    uniform sampler2D EXT_TEXTURE_01;
-                                                   uniform sampler2D EXT_TEXTURE_02;
-                                                   uniform sampler2D EXT_TEXTURE_03;
-                                                   uniform sampler2D EXT_TEXTURE_04;
                                                    varying highp vec2 OUT_TexCoord;
                                        
 void main(void)

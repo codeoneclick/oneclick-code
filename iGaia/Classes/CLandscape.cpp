@@ -294,7 +294,7 @@ void CLandscape::Render(CShader::E_RENDER_MODE _eMode)
     ILight* pLight = CSceneMgr::Instance()->Get_GlobalLight();
     CShader* pShader = m_pMaterial->Get_Shader(_eMode);
     
-    m_pMaterial->Commit();
+    m_pMaterial->Commit(_eMode);
     
     switch (_eMode)
     {
@@ -305,7 +305,7 @@ void CLandscape::Render(CShader::E_RENDER_MODE _eMode)
                 std::cout<<"[CModel::Render] Shader MODE_SIMPLE is NULL"<<std::endl;
                 return;
             }
-            pShader->Enable();
+            
             pShader->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
             pShader->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
             pShader->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
@@ -333,7 +333,7 @@ void CLandscape::Render(CShader::E_RENDER_MODE _eMode)
                 std::cout<<"[CModel::Render] Shader MODE_REFLECTION is NULL"<<std::endl;
                 return;
             }
-            pShader->Enable();
+
             pShader->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
             pShader->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
             pShader->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
@@ -362,7 +362,6 @@ void CLandscape::Render(CShader::E_RENDER_MODE _eMode)
                 return;
             }
             
-            pShader->Enable();
             pShader->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
             pShader->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
             pShader->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
@@ -390,7 +389,6 @@ void CLandscape::Render(CShader::E_RENDER_MODE _eMode)
                 return;
             }
             
-            pShader->Enable();
             pShader->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
             pShader->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
             pShader->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);

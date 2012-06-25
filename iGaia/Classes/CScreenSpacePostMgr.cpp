@@ -147,11 +147,11 @@ CScreenSpacePostMgr::CScreenSpacePostMgr(void)
     m_pMesh->Get_VertexBufferRef()->Commit();
     m_pMesh->Get_IndexBufferRef()->Commit();
     
-    m_pShaderPostSimple = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_TEXTURE);
-    m_pShaderPostBloomExtract = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_BLOOM_EXTRACT);
-    m_pShaderPostBloomCombine = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_BLOOM_COMBINE);
-    m_pShaderPostBlur = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_BLUR);
-    m_pShaderPostEdgeDetect = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_EDGE_DETECT);
+    m_pShaderPostSimple = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_SCREEN_PLANE);
+    m_pShaderPostBloomExtract = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_SCREEN_PLANE_BLOOM_EXTRACT);
+    m_pShaderPostBloomCombine = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_SCREEN_PLANE_BLOOM_COMBINE);
+    m_pShaderPostBlur = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_SCREEN_PLANE_BLUR);
+    m_pShaderPostEdgeDetect = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_SCREEN_PLANE_EDGE_DETECT);
     
     m_pMesh->Get_VertexBufferRef()->Add_ShaderRef(CShader::E_RENDER_MODE_SCREEN_SPACE_SIMPLE, m_pShaderPostSimple);
     m_pMesh->Get_VertexBufferRef()->Add_ShaderRef(CShader::E_RENDER_MODE_SCREEN_SPACE_BLOOM_EXTRACT, m_pShaderPostBloomExtract);
