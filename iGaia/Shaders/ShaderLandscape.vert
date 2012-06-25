@@ -20,8 +20,8 @@ const char* ShaderLandscapeV = STRINGIFY(
                                        
 void main(void)
 {
-    vec4 vWorldPosition = EXT_MATRIX_World * vec4(IN_SLOT_Position, 1.0);
-    gl_Position = EXT_MATRIX_Projection * EXT_MATRIX_View * vWorldPosition;
+    vec4 vPosition = EXT_MATRIX_World * vec4(IN_SLOT_Position, 1.0);
+    gl_Position = EXT_MATRIX_Projection * EXT_MATRIX_View * vPosition;
     
     vec3 vNormal = IN_SLOT_Normal.xyz / 127.0 - 1.0;
     vec3 vTangent = IN_SLOT_Tangent.xyz / 127.0 - 1.0;
@@ -31,11 +31,11 @@ void main(void)
                               vTangent.y, vBinormal.y, vNormal.y,
                               vTangent.z, vBinormal.z, vNormal.z);
 
-    vec3 vLightDirection = EXT_Light - vec3(vWorldPosition);
+    vec3 vLightDirection = vec3(vPosition) - EXT_Light;
     OUT_Light = normalize(mTangentSpace * vLightDirection);
     
     OUT_TexCoord = IN_SLOT_TexCoord * 8.0;
     OUT_SplattingTexCoord = IN_SLOT_TexCoord;
-    OUT_Clip = dot(vWorldPosition.xyz, EXT_Clip_Plane.xyz) + EXT_Clip_Plane.w;
+    OUT_Clip = dot(vPosition.xyz, EXT_Clip_Plane.xyz) + EXT_Clip_Plane.w;
 }
 );

@@ -12,17 +12,23 @@ const char* ShaderPostEdgeDetectF = STRINGIFY(
                                        
 void main(void)
 {
-    highp vec4 n1 = texture2D(EXT_TEXTURE_02, OUT_TexCoord_01.xy);
-    highp vec4 n2 = texture2D(EXT_TEXTURE_02, OUT_TexCoord_01.zw);
-    highp vec4 n3 = texture2D(EXT_TEXTURE_02, OUT_TexCoord_02.xy);
-    highp vec4 n4 = texture2D(EXT_TEXTURE_02, OUT_TexCoord_02.zw);
+    lowp float fEdgeAmount = 0.0;
+    lowp vec4 vExludeColor = texture2D(EXT_TEXTURE_02, OUT_TexCoord);
+    if(vExludeColor.r == 1.0 && vExludeColor.g == 0.0 && vExludeColor.b == 0.0)
+    {
+        fEdgeAmount = 0.0;
+    }
+    else
+    {
+        lowp vec4 n1 = texture2D(EXT_TEXTURE_02, OUT_TexCoord_01.xy);
+        lowp vec4 n2 = texture2D(EXT_TEXTURE_02, OUT_TexCoord_01.zw);
+        lowp vec4 n3 = texture2D(EXT_TEXTURE_02, OUT_TexCoord_02.xy);
+        lowp vec4 n4 = texture2D(EXT_TEXTURE_02, OUT_TexCoord_02.zw);
+
+        lowp vec4 vDelta = abs(n1 - n2) + abs(n3 - n4);
+        fEdgeAmount = clamp(dot(vDelta.xyz, vec3(1.0)), 0.0, 1.0);
+    }
     
-    highp vec4 diagonalDelta = abs(n1 - n2) + abs(n3 - n4);
-    
-    highp float normalDelta = dot(diagonalDelta.xyz, vec3(1.0));
-    highp float edgeAmount = clamp(normalDelta, 0.0, 1.0);
-    
-    highp vec4 vColor = texture2D(EXT_TEXTURE_01, OUT_TexCoord);
-    gl_FragColor = mix(vColor, vec4(0.1, 0.1, 0.1, 1.0), edgeAmount);
+    gl_FragColor = mix(texture2D(EXT_TEXTURE_01, OUT_TexCoord), vec4(0.1, 0.1, 0.1, 1.0), fEdgeAmount);
 }
 );

@@ -170,7 +170,7 @@ void CGrass::_CreateQuadTreeNode(int _iSize, CGrass::SQuadTreeNode *_pParentNode
     static int iRecurseCount = 0;
     iRecurseCount++;
     std::cout<<"[CGrass::_CreateQuadTreeNode] Recurse Count : "<<iRecurseCount<<std::endl;
-    if(_iSize <= 32)
+    if(_iSize <= 4)
     {
         return;
     }

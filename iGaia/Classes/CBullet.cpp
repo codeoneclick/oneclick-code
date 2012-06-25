@@ -46,7 +46,6 @@ void CBullet::Set_Position(const glm::vec3& _vPosition)
     {
         m_pModel->Set_Position(_vPosition);
     }
-    std::cout<<"[CBullet::Set_Position] Position : "<<_vPosition.x<<","<<_vPosition.y<<","<<_vPosition.z<<std::endl;
     m_vPosition = _vPosition;
 }
 

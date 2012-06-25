@@ -65,7 +65,7 @@ void CLandscape::_CreateQuadTreeNode(int _iSize, CLandscape::SQuadTreeNode *_pPa
     static int iRecurseCount = 0;
     iRecurseCount++;
     std::cout<<"[CLandscape::_CreateQuadTreeNode] Recurse Count : "<<iRecurseCount<<std::endl;
-    if(_iSize <= 32)
+    if(_iSize <= 4)
     {
         return;
     }
@@ -310,7 +310,8 @@ void CLandscape::Render(CShader::E_RENDER_MODE _eMode)
             pShader->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
             pShader->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
             pShader->Set_Vector3(pCamera->Get_Position(), CShader::E_ATTRIBUTE_VECTOR_CAMERA_POSITION);
-            pShader->Set_Vector3(pLight->Get_Position(), CShader::E_ATTRIBUTE_VECTOR_LIGHT_POSITION);
+            glm::vec3 vLightPosition = glm::vec3(8.0f, 16.0f, 8.0f);
+            pShader->Set_Vector3(vLightPosition, CShader::E_ATTRIBUTE_VECTOR_LIGHT_POSITION);
             
             for(unsigned int i = 0; i < k_TEXTURES_MAX_COUNT; ++i)
             {

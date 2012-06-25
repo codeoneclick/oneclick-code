@@ -5,6 +5,6 @@ const char* ShaderParticleNDF = STRINGIFY(
                                        
 void main(void)
 {
-    gl_FragColor = vec4(1.0, 1.0, 1.0, texture2D(EXT_TEXTURE_01, OUT_TexCoord).a) * OUT_Color;
+    gl_FragColor = vec4(1.0, 0.0, 0.0, texture2D(EXT_TEXTURE_01, OUT_TexCoord).a) * OUT_Color;
 }
 );
