@@ -12,8 +12,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp> 
 
-#include "CTexture.h"
-#include "CShader.h"
+#include "CMaterial.h"
 #include "CVertexBuffer.h"
 #include "CMesh.h"
 
@@ -27,7 +26,6 @@
 #include "IResourceLoaderDelegate.h"
 #include "ITouchDelegate.h"
 
-#define TEXTURES_MAX_COUNT 8
 #define SAFE_DELETE(a) { delete (a); (a) = NULL; }
 #define SAFE_DELETE_ARRAY(a) { delete[] (a); (a) = NULL; }
 
@@ -44,16 +42,10 @@ protected:
     glm::vec3 m_vScale;
     glm::vec2 m_vTexCoordOffset;
     
-    CShader** m_pShaders;
-    CTexture** m_pTextures;
+    CMaterial* m_pMaterial;
     CMesh* m_pMesh;
     
     CBoundingBox* m_pBoundingBox;
-    
-    bool m_bIsRenderModeReflectionEnable;
-    bool m_bIsRenderModeRefractionEnable;
-    bool m_bIsRenderModeScreenNormalEnable;
-    bool m_bIsRenderModeShadowMapEnable;
     
     bool m_bIsBatching;
     std::string m_sBatchingName;
@@ -74,8 +66,8 @@ public:
     virtual void Update(void);
     virtual void Render(CShader::E_RENDER_MODE _eMode);
     
-    CShader*  Get_Shader(CShader::E_RENDER_MODE _eRenderMode) { return m_pShaders[_eRenderMode]; }
-    CTexture* Get_Texture(unsigned int index) { if(index >= TEXTURES_MAX_COUNT) return NULL; else return m_pTextures[index]; }
+    CShader*  Get_Shader(CShader::E_RENDER_MODE _eRenderMode);
+    CTexture* Get_Texture(unsigned int index);
     CMesh*    Get_Mesh(void) { return m_pMesh; }
     
     void Set_Batching(bool _bValue,  const std::string& _sBatchingName) { m_bIsBatching = _bValue; m_sBatchingName = _sBatchingName; }
@@ -97,6 +89,7 @@ public:
         m_vRotation.y = _Get_WrapAngle(m_vRotation.y, 0.0f, 360.0f);
         m_vRotation.z = _Get_WrapAngle(m_vRotation.z, 0.0f, 360.0f);
     }
+    
     glm::vec3 Get_Rotation(void) { return m_vRotation; }
     
     void Set_Scale(const glm::vec3& _vScale) { m_vScale = _vScale; }
@@ -113,17 +106,11 @@ public:
     virtual void Create_BoundingBox(void);
     void Remove_BoundingBox(void);
     
-    void Set_RenderModeReflectionEnable(bool _value) { m_bIsRenderModeReflectionEnable = _value; }
-    bool Get_RenderModeReflectionEnable(void) { return m_bIsRenderModeReflectionEnable; }
-    void Set_RenderModeRefractionEnable(bool _value) { m_bIsRenderModeRefractionEnable = _value; }
-    bool Get_RenderModeRefractionEnable(void) { return m_bIsRenderModeRefractionEnable; }
-    void Set_RenderModeScreenNormalEnable(bool _value) { m_bIsRenderModeScreenNormalEnable = _value; }
-    bool Get_RenderModeScreenNormalEnable(void) { return m_bIsRenderModeScreenNormalEnable; }
-    void Set_RenderModeShadowMapEnable(bool _value) { m_bIsRenderModeShadowMapEnable = _value; }
-    bool Get_RenderModeShadowMapEnable(void) { return m_bIsRenderModeShadowMapEnable; }
-    
     virtual void OnTouchEvent(ITouchDelegate* _pDelegateOwner) = 0;
     virtual void OnResourceLoadDoneEvent(IResource::E_RESOURCE_TYPE _eType, IResource* _pResource) = 0;
+    
+    void Set_RenderMode(CShader::E_RENDER_MODE _eMode, bool _value);
+    bool Get_RenderMode(CShader::E_RENDER_MODE _eMode);
 };
 
 #endif

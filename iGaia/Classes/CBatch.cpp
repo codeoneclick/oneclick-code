@@ -16,8 +16,8 @@ CBatch::CBatch(E_BATCH_MODE _eMode)
 {
     m_eMode = _eMode;
     
-    m_pTextures = new CTexture*[TEXTURES_MAX_COUNT];
-    for(unsigned int i = 0; i < TEXTURES_MAX_COUNT; ++i)
+    m_pTextures = new CTexture*[k_TEXTURES_MAX_COUNT];
+    for(unsigned int i = 0; i < k_TEXTURES_MAX_COUNT; ++i)
     {
         m_pTextures[i] = NULL;
     }
@@ -76,7 +76,7 @@ void CBatch::Push_MeshRef(INode *_pNode)
     m_iNumVertexes += _pNode->Get_Mesh()->Get_NumVertexes();
     m_iNumIndexes += _pNode->Get_Mesh()->Get_NumIndexes();
     
-    for(unsigned int i = 0; i < TEXTURES_MAX_COUNT; ++i)
+    for(unsigned int i = 0; i < k_TEXTURES_MAX_COUNT; ++i)
     {
         m_pTextures[i] = _pNode->Get_Texture(i);
     }
@@ -195,7 +195,7 @@ void CBatch::_RenderBatchModeParticleEmitter(CShader::E_RENDER_MODE _eMode)
             m_pShaders[_eMode]->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
             m_pShaders[_eMode]->Set_Vector3(pCamera->Get_Position(), CShader::E_ATTRIBUTE_VECTOR_CAMERA_POSITION);
             
-            for(unsigned int i = 0; i < TEXTURES_MAX_COUNT; ++i)
+            for(unsigned int i = 0; i < k_TEXTURES_MAX_COUNT; ++i)
             {
                 if( m_pTextures[i] == NULL )
                 {
@@ -218,7 +218,7 @@ void CBatch::_RenderBatchModeParticleEmitter(CShader::E_RENDER_MODE _eMode)
             m_pShaders[_eMode]->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
             m_pShaders[_eMode]->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
             
-            for(unsigned int i = 0; i < TEXTURES_MAX_COUNT; ++i)
+            for(unsigned int i = 0; i < k_TEXTURES_MAX_COUNT; ++i)
             {
                 if( m_pTextures[i] == NULL )
                 {

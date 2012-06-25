@@ -21,26 +21,10 @@ INode::INode(void)
     m_vPosition = glm::vec3(0.0f, 0.0f, 0.0f);
     m_vTexCoordOffset = glm::vec2(0.0f, 0.0f);
     
-    m_pTextures = new CTexture*[TEXTURES_MAX_COUNT];
-    for(unsigned int i = 0; i < TEXTURES_MAX_COUNT; ++i)
-    {
-        m_pTextures[i] = NULL;
-    }
-    
-    m_pShaders = new CShader*[CShader::E_RENDER_MODE_MAX];
-    for(unsigned int i = 0; i < CShader::E_RENDER_MODE_MAX; ++i)
-    {
-        m_pShaders[i] = NULL;
-    }
-    
+    m_pMaterial = new CMaterial(this);
     m_pBoundingBox = NULL;
     
     m_pMesh = NULL;
-    
-    m_bIsRenderModeReflectionEnable = false;
-    m_bIsRenderModeRefractionEnable = false;
-    m_bIsRenderModeScreenNormalEnable = false;
-    m_bIsRenderModeShadowMapEnable = false;
 }
 
 INode::~INode(void)
@@ -49,63 +33,49 @@ INode::~INode(void)
     
     m_lDelegateOwners.clear();
     
-    SAFE_DELETE_ARRAY(m_pTextures);
-    
-    SAFE_DELETE_ARRAY(m_pShaders);
-    
     SAFE_DELETE(m_pBoundingBox);
     
     if(m_pMesh->Get_CreationMode() == IResource::E_CREATION_MODE_CUSTOM)
     {
         SAFE_DELETE(m_pMesh);
     }
+    
+    SAFE_DELETE(m_pMaterial);
 }
 
-void INode::Set_Texture(CTexture *_pTexture, int index, CTexture::E_WRAP_MODE _eWrap)
+void INode::Set_Texture(CTexture *_pTexture, int _index, CTexture::E_WRAP_MODE _eWrap)
 {
-    if( index >= TEXTURES_MAX_COUNT )
-    {
-        std::cout<<"[INode] Critical index for the texture.";
-        return;
-    }
-    if( m_pTextures[index] != NULL )
-    {
-       // TODO: unload
-    }
-       
-    m_pTextures[index] = _pTexture;
+    m_pMaterial->Set_Texture(_pTexture, _index, _eWrap);
 }
 
-void INode::Set_Texture(const std::string &_sName, int index, CTexture::E_WRAP_MODE _eWrap, IResource::E_THREAD _eThread)
+void INode::Set_Texture(const std::string &_sName, int _index, CTexture::E_WRAP_MODE _eWrap, IResource::E_THREAD _eThread)
 {
-    if( index >= TEXTURES_MAX_COUNT )
-    {
-        std::cout<<"[INode] Critical index for the texture.";
-        return;
-    }
-    if( m_pTextures[index] != NULL )
-    {
-        // TODO: unload
-    }
-    std::map<std::string, std::string> lParams;
-    if(_eWrap == CTexture::E_WRAP_MODE_REPEAT)
-    {
-        lParams["WRAP"] = "REPEAT";
-    }
-    else if(_eWrap == CTexture::E_WRAP_MODE_CLAMP)
-    {
-        lParams["WRAP"] = "CLAMP";
-    }
-    m_pTextures[index] = static_cast<CTexture*>(CResourceMgr::Instance()->Load(_sName, IResource::E_MGR_TEXTURE, _eThread, this, &lParams));
+    m_pMaterial->Set_Texture(_sName, _index, _eWrap, _eThread);
 }
 
-void INode::Set_Shader(CShader::E_RENDER_MODE _eRenderMode, IResource::E_SHADER _eShader)
+void INode::Set_Shader(CShader::E_RENDER_MODE _eMode, IResource::E_SHADER _eShader)
 {
-    m_pShaders[_eRenderMode] = CShaderComposite::Instance()->Get_Shader(_eShader);
-    if(m_pMesh != NULL)
-    {
-        m_pMesh->Get_VertexBufferRef()->Add_ShaderRef(_eRenderMode, m_pShaders[_eRenderMode]);
-    }
+    m_pMaterial->Set_Shader(_eMode, _eShader);
+}
+
+CShader* INode::Get_Shader(CShader::E_RENDER_MODE _eMode)
+{
+    return m_pMaterial->Get_Shader(_eMode);
+}
+
+CTexture* INode::Get_Texture(unsigned int _index)
+{
+    return m_pMaterial->Get_Texture(_index);
+}
+
+void INode::Set_RenderMode(CShader::E_RENDER_MODE _eMode, bool _value)
+{
+    m_pMaterial->Set_RenderMode(_eMode, _value);
+}
+
+bool INode::Get_RenderMode(CShader::E_RENDER_MODE _eMode)
+{
+    return m_pMaterial->Get_RenderMode(_eMode);
 }
 
 void INode::Create_BoundingBox()

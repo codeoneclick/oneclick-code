@@ -105,6 +105,13 @@ void CParser_MDL::Load(const std::string& _sName)
         fread(&pIndexBufferData[i], sizeof(unsigned short),1, pFile);
         //std::cout<<"Index : "<<pIBData[i]<<"  Num : "<<iNum++<<"\n";
     }
+    
+    for(int i = 0; i < m_pSourceData->m_iNumIndexes; i += 3)
+    {
+        unsigned short iTempIndex = pIndexBufferData[i + 1];
+        pIndexBufferData[i + 1] = pIndexBufferData[i + 2];
+        pIndexBufferData[i + 2] = iTempIndex;
+    }
     fclose(pFile);
     
     m_eStatus = E_DONE_STATUS;
