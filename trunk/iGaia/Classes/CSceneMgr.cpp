@@ -391,47 +391,6 @@ void CSceneMgr::_DrawScreenNormalMapStep(void)
     m_pRenderMgr->EndDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_SCREEN_NORMAL_MAP);
 }
 
-void CSceneMgr::_DrawShadowMapStep(void)
-{
-    /*std::vector<INode*>::iterator pBeginNodeIterator = m_lContainer.begin();
-    std::vector<INode*>::iterator pEndNodeIterator = m_lContainer.end();
-    m_pRenderMgr->BeginDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_SHADOW_MAP);
-    
-    glm::vec3 vCameraPosition = m_pCamera->Get_Position();
-    vCameraPosition = glm::vec3(8.0f, 8.0f, 8.0f); //m_pGlobalLight->Get_Position();
-    
-    glm::vec3 vCameraLookAt = m_pCamera->Get_LookAt();
-    vCameraLookAt = glm::vec3(0.0f, 0.0f, 0.0f);
-    m_pCamera->Set_View(glm::lookAt(vCameraPosition, vCameraLookAt, glm::vec3(0.0f,-1.0f,0.0f)));
-    
-    if(m_pLandscape != NULL && m_pLandscape->Get_RenderModeShadowMapEnable())
-    {
-        m_pLandscape->Render(INode::E_RENDER_MODE_SHADOW_MAP);
-    }
-    
-    if(m_pWater != NULL && m_pWater->Get_RenderModeShadowMapEnable())
-    {
-        m_pWater->Render(INode::E_RENDER_MODE_SHADOW_MAP);
-    }
-    
-    if(m_pGrass != NULL && m_pGrass->Get_RenderModeShadowMapEnable())
-    {
-        m_pGrass->Render(INode::E_RENDER_MODE_SHADOW_MAP);
-    }
-    
-    while (pBeginNodeIterator != pEndNodeIterator)
-    {
-        if((*pBeginNodeIterator)->Get_RenderModeShadowMapEnable())
-        {
-            (*pBeginNodeIterator)->Update();
-            (*pBeginNodeIterator)->Render(INode::E_RENDER_MODE_SHADOW_MAP);
-        }
-        ++pBeginNodeIterator;
-    }
-    m_pCamera->Set_View(glm::lookAt(m_pCamera->Get_Position(), m_pCamera->Get_LookAt(), glm::vec3(0.0f,1.0f,0.0f))); 
-    m_pRenderMgr->EndDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_SHADOW_MAP);*/
-}
-
 void CSceneMgr::Render(void)
 {
     CWindow::g_iTrianglesPerFrame = 0;

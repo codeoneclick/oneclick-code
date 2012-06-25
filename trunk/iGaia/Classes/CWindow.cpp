@@ -12,8 +12,8 @@
 int CWindow::m_iScreenWidth  = 480;
 int CWindow::m_iScreenHeight = 320;
 
-int CWindow::m_iOffScreenWidth = 960;
-int CWindow::m_iOffScreenHeight = 640;
+int CWindow::m_iOffScreenWidth = 480;
+int CWindow::m_iOffScreenHeight = 320;
 
 unsigned int CWindow::g_iTrianglesPerFrame = 0;
 unsigned int CWindow::g_iFramesPerSecond = 0;

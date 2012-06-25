@@ -133,7 +133,6 @@ void ICharacterController::Set_Position(const glm::vec3 &_vPosition)
     if(m_pLeftExhaustSmokeEmitter != NULL)
     {
         m_vTowerEmitterNodePosition = m_pBodyModel->Get_BoundingBox()->Get_Center();
-        std::cout<<"[ICharacterController::Set_Position] m_vTowerEmitterNodePosition : "<<m_vTowerEmitterNodePosition.x<<","<<m_vTowerEmitterNodePosition.y<<","<<m_vTowerEmitterNodePosition.z<<std::endl;
         m_vTransformHelper = glm::vec4(m_vTowerEmitterNodePosition.x + k_EXHAUST_EMITTER_OFFSET_X, m_vTowerEmitterNodePosition.y, m_vTowerEmitterNodePosition.z - k_EXHAUST_EMITTER_OFFSET_Z, 1.0f);
         m_mRotationHelper = glm::rotate(glm::mat4(1.0f),   m_vRotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
         m_mRotationHelper = glm::rotate(m_mRotationHelper, m_vRotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
