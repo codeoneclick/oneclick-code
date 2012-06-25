@@ -226,6 +226,7 @@
 		A181673E15442E97004B483A /* model_02.pvr in Resources */ = {isa = PBXBuildFile; fileRef = A181673D15442E97004B483A /* model_02.pvr */; };
 		A181674B15455A46004B483A /* ShaderPreShadowMap.frag in Sources */ = {isa = PBXBuildFile; fileRef = A181674915455A46004B483A /* ShaderPreShadowMap.frag */; };
 		A181674C15455A47004B483A /* ShaderPreShadowMap.vert in Sources */ = {isa = PBXBuildFile; fileRef = A181674A15455A46004B483A /* ShaderPreShadowMap.vert */; };
+		A18D576F1598418000FCD8C9 /* CMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A18D576D1598418000FCD8C9 /* CMaterial.cpp */; };
 		A1A5E8DF1532E0E6004DD73B /* base_model_full.mdl in Resources */ = {isa = PBXBuildFile; fileRef = A1A5E8DA1532E0E6004DD73B /* base_model_full.mdl */; };
 		A1A5E8E01532E0E6004DD73B /* base_model.mdl in Resources */ = {isa = PBXBuildFile; fileRef = A1A5E8DB1532E0E6004DD73B /* base_model.mdl */; };
 		A1A5E8E11532E0E6004DD73B /* left_track_model.mdl in Resources */ = {isa = PBXBuildFile; fileRef = A1A5E8DC1532E0E6004DD73B /* left_track_model.mdl */; };
@@ -734,6 +735,8 @@
 		A181674A15455A46004B483A /* ShaderPreShadowMap.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderPreShadowMap.vert; path = Shaders/ShaderPreShadowMap.vert; sourceTree = "<group>"; };
 		A186D96B152AEB5100112521 /* ShaderWater.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderWater.frag; path = Shaders/ShaderWater.frag; sourceTree = "<group>"; };
 		A186D96C152AEB5100112521 /* ShaderWater.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderWater.vert; path = Shaders/ShaderWater.vert; sourceTree = "<group>"; };
+		A18D576D1598418000FCD8C9 /* CMaterial.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMaterial.cpp; sourceTree = "<group>"; };
+		A18D576E1598418000FCD8C9 /* CMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMaterial.h; sourceTree = "<group>"; };
 		A1A3BB1C153D5F2C003AE14D /* ShaderAnimTexCoordUnit.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderAnimTexCoordUnit.frag; path = Shaders/ShaderAnimTexCoordUnit.frag; sourceTree = "<group>"; };
 		A1A3BB1D153D5F2C003AE14D /* ShaderAnimTexCoordUnit.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderAnimTexCoordUnit.vert; path = Shaders/ShaderAnimTexCoordUnit.vert; sourceTree = "<group>"; };
 		A1A5E8DA1532E0E6004DD73B /* base_model_full.mdl */ = {isa = PBXFileReference; lastKnownFileType = file; path = base_model_full.mdl; sourceTree = "<group>"; };
@@ -1062,8 +1065,8 @@
 				931A76E414DA8914007EDB2F /* CHeightMapSetter.cpp */,
 				93A26E0A148D1E3000D14A0B /* CCommon_IOS.mm */,
 				93A26E07148D19E300D14A0B /* CCommon_IOS.h */,
-				93A26E04148D087600D14A0B /* CWindow.cpp */,
 				93AA2A8D148A7A250073F016 /* CWindow.h */,
+				93A26E04148D087600D14A0B /* CWindow.cpp */,
 				93DFB88114C9AF1000B6910C /* CTileSetter.h */,
 				93DFB88014C9AF0F00B6910C /* CTileSetter.cpp */,
 				93E52C1714C6E01E00697561 /* CIndexBuffer.h */,
@@ -1078,6 +1081,8 @@
 				A10E64AB157F3373007B576A /* CTimer.cpp */,
 				A1B6C9A315934A7C00F380CC /* CBatch.h */,
 				A1B6C9A215934A7B00F380CC /* CBatch.cpp */,
+				A18D576E1598418000FCD8C9 /* CMaterial.h */,
+				A18D576D1598418000FCD8C9 /* CMaterial.cpp */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -1959,6 +1964,7 @@
 				A1F05DAA15877EF200812D02 /* CParticleEmitterFireTrail.cpp in Sources */,
 				A1B6C9A415934A7C00F380CC /* CBatch.cpp in Sources */,
 				A1B6C9AC1593639F00F380CC /* CBatchMgr.cpp in Sources */,
+				A18D576F1598418000FCD8C9 /* CMaterial.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

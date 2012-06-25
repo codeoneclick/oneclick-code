@@ -12,7 +12,7 @@
 #include "CSceneMgr.h"
 #include "CResourceMgr.h"
 #include "CVertexBufferPositionTexcoord.h"
-
+#include "CMaterial.h"
 
 int CScreenSpacePostMgr::k_REFLECTION_TEXTURE_SIZE = 128;
 int CScreenSpacePostMgr::k_REFRACTION_TEXTURE_SIZE = 128;
@@ -104,12 +104,7 @@ CScreenSpacePostMgr::CScreenSpacePostMgr(void)
         std::cout<<"[CScreenSpacePostMgr::CScreenSpacePostMgr] Screen Framebuffer FAILURE \n";
     }
     
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_FRONT);
-    
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_BLEND);
+    CMaterial::InitStates();
     
     CMesh::SSourceData* pSourceData = new CMesh::SSourceData();
     pSourceData->m_iNumVertexes = 4;

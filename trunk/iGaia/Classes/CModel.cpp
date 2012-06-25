@@ -24,6 +24,12 @@ CModel::~CModel(void)
 void CModel::Load(const std::string& _sName, IResource::E_THREAD _eThread)
 {
     m_pMesh = static_cast<CMesh*>(CResourceMgr::Instance()->Load(_sName, IResource::E_MGR_MESH, _eThread, this));
+    m_pMaterial->Set_RenderState(CMaterial::E_RENDER_STATE_CULL_MODE,  true);
+    m_pMaterial->Set_RenderState(CMaterial::E_RENDER_STATE_DEPTH_MASK, true);
+    m_pMaterial->Set_RenderState(CMaterial::E_RENDER_STATE_DEPTH_TEST, true);
+    m_pMaterial->Set_RenderState(CMaterial::E_RENDER_STATE_BLEND_MODE, true);
+    m_pMaterial->Set_CullFace(GL_FRONT);
+    m_pMaterial->Set_BlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void CModel::OnResourceLoadDoneEvent(IResource::E_RESOURCE_TYPE _eType, IResource *_pResource)
@@ -35,9 +41,10 @@ void CModel::OnResourceLoadDoneEvent(IResource::E_RESOURCE_TYPE _eType, IResourc
             m_pMesh = static_cast<CMesh*>(_pResource);
             for(unsigned int i = 0; i < CShader::E_RENDER_MODE_MAX; ++i)
             {
-                if(m_pShaders[i] != NULL)
+                CShader* pShader = m_pMaterial->Get_Shader(static_cast<CShader::E_RENDER_MODE>(i));
+                if(pShader != NULL)
                 {
-                    m_pMesh->Get_VertexBufferRef()->Add_ShaderRef(static_cast<CShader::E_RENDER_MODE>(i), m_pShaders[i]);
+                    m_pMesh->Get_VertexBufferRef()->Add_ShaderRef(static_cast<CShader::E_RENDER_MODE>(i), pShader);
                 }
             }
             
@@ -87,35 +94,38 @@ void CModel::Render(CShader::E_RENDER_MODE _eMode)
     
     INode::Render(_eMode);
     
-    glCullFace(GL_BACK);
+    m_pMaterial->Commit();
+    
     ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
     ILight* pLight = CSceneMgr::Instance()->Get_GlobalLight();
+    CShader* pShader = m_pMaterial->Get_Shader(_eMode);
     
     switch (_eMode)
     {
         case CShader::E_RENDER_MODE_SIMPLE:
         {
-            if(m_pShaders[_eMode] == NULL)
+            if(pShader == NULL)
             {
                 std::cout<<"[CModel::Render] Shader MODE_SIMPLE is NULL"<<std::endl;
                 return;
             }
 
-            m_pShaders[_eMode]->Enable();
-            m_pShaders[_eMode]->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
-            m_pShaders[_eMode]->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
-            m_pShaders[_eMode]->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
-            m_pShaders[_eMode]->Set_Vector3(pCamera->Get_Position(), CShader::E_ATTRIBUTE_VECTOR_CAMERA_POSITION);
-            m_pShaders[_eMode]->Set_Vector2(m_vTexCoordOffset, CShader::E_ATTRIBUTE_VECTOR_TEXCOORD_OFFSET);
-            m_pShaders[_eMode]->Set_Vector3(pLight->Get_Position(), CShader::E_ATTRIBUTE_VECTOR_LIGHT_POSITION);
+            pShader->Enable();
+            pShader->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
+            pShader->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
+            pShader->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
+            pShader->Set_Vector3(pCamera->Get_Position(), CShader::E_ATTRIBUTE_VECTOR_CAMERA_POSITION);
+            pShader->Set_Vector2(m_vTexCoordOffset, CShader::E_ATTRIBUTE_VECTOR_TEXCOORD_OFFSET);
+            pShader->Set_Vector3(pLight->Get_Position(), CShader::E_ATTRIBUTE_VECTOR_LIGHT_POSITION);
             
-            for(unsigned int i = 0; i < TEXTURES_MAX_COUNT; ++i)
+            for(unsigned int i = 0; i < k_TEXTURES_MAX_COUNT; ++i)
             {
-                if( m_pTextures[i] == NULL )
+                CTexture* pTexture = m_pMaterial->Get_Texture(i);
+                if(pTexture == NULL)
                 {
                     continue;
                 }
-                m_pShaders[_eMode]->Set_Texture(m_pTextures[i]->Get_Handle(), static_cast<CShader::E_TEXTURE_SLOT>(i));
+                pShader->Set_Texture(pTexture->Get_Handle(), static_cast<CShader::E_TEXTURE_SLOT>(i));
             }
         }
             break;
@@ -131,24 +141,25 @@ void CModel::Render(CShader::E_RENDER_MODE _eMode)
             break;
         case CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP:
         {
-            if(m_pShaders[_eMode] == NULL)
+            if(pShader == NULL)
             {
                 std::cout<<"[CModel::Render] Shader MODE_SCREEN_NORMAL_MAP is NULL"<<std::endl;
                 return;
             }
             
-            m_pShaders[_eMode]->Enable();
-            m_pShaders[_eMode]->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
-            m_pShaders[_eMode]->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
-            m_pShaders[_eMode]->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
+            pShader->Enable();
+            pShader->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
+            pShader->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
+            pShader->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
             
-            for(unsigned int i = 0; i < TEXTURES_MAX_COUNT; ++i)
+            for(unsigned int i = 0; i < k_TEXTURES_MAX_COUNT; ++i)
             {
-                if( m_pTextures[i] == NULL )
+                CTexture* pTexture = m_pMaterial->Get_Texture(i);
+                if(pTexture == NULL)
                 {
                     continue;
                 }
-                m_pShaders[_eMode]->Set_Texture(m_pTextures[i]->Get_Handle(), static_cast<CShader::E_TEXTURE_SLOT>(i));
+                pShader->Set_Texture(pTexture->Get_Handle(), static_cast<CShader::E_TEXTURE_SLOT>(i));
             }
         }
             break;
@@ -161,8 +172,7 @@ void CModel::Render(CShader::E_RENDER_MODE _eMode)
     glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_SourceDataFromVRAM());
     m_pMesh->Get_IndexBufferRef()->Disable();
     m_pMesh->Get_VertexBufferRef()->Disable(_eMode);
-    m_pShaders[_eMode]->Disable();
-    glCullFace(GL_FRONT);
+    pShader->Disable();
     
     if(m_pBoundingBox != NULL && CShader::E_RENDER_MODE_SIMPLE == _eMode)
     {

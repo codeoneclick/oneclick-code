@@ -332,7 +332,7 @@ void CSceneMgr::_DrawReflectionStep(void)
     
     while (pBeginNodeIterator != pEndNodeIterator)
     {
-        if((*pBeginNodeIterator)->Get_RenderModeReflectionEnable())
+        if((*pBeginNodeIterator)->Get_RenderMode(CShader::E_RENDER_MODE_REFLECTION))
         {
             (*pBeginNodeIterator)->Update();
             (*pBeginNodeIterator)->Render(CShader::E_RENDER_MODE_REFLECTION);
@@ -351,7 +351,7 @@ void CSceneMgr::_DrawRefractionStep(void)
     
     while (pBeginNodeIterator != pEndNodeIterator)
     {
-        if((*pBeginNodeIterator)->Get_RenderModeRefractionEnable())
+        if((*pBeginNodeIterator)->Get_RenderMode(CShader::E_RENDER_MODE_REFRACTION))
         {
             (*pBeginNodeIterator)->Update();
             (*pBeginNodeIterator)->Render(CShader::E_RENDER_MODE_REFRACTION);
@@ -371,7 +371,7 @@ void CSceneMgr::_DrawScreenNormalMapStep(void)
     
     while (pBeginNodeIterator != pEndNodeIterator)
     {
-        if((*pBeginNodeIterator)->Get_RenderModeScreenNormalEnable())
+        if((*pBeginNodeIterator)->Get_RenderMode(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP))
         {
             (*pBeginNodeIterator)->Render(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP);
         }
@@ -435,7 +435,6 @@ void CSceneMgr::_DrawShadowMapStep(void)
 void CSceneMgr::Render(void)
 {
     CWindow::g_iTrianglesPerFrame = 0;
-    
     _DrawReflectionStep();
     _DrawRefractionStep();
     _DrawSimpleStep();

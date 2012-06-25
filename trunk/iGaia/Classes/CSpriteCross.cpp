@@ -188,30 +188,33 @@ void CSpriteCross::Render(CShader::E_RENDER_MODE _eMode)
     
     glDisable(GL_CULL_FACE);
     glDepthMask(GL_FALSE);
+    
     ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
+    CShader* pShader = m_pMaterial->Get_Shader(_eMode);
     
     switch (_eMode)
     {
         case CShader::E_RENDER_MODE_SIMPLE:
         {
-            if(m_pShaders[_eMode] == NULL)
+            if(pShader == NULL)
             {
                 std::cout<<"[CCrossBoxEffect::Render] Shader MODE_SIMPLE is NULL"<<std::endl;
                 return;
             }
             
-            m_pShaders[_eMode]->Enable();
-            m_pShaders[_eMode]->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
-            m_pShaders[_eMode]->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
-            m_pShaders[_eMode]->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
+            pShader->Enable();
+            pShader->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
+            pShader->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
+            pShader->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
             
-            for(unsigned int i = 0; i < TEXTURES_MAX_COUNT; ++i)
+            for(unsigned int i = 0; i < k_TEXTURES_MAX_COUNT; ++i)
             {
-                if( m_pTextures[i] == NULL )
+                CTexture* pTexture = m_pMaterial->Get_Texture(i);
+                if(pTexture == NULL)
                 {
                     continue;
                 }
-                m_pShaders[_eMode]->Set_Texture(m_pTextures[i]->Get_Handle(), static_cast<CShader::E_TEXTURE_SLOT>(i));
+                pShader->Set_Texture(pTexture->Get_Handle(), static_cast<CShader::E_TEXTURE_SLOT>(i));
             }
         }
             break;
@@ -227,24 +230,25 @@ void CSpriteCross::Render(CShader::E_RENDER_MODE _eMode)
             break;
         case CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP:
         {
-            if(m_pShaders[_eMode] == NULL)
+            if(pShader == NULL)
             {
                 std::cout<<"[CCrossBoxEffect::Render] Shader MODE_SCREEN_NORMAL_MAP is NULL"<<std::endl;
                 return;
             }
             
-            m_pShaders[_eMode]->Enable();
-            m_pShaders[_eMode]->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
-            m_pShaders[_eMode]->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
-            m_pShaders[_eMode]->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
+            pShader->Enable();
+            pShader->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
+            pShader->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
+            pShader->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
             
-            for(unsigned int i = 0; i < TEXTURES_MAX_COUNT; ++i)
+            for(unsigned int i = 0; i < k_TEXTURES_MAX_COUNT; ++i)
             {
-                if( m_pTextures[i] == NULL )
+                CTexture* pTexture = m_pMaterial->Get_Texture(i);
+                if(pTexture == NULL)
                 {
                     continue;
                 }
-                m_pShaders[_eMode]->Set_Texture(m_pTextures[i]->Get_Handle(), static_cast<CShader::E_TEXTURE_SLOT>(i));
+                pShader->Set_Texture(pTexture->Get_Handle(), static_cast<CShader::E_TEXTURE_SLOT>(i));
             }
         }
             break;
@@ -258,7 +262,7 @@ void CSpriteCross::Render(CShader::E_RENDER_MODE _eMode)
     glDrawElements(GL_TRIANGLES, iNumIndexes, GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_SourceDataFromVRAM());
     m_pMesh->Get_IndexBufferRef()->Disable();
     m_pMesh->Get_VertexBufferRef()->Disable(_eMode);
-    m_pShaders[_eMode]->Disable();
+    pShader->Disable();
     
     glEnable(GL_CULL_FACE);
     glDepthMask(GL_TRUE);

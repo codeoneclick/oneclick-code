@@ -65,16 +65,16 @@ CMesh* CHeightMapSetter::Load_DataSource(const std::string _sName, int _iWidth, 
         {
             pIndexBufferData[index] = i + j * m_iWidth;
             index++;
-            pIndexBufferData[index] = i + 1 + j * m_iWidth ;
-            index++;
-            pIndexBufferData[index] = i + (j + 1) * m_iWidth;
-            index++;
-            
             pIndexBufferData[index] = i + (j + 1) * m_iWidth;
             index++;
             pIndexBufferData[index] = i + 1 + j * m_iWidth;
             index++;
+            
+            pIndexBufferData[index] = i + (j + 1) * m_iWidth;
+            index++;
             pIndexBufferData[index] = i + 1 + (j + 1) * m_iWidth;
+            index++;
+            pIndexBufferData[index] = i + 1 + j * m_iWidth;
             index++;
         }
     }
