@@ -21,7 +21,7 @@ INode::INode(void)
     m_vPosition = glm::vec3(0.0f, 0.0f, 0.0f);
     m_vTexCoordOffset = glm::vec2(0.0f, 0.0f);
     
-    m_pMaterial = new CMaterial(this);
+    m_pMaterial = new CMaterial();
     m_pBoundingBox = NULL;
     
     m_pMesh = NULL;
@@ -50,12 +50,12 @@ void INode::Set_Texture(CTexture *_pTexture, int _index, CTexture::E_WRAP_MODE _
 
 void INode::Set_Texture(const std::string &_sName, int _index, CTexture::E_WRAP_MODE _eWrap, IResource::E_THREAD _eThread)
 {
-    m_pMaterial->Set_Texture(_sName, _index, _eWrap, _eThread);
+    m_pMaterial->Set_Texture(this, _sName, _index, _eWrap, _eThread);
 }
 
 void INode::Set_Shader(CShader::E_RENDER_MODE _eMode, IResource::E_SHADER _eShader)
 {
-    m_pMaterial->Set_Shader(_eMode, _eShader);
+    m_pMaterial->Set_Shader(this, _eMode, _eShader);
 }
 
 CShader* INode::Get_Shader(CShader::E_RENDER_MODE _eMode)

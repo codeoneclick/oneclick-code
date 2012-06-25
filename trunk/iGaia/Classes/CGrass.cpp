@@ -422,7 +422,7 @@ void CGrass::Render(CShader::E_RENDER_MODE _eMode)
     ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
     CShader* pShader = m_pMaterial->Get_Shader(_eMode);
     
-    m_pMaterial->Commit();
+    m_pMaterial->Commit(_eMode);
     
     switch (_eMode)
     {
@@ -434,7 +434,6 @@ void CGrass::Render(CShader::E_RENDER_MODE _eMode)
                 return;
             }
             
-            pShader->Enable();
             pShader->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
             pShader->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
             pShader->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
@@ -468,7 +467,6 @@ void CGrass::Render(CShader::E_RENDER_MODE _eMode)
                 return;
             }
             
-            pShader->Enable();
             pShader->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
             pShader->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
             pShader->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
@@ -494,5 +492,4 @@ void CGrass::Render(CShader::E_RENDER_MODE _eMode)
     glDrawElements(GL_TRIANGLES, iNumIndexes, GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_SourceDataFromVRAM());
     m_pMesh->Get_IndexBufferRef()->Disable();
     m_pMesh->Get_VertexBufferRef()->Disable(_eMode);
-    pShader->Disable();
 }

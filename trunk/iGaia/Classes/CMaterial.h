@@ -23,7 +23,6 @@ public:
 protected:
     CShader** m_pShaders;
     CTexture** m_pTextures;
-    INode* m_pNodeRef;
     bool m_pModes[CShader::E_RENDER_MODE_MAX];
     bool m_pStates[E_RENDER_STATE_MAX];
     GLenum m_eCullFace;
@@ -33,9 +32,9 @@ protected:
     static GLenum m_eCullFaceCommited;
     static GLenum m_eBlendFuncSourceCommited;
     static GLenum m_eBlendFuncDestCommited;
-    static GLuint m_hShaderHandle;
+    static GLuint m_hShaderHandleCommited;
 public:
-    CMaterial(INode* _pNodeRef);
+    CMaterial(void);
     ~CMaterial(void);
     
     static void InitStates(void);
@@ -44,9 +43,9 @@ public:
     CTexture* Get_Texture(unsigned int _index);
     
     void Set_Texture(CTexture* _pTexture, int _index, CTexture::E_WRAP_MODE _eWrap);
-    void Set_Texture(const std::string &_sName, int _index, CTexture::E_WRAP_MODE _eWrap, IResource::E_THREAD _eThread = IResource::E_THREAD_MAIN);
+    void Set_Texture(INode* _pNodeRef, const std::string &_sName, int _index, CTexture::E_WRAP_MODE _eWrap, IResource::E_THREAD _eThread = IResource::E_THREAD_MAIN);
     
-    void Set_Shader(CShader::E_RENDER_MODE _eMode, IResource::E_SHADER _eShader);
+    void Set_Shader(INode* _pNodeRef, CShader::E_RENDER_MODE _eMode, IResource::E_SHADER _eShader);
     
     void Set_RenderMode(CShader::E_RENDER_MODE _eMode, bool _value);
     bool Get_RenderMode(CShader::E_RENDER_MODE _eMode);
@@ -58,7 +57,7 @@ public:
     
     void Set_BlendFunc(GLenum _eFuncSource, GLenum _eFuncDest);
 
-    void Commit(void);
+    void Commit(CShader::E_RENDER_MODE _eMode);
 };
 
 #endif /* defined(__iGaia__CMaterial__) */

@@ -205,8 +205,8 @@
 		A100AB8415777FC3003BB7BA /* CBillboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A100AB8215777FC3003BB7BA /* CBillboard.cpp */; };
 		A100AB8815777FD8003BB7BA /* CSpriteCross.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A100AB8615777FD8003BB7BA /* CSpriteCross.cpp */; };
 		A100AB931577C4CD003BB7BA /* CParticleEmitterExplosion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A100AB911577C4CD003BB7BA /* CParticleEmitterExplosion.cpp */; };
-		A10DC48815863C4D007EB83B /* ShaderParticleEmitter.frag in Sources */ = {isa = PBXBuildFile; fileRef = A10DC48615863C4D007EB83B /* ShaderParticleEmitter.frag */; };
-		A10DC48915863C4D007EB83B /* ShaderParticleEmitter.vert in Sources */ = {isa = PBXBuildFile; fileRef = A10DC48715863C4D007EB83B /* ShaderParticleEmitter.vert */; };
+		A10DC48815863C4D007EB83B /* ShaderParticle.frag in Sources */ = {isa = PBXBuildFile; fileRef = A10DC48615863C4D007EB83B /* ShaderParticle.frag */; };
+		A10DC48915863C4D007EB83B /* ShaderParticle.vert in Sources */ = {isa = PBXBuildFile; fileRef = A10DC48715863C4D007EB83B /* ShaderParticle.vert */; };
 		A10E64A9157F3360007B576A /* CMathHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A10E64A7157F3360007B576A /* CMathHelper.cpp */; };
 		A10E64AD157F3373007B576A /* CTimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A10E64AB157F3373007B576A /* CTimer.cpp */; };
 		A11AA3CA1547218800113AA3 /* smoke.pvr in Resources */ = {isa = PBXBuildFile; fileRef = A11AA3C91547218800113AA3 /* smoke.pvr */; };
@@ -224,8 +224,6 @@
 		A153D5C8153DA75000FBFFD5 /* btn.png in Resources */ = {isa = PBXBuildFile; fileRef = A153D5C7153DA75000FBFFD5 /* btn.png */; };
 		A166A1641546D1F800E659D5 /* CParticleMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A166A1621546D1F800E659D5 /* CParticleMgr.cpp */; };
 		A181673E15442E97004B483A /* model_02.pvr in Resources */ = {isa = PBXBuildFile; fileRef = A181673D15442E97004B483A /* model_02.pvr */; };
-		A181674B15455A46004B483A /* ShaderPreShadowMap.frag in Sources */ = {isa = PBXBuildFile; fileRef = A181674915455A46004B483A /* ShaderPreShadowMap.frag */; };
-		A181674C15455A47004B483A /* ShaderPreShadowMap.vert in Sources */ = {isa = PBXBuildFile; fileRef = A181674A15455A46004B483A /* ShaderPreShadowMap.vert */; };
 		A18D576F1598418000FCD8C9 /* CMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A18D576D1598418000FCD8C9 /* CMaterial.cpp */; };
 		A1A5E8DF1532E0E6004DD73B /* base_model_full.mdl in Resources */ = {isa = PBXBuildFile; fileRef = A1A5E8DA1532E0E6004DD73B /* base_model_full.mdl */; };
 		A1A5E8E01532E0E6004DD73B /* base_model.mdl in Resources */ = {isa = PBXBuildFile; fileRef = A1A5E8DB1532E0E6004DD73B /* base_model.mdl */; };
@@ -238,8 +236,6 @@
 		A1AC4DA3156FC74F0031FE05 /* CGameShooterMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1AC4DA1156FC74F0031FE05 /* CGameShooterMgr.cpp */; };
 		A1AF6F741549380400703E2E /* Skybox.pvr in Resources */ = {isa = PBXBuildFile; fileRef = A1AF6F731549380400703E2E /* Skybox.pvr */; };
 		A1AF6F771549383200703E2E /* CSkyBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1AF6F751549383200703E2E /* CSkyBox.cpp */; };
-		A1AF6F7E1549476D00703E2E /* ShaderTextureCube.frag in Sources */ = {isa = PBXBuildFile; fileRef = A1AF6F7C1549476D00703E2E /* ShaderTextureCube.frag */; };
-		A1AF6F7F1549476D00703E2E /* ShaderTextureCube.vert in Sources */ = {isa = PBXBuildFile; fileRef = A1AF6F7D1549476D00703E2E /* ShaderTextureCube.vert */; };
 		A1B6C9A415934A7C00F380CC /* CBatch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1B6C9A215934A7B00F380CC /* CBatch.cpp */; };
 		A1B6C9AC1593639F00F380CC /* CBatchMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1B6C9AA1593639F00F380CC /* CBatchMgr.cpp */; };
 		A1BAD24815418C4A00B4149D /* CGameAIMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1BAD24615418C4A00B4149D /* CGameAIMgr.cpp */; };
@@ -253,11 +249,11 @@
 		A1D8067F15735D1400EF81D0 /* CVertexBufferPositionTexcoordNormal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1D8067915735D1400EF81D0 /* CVertexBufferPositionTexcoordNormal.cpp */; };
 		A1D8068015735D1400EF81D0 /* CVertexBufferPositionTexcoordNormalTangent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1D8067B15735D1400EF81D0 /* CVertexBufferPositionTexcoordNormalTangent.cpp */; };
 		A1D8068415735D2500EF81D0 /* IVertexBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1D8068215735D2500EF81D0 /* IVertexBuffer.cpp */; };
-		A1E1ED321563CC01009FD066 /* ShaderShadowPlane.frag in Sources */ = {isa = PBXBuildFile; fileRef = A1E1ED301563CC01009FD066 /* ShaderShadowPlane.frag */; };
-		A1E1ED331563CC01009FD066 /* ShaderShadowPlane.vert in Sources */ = {isa = PBXBuildFile; fileRef = A1E1ED311563CC01009FD066 /* ShaderShadowPlane.vert */; };
+		A1E5CAE71598914D0038393C /* ShaderSkybox.frag in Sources */ = {isa = PBXBuildFile; fileRef = A1E5CAE51598914C0038393C /* ShaderSkybox.frag */; };
+		A1E5CAE81598914D0038393C /* ShaderSkybox.vert in Sources */ = {isa = PBXBuildFile; fileRef = A1E5CAE61598914C0038393C /* ShaderSkybox.vert */; };
 		A1ED8E8915591C6B00B82AE3 /* joystick.png in Resources */ = {isa = PBXBuildFile; fileRef = A1ED8E8815591C6B00B82AE3 /* joystick.png */; };
-		A1F05DA5158732A300812D02 /* ShaderPreNormalDepthParticleEmitter.frag in Sources */ = {isa = PBXBuildFile; fileRef = A1F05DA3158732A300812D02 /* ShaderPreNormalDepthParticleEmitter.frag */; };
-		A1F05DA6158732A300812D02 /* ShaderPreNormalDepthParticleEmitter.vert in Sources */ = {isa = PBXBuildFile; fileRef = A1F05DA4158732A300812D02 /* ShaderPreNormalDepthParticleEmitter.vert */; };
+		A1F05DA5158732A300812D02 /* ShaderParticleND.frag in Sources */ = {isa = PBXBuildFile; fileRef = A1F05DA3158732A300812D02 /* ShaderParticleND.frag */; };
+		A1F05DA6158732A300812D02 /* ShaderParticleND.vert in Sources */ = {isa = PBXBuildFile; fileRef = A1F05DA4158732A300812D02 /* ShaderParticleND.vert */; };
 		A1F05DAA15877EF200812D02 /* CParticleEmitterFireTrail.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1F05DA815877EF200812D02 /* CParticleEmitterFireTrail.cpp */; };
 		A1F68E5C157E399E0048A717 /* CSpriteMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1F68E5A157E399E0048A717 /* CSpriteMgr.cpp */; };
 		A1F68E60157E39C00048A717 /* CSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1F68E5E157E39C00048A717 /* CSprite.cpp */; };
@@ -284,8 +280,8 @@
 		4D27E4B40F9AD7D600447247 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		4D3135EB0F9A6649001FFC34 /* GLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLView.h; sourceTree = "<group>"; };
 		4D3135EC0F9A6649001FFC34 /* GLView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GLView.mm; sourceTree = "<group>"; };
-		4D508D32102600410065571B /* ShaderTexture.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderTexture.frag; path = Shaders/ShaderTexture.frag; sourceTree = "<group>"; };
-		4D508D33102600410065571B /* ShaderTexture.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderTexture.vert; path = Shaders/ShaderTexture.vert; sourceTree = "<group>"; };
+		4D508D32102600410065571B /* ShaderPostPlane.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderPostPlane.frag; path = Shaders/ShaderPostPlane.frag; sourceTree = "<group>"; };
+		4D508D33102600410065571B /* ShaderPostPlane.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderPostPlane.vert; path = Shaders/ShaderPostPlane.vert; sourceTree = "<group>"; };
 		4D8FB3720F9EC1010055EDDB /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9303B33A14AC901D005ED3BF /* CCameraFree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCameraFree.h; sourceTree = "<group>"; };
@@ -340,8 +336,6 @@
 		9307CBF314EBC0BB00ADFE2B /* CBuildingMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CBuildingMgr.cpp; sourceTree = "<group>"; };
 		9307CBF514EBC0D300ADFE2B /* CGameResourceMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGameResourceMgr.h; sourceTree = "<group>"; };
 		9307CBF614EBC0DA00ADFE2B /* CGameResourceMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGameResourceMgr.cpp; sourceTree = "<group>"; };
-		93102F6D1525AD1300DEAB2B /* ShaderProjectTexture.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderProjectTexture.frag; path = Shaders/ShaderProjectTexture.frag; sourceTree = "<group>"; };
-		93102F6E1525AD1300DEAB2B /* ShaderProjectTexture.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderProjectTexture.vert; path = Shaders/ShaderProjectTexture.vert; sourceTree = "<group>"; };
 		931217EB146D110F00DDC82D /* IResourceMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IResourceMgr.h; sourceTree = "<group>"; };
 		9319B4A014E30904002152EC /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		9319B4A314E30923002152EC /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
@@ -368,8 +362,8 @@
 		933CC91F150A8C0900624C22 /* layer_03_normal.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = layer_03_normal.pvr; path = Resources/Textures/layer_03_normal.pvr; sourceTree = "<group>"; };
 		93490B8D150A0A72005C8274 /* ShaderLandscape.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderLandscape.frag; path = Shaders/ShaderLandscape.frag; sourceTree = "<group>"; };
 		93490B8E150A0A72005C8274 /* ShaderLandscape.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderLandscape.vert; path = Shaders/ShaderLandscape.vert; sourceTree = "<group>"; };
-		93490B8F150A0A72005C8274 /* ShaderUnit.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderUnit.frag; path = Shaders/ShaderUnit.frag; sourceTree = "<group>"; };
-		93490B90150A0A72005C8274 /* ShaderUnit.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderUnit.vert; path = Shaders/ShaderUnit.vert; sourceTree = "<group>"; };
+		93490B8F150A0A72005C8274 /* ShaderModel.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderModel.frag; path = Shaders/ShaderModel.frag; sourceTree = "<group>"; };
+		93490B90150A0A72005C8274 /* ShaderModel.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderModel.vert; path = Shaders/ShaderModel.vert; sourceTree = "<group>"; };
 		93490B95150A26B3005C8274 /* layer_02_bump.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = layer_02_bump.pvr; path = Resources/Textures/layer_02_bump.pvr; sourceTree = "<group>"; };
 		93490B96150A26B3005C8274 /* layer_02_diffuse.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = layer_02_diffuse.pvr; path = Resources/Textures/layer_02_diffuse.pvr; sourceTree = "<group>"; };
 		935D65071504AE3C00FBE552 /* ShaderPostBloomCombine.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderPostBloomCombine.frag; path = Shaders/ShaderPostBloomCombine.frag; sourceTree = "<group>"; };
@@ -386,24 +380,12 @@
 		937367CB144EE2B30051ED8D /* CVertexBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CVertexBuffer.cpp; sourceTree = "<group>"; };
 		9373680414559D3D0051ED8D /* ICamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICamera.h; sourceTree = "<group>"; };
 		9373680514559D4F0051ED8D /* ICamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ICamera.cpp; sourceTree = "<group>"; };
-		937371571521F5650043B697 /* ShaderPostNormalDepth.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderPostNormalDepth.frag; path = Shaders/ShaderPostNormalDepth.frag; sourceTree = "<group>"; };
-		937371581521F5650043B697 /* ShaderPostNormalDepth.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderPostNormalDepth.vert; path = Shaders/ShaderPostNormalDepth.vert; sourceTree = "<group>"; };
+		937371571521F5650043B697 /* ShaderLandscapeND.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderLandscapeND.frag; path = Shaders/ShaderLandscapeND.frag; sourceTree = "<group>"; };
+		937371581521F5650043B697 /* ShaderLandscapeND.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderLandscapeND.vert; path = Shaders/ShaderLandscapeND.vert; sourceTree = "<group>"; };
 		937B276714FF677D00B346E0 /* layer_01.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = layer_01.pvr; path = Resources/Textures/layer_01.pvr; sourceTree = "<group>"; };
 		937B276A14FF737200B346E0 /* CScreenSpacePostMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CScreenSpacePostMgr.h; sourceTree = "<group>"; };
 		937B276B14FF738C00B346E0 /* CScreenSpacePostMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CScreenSpacePostMgr.cpp; sourceTree = "<group>"; };
-		9385B03B147E6EA00041FAE1 /* ShaderLambert.frag */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ShaderLambert.frag; path = Shaders/ShaderLambert.frag; sourceTree = "<group>"; };
-		9385B03C147E6EA00041FAE1 /* ShaderLambert.vert */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ShaderLambert.vert; path = Shaders/ShaderLambert.vert; sourceTree = "<group>"; };
-		9385B03D147E6EA00041FAE1 /* ShaderCellShading.frag */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ShaderCellShading.frag; path = Shaders/ShaderCellShading.frag; sourceTree = "<group>"; };
-		9385B03E147E6EA10041FAE1 /* ShaderCellShading.vert */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ShaderCellShading.vert; path = Shaders/ShaderCellShading.vert; sourceTree = "<group>"; };
-		9385B03F147E6EA10041FAE1 /* ShaderGooch.frag */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ShaderGooch.frag; path = Shaders/ShaderGooch.frag; sourceTree = "<group>"; };
-		9385B040147E6EA10041FAE1 /* ShaderGooch.vert */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ShaderGooch.vert; path = Shaders/ShaderGooch.vert; sourceTree = "<group>"; };
-		9385B041147E6EA10041FAE1 /* ShaderRimLight.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderRimLight.frag; path = Shaders/ShaderRimLight.frag; sourceTree = "<group>"; };
-		9385B042147E6EA10041FAE1 /* ShaderRimLight.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderRimLight.vert; path = Shaders/ShaderRimLight.vert; sourceTree = "<group>"; };
-		9385B043147E6EA10041FAE1 /* ShaderPhong.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderPhong.frag; path = Shaders/ShaderPhong.frag; sourceTree = "<group>"; };
-		9385B044147E6EA20041FAE1 /* ShaderPhong.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderPhong.vert; path = Shaders/ShaderPhong.vert; sourceTree = "<group>"; };
 		939733A714CF048C005268B7 /* TileSet.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = TileSet.pvr; path = Resources/Textures/TileSet.pvr; sourceTree = "<group>"; };
-		9399F6A815062A290066639A /* ShaderParallax.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderParallax.frag; path = Shaders/ShaderParallax.frag; sourceTree = "<group>"; };
-		9399F6A915062A290066639A /* ShaderParallax.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderParallax.vert; path = Shaders/ShaderParallax.vert; sourceTree = "<group>"; };
 		9399F6AC15062DBC0066639A /* layer_01_bump.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = layer_01_bump.pvr; path = Resources/Textures/layer_01_bump.pvr; sourceTree = "<group>"; };
 		9399F6AD15062DBC0066639A /* layer_01_normal.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = layer_01_normal.pvr; path = Resources/Textures/layer_01_normal.pvr; sourceTree = "<group>"; };
 		9399F6AE15062DBC0066639A /* layer_01_diffuse.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = layer_01_diffuse.pvr; path = Resources/Textures/layer_01_diffuse.pvr; sourceTree = "<group>"; };
@@ -455,8 +437,6 @@
 		93CFC0941463EBF500720766 /* IResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IResource.h; sourceTree = "<group>"; };
 		93CFC0951463EC0700720766 /* IResource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IResource.cpp; sourceTree = "<group>"; };
 		93CFC0981463FA2800720766 /* IResourceMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IResourceMgr.cpp; sourceTree = "<group>"; };
-		93CFC0AE146809E400720766 /* ShaderColor.frag */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ShaderColor.frag; path = Shaders/ShaderColor.frag; sourceTree = "<group>"; };
-		93CFC0AF146809E400720766 /* ShaderColor.vert */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ShaderColor.vert; path = Shaders/ShaderColor.vert; sourceTree = "<group>"; };
 		93DFB88014C9AF0F00B6910C /* CTileSetter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CTileSetter.cpp; sourceTree = "<group>"; };
 		93DFB88114C9AF1000B6910C /* CTileSetter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTileSetter.h; sourceTree = "<group>"; };
 		93E52C1714C6E01E00697561 /* CIndexBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CIndexBuffer.h; sourceTree = "<group>"; };
@@ -687,8 +667,6 @@
 		93FB5A481517CF9800E096A9 /* wrap.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = wrap.hpp; sourceTree = "<group>"; };
 		93FB5A491517CF9800E096A9 /* wrap.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = wrap.inl; sourceTree = "<group>"; };
 		93FB5A4B1517CF9800E096A9 /* xstream.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = xstream.hpp; sourceTree = "<group>"; };
-		93FDE98B1523344300FFBC1B /* ShaderPreReflection.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderPreReflection.frag; path = Shaders/ShaderPreReflection.frag; sourceTree = "<group>"; };
-		93FDE98C1523344300FFBC1B /* ShaderPreReflection.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderPreReflection.vert; path = Shaders/ShaderPreReflection.vert; sourceTree = "<group>"; };
 		A10074FD156130A8000E324E /* clouds.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = clouds.pvr; path = Resources/Textures/clouds.pvr; sourceTree = "<group>"; };
 		A100AB7215775CCE003BB7BA /* CVertexBufferPositionTexcoordColor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CVertexBufferPositionTexcoordColor.cpp; sourceTree = "<group>"; };
 		A100AB7315775CCE003BB7BA /* CVertexBufferPositionTexcoordColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVertexBufferPositionTexcoordColor.h; sourceTree = "<group>"; };
@@ -700,8 +678,8 @@
 		A100AB8715777FD8003BB7BA /* CSpriteCross.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSpriteCross.h; sourceTree = "<group>"; };
 		A100AB911577C4CD003BB7BA /* CParticleEmitterExplosion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CParticleEmitterExplosion.cpp; sourceTree = "<group>"; };
 		A100AB921577C4CD003BB7BA /* CParticleEmitterExplosion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CParticleEmitterExplosion.h; sourceTree = "<group>"; };
-		A10DC48615863C4D007EB83B /* ShaderParticleEmitter.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderParticleEmitter.frag; path = Shaders/ShaderParticleEmitter.frag; sourceTree = "<group>"; };
-		A10DC48715863C4D007EB83B /* ShaderParticleEmitter.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderParticleEmitter.vert; path = Shaders/ShaderParticleEmitter.vert; sourceTree = "<group>"; };
+		A10DC48615863C4D007EB83B /* ShaderParticle.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderParticle.frag; path = Shaders/ShaderParticle.frag; sourceTree = "<group>"; };
+		A10DC48715863C4D007EB83B /* ShaderParticle.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderParticle.vert; path = Shaders/ShaderParticle.vert; sourceTree = "<group>"; };
 		A10E64A7157F3360007B576A /* CMathHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMathHelper.cpp; sourceTree = "<group>"; };
 		A10E64A8157F3360007B576A /* CMathHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMathHelper.h; sourceTree = "<group>"; };
 		A10E64AB157F3373007B576A /* CTimer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CTimer.cpp; sourceTree = "<group>"; };
@@ -714,8 +692,8 @@
 		A12156B1152EDE9C002E1942 /* IResourceLoaderDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IResourceLoaderDelegate.cpp; sourceTree = "<group>"; };
 		A12D2F281541582800955C6B /* CCharacterControllerEnemy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCharacterControllerEnemy.cpp; sourceTree = "<group>"; };
 		A12D2F291541582800955C6B /* CCharacterControllerEnemy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCharacterControllerEnemy.h; sourceTree = "<group>"; };
-		A13D5A0E15378A56004C4363 /* ShaderPreNormalDepthUnit.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderPreNormalDepthUnit.frag; path = Shaders/ShaderPreNormalDepthUnit.frag; sourceTree = "<group>"; };
-		A13D5A0F15378A56004C4363 /* ShaderPreNormalDepthUnit.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderPreNormalDepthUnit.vert; path = Shaders/ShaderPreNormalDepthUnit.vert; sourceTree = "<group>"; };
+		A13D5A0E15378A56004C4363 /* ShaderModelND.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderModelND.frag; path = Shaders/ShaderModelND.frag; sourceTree = "<group>"; };
+		A13D5A0F15378A56004C4363 /* ShaderModelND.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderModelND.vert; path = Shaders/ShaderModelND.vert; sourceTree = "<group>"; };
 		A13F9EB71568D743009DCBB4 /* CDecal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CDecal.cpp; sourceTree = "<group>"; };
 		A13F9EB81568D743009DCBB4 /* CDecal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDecal.h; sourceTree = "<group>"; };
 		A13F9EBF1568DC64009DCBB4 /* ITouchDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ITouchDelegate.cpp; sourceTree = "<group>"; };
@@ -731,14 +709,12 @@
 		A166A1621546D1F800E659D5 /* CParticleMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CParticleMgr.cpp; sourceTree = "<group>"; };
 		A166A1631546D1F800E659D5 /* CParticleMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CParticleMgr.h; sourceTree = "<group>"; };
 		A181673D15442E97004B483A /* model_02.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = model_02.pvr; path = Resources/Textures/model_02.pvr; sourceTree = "<group>"; };
-		A181674915455A46004B483A /* ShaderPreShadowMap.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderPreShadowMap.frag; path = Shaders/ShaderPreShadowMap.frag; sourceTree = "<group>"; };
-		A181674A15455A46004B483A /* ShaderPreShadowMap.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderPreShadowMap.vert; path = Shaders/ShaderPreShadowMap.vert; sourceTree = "<group>"; };
-		A186D96B152AEB5100112521 /* ShaderWater.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderWater.frag; path = Shaders/ShaderWater.frag; sourceTree = "<group>"; };
-		A186D96C152AEB5100112521 /* ShaderWater.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderWater.vert; path = Shaders/ShaderWater.vert; sourceTree = "<group>"; };
+		A186D96B152AEB5100112521 /* ShaderOcean.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderOcean.frag; path = Shaders/ShaderOcean.frag; sourceTree = "<group>"; };
+		A186D96C152AEB5100112521 /* ShaderOcean.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderOcean.vert; path = Shaders/ShaderOcean.vert; sourceTree = "<group>"; };
 		A18D576D1598418000FCD8C9 /* CMaterial.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMaterial.cpp; sourceTree = "<group>"; };
 		A18D576E1598418000FCD8C9 /* CMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMaterial.h; sourceTree = "<group>"; };
-		A1A3BB1C153D5F2C003AE14D /* ShaderAnimTexCoordUnit.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderAnimTexCoordUnit.frag; path = Shaders/ShaderAnimTexCoordUnit.frag; sourceTree = "<group>"; };
-		A1A3BB1D153D5F2C003AE14D /* ShaderAnimTexCoordUnit.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderAnimTexCoordUnit.vert; path = Shaders/ShaderAnimTexCoordUnit.vert; sourceTree = "<group>"; };
+		A1A3BB1C153D5F2C003AE14D /* ShaderGrassND.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderGrassND.frag; path = Shaders/ShaderGrassND.frag; sourceTree = "<group>"; };
+		A1A3BB1D153D5F2C003AE14D /* ShaderGrassND.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderGrassND.vert; path = Shaders/ShaderGrassND.vert; sourceTree = "<group>"; };
 		A1A5E8DA1532E0E6004DD73B /* base_model_full.mdl */ = {isa = PBXFileReference; lastKnownFileType = file; path = base_model_full.mdl; sourceTree = "<group>"; };
 		A1A5E8DB1532E0E6004DD73B /* base_model.mdl */ = {isa = PBXFileReference; lastKnownFileType = file; path = base_model.mdl; sourceTree = "<group>"; };
 		A1A5E8DC1532E0E6004DD73B /* left_track_model.mdl */ = {isa = PBXFileReference; lastKnownFileType = file; path = left_track_model.mdl; sourceTree = "<group>"; };
@@ -754,8 +730,6 @@
 		A1AF6F731549380400703E2E /* Skybox.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = Skybox.pvr; path = Resources/Textures/Skybox.pvr; sourceTree = "<group>"; };
 		A1AF6F751549383200703E2E /* CSkyBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CSkyBox.cpp; sourceTree = "<group>"; };
 		A1AF6F761549383200703E2E /* CSkyBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSkyBox.h; sourceTree = "<group>"; };
-		A1AF6F7C1549476D00703E2E /* ShaderTextureCube.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderTextureCube.frag; path = Shaders/ShaderTextureCube.frag; sourceTree = "<group>"; };
-		A1AF6F7D1549476D00703E2E /* ShaderTextureCube.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderTextureCube.vert; path = Shaders/ShaderTextureCube.vert; sourceTree = "<group>"; };
 		A1B6C9A215934A7B00F380CC /* CBatch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CBatch.cpp; sourceTree = "<group>"; };
 		A1B6C9A315934A7C00F380CC /* CBatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBatch.h; sourceTree = "<group>"; };
 		A1B6C9AA1593639F00F380CC /* CBatchMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CBatchMgr.cpp; sourceTree = "<group>"; };
@@ -777,11 +751,11 @@
 		A1D8067C15735D1400EF81D0 /* CVertexBufferPositionTexcoordNormalTangent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVertexBufferPositionTexcoordNormalTangent.h; sourceTree = "<group>"; };
 		A1D8068215735D2500EF81D0 /* IVertexBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IVertexBuffer.cpp; sourceTree = "<group>"; };
 		A1D8068315735D2500EF81D0 /* IVertexBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IVertexBuffer.h; sourceTree = "<group>"; };
-		A1E1ED301563CC01009FD066 /* ShaderShadowPlane.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderShadowPlane.frag; path = Shaders/ShaderShadowPlane.frag; sourceTree = "<group>"; };
-		A1E1ED311563CC01009FD066 /* ShaderShadowPlane.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderShadowPlane.vert; path = Shaders/ShaderShadowPlane.vert; sourceTree = "<group>"; };
+		A1E5CAE51598914C0038393C /* ShaderSkybox.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderSkybox.frag; path = Shaders/ShaderSkybox.frag; sourceTree = "<group>"; };
+		A1E5CAE61598914C0038393C /* ShaderSkybox.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderSkybox.vert; path = Shaders/ShaderSkybox.vert; sourceTree = "<group>"; };
 		A1ED8E8815591C6B00B82AE3 /* joystick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = joystick.png; path = Resources/Textures/joystick.png; sourceTree = "<group>"; };
-		A1F05DA3158732A300812D02 /* ShaderPreNormalDepthParticleEmitter.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderPreNormalDepthParticleEmitter.frag; path = Shaders/ShaderPreNormalDepthParticleEmitter.frag; sourceTree = "<group>"; };
-		A1F05DA4158732A300812D02 /* ShaderPreNormalDepthParticleEmitter.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderPreNormalDepthParticleEmitter.vert; path = Shaders/ShaderPreNormalDepthParticleEmitter.vert; sourceTree = "<group>"; };
+		A1F05DA3158732A300812D02 /* ShaderParticleND.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderParticleND.frag; path = Shaders/ShaderParticleND.frag; sourceTree = "<group>"; };
+		A1F05DA4158732A300812D02 /* ShaderParticleND.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderParticleND.vert; path = Shaders/ShaderParticleND.vert; sourceTree = "<group>"; };
 		A1F05DA815877EF200812D02 /* CParticleEmitterFireTrail.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CParticleEmitterFireTrail.cpp; sourceTree = "<group>"; };
 		A1F05DA915877EF200812D02 /* CParticleEmitterFireTrail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CParticleEmitterFireTrail.h; sourceTree = "<group>"; };
 		A1F68E5A157E399E0048A717 /* CSpriteMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CSpriteMgr.cpp; sourceTree = "<group>"; };
@@ -1117,8 +1091,8 @@
 		935D65031504ADED00FBE552 /* ScreenSpaceEffect */ = {
 			isa = PBXGroup;
 			children = (
-				937371571521F5650043B697 /* ShaderPostNormalDepth.frag */,
-				937371581521F5650043B697 /* ShaderPostNormalDepth.vert */,
+				4D508D32102600410065571B /* ShaderPostPlane.frag */,
+				4D508D33102600410065571B /* ShaderPostPlane.vert */,
 				933A6F581521199300CDE1A6 /* ShaderPostEdgeDetect.frag */,
 				933A6F591521199300CDE1A6 /* ShaderPostEdgeDetect.vert */,
 				935D65071504AE3C00FBE552 /* ShaderPostBloomCombine.frag */,
@@ -1134,30 +1108,6 @@
 		935D65051504ADFC00FBE552 /* StandartEffect */ = {
 			isa = PBXGroup;
 			children = (
-				A1AF6F7C1549476D00703E2E /* ShaderTextureCube.frag */,
-				A1AF6F7D1549476D00703E2E /* ShaderTextureCube.vert */,
-				A181674915455A46004B483A /* ShaderPreShadowMap.frag */,
-				A181674A15455A46004B483A /* ShaderPreShadowMap.vert */,
-				93102F6D1525AD1300DEAB2B /* ShaderProjectTexture.frag */,
-				93102F6E1525AD1300DEAB2B /* ShaderProjectTexture.vert */,
-				93FDE98B1523344300FFBC1B /* ShaderPreReflection.frag */,
-				93FDE98C1523344300FFBC1B /* ShaderPreReflection.vert */,
-				9399F6A815062A290066639A /* ShaderParallax.frag */,
-				9399F6A915062A290066639A /* ShaderParallax.vert */,
-				9385B03B147E6EA00041FAE1 /* ShaderLambert.frag */,
-				9385B03C147E6EA00041FAE1 /* ShaderLambert.vert */,
-				9385B03D147E6EA00041FAE1 /* ShaderCellShading.frag */,
-				9385B03E147E6EA10041FAE1 /* ShaderCellShading.vert */,
-				9385B03F147E6EA10041FAE1 /* ShaderGooch.frag */,
-				9385B040147E6EA10041FAE1 /* ShaderGooch.vert */,
-				9385B041147E6EA10041FAE1 /* ShaderRimLight.frag */,
-				9385B042147E6EA10041FAE1 /* ShaderRimLight.vert */,
-				9385B043147E6EA10041FAE1 /* ShaderPhong.frag */,
-				9385B044147E6EA20041FAE1 /* ShaderPhong.vert */,
-				93CFC0AE146809E400720766 /* ShaderColor.frag */,
-				93CFC0AF146809E400720766 /* ShaderColor.vert */,
-				4D508D32102600410065571B /* ShaderTexture.frag */,
-				4D508D33102600410065571B /* ShaderTexture.vert */,
 			);
 			name = StandartEffect;
 			sourceTree = "<group>";
@@ -1165,26 +1115,28 @@
 		935D65061504AE0B00FBE552 /* CustomEffect */ = {
 			isa = PBXGroup;
 			children = (
-				A1F05DA3158732A300812D02 /* ShaderPreNormalDepthParticleEmitter.frag */,
-				A1F05DA4158732A300812D02 /* ShaderPreNormalDepthParticleEmitter.vert */,
-				A10DC48615863C4D007EB83B /* ShaderParticleEmitter.frag */,
-				A10DC48715863C4D007EB83B /* ShaderParticleEmitter.vert */,
+				A1E5CAE51598914C0038393C /* ShaderSkybox.frag */,
+				A1E5CAE61598914C0038393C /* ShaderSkybox.vert */,
+				A10DC48715863C4D007EB83B /* ShaderParticle.vert */,
+				A10DC48615863C4D007EB83B /* ShaderParticle.frag */,
+				A1F05DA3158732A300812D02 /* ShaderParticleND.frag */,
+				A1F05DA4158732A300812D02 /* ShaderParticleND.vert */,
 				A1201A8B156B75710099EE9D /* ShaderGrass.frag */,
 				A1201A8C156B75710099EE9D /* ShaderGrass.vert */,
+				A1A3BB1C153D5F2C003AE14D /* ShaderGrassND.frag */,
+				A1A3BB1D153D5F2C003AE14D /* ShaderGrassND.vert */,
 				A1BE199F156A2053004C3610 /* ShaderDecal.frag */,
 				A1BE19A0156A2053004C3610 /* ShaderDecal.vert */,
-				A1E1ED301563CC01009FD066 /* ShaderShadowPlane.frag */,
-				A1E1ED311563CC01009FD066 /* ShaderShadowPlane.vert */,
-				A1A3BB1C153D5F2C003AE14D /* ShaderAnimTexCoordUnit.frag */,
-				A1A3BB1D153D5F2C003AE14D /* ShaderAnimTexCoordUnit.vert */,
-				A13D5A0E15378A56004C4363 /* ShaderPreNormalDepthUnit.frag */,
-				A13D5A0F15378A56004C4363 /* ShaderPreNormalDepthUnit.vert */,
-				A186D96B152AEB5100112521 /* ShaderWater.frag */,
-				A186D96C152AEB5100112521 /* ShaderWater.vert */,
+				A186D96B152AEB5100112521 /* ShaderOcean.frag */,
+				A186D96C152AEB5100112521 /* ShaderOcean.vert */,
 				93490B8D150A0A72005C8274 /* ShaderLandscape.frag */,
 				93490B8E150A0A72005C8274 /* ShaderLandscape.vert */,
-				93490B8F150A0A72005C8274 /* ShaderUnit.frag */,
-				93490B90150A0A72005C8274 /* ShaderUnit.vert */,
+				937371571521F5650043B697 /* ShaderLandscapeND.frag */,
+				937371581521F5650043B697 /* ShaderLandscapeND.vert */,
+				93490B8F150A0A72005C8274 /* ShaderModel.frag */,
+				93490B90150A0A72005C8274 /* ShaderModel.vert */,
+				A13D5A0E15378A56004C4363 /* ShaderModelND.frag */,
+				A13D5A0F15378A56004C4363 /* ShaderModelND.vert */,
 			);
 			name = CustomEffect;
 			sourceTree = "<group>";
@@ -1922,16 +1874,10 @@
 				A153D5C2153DA3D000FBFFD5 /* CInGameMenu.mm in Sources */,
 				A12D2F2A1541582800955C6B /* CCharacterControllerEnemy.cpp in Sources */,
 				A1BAD24815418C4A00B4149D /* CGameAIMgr.cpp in Sources */,
-				A181674B15455A46004B483A /* ShaderPreShadowMap.frag in Sources */,
-				A181674C15455A47004B483A /* ShaderPreShadowMap.vert in Sources */,
 				A1AB4E3E1546B71D00434639 /* CParticleEmitter.cpp in Sources */,
 				A166A1641546D1F800E659D5 /* CParticleMgr.cpp in Sources */,
 				A1AF6F771549383200703E2E /* CSkyBox.cpp in Sources */,
-				A1AF6F7E1549476D00703E2E /* ShaderTextureCube.frag in Sources */,
-				A1AF6F7F1549476D00703E2E /* ShaderTextureCube.vert in Sources */,
 				A1F690471557CCAC00A2920A /* CJoystick.mm in Sources */,
-				A1E1ED321563CC01009FD066 /* ShaderShadowPlane.frag in Sources */,
-				A1E1ED331563CC01009FD066 /* ShaderShadowPlane.vert in Sources */,
 				A13F9EB91568D743009DCBB4 /* CDecal.cpp in Sources */,
 				A13F9EC11568DC64009DCBB4 /* ITouchDelegate.cpp in Sources */,
 				A13F9ED1156932FE009DCBB4 /* CDecalMgr.cpp in Sources */,
@@ -1957,14 +1903,16 @@
 				A1F68E60157E39C00048A717 /* CSprite.cpp in Sources */,
 				A10E64A9157F3360007B576A /* CMathHelper.cpp in Sources */,
 				A10E64AD157F3373007B576A /* CTimer.cpp in Sources */,
-				A10DC48815863C4D007EB83B /* ShaderParticleEmitter.frag in Sources */,
-				A10DC48915863C4D007EB83B /* ShaderParticleEmitter.vert in Sources */,
-				A1F05DA5158732A300812D02 /* ShaderPreNormalDepthParticleEmitter.frag in Sources */,
-				A1F05DA6158732A300812D02 /* ShaderPreNormalDepthParticleEmitter.vert in Sources */,
+				A10DC48815863C4D007EB83B /* ShaderParticle.frag in Sources */,
+				A10DC48915863C4D007EB83B /* ShaderParticle.vert in Sources */,
+				A1F05DA5158732A300812D02 /* ShaderParticleND.frag in Sources */,
+				A1F05DA6158732A300812D02 /* ShaderParticleND.vert in Sources */,
 				A1F05DAA15877EF200812D02 /* CParticleEmitterFireTrail.cpp in Sources */,
 				A1B6C9A415934A7C00F380CC /* CBatch.cpp in Sources */,
 				A1B6C9AC1593639F00F380CC /* CBatchMgr.cpp in Sources */,
 				A18D576F1598418000FCD8C9 /* CMaterial.cpp in Sources */,
+				A1E5CAE71598914D0038393C /* ShaderSkybox.frag in Sources */,
+				A1E5CAE81598914D0038393C /* ShaderSkybox.vert in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

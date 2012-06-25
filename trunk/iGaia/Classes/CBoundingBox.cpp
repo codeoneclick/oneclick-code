@@ -93,7 +93,7 @@ CBoundingBox::CBoundingBox(const glm::vec3 &_vMax, const glm::vec3 &_vMin)
     m_vScale = m_vMin - m_vMax;
     m_vCenter = (m_vMax - m_vMin) / 2.0f + m_vMin;
     m_mWorld = glm::mat4x4(1.0f);
-    m_pShader = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_COLOR);
+    //m_pShader = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_COLOR);
     Get_BoundingBoxMesh();
     
     m_pMesh->Get_VertexBufferRef()->Add_ShaderRef(CShader::E_RENDER_MODE_SIMPLE, m_pShader);
@@ -120,6 +120,7 @@ void CBoundingBox::Set_MaxMinPoints(const glm::vec3 &_vMax, const glm::vec3 &_vM
 
 void CBoundingBox::Render(void)
 {
+    return;
     ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
     m_pShader->Enable();
     m_pShader->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
