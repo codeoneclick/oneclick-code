@@ -83,6 +83,11 @@ void CCharacterControllerPlayer::Load(void)
     m_pShadowDecal->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_DECAL);
     m_pShadowDecal->Set_Texture("shadow.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
     
+    m_pHealthDecal = CSceneMgr::Instance()->Get_DecalMgr()->Add_Decal();
+    m_pHealthDecal->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_DECAL);
+    m_pHealthDecal->Set_Texture("ring.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
+    m_pHealthDecal->Set_Color(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+    
     m_pLeftExhaustSmokeEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(64, glm::vec2(0.025f), glm::vec2(0.45f), 2000, true);
     m_pLeftExhaustSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_PARTICLE);
     m_pLeftExhaustSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PARTICLE_ND);
@@ -105,7 +110,7 @@ void CCharacterControllerPlayer::Load(void)
     m_pRightTrackSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_PARTICLE);
     m_pRightTrackSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PARTICLE_ND);
     m_pRightTrackSmokeEmitter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
-    m_pRightTrackSmokeEmitter->Set_Batching(true, "fire-emitter");
+    //m_pRightTrackSmokeEmitter->Set_Batching(true, "fire-emitter");
     
     m_pTowerSmokeEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(64, glm::vec2(0.05f), glm::vec2(2.5f), 1000, true);
     m_pTowerSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_PARTICLE);
@@ -117,7 +122,7 @@ void CCharacterControllerPlayer::Load(void)
     m_pLeftTrackFireEmitter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_PARTICLE);
     m_pLeftTrackFireEmitter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PARTICLE_ND);
     m_pLeftTrackFireEmitter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
-    m_pLeftTrackFireEmitter->Set_Batching(true, "fire-emitter");
+    //m_pLeftTrackFireEmitter->Set_Batching(true, "fire-emitter");
     
     m_pRightTrackFireEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(64, glm::vec2(0.05f), glm::vec2(2.5f), 1000, true);
     m_pRightTrackFireEmitter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_PARTICLE);
@@ -134,6 +139,10 @@ void CCharacterControllerPlayer::Load(void)
     CSceneMgr::Instance()->AddEventListener(m_pBodyModel, CEventMgr::E_EVENT_TOUCH);
     m_pBodyModel->Add_DelegateOwner(this);
     CWorld::Instance()->Get_Level()->Get_Model()->Add_DelegateOwner(this);
+    
+    m_pLeftTrackFireEmitter->Start();
+    //m_pRightTrackFireEmitter->Start();
+    //m_pTowerFireEmitter->Start();
 }
 
 void CCharacterControllerPlayer::OnTouchEvent(ITouchDelegate* _pDelegateOwner)

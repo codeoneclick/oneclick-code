@@ -115,7 +115,8 @@ void CModel::Render(CShader::E_RENDER_MODE _eMode)
             pShader->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
             pShader->Set_Vector3(pCamera->Get_Position(), CShader::E_ATTRIBUTE_VECTOR_CAMERA_POSITION);
             pShader->Set_Vector2(m_vTexCoordOffset, CShader::E_ATTRIBUTE_VECTOR_TEXCOORD_OFFSET);
-            pShader->Set_Vector3(pLight->Get_Position(), CShader::E_ATTRIBUTE_VECTOR_LIGHT_POSITION);
+            glm::vec3 vLightPosition = glm::vec3(m_vPosition.x + 4.0f, 8.0f, m_vPosition.z + 4.0f);
+            pShader->Set_Vector3(vLightPosition, CShader::E_ATTRIBUTE_VECTOR_LIGHT_POSITION);
             
             for(unsigned int i = 0; i < k_TEXTURES_MAX_COUNT; ++i)
             {

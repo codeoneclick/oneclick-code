@@ -130,6 +130,11 @@ void ICharacterController::Set_Position(const glm::vec3 &_vPosition)
         m_pShadowDecal->Set_Position(glm::vec3(_vPosition.x, 0.0f, _vPosition.z));
     }
     
+    if(m_pHealthDecal != NULL)
+    {
+        m_pHealthDecal->Set_Position(glm::vec3(_vPosition.x, 0.0f, _vPosition.z));
+    }
+    
     if(m_pLeftExhaustSmokeEmitter != NULL)
     {
         m_vTowerEmitterNodePosition = m_pBodyModel->Get_BoundingBox()->Get_Center();

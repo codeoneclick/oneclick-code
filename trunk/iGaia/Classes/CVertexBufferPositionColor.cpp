@@ -46,6 +46,14 @@ void CVertexBufferPositionColor::Enable(CShader::E_RENDER_MODE _eRenderMode)
 void CVertexBufferPositionColor::Disable(CShader::E_RENDER_MODE _eRenderMode)
 {
     CShader* pShader = m_lShaderRefContainer[_eRenderMode];
-    glDisableVertexAttribArray(pShader->Get_VertexSlot(CShader::E_VERTEX_SLOT_POSITION));
-    glDisableVertexAttribArray(pShader->Get_VertexSlot(CShader::E_VERTEX_SLOT_COLOR));
+    GLint iSlot = pShader->Get_VertexSlot(CShader::E_VERTEX_SLOT_POSITION);
+    if(iSlot >= 0)
+    {
+        glDisableVertexAttribArray(iSlot);
+    }
+    iSlot = pShader->Get_VertexSlot(CShader::E_VERTEX_SLOT_COLOR);
+    if(iSlot >= 0)
+    {
+        glDisableVertexAttribArray(iSlot);
+    }
 }

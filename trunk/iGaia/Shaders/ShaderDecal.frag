@@ -3,6 +3,7 @@ const char* ShaderDecalF = STRINGIFY(
                                                     varying highp   vec3   OUT_Position;
                                                     uniform highp   vec3   EXT_Center;
                                                     uniform highp   float  EXT_Angle;
+                                                    uniform lowp    vec4   EXT_Color;
                                                     uniform sampler2D EXT_TEXTURE_01;                                
 void main(void)
 {
@@ -28,6 +29,7 @@ void main(void)
     lowp vec3 vTransformTexCoord = vec3(vTexCoord.x, vTexCoord.y, 1.0);
     
     vTransformTexCoord = vTransformTexCoord * mScaleMatrix * mRotationMatrix * mTranslationMatrix;
-    gl_FragColor = texture2D(EXT_TEXTURE_01, vTransformTexCoord.xy);
+    lowp vec4 vColor = texture2D(EXT_TEXTURE_01, vTransformTexCoord.xy);
+    gl_FragColor = vColor.a * EXT_Color;
 }
 );

@@ -12,7 +12,7 @@
 
 CDecal::CDecal(void)
 {
-    
+    m_vColor = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
 CDecal::~CDecal(void)
@@ -79,7 +79,7 @@ void CDecal::Load(const std::string& _sName, IResource::E_THREAD _eThread)
     m_pMesh->Set_SourceData(pSourceData);
     
     m_pMaterial->Set_RenderState(CMaterial::E_RENDER_STATE_CULL_MODE,  true);
-    m_pMaterial->Set_RenderState(CMaterial::E_RENDER_STATE_DEPTH_MASK, true);
+    m_pMaterial->Set_RenderState(CMaterial::E_RENDER_STATE_DEPTH_MASK, false);
     m_pMaterial->Set_RenderState(CMaterial::E_RENDER_STATE_DEPTH_TEST, true);
     m_pMaterial->Set_RenderState(CMaterial::E_RENDER_STATE_BLEND_MODE, true);
     m_pMaterial->Set_CullFace(GL_FRONT);
@@ -177,6 +177,7 @@ void CDecal::Render(CShader::E_RENDER_MODE _eMode)
             pShader->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
             pShader->Set_CustomVector3(m_vPosition, "EXT_Center");
             pShader->Set_CustomFloat(glm::radians(m_vRotation.y), "EXT_Angle");
+            pShader->Set_CustomVector4(m_vColor, "EXT_Color");
             
             for(unsigned int i = 0; i < k_TEXTURES_MAX_COUNT; ++i)
             {
