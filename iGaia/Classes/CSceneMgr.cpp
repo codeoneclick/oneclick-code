@@ -301,11 +301,13 @@ void CSceneMgr::_DrawSimpleStep(void)
     {
         m_pSpriteMgr->Render(CShader::E_RENDER_MODE_SIMPLE);
     }
+
+    glDepthMask(GL_TRUE);
     
-    if(m_pBatchMgr != NULL)
+    /*if(m_pBatchMgr != NULL)
     {
         m_pBatchMgr->Render(CShader::E_RENDER_MODE_SIMPLE);
-    }
+    }*/
     
     m_pRenderMgr->EndDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_SIMPLE);
 }
@@ -383,10 +385,12 @@ void CSceneMgr::_DrawScreenNormalMapStep(void)
         m_pParticleMgr->Render(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP);
     }
     
-    if(m_pBatchMgr != NULL)
+    glDepthMask(GL_TRUE);
+    
+    /*if(m_pBatchMgr != NULL)
     {
         m_pBatchMgr->Render(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP);
-    }
+    }*/
     
     m_pRenderMgr->EndDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_SCREEN_NORMAL_MAP);
 }

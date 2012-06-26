@@ -230,6 +230,7 @@
 		A1A5E8E11532E0E6004DD73B /* left_track_model.mdl in Resources */ = {isa = PBXBuildFile; fileRef = A1A5E8DC1532E0E6004DD73B /* left_track_model.mdl */; };
 		A1A5E8E21532E0E6004DD73B /* right_track_model.mdl in Resources */ = {isa = PBXBuildFile; fileRef = A1A5E8DD1532E0E6004DD73B /* right_track_model.mdl */; };
 		A1A5E8E31532E0E6004DD73B /* tower_model.mdl in Resources */ = {isa = PBXBuildFile; fileRef = A1A5E8DE1532E0E6004DD73B /* tower_model.mdl */; };
+		A1A8A079159999AF00A9B82E /* ring.pvr in Resources */ = {isa = PBXBuildFile; fileRef = A1A8A078159999AF00A9B82E /* ring.pvr */; };
 		A1A8BF94156F6C0100CBFAD1 /* camera_button.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A8BF93156F6C0100CBFAD1 /* camera_button.png */; };
 		A1AB4E3E1546B71D00434639 /* CParticleEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1AB4E3C1546B71D00434639 /* CParticleEmitter.cpp */; };
 		A1AC4D9C156F7E440031FE05 /* CBullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1AC4D9A156F7E440031FE05 /* CBullet.cpp */; };
@@ -720,6 +721,7 @@
 		A1A5E8DC1532E0E6004DD73B /* left_track_model.mdl */ = {isa = PBXFileReference; lastKnownFileType = file; path = left_track_model.mdl; sourceTree = "<group>"; };
 		A1A5E8DD1532E0E6004DD73B /* right_track_model.mdl */ = {isa = PBXFileReference; lastKnownFileType = file; path = right_track_model.mdl; sourceTree = "<group>"; };
 		A1A5E8DE1532E0E6004DD73B /* tower_model.mdl */ = {isa = PBXFileReference; lastKnownFileType = file; path = tower_model.mdl; sourceTree = "<group>"; };
+		A1A8A078159999AF00A9B82E /* ring.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = ring.pvr; path = Resources/Textures/ring.pvr; sourceTree = "<group>"; };
 		A1A8BF93156F6C0100CBFAD1 /* camera_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = camera_button.png; path = Resources/Textures/camera_button.png; sourceTree = "<group>"; };
 		A1AB4E3C1546B71D00434639 /* CParticleEmitter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CParticleEmitter.cpp; sourceTree = "<group>"; };
 		A1AB4E3D1546B71D00434639 /* CParticleEmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CParticleEmitter.h; sourceTree = "<group>"; };
@@ -1570,6 +1572,7 @@
 		CE91921914573F630021A0DC /* Textures */ = {
 			isa = PBXGroup;
 			children = (
+				A1A8A078159999AF00A9B82E /* ring.pvr */,
 				A1A8BF93156F6C0100CBFAD1 /* camera_button.png */,
 				A1BE19A4156A29D4004C3610 /* shadow.pvr */,
 				A13F9EC81568ECB3009DCBB4 /* default.pvr */,
@@ -1789,6 +1792,7 @@
 				A13F9EC91568ECB3009DCBB4 /* default.pvr in Resources */,
 				A1BE19A5156A29D4004C3610 /* shadow.pvr in Resources */,
 				A1A8BF94156F6C0100CBFAD1 /* camera_button.png in Resources */,
+				A1A8A079159999AF00A9B82E /* ring.pvr in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

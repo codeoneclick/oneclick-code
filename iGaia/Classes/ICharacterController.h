@@ -22,7 +22,7 @@
 #define k_EXHAUST_EMITTER_HEIGHT  0.75f
 #define k_CROSS_FIRE_OFFSET 1.5f
 #define k_CROSS_FIRE_HEIGHT 0.75f
-#define k_TRACK_EMITTER_HEIGHT 0.1f
+#define k_TRACK_EMITTER_HEIGHT 0.66f
 #define k_TOWER_EMITTER_HEIGHT 0.75f
 
 #define k_CROSS_FIRE_TIME_MAX 1000
@@ -65,6 +65,7 @@ protected:
     CParticleEmitter* m_pLeftExhaustSmokeEmitter;
     CParticleEmitter* m_pRightExhaustSmokeEmitter;
     CDecal* m_pShadowDecal;
+    CDecal* m_pHealthDecal;
     CSpriteCross* m_pFireCross;
     
     CParticleEmitter* m_pLeftTrackSmokeEmitter;
