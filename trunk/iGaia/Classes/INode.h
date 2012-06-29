@@ -55,7 +55,7 @@ protected:
     float _Get_WrapAngle(float _fValue, float _fMin, float _fMax)
     {
         float fDistance = _fMax - _fMin;
-        float fTimes = static_cast<float>(floorf((_fValue - _fMin) / fDistance));
+        float fTimes = floorf((_fValue - _fMin) / fDistance);
         return _fValue - (fTimes * fDistance);
     }
     

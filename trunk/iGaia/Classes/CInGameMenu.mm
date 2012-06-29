@@ -11,9 +11,11 @@
 #include "CJoystick.h"
 #include "CSlider.h"
 #include <QuartzCore/QuartzCore.h>
+#include "CSettings.h"
 
 @implementation CInGameMenu
 @synthesize m_pGLView;
+@synthesize m_pInfoLabel;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -41,6 +43,11 @@
         pShootButton.layer.cornerRadius = 24;
         pShootButton.clipsToBounds = YES;
         [self addSubview:pShootButton];
+        
+        m_pInfoLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, 32)];
+        [m_pInfoLabel setBackgroundColor:[UIColor blackColor]];
+        [m_pInfoLabel setTextColor:[UIColor whiteColor]];
+        [self addSubview:m_pInfoLabel];
     }
     return self;
 }
@@ -71,6 +78,12 @@
             break;
     }*/
 }
+
+/*- (void)drawRect:(CGRect)rect
+{
+    [super drawRect:rect];
+    //[m_pInfoLabel setText:[NSString stringWithFormat:@"FPS : %i, Triangles : %i", CSettings::g_iFramesPerSecond, CSettings::g_iTrianglesPerFrame]];
+}*/
 
 - (void)onCameraButtonPress:(UIButton*)sender
 {

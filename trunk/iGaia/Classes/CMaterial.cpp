@@ -159,6 +159,18 @@ void CMaterial::Set_BlendFunc(GLenum _eFuncSource, GLenum _eFuncDest)
 
 void CMaterial::Commit(CShader::E_RENDER_MODE _eMode)
 {
+    if(m_pShaders[_eMode] == NULL)
+    {
+        std::cout<<"[CMaterial::Commit] Shader is not valid"<<std::endl;
+        return;
+    }
+    
+    if(m_hShaderHandleCommited != m_pShaders[_eMode]->Get_Handle())
+    {
+        m_pShaders[_eMode]->Enable();
+        m_hShaderHandleCommited = m_pShaders[_eMode]->Get_Handle();
+    }
+    
     if(m_pStatesCommited[CMaterial::E_RENDER_STATE_DEPTH_TEST] != m_pStates[CMaterial::E_RENDER_STATE_DEPTH_TEST])
     {
         if(m_pStates[CMaterial::E_RENDER_STATE_DEPTH_TEST])
@@ -222,12 +234,6 @@ void CMaterial::Commit(CShader::E_RENDER_MODE _eMode)
         glBlendFunc(m_eBlendFuncSource, m_eBlendFuncDest);
         m_eBlendFuncSourceCommited = m_eBlendFuncSource;
         m_eBlendFuncDestCommited = m_eBlendFuncDest;
-    }
-    
-    if(m_hShaderHandleCommited != m_pShaders[_eMode]->Get_Handle())
-    {
-        m_pShaders[_eMode]->Enable();
-        m_hShaderHandleCommited = m_pShaders[_eMode]->Get_Handle();
     }
 }
 

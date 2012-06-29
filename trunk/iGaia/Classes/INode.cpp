@@ -13,6 +13,7 @@
 #include "CRenderMgr.h"
 #include "CCollisionMgr.h"
 #include "CWindow.h"
+#include "CSettings.h"
 
 INode::INode(void)
 {
@@ -143,7 +144,7 @@ void INode::Update(void)
 
 void INode::Render(CShader::E_RENDER_MODE _eMode)
 {
-    CWindow::g_iTrianglesPerFrame += m_pMesh->Get_IndexBufferRef()->Get_NumWorkingIndexes() / 3;
+    CSettings::g_iCurrentTrianglesPerFrame += m_pMesh->Get_IndexBufferRef()->Get_NumWorkingIndexes() / 3;
 }
 
 

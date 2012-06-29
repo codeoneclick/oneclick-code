@@ -10,6 +10,7 @@
 #define iGaia_CRenderMgr_h
 
 #include "CScreenSpacePostMgr.h"
+#include "CSettings.h"
 
 class CRenderMgr
 {

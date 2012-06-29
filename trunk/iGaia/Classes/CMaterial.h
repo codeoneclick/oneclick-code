@@ -58,6 +58,9 @@ public:
     void Set_BlendFunc(GLenum _eFuncSource, GLenum _eFuncDest);
 
     void Commit(CShader::E_RENDER_MODE _eMode);
+    
+    bool Check_RenderMode(CShader::E_RENDER_MODE _eMode) { if(m_pShaders[_eMode] != NULL) return true; else return false; }
+    static void Set_ExtCommitedShaderRef(CShader* m_pShaderRef) { m_hShaderHandleCommited = m_pShaderRef->Get_Handle(); m_pShaderRef->Enable(); }
 };
 
 #endif /* defined(__iGaia__CMaterial__) */

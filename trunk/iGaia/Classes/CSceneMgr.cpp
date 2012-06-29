@@ -21,6 +21,7 @@
 #include "CRenderMgr.h"
 #include "CLightPoint.h"
 #include "CTimer.h"
+#include "CSettings.h"
 
 CSceneMgr* CSceneMgr::m_pInsatnce = NULL;
 const unsigned int CSceneMgr::k_MAX_LIGHTS = 8;
@@ -397,25 +398,37 @@ void CSceneMgr::_DrawScreenNormalMapStep(void)
 
 void CSceneMgr::Render(void)
 {
-    CWindow::g_iTrianglesPerFrame = 0;
-    _DrawReflectionStep();
-    _DrawRefractionStep();
+    CSettings::g_iCurrentTrianglesPerFrame = 0;
+    if(CSettings::g_bOceanReflection)
+    {
+        _DrawReflectionStep();
+    }
+    if(CSettings::g_bOceanRefraction)
+    {
+        _DrawRefractionStep();
+    }
     _DrawSimpleStep();
-    _DrawScreenNormalMapStep();
+    if(CSettings::g_bEdgeDetect)
+    {
+        _DrawScreenNormalMapStep();
+    }
     m_pRenderMgr->DrawResult();
     
-    std::cout<<"[CSceneMgr::Render] Triangles Per Frame : "<<CWindow::g_iTrianglesPerFrame<<std::endl;
+    CSettings::g_iTotalTriagnlesPerFrame = CSettings::g_iCurrentTrianglesPerFrame;
+    
+    //std::cout<<"[CSceneMgr::Render] Triangles Per Frame : "<<CSettings::g_iTrianglesPerFrame<<std::endl;
     
     static int iLastTime = 0;
     int iCurrentTime = CTimer::Instance()->Get_TickCount();
-    ++CWindow::g_iFramesPerSecond;
+    ++CSettings::g_iCurrentFramesPerSecond;
     
     if(iCurrentTime - iLastTime > 1000 )
     {
         iLastTime = iCurrentTime;
         
-        std::cout<<"[CSceneMgr::Render] Frames Per Second : "<<CWindow::g_iFramesPerSecond<<std::endl;
-        CWindow::g_iFramesPerSecond = 0;
+        //std::cout<<"[CSceneMgr::Render] Frames Per Second : "<<CSettings::g_iFramesPerSecond<<std::endl;
+        CSettings::g_iTotalFramesPerSecond = CSettings::g_iCurrentFramesPerSecond;
+        CSettings::g_iCurrentFramesPerSecond = 0;
     }
 
 }
