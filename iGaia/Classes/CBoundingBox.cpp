@@ -120,7 +120,7 @@ void CBoundingBox::Set_MaxMinPoints(const glm::vec3 &_vMax, const glm::vec3 &_vM
 
 void CBoundingBox::Render(void)
 {
-    return;
+    /*return;
     ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
     m_pShader->Enable();
     m_pShader->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
@@ -131,7 +131,7 @@ void CBoundingBox::Render(void)
     glDrawElements(GL_LINES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_SourceDataFromVRAM());
     m_pMesh->Get_IndexBufferRef()->Disable();
     m_pMesh->Get_VertexBufferRef()->Disable(CShader::E_RENDER_MODE_SIMPLE);
-    m_pShader->Disable();
+    m_pShader->Disable();*/
 }
 
 

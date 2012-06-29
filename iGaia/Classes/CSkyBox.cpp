@@ -185,6 +185,12 @@ void CSkyBox::Update()
 
 void CSkyBox::Render(CShader::E_RENDER_MODE _eMode)
 {
+    if(!m_pMaterial->Check_RenderMode(_eMode))
+    {
+        std::cout<<"[CSkyBox::Render] Render mode incorrect"<<std::endl;
+        return;
+    }
+    
     INode::Render(_eMode);
     
     ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
@@ -219,7 +225,25 @@ void CSkyBox::Render(CShader::E_RENDER_MODE _eMode)
             break;
         case CShader::E_RENDER_MODE_REFLECTION:
         {
+            if(pShader == NULL)
+            {
+                std::cout<<"[CModel::Render] Shader MODE_SIMPLE is NULL"<<std::endl;
+                return;
+            }
             
+            pShader->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
+            pShader->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
+            pShader->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
+            
+            for(unsigned int i = 0; i < k_TEXTURES_MAX_COUNT; ++i)
+            {
+                CTexture* pTexture = m_pMaterial->Get_Texture(i);
+                if(pTexture == NULL)
+                {
+                    continue;
+                }
+                pShader->Set_Texture(pTexture->Get_Handle(), static_cast<CShader::E_TEXTURE_SLOT>(i));
+            }
         }
             break;
         case CShader::E_RENDER_MODE_REFRACTION:

@@ -172,7 +172,7 @@ void CParser_PVR::Commit(void)
         }
         glTexParameteri(iTextureTarget, GL_TEXTURE_WRAP_S, iWrap);
         glTexParameteri(iTextureTarget, GL_TEXTURE_WRAP_T, iWrap);
-        glTexParameteri(iTextureTarget, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+        glTexParameteri(iTextureTarget, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
         glTexParameteri(iTextureTarget, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     }
     else
@@ -204,7 +204,6 @@ void CParser_PVR::Commit(void)
         else
         {       
             glTexImage2D(iTextureTarget + iFaces, 0, m_pDescription->m_glFormat, iWidth, iHeight, 0, m_pDescription->m_glFormat, m_pDescription->m_glType, pData);
-            //glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
             glHint(GL_GENERATE_MIPMAP_HINT, GL_FASTEST);
             glGenerateMipmap(iTextureTarget + iFaces);
         }
