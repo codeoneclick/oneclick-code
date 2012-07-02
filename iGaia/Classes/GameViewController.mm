@@ -26,7 +26,6 @@
 }
 
 #pragma mark - View lifecycle
-
 - (void)loadView
 {
     CGRect screenBounds = [[UIScreen mainScreen] bounds];

@@ -14,6 +14,7 @@
 #include "ITouchDelegate.h"
 #include "CLandscape.h"
 #include "CMathHelper.h"
+#include "CTankLightTrack.h"
 #include <time.h>
 
 #define k_MIN_HEIGHTMAP_VALUE -8.0f
@@ -59,8 +60,10 @@ protected:
     
     CModel* m_pBodyModel;
     CModel* m_pTowerModel;
-    CModel* m_pLeftTrackModel;
-    CModel* m_pRightTrackModel;
+    ITankTrack* m_pTrack;
+    
+    //CModel* m_pLeftTrackModel;
+    //CModel* m_pRightTrackModel;
     
     CParticleEmitter* m_pLeftExhaustSmokeEmitter;
     CParticleEmitter* m_pRightExhaustSmokeEmitter;
@@ -68,16 +71,16 @@ protected:
     CDecal* m_pHealthDecal;
     CSpriteCross* m_pFireCross;
     
-    CParticleEmitter* m_pLeftTrackSmokeEmitter;
-    CParticleEmitter* m_pRightTrackSmokeEmitter;
+    //CParticleEmitter* m_pLeftTrackSmokeEmitter;
+    //CParticleEmitter* m_pRightTrackSmokeEmitter;
     CParticleEmitter* m_pTowerSmokeEmitter;
     
-    CParticleEmitter* m_pLeftTrackFireEmitter;
-    CParticleEmitter* m_pRightTrackFireEmitter;
+    //CParticleEmitter* m_pLeftTrackFireEmitter;
+    //CParticleEmitter* m_pRightTrackFireEmitter;
     CParticleEmitter* m_pTowerFireEmitter;
     
-    glm::vec3 m_vLeftTrackEmitterNodePosition;
-    glm::vec3 m_vRightTrackEmitterNodePosition;
+    //glm::vec3 m_vLeftTrackEmitterNodePosition;
+    //glm::vec3 m_vRightTrackEmitterNodePosition;
     glm::vec3 m_vTowerEmitterNodePosition;
     
     glm::vec3 m_vLeftExhaustEmitterPosition;
