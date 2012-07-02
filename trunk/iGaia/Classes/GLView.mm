@@ -43,8 +43,6 @@ const bool ForceES1 = false;
         }
 
         [m_context renderbufferStorage:GL_RENDERBUFFER fromDrawable: eaglLayer];
-        
-        
         [self drawView: nil];
         m_fTime = CACurrentMediaTime();
 

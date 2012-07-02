@@ -257,6 +257,19 @@
 		A1F05DA5158732A300812D02 /* ShaderParticleND.frag in Sources */ = {isa = PBXBuildFile; fileRef = A1F05DA3158732A300812D02 /* ShaderParticleND.frag */; };
 		A1F05DA6158732A300812D02 /* ShaderParticleND.vert in Sources */ = {isa = PBXBuildFile; fileRef = A1F05DA4158732A300812D02 /* ShaderParticleND.vert */; };
 		A1F05DAA15877EF200812D02 /* CParticleEmitterFireTrail.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1F05DA815877EF200812D02 /* CParticleEmitterFireTrail.cpp */; };
+		A1F39F6215A1D0EF00E39591 /* ITankPart.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1F39F5B15A1D0EF00E39591 /* ITankPart.cpp */; };
+		A1F39F7715A1D13900E39591 /* CTankHeavyBody.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1F39F6515A1D13900E39591 /* CTankHeavyBody.cpp */; };
+		A1F39F7815A1D13900E39591 /* CTankHeavyTower.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1F39F6715A1D13900E39591 /* CTankHeavyTower.cpp */; };
+		A1F39F7915A1D13900E39591 /* CTankHeavyTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1F39F6915A1D13900E39591 /* CTankHeavyTrack.cpp */; };
+		A1F39F7A15A1D13900E39591 /* CTankLightBody.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1F39F6B15A1D13900E39591 /* CTankLightBody.cpp */; };
+		A1F39F7B15A1D13900E39591 /* CTankLightTower.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1F39F6D15A1D13900E39591 /* CTankLightTower.cpp */; };
+		A1F39F7C15A1D13900E39591 /* CTankLightTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1F39F6F15A1D13900E39591 /* CTankLightTrack.cpp */; };
+		A1F39F7D15A1D13900E39591 /* CTankMediumBody.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1F39F7115A1D13900E39591 /* CTankMediumBody.cpp */; };
+		A1F39F7E15A1D13900E39591 /* CTankMediumTower.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1F39F7315A1D13900E39591 /* CTankMediumTower.cpp */; };
+		A1F39F7F15A1D13900E39591 /* CTankMediumTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1F39F7515A1D13900E39591 /* CTankMediumTrack.cpp */; };
+		A1F39F8215A1D14B00E39591 /* ITankBody.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1F39F8015A1D14B00E39591 /* ITankBody.cpp */; };
+		A1F39F8715A1D17300E39591 /* ITankTower.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1F39F8315A1D17200E39591 /* ITankTower.cpp */; };
+		A1F39F8815A1D17300E39591 /* ITankTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1F39F8515A1D17200E39591 /* ITankTrack.cpp */; };
 		A1F68E5C157E399E0048A717 /* CSpriteMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1F68E5A157E399E0048A717 /* CSpriteMgr.cpp */; };
 		A1F68E60157E39C00048A717 /* CSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1F68E5E157E39C00048A717 /* CSprite.cpp */; };
 		A1F690471557CCAC00A2920A /* CJoystick.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1F690461557CCAC00A2920A /* CJoystick.mm */; };
@@ -763,6 +776,32 @@
 		A1F05DA4158732A300812D02 /* ShaderParticleND.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderParticleND.vert; path = Shaders/ShaderParticleND.vert; sourceTree = "<group>"; };
 		A1F05DA815877EF200812D02 /* CParticleEmitterFireTrail.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CParticleEmitterFireTrail.cpp; sourceTree = "<group>"; };
 		A1F05DA915877EF200812D02 /* CParticleEmitterFireTrail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CParticleEmitterFireTrail.h; sourceTree = "<group>"; };
+		A1F39F5B15A1D0EF00E39591 /* ITankPart.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ITankPart.cpp; sourceTree = "<group>"; };
+		A1F39F5C15A1D0EF00E39591 /* ITankPart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITankPart.h; sourceTree = "<group>"; };
+		A1F39F6515A1D13900E39591 /* CTankHeavyBody.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CTankHeavyBody.cpp; sourceTree = "<group>"; };
+		A1F39F6615A1D13900E39591 /* CTankHeavyBody.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTankHeavyBody.h; sourceTree = "<group>"; };
+		A1F39F6715A1D13900E39591 /* CTankHeavyTower.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CTankHeavyTower.cpp; sourceTree = "<group>"; };
+		A1F39F6815A1D13900E39591 /* CTankHeavyTower.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTankHeavyTower.h; sourceTree = "<group>"; };
+		A1F39F6915A1D13900E39591 /* CTankHeavyTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CTankHeavyTrack.cpp; sourceTree = "<group>"; };
+		A1F39F6A15A1D13900E39591 /* CTankHeavyTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTankHeavyTrack.h; sourceTree = "<group>"; };
+		A1F39F6B15A1D13900E39591 /* CTankLightBody.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CTankLightBody.cpp; sourceTree = "<group>"; };
+		A1F39F6C15A1D13900E39591 /* CTankLightBody.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTankLightBody.h; sourceTree = "<group>"; };
+		A1F39F6D15A1D13900E39591 /* CTankLightTower.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CTankLightTower.cpp; sourceTree = "<group>"; };
+		A1F39F6E15A1D13900E39591 /* CTankLightTower.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTankLightTower.h; sourceTree = "<group>"; };
+		A1F39F6F15A1D13900E39591 /* CTankLightTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CTankLightTrack.cpp; sourceTree = "<group>"; };
+		A1F39F7015A1D13900E39591 /* CTankLightTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTankLightTrack.h; sourceTree = "<group>"; };
+		A1F39F7115A1D13900E39591 /* CTankMediumBody.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CTankMediumBody.cpp; sourceTree = "<group>"; };
+		A1F39F7215A1D13900E39591 /* CTankMediumBody.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTankMediumBody.h; sourceTree = "<group>"; };
+		A1F39F7315A1D13900E39591 /* CTankMediumTower.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CTankMediumTower.cpp; sourceTree = "<group>"; };
+		A1F39F7415A1D13900E39591 /* CTankMediumTower.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTankMediumTower.h; sourceTree = "<group>"; };
+		A1F39F7515A1D13900E39591 /* CTankMediumTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CTankMediumTrack.cpp; sourceTree = "<group>"; };
+		A1F39F7615A1D13900E39591 /* CTankMediumTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTankMediumTrack.h; sourceTree = "<group>"; };
+		A1F39F8015A1D14B00E39591 /* ITankBody.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ITankBody.cpp; sourceTree = "<group>"; };
+		A1F39F8115A1D14B00E39591 /* ITankBody.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITankBody.h; sourceTree = "<group>"; };
+		A1F39F8315A1D17200E39591 /* ITankTower.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ITankTower.cpp; sourceTree = "<group>"; };
+		A1F39F8415A1D17200E39591 /* ITankTower.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITankTower.h; sourceTree = "<group>"; };
+		A1F39F8515A1D17200E39591 /* ITankTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ITankTrack.cpp; sourceTree = "<group>"; };
+		A1F39F8615A1D17200E39591 /* ITankTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITankTrack.h; sourceTree = "<group>"; };
 		A1F68E5A157E399E0048A717 /* CSpriteMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CSpriteMgr.cpp; sourceTree = "<group>"; };
 		A1F68E5B157E399E0048A717 /* CSpriteMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSpriteMgr.h; sourceTree = "<group>"; };
 		A1F68E5E157E39C00048A717 /* CSprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CSprite.cpp; sourceTree = "<group>"; };
@@ -1540,9 +1579,67 @@
 			name = GameHelpers;
 			sourceTree = "<group>";
 		};
+		A1EA43C415A1862800B3EF0A /* GameTankParts */ = {
+			isa = PBXGroup;
+			children = (
+				A1F39F8B15A1D61D00E39591 /* GameHeavyTank */,
+				A1F39F8A15A1D61000E39591 /* GameMediumTank */,
+				A1F39F8915A1D60200E39591 /* GameLightTank */,
+				A1F39F8415A1D17200E39591 /* ITankTower.h */,
+				A1F39F8315A1D17200E39591 /* ITankTower.cpp */,
+				A1F39F8615A1D17200E39591 /* ITankTrack.h */,
+				A1F39F8515A1D17200E39591 /* ITankTrack.cpp */,
+				A1F39F8115A1D14B00E39591 /* ITankBody.h */,
+				A1F39F8015A1D14B00E39591 /* ITankBody.cpp */,
+				A1F39F5C15A1D0EF00E39591 /* ITankPart.h */,
+				A1F39F5B15A1D0EF00E39591 /* ITankPart.cpp */,
+			);
+			name = GameTankParts;
+			sourceTree = "<group>";
+		};
+		A1F39F8915A1D60200E39591 /* GameLightTank */ = {
+			isa = PBXGroup;
+			children = (
+				A1F39F6C15A1D13900E39591 /* CTankLightBody.h */,
+				A1F39F6B15A1D13900E39591 /* CTankLightBody.cpp */,
+				A1F39F6E15A1D13900E39591 /* CTankLightTower.h */,
+				A1F39F6D15A1D13900E39591 /* CTankLightTower.cpp */,
+				A1F39F7015A1D13900E39591 /* CTankLightTrack.h */,
+				A1F39F6F15A1D13900E39591 /* CTankLightTrack.cpp */,
+			);
+			name = GameLightTank;
+			sourceTree = "<group>";
+		};
+		A1F39F8A15A1D61000E39591 /* GameMediumTank */ = {
+			isa = PBXGroup;
+			children = (
+				A1F39F7215A1D13900E39591 /* CTankMediumBody.h */,
+				A1F39F7115A1D13900E39591 /* CTankMediumBody.cpp */,
+				A1F39F7415A1D13900E39591 /* CTankMediumTower.h */,
+				A1F39F7315A1D13900E39591 /* CTankMediumTower.cpp */,
+				A1F39F7615A1D13900E39591 /* CTankMediumTrack.h */,
+				A1F39F7515A1D13900E39591 /* CTankMediumTrack.cpp */,
+			);
+			name = GameMediumTank;
+			sourceTree = "<group>";
+		};
+		A1F39F8B15A1D61D00E39591 /* GameHeavyTank */ = {
+			isa = PBXGroup;
+			children = (
+				A1F39F6615A1D13900E39591 /* CTankHeavyBody.h */,
+				A1F39F6515A1D13900E39591 /* CTankHeavyBody.cpp */,
+				A1F39F6815A1D13900E39591 /* CTankHeavyTower.h */,
+				A1F39F6715A1D13900E39591 /* CTankHeavyTower.cpp */,
+				A1F39F6A15A1D13900E39591 /* CTankHeavyTrack.h */,
+				A1F39F6915A1D13900E39591 /* CTankHeavyTrack.cpp */,
+			);
+			name = GameHeavyTank;
+			sourceTree = "<group>";
+		};
 		CE8DFA8E14587A8200AE7288 /* Game */ = {
 			isa = PBXGroup;
 			children = (
+				A1EA43C415A1862800B3EF0A /* GameTankParts */,
 				A1AC4D98156F7DEB0031FE05 /* GameHelpers */,
 				A153D5BE153DA3A400FBFFD5 /* GUI */,
 				9307CBC114EBBA1700ADFE2B /* GameUnits */,
@@ -1923,6 +2020,19 @@
 				A1E5CAE71598914D0038393C /* ShaderSkybox.frag in Sources */,
 				A1E5CAE81598914D0038393C /* ShaderSkybox.vert in Sources */,
 				A1E37D62159DE9AD000314C3 /* CSettings.cpp in Sources */,
+				A1F39F6215A1D0EF00E39591 /* ITankPart.cpp in Sources */,
+				A1F39F7715A1D13900E39591 /* CTankHeavyBody.cpp in Sources */,
+				A1F39F7815A1D13900E39591 /* CTankHeavyTower.cpp in Sources */,
+				A1F39F7915A1D13900E39591 /* CTankHeavyTrack.cpp in Sources */,
+				A1F39F7A15A1D13900E39591 /* CTankLightBody.cpp in Sources */,
+				A1F39F7B15A1D13900E39591 /* CTankLightTower.cpp in Sources */,
+				A1F39F7C15A1D13900E39591 /* CTankLightTrack.cpp in Sources */,
+				A1F39F7D15A1D13900E39591 /* CTankMediumBody.cpp in Sources */,
+				A1F39F7E15A1D13900E39591 /* CTankMediumTower.cpp in Sources */,
+				A1F39F7F15A1D13900E39591 /* CTankMediumTrack.cpp in Sources */,
+				A1F39F8215A1D14B00E39591 /* ITankBody.cpp in Sources */,
+				A1F39F8715A1D17300E39591 /* ITankTower.cpp in Sources */,
+				A1F39F8815A1D17300E39591 /* ITankTrack.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1948,7 +2058,7 @@
 				GCC_THUMB_SUPPORT = NO;
 				HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}\"/**";
 				INFOPLIST_FILE = Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PRODUCT_NAME = iGaia;
 				PROVISIONING_PROFILE = "CD9430FE-2575-48EE-B662-645884640140";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -1974,7 +2084,7 @@
 				GCC_THUMB_SUPPORT = NO;
 				HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}\"/**";
 				INFOPLIST_FILE = Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PRODUCT_NAME = iGaia;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
