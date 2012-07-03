@@ -41,7 +41,7 @@ public:
     
     void Shoot(void);
     
-    INode* Get_TargetForCamera(void) { return m_pBodyModel; }
+    INode* Get_TargetForCamera(void) { return m_pBody->Get_BasisNode(); }
     
     void Set_AIState(E_AI_STATE _eState, long _iAIStateDuration);
     E_AI_STATE Get_AIState(void) { return m_eState; }

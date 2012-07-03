@@ -33,7 +33,7 @@ public:
     void Load(void);
     void Update(void);
     
-    INode* Get_TargetForCamera(void) { return m_pBodyModel; }
+    INode* Get_TargetForCamera(void) { return m_pBody->Get_BasisNode(); }
     
     void OnTouchEvent(ITouchDelegate* _pDelegateOwner);
 };

@@ -9,14 +9,19 @@
 #include "CCharacterControllerEnemy.h"
 #include "CWorld.h"
 #include "CTimer.h"
+#include "CTankLightTrack.h"
+#include "CTankLightTower.h"
+#include "CTankLightBody.h"
 
 CCharacterControllerEnemy::CCharacterControllerEnemy(void)
 {
-    m_pBodyModel = NULL;
-    m_pTowerModel = NULL;
+    //m_pBodyModel = NULL;
+    //m_pTowerModel = NULL;
     //m_pLeftTrackModel = NULL;
     //m_pRightTrackModel = NULL;
     m_pTrack = NULL;
+    m_pTower = NULL;
+    m_pBody  = NULL;
     
     m_fMaxMoveSpeed = 0.05f;
     m_fMoveAcceleration = 0.01f;
@@ -57,13 +62,13 @@ bool CCharacterControllerEnemy::_IsStateTimeElapsed(void)
 void CCharacterControllerEnemy::Load(void)
 {
     glm::vec3 vScale = glm::vec3(1.0f, 1.0f, 1.0f);
-    m_pTowerModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("tower_model.mdl", IResource::E_THREAD_BACKGROUND);
+    /*m_pTowerModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("tower_model.mdl", IResource::E_THREAD_BACKGROUND);
     m_pTowerModel->Set_Texture("model_01.pvr", 0, CTexture::E_WRAP_MODE_REPEAT);
     m_pTowerModel->Set_Scale(vScale);
     m_pTowerModel->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_MODEL);
     m_pTowerModel->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_MODEL_ND);
     m_pTowerModel->Create_BoundingBox();
-    m_pTowerModel->Set_RenderMode(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, true);
+    m_pTowerModel->Set_RenderMode(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, true);*/
     
     /*m_pLeftTrackModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("left_track_model.mdl", IResource::E_THREAD_BACKGROUND);
     m_pLeftTrackModel->Set_Texture("model_02.pvr", 0, CTexture::E_WRAP_MODE_REPEAT);
@@ -84,13 +89,19 @@ void CCharacterControllerEnemy::Load(void)
     m_pTrack = new CTankLightTrack();
     m_pTrack->Load();
     
-    m_pBodyModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("base_model.mdl", IResource::E_THREAD_BACKGROUND);
+    m_pTower = new CTankLightTower();
+    m_pTower->Load();
+    
+    m_pBody = new CTankLightBody();
+    m_pBody->Load();
+    
+    /*m_pBodyModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("base_model.mdl", IResource::E_THREAD_BACKGROUND);
     m_pBodyModel->Set_Texture("model_01.pvr", 0, CTexture::E_WRAP_MODE_REPEAT);
     m_pBodyModel->Set_Scale(vScale);
     m_pBodyModel->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_MODEL);
     m_pBodyModel->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_MODEL_ND);
     m_pBodyModel->Create_BoundingBox();
-    m_pBodyModel->Set_RenderMode(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, true);
+    m_pBodyModel->Set_RenderMode(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, true);*/
     
     m_pFireCross = CSceneMgr::Instance()->Get_SpriteMgr()->Add_SpriteCross(4, glm::vec2(256.0f, 256.0f), glm::vec2(512.0f, 512.0f));
     m_pFireCross->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_MODEL);
@@ -101,7 +112,7 @@ void CCharacterControllerEnemy::Load(void)
     m_pShadowDecal->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_DECAL);
     m_pShadowDecal->Set_Texture("shadow.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
     
-    m_pLeftExhaustSmokeEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(32, glm::vec2(0.033f), glm::vec2(1.25f), 1000, true);
+    /*m_pLeftExhaustSmokeEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(32, glm::vec2(0.033f), glm::vec2(1.25f), 1000, true);
     m_pLeftExhaustSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_PARTICLE);
     m_pLeftExhaustSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PARTICLE_ND);
     m_pLeftExhaustSmokeEmitter->Set_Texture("smoke.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
@@ -110,7 +121,7 @@ void CCharacterControllerEnemy::Load(void)
     m_pRightExhaustSmokeEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(32, glm::vec2(0.033f), glm::vec2(1.25f), 1000, true);
     m_pRightExhaustSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_PARTICLE);
     m_pRightExhaustSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PARTICLE_ND);
-    m_pRightExhaustSmokeEmitter->Set_Texture("smoke.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
+    m_pRightExhaustSmokeEmitter->Set_Texture("smoke.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);*/
     //m_pRightExhaustSmokeEmitter->Set_Batching(true, "smoke-emitter");
     
     /*m_pLeftTrackSmokeEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(32, glm::vec2(0.05f), glm::vec2(2.5f), 1000, true);
@@ -143,14 +154,14 @@ void CCharacterControllerEnemy::Load(void)
     m_pRightTrackFireEmitter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
     //m_pRightTrackFireEmitter->Set_Batching(true, "fire-emitter");*/
     
-    m_pTowerFireEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(32, glm::vec2(0.05f), glm::vec2(2.5f), 1000, true);
-    m_pTowerFireEmitter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_PARTICLE);
-    m_pTowerFireEmitter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PARTICLE_ND);
-    m_pTowerFireEmitter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
+    //m_pTowerFireEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(32, glm::vec2(0.05f), glm::vec2(2.5f), 1000, true);
+    //m_pTowerFireEmitter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_PARTICLE);
+    //m_pTowerFireEmitter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PARTICLE_ND);
+    //m_pTowerFireEmitter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
     //m_pTowerFireEmitter->Set_Batching(true, "fire-emitter");
     
-    CSceneMgr::Instance()->AddEventListener(m_pBodyModel, CEventMgr::E_EVENT_TOUCH);
-    m_pBodyModel->Add_DelegateOwner(this);
+    CSceneMgr::Instance()->AddEventListener(m_pBody->Get_BasisNode(), CEventMgr::E_EVENT_TOUCH);
+    m_pBody->Get_BasisNode()->Add_DelegateOwner(this);
     CWorld::Instance()->Get_Level()->Get_Model()->Add_DelegateOwner(this);
 }
 
@@ -186,7 +197,7 @@ void CCharacterControllerEnemy::Shoot(void)
     
     if((iAICurrentShootTimeStamp - m_iAIShootTimeStamp > k_AI_SHOOT_INTERVAL) && fDistanceToTargetPoint < k_AI_SHOOT_DISTANCE)
     {
-        CWorld::Instance()->Get_GameShooterMgr()->CreateBullet(glm::vec3(m_vPosition.x + sinf(glm::radians(m_fTowerRotationY)) * 1.33f, m_vPosition.y + 1.33f, m_vPosition.z + cosf(glm::radians(m_fTowerRotationY)) * 1.33f), m_pTowerModel->Get_Rotation());
+        CWorld::Instance()->Get_GameShooterMgr()->CreateBullet(glm::vec3(m_vPosition.x + sinf(glm::radians(m_fTowerRotationY)) * 1.33f, m_vPosition.y + 1.33f, m_vPosition.z + cosf(glm::radians(m_fTowerRotationY)) * 1.33f), glm::vec3(m_vRotation.x, m_fTowerRotationY, m_vRotation.z));
         m_iAIShootTimeStamp = iAICurrentShootTimeStamp;
     }
 }
@@ -201,13 +212,11 @@ void CCharacterControllerEnemy::Update(void)
     {
         case E_AI_STATE_NONE:
             std::cout<<"[CCharacterControllerEnemy::Update]"<<"state -> AI_STATE_NONE"<<std::endl;
-            m_pLeftExhaustSmokeEmitter->Stop();
-            m_pRightExhaustSmokeEmitter->Stop();
+            m_pBody->StartExhaust(false);
             break;
         case E_AI_STATE_STAND:
         {
-            m_pLeftExhaustSmokeEmitter->Stop();
-            m_pRightExhaustSmokeEmitter->Stop();
+            m_pBody->StartExhaust(false);
             std::cout<<"[CCharacterControllerEnemy::Update]"<<"state -> E_AI_STATE_STAND"<<std::endl;
         }
             break;
@@ -241,8 +250,9 @@ void CCharacterControllerEnemy::Update(void)
                        
             m_vRotation.y =  glm::degrees(_GetRotationBetweenPoints(m_vMovePoint, m_vPosition) - 1.57f);
             
-            m_pLeftExhaustSmokeEmitter->Start();
-            m_pRightExhaustSmokeEmitter->Start();
+            //m_pLeftExhaustSmokeEmitter->Start();
+            //m_pRightExhaustSmokeEmitter->Start();
+            m_pBody->StartExhaust(true);
         }
             break;
         default:
@@ -254,12 +264,8 @@ void CCharacterControllerEnemy::Update(void)
     //m_pLeftTrackModel->Set_TexCoordOffset(vLeftTrackTexCoordOffset);
     //m_pRightTrackModel->Set_TexCoordOffset(vRightTrackTexCoordOffset);
     
-    m_fTowerRotationY = m_pTowerModel->Get_Rotation().y;
+    //m_fTowerRotationY = m_pTowerModel->Get_Rotation().y;
     Shoot();
-    
-    Set_Position(m_vPosition);
-    _SmoothRotation();
-    Set_Rotation(m_vRotation);
     
     glm::vec3 vTargetPoint;
     if(m_pTarget != NULL)
@@ -271,8 +277,11 @@ void CCharacterControllerEnemy::Update(void)
         vTargetPoint = m_vMovePoint;
     }
     
-    float fAngleToTargetPoint = _GetRotationBetweenPoints(m_vPosition, vTargetPoint);
-    m_pTowerModel->Set_Rotation(glm::vec3(m_vRotation.x, glm::degrees(fAngleToTargetPoint + 1.57f), m_vRotation.z));
+    m_fTowerRotationY =  glm::degrees(_GetRotationBetweenPoints(m_vPosition, vTargetPoint) + 1.57);
+    
+    Set_Position(m_vPosition);
+    _SmoothRotation();
+    Set_Rotation(m_vRotation);
 }
 
 

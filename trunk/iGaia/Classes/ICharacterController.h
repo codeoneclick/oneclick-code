@@ -14,7 +14,9 @@
 #include "ITouchDelegate.h"
 #include "CLandscape.h"
 #include "CMathHelper.h"
-#include "CTankLightTrack.h"
+#include "ITankTrack.h"
+#include "ITankTower.h"
+#include "ITankBody.h"
 #include <time.h>
 
 #define k_MIN_HEIGHTMAP_VALUE -8.0f
@@ -58,37 +60,37 @@ protected:
     
     int m_iLastCrossFireTime;
     
-    CModel* m_pBodyModel;
-    CModel* m_pTowerModel;
+    ITankBody* m_pBody; //CModel* m_pBodyModel;
+    ITankTower* m_pTower; //CModel* m_pTowerModel;
     ITankTrack* m_pTrack;
     
     //CModel* m_pLeftTrackModel;
     //CModel* m_pRightTrackModel;
     
-    CParticleEmitter* m_pLeftExhaustSmokeEmitter;
-    CParticleEmitter* m_pRightExhaustSmokeEmitter;
+    //CParticleEmitter* m_pLeftExhaustSmokeEmitter;
+    //CParticleEmitter* m_pRightExhaustSmokeEmitter;
     CDecal* m_pShadowDecal;
     CDecal* m_pHealthDecal;
     CSpriteCross* m_pFireCross;
     
     //CParticleEmitter* m_pLeftTrackSmokeEmitter;
     //CParticleEmitter* m_pRightTrackSmokeEmitter;
-    CParticleEmitter* m_pTowerSmokeEmitter;
+    //CParticleEmitter* m_pTowerSmokeEmitter;
     
     //CParticleEmitter* m_pLeftTrackFireEmitter;
     //CParticleEmitter* m_pRightTrackFireEmitter;
-    CParticleEmitter* m_pTowerFireEmitter;
+    //CParticleEmitter* m_pTowerFireEmitter;
     
     //glm::vec3 m_vLeftTrackEmitterNodePosition;
     //glm::vec3 m_vRightTrackEmitterNodePosition;
-    glm::vec3 m_vTowerEmitterNodePosition;
+    //glm::vec3 m_vTowerEmitterNodePosition;
     
-    glm::vec3 m_vLeftExhaustEmitterPosition;
-    glm::vec3 m_vRightExhaustEmitterPosition;
-    glm::vec3 m_vFireCrossEffectPosition;
+    //glm::vec3 m_vLeftExhaustEmitterPosition;
+    //glm::vec3 m_vRightExhaustEmitterPosition;
+    //glm::vec3 m_vFireCrossEffectPosition;
     
-    glm::vec4 m_vTransformHelper;
-    glm::mat4x4 m_mRotationHelper;
+    //glm::vec4 m_vTransformHelper;
+    //glm::mat4x4 m_mRotationHelper;
     
     ICharacterController* m_pTarget;
     

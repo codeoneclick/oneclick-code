@@ -8,6 +8,8 @@
 
 #ifndef iGaia_CWindow_h
 #define iGaia_CWindow_h
+#include <OpenGLES/ES2/gl.h>
+#include <OpenGLES/ES2/glext.h>
 
 class CWindow
 {
@@ -16,6 +18,7 @@ private:
     static int m_iScreenHeight;
     static int m_iOffScreenWidth;
     static int m_iOffScreenHeight;
+    static GLuint m_hScreenFBO;
 public:
     static int Get_ScreenWidth()  { return m_iScreenWidth;  }
     static int Get_ScreenHeight() { return m_iScreenHeight; }
@@ -26,6 +29,8 @@ public:
     static int Get_OffScreenHeight() { return m_iOffScreenHeight; }
     static void Set_OffScreenWidth(int _iWidth)   { m_iOffScreenWidth  = _iWidth;  }
     static void Set_OffScreenHeight(int _iHeight) { m_iOffScreenHeight = _iHeight; }
+    static void Set_ScreenFBO(GLuint _hScreenFBO) { m_hScreenFBO = _hScreenFBO; }
+    static GLuint Get_ScreenFBO(void) { return m_hScreenFBO; }
 };
 
 #endif

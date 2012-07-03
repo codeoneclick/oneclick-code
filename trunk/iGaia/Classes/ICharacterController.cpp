@@ -105,15 +105,15 @@ void ICharacterController::SteerLeft(void)
 
 void ICharacterController::Set_Position(const glm::vec3 &_vPosition)
 {
-    if(m_pBodyModel != NULL)
+    /*if(m_pBodyModel != NULL)
     {
         m_pBodyModel->Set_Position(_vPosition);
-    }
+    }*/
     
-    if(m_pTowerModel != NULL)
+    /*if(m_pTowerModel != NULL)
     {
         m_pTowerModel->Set_Position(_vPosition);
-    }
+    }*/
     
     /*if(m_pLeftTrackModel != NULL)
     {
@@ -130,6 +130,16 @@ void ICharacterController::Set_Position(const glm::vec3 &_vPosition)
         m_pTrack->Set_Position(_vPosition);
     }
     
+    if(m_pTower != NULL)
+    {
+        m_pTower->Set_Position(_vPosition);
+    }
+    
+    if(m_pBody != NULL)
+    {
+        m_pBody->Set_Position(_vPosition);
+    }
+    
     if(m_pShadowDecal != NULL)
     {
         m_pShadowDecal->Set_Position(glm::vec3(_vPosition.x, 0.0f, _vPosition.z));
@@ -140,7 +150,7 @@ void ICharacterController::Set_Position(const glm::vec3 &_vPosition)
         m_pHealthDecal->Set_Position(glm::vec3(_vPosition.x, 0.0f, _vPosition.z));
     }
     
-    if(m_pLeftExhaustSmokeEmitter != NULL)
+    /*if(m_pLeftExhaustSmokeEmitter != NULL)
     {
         m_vTowerEmitterNodePosition = m_pBodyModel->Get_BoundingBox()->Get_Center();
         m_vTransformHelper = glm::vec4(m_vTowerEmitterNodePosition.x + k_EXHAUST_EMITTER_OFFSET_X, m_vTowerEmitterNodePosition.y, m_vTowerEmitterNodePosition.z - k_EXHAUST_EMITTER_OFFSET_Z, 1.0f);
@@ -169,7 +179,7 @@ void ICharacterController::Set_Position(const glm::vec3 &_vPosition)
         m_mRotationHelper = glm::rotate(m_mRotationHelper, m_fTowerRotationY, glm::vec3(0.0f, 1.0f, 0.0f));
         m_vTransformHelper = m_mRotationHelper * m_vTransformHelper;
         m_pFireCross->Set_Position(glm::vec3(_vPosition.x + m_vTransformHelper.x, _vPosition.y + m_vTransformHelper.y, _vPosition.z + m_vTransformHelper.z));
-    }
+    }*/
     /*if(m_pLeftTrackFireEmitter != NULL)
     {
         m_vLeftTrackEmitterNodePosition = m_pLeftTrackModel->Get_BoundingBox()->Get_Center();
@@ -191,7 +201,7 @@ void ICharacterController::Set_Position(const glm::vec3 &_vPosition)
         m_vTransformHelper = m_mRotationHelper * m_vTransformHelper;
         m_pRightTrackFireEmitter->Set_Position(glm::vec3(_vPosition.x + m_vTransformHelper.x, _vPosition.y + m_vTransformHelper.y, _vPosition.z + m_vTransformHelper.z));
     }*/
-    if(m_pTowerFireEmitter != NULL)
+    /*if(m_pTowerFireEmitter != NULL)
     {
         m_vTowerEmitterNodePosition = m_pBodyModel->Get_BoundingBox()->Get_Center();
         m_vTransformHelper = glm::vec4(m_vTowerEmitterNodePosition.x, m_vTowerEmitterNodePosition.y + k_TOWER_EMITTER_HEIGHT, m_vTowerEmitterNodePosition.z, 1.0f);
@@ -200,7 +210,7 @@ void ICharacterController::Set_Position(const glm::vec3 &_vPosition)
         m_mRotationHelper = glm::rotate(m_mRotationHelper, m_vRotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
         m_vTransformHelper = m_mRotationHelper * m_vTransformHelper;
         m_pTowerFireEmitter->Set_Position(glm::vec3(_vPosition.x + m_vTransformHelper.x, _vPosition.y + m_vTransformHelper.y, _vPosition.z + m_vTransformHelper.z));
-    }
+    }*/
     m_vPosition = _vPosition;
 }
 
@@ -215,34 +225,44 @@ void ICharacterController::_SmoothRotation(void)
 
 void ICharacterController::Set_Rotation(const glm::vec3 &_vRotation)
 {
-    if(m_pBodyModel != NULL)
+    /*if(m_pBodyModel != NULL)
     {
         m_pBodyModel->Set_Rotation(_vRotation);
-    }
-    if(m_pTowerModel != NULL)
+    }*/
+    /*if(m_pTowerModel != NULL)
     {
         m_pTowerModel->Set_Rotation(glm::vec3(_vRotation.x, m_fTowerRotationY, _vRotation.z));
-    }
+    }*/
     
     if(m_pTrack != NULL)
     {
         m_pTrack->Set_Rotation(_vRotation);
     }
     
+    if(m_pTower != NULL)
+    {
+        m_pTower->Set_Rotation(glm::vec3(_vRotation.x, m_fTowerRotationY, _vRotation.z));
+    }
+    
+    if(m_pBody != NULL)
+    {
+        m_pBody->Set_Rotation(_vRotation);
+    }
+    
     if(m_pShadowDecal != NULL)
     {
         m_pShadowDecal->Set_Rotation(m_vRotation);
     }
-    if(m_pFireCross != NULL)
+    /*if(m_pFireCross != NULL)
     {
         m_pFireCross->Set_Rotation(glm::vec3(_vRotation.x, m_fTowerRotationY, _vRotation.z));
-    }
+    }*/
     m_vRotation = _vRotation;
 }
 
 void ICharacterController::Shoot(void)
 {
-    CWorld::Instance()->Get_GameShooterMgr()->CreateBullet(glm::vec3(m_vPosition.x + sinf(glm::radians(m_fTowerRotationY)) * 1.11f, m_vPosition.y + 1.33f, m_vPosition.z + cosf(glm::radians(m_fTowerRotationY)) * 1.11f), m_pTowerModel->Get_Rotation());
+    CWorld::Instance()->Get_GameShooterMgr()->CreateBullet(glm::vec3(m_vPosition.x + sinf(glm::radians(m_fTowerRotationY)) * 1.11f, m_vPosition.y + 1.33f, m_vPosition.z + cosf(glm::radians(m_fTowerRotationY)) * 1.11f), glm::vec3(m_vRotation.x, m_fTowerRotationY, m_vRotation.z));
 }
 
 
