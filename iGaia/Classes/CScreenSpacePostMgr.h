@@ -24,10 +24,9 @@ protected:
     GLuint m_hOffScreenTextures[E_OFFSCREEN_MODE_MAX];
     GLuint m_hOffScreenDepthBuffers[E_OFFSCREEN_MODE_MAX];
     GLuint m_hOffScreenDepthTextures[E_OFFSCREEN_MODE_MAX];
+    
     glm::vec2 m_pOffScreenSize[E_OFFSCREEN_MODE_MAX];
     glm::vec4 m_pOffScreenClearColor[E_OFFSCREEN_MODE_MAX];
-    GLuint m_hScreenFBO;
-    GLuint m_hScreenRenderBuffer;
     
     CShader* m_pShaderPostSimple;
     CShader* m_pShaderPostBloomExtract;

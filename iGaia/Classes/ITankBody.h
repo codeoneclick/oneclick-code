@@ -15,16 +15,16 @@
 class ITankBody : public ITankPart
 {
 protected:
-    CModel* m_pBodyModel;
-    
-    CParticleEmitterFire* m_pBodySmokeEmitter;
-    CParticleEmitterFire* m_pBodyFireEmitter;
+    CModel* m_pBody;
     
     CParticleEmitter* m_pLeftExhaustSmokeEmitter;
     CParticleEmitter* m_pRightExhaustSmokeEmitter;
     
     float m_fBodyCurrentHealth;
     float m_fBodyTotalHealth;
+    
+    glm::vec3 m_vLeftExhaustEmitterOffset;
+    glm::vec3 m_vRightExhaustEmitterOffset;
     
 public:
     ITankBody(void);
@@ -38,6 +38,10 @@ public:
     
     void Set_Position(const glm::vec3& _vPosition);
     void Set_Rotation(const glm::vec3& _vRotation);
+    
+    void StartExhaust(bool _bValue);
+    
+    INode* Get_BasisNode(void) { return m_pBody; };
 };
 
 #endif /* defined(__iGaia__ITankBody__) */

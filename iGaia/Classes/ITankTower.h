@@ -23,6 +23,8 @@ protected:
     float m_fTowerCurrentHealth;
     float m_fTowerTotalHealth;
     
+    glm::vec3 m_vTowerEmitterOffset;
+    
 public:
     ITankTower(void);
     virtual ~ITankTower(void);

@@ -15,5 +15,7 @@ int CWindow::m_iScreenHeight = 320;
 int CWindow::m_iOffScreenWidth = 480;
 int CWindow::m_iOffScreenHeight = 320;
 
+GLuint CWindow::m_hScreenFBO = 0;
+
 
 

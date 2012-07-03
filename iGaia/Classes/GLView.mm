@@ -3,8 +3,6 @@
 #include "CInput.h"
 #include "CWindow.h"
 
-const bool ForceES1 = false;
-
 @implementation GLView
 
 + (Class) layerClass
@@ -14,66 +12,58 @@ const bool ForceES1 = false;
 
 - (id) initWithFrame: (CGRect) frame
 {
-    if (self = [super initWithFrame:frame]) {
-        CAEAGLLayer* eaglLayer = (CAEAGLLayer*) super.layer;
-        eaglLayer.opaque = YES;
+    if (self = [super initWithFrame:frame])
+    {
+        m_pEAGlLayer = (CAEAGLLayer*) super.layer;
+        m_pEAGlLayer.opaque = YES;
 
         EAGLRenderingAPI api = kEAGLRenderingAPIOpenGLES2;
-        m_context = [[EAGLContext alloc] initWithAPI:api];
+        m_pContext = [[EAGLContext alloc] initWithAPI:api];
 
-        if (!m_context || ForceES1) {
-            api = kEAGLRenderingAPIOpenGLES1;
-            m_context = [[EAGLContext alloc] initWithAPI:api];
-        }
-
-        if (!m_context || ![EAGLContext setCurrentContext:m_context]) {
+        if (!m_pContext || ![EAGLContext setCurrentContext:m_pContext])
+        {
             [self release];
             return nil;
         }
 
-        if (api == kEAGLRenderingAPIOpenGLES1) {
-            NSLog(@"Using OpenGL ES 1.1");
-        } 
-        else 
+        CWindow::Set_ScreenWidth(CGRectGetWidth(frame));
+        CWindow::Set_ScreenHeight(CGRectGetHeight(frame));
+        
+        CGame::Instance()->Load();
+        
+        GLuint hScreenColorBuffer;
+        glGenRenderbuffers(1, &hScreenColorBuffer);
+        glBindRenderbuffer(GL_RENDERBUFFER, hScreenColorBuffer);        
+        [m_pContext renderbufferStorage:GL_RENDERBUFFER fromDrawable:m_pEAGlLayer];
+        
+        GLuint hScreenFrameBuffer;
+        glGenFramebuffers(1, &hScreenFrameBuffer);
+        glBindFramebuffer(GL_FRAMEBUFFER, hScreenFrameBuffer);   
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, hScreenColorBuffer);
+        
+        if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
         {
-            NSLog(@"Using OpenGL ES 2.0");
-            CWindow::Set_ScreenWidth(CGRectGetWidth(frame));
-            CWindow::Set_ScreenHeight(CGRectGetHeight(frame));
-            CGame::Instance()->Load();
+            std::cout<<"[GLView::GLView] Screen Framebuffer FAILURE"<<std::endl;
         }
-
-        [m_context renderbufferStorage:GL_RENDERBUFFER fromDrawable: eaglLayer];
-        [self drawView: nil];
-        m_fTime = CACurrentMediaTime();
-
-        CADisplayLink* displayLink;
-        displayLink = [CADisplayLink displayLinkWithTarget:self
-                                     selector:@selector(drawView:)];
         
-        [displayLink addToRunLoop:[NSRunLoop currentRunLoop]
-                     forMode:NSDefaultRunLoopMode];
+        CWindow::Set_ScreenFBO(hScreenFrameBuffer);
 
-        [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-        
-        [[NSNotificationCenter defaultCenter]
-            addObserver:self
-            selector:@selector(didRotate:)
-            name:UIDeviceOrientationDidChangeNotification
-            object:nil];
+        CADisplayLink* pDisplayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(drawView:)];
+        [pDisplayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
     }
     return self;
 }
 
 - (void) didRotate: (NSNotification*) notification
 { 
-    [self drawView: nil];
+ 
 }
 
-- (void) drawView: (CADisplayLink*) displayLink
+- (void) drawView:(CADisplayLink*)displayLink
 {
     CGame::Instance()->Update();
     CGame::Instance()->Render();
-    [m_context presentRenderbuffer:GL_RENDERBUFFER];
+    [m_pContext presentRenderbuffer:GL_RENDERBUFFER];
 }
 
 - (void)touchesBegan:(NSSet*)touches withEvent:(UIEvent*)event 

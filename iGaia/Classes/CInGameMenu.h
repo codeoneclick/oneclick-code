@@ -20,6 +20,5 @@
 
 @interface CInGameMenu : UIView<UIScrollViewDelegate>
 -(void)OnMoveBtnAction:(UIButton*)sender;
-@property(nonatomic, assign) GLView* m_pGLView;
 @property(nonatomic, strong) UILabel* m_pInfoLabel;
 @end

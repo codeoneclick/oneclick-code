@@ -4,8 +4,8 @@
 
 @interface GLView : UIView {
 @private
-    EAGLContext* m_context;
-    float m_fTime;
+    CAEAGLLayer* m_pEAGlLayer;
+    EAGLContext* m_pContext;
 }
 
 - (void) drawView: (CADisplayLink*) displayLink;

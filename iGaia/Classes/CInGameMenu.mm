@@ -14,7 +14,6 @@
 #include "CSettings.h"
 
 @implementation CInGameMenu
-@synthesize m_pGLView;
 @synthesize m_pInfoLabel;
 
 - (id)initWithFrame:(CGRect)frame
@@ -93,14 +92,6 @@
 - (void)OnShootButtonPress:(UIButton*)sender
 {
     CWorld::Instance()->Get_PlayerCharacterController()->Shoot();
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    if(m_pGLView != nil)
-    {
-        [m_pGLView drawView:nil];
-    }
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView

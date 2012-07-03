@@ -86,19 +86,11 @@ CScreenSpacePostMgr::CScreenSpacePostMgr(void)
 			std::cout<<"[CScreenSpacePostMgr::CScreenSpacePostMgr] Offscreen Framebuffer FAILURE with INDEX: " <<i<<"\n";
 		}
     }
-    
-    glGenFramebuffers(1, &m_hScreenFBO);
-    glBindFramebuffer(GL_FRAMEBUFFER, m_hScreenFBO);
-    
-    glGenRenderbuffers(1, &m_hScreenRenderBuffer);
-    glBindRenderbuffer(GL_RENDERBUFFER, m_hScreenRenderBuffer);
-    
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, m_hScreenRenderBuffer);
-    
-    if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+      
+    /*if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
     {
         std::cout<<"[CScreenSpacePostMgr::CScreenSpacePostMgr] Screen Framebuffer FAILURE \n";
-    }
+    }*/
     
     CMaterial::InitStates();
     
@@ -177,7 +169,7 @@ void CScreenSpacePostMgr::DisableOffScreenMode(CScreenSpacePostMgr::E_OFFSCREEN_
 
 void CScreenSpacePostMgr::EnableScreenMode(void)
 {
-    glBindFramebuffer(GL_FRAMEBUFFER, m_hScreenFBO);
+    glBindFramebuffer(GL_FRAMEBUFFER, CWindow::Get_ScreenFBO());
     glViewport(0, 0, CWindow::Get_ScreenWidth(), CWindow::Get_ScreenHeight());
 }
 
