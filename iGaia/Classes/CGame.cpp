@@ -10,21 +10,22 @@
 #include "CGame.h"
 #include "CInput.h"
 #include "CResourceMgr.h"
-#include "CWorld.h"
+#include "CGameSceneMgr.h"
+#include "CGameInGameScene.h"
 
 CGame* CGame::m_game = NULL;
 
-CGame::CGame()
+CGame::CGame(void)
 {
 
 }
 
-CGame::~CGame()
+CGame::~CGame(void)
 {
     
 }
 
-CGame* CGame::Instance()
+CGame* CGame::Instance(void)
 {
     if(m_game == NULL)
     {
@@ -33,19 +34,21 @@ CGame* CGame::Instance()
     return m_game;
 }
 
-void CGame::Load()
+void CGame::Load(void)
 {
-    CWorld::Instance()->Load();
+    CGameInGameScene* pScene = new CGameInGameScene();
+    CGameSceneMgr::Instance()->Set_Scene(pScene);
+    pScene->Load();
 }
 
-void CGame::Update()
+void CGame::Update(void)
 {
-    CWorld::Instance()->Update();
+    CGameSceneMgr::Instance()->Update();
     CResourceMgr::Instance()->Update();
     CSceneMgr::Instance()->Update();
 }
 
-void CGame::Render()
+void CGame::Render(void)
 {
     CSceneMgr::Instance()->Render();
 }

@@ -5,13 +5,13 @@
 //  Created by code_oneclick on 4/17/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
-
+#include <QuartzCore/QuartzCore.h>
 #include "CInGameMenu.h"
-#include "CWorld.h"
 #include "CJoystick.h"
 #include "CSlider.h"
-#include <QuartzCore/QuartzCore.h>
 #include "CSettings.h"
+#include "CGameSceneMgr.h"
+#include "CGameInGameScene.h"
 
 @implementation CInGameMenu
 @synthesize m_pInfoLabel;
@@ -86,12 +86,12 @@
 
 - (void)onCameraButtonPress:(UIButton*)sender
 {
-    CWorld::Instance()->SwitchCameraModeToNext();
+    static_cast<CGameInGameScene*>(CGameSceneMgr::Instance()->Get_Scene())->SwitchCameraModeToNext();
 }
 
 - (void)OnShootButtonPress:(UIButton*)sender
 {
-    CWorld::Instance()->Get_PlayerCharacterController()->Shoot();
+    CGameSceneMgr::Instance()->Get_Scene()->Get_PlayerCharacterController()->Shoot();
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView

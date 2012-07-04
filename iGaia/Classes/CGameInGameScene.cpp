@@ -1,5 +1,5 @@
 //
-//  CWorld.cpp
+//  CGameInGameScene.cpp
 //  iGaia
 //
 //  Created by sergey.sergeev on 2/15/12.
@@ -7,48 +7,30 @@
 //
 
 #include <iostream>
-#include "CWorld.h"
+#include "CGameInGameScene.h"
 #include "CLightPoint.h"
 #include "CMathHelper.h"
+#include "CGameInGameLevel.h"
 
-#define MATH_PI 3.14f
 
-CWorld* CWorld::m_pInstance = NULL;
-
-CWorld::CWorld(void)
+CGameInGameScene::CGameInGameScene(void)
 {
-    m_pBuildingMgr = NULL;
-    m_pGameResourceMgr = NULL;
     m_pCharaterControllerMgr = NULL;
     m_pGameAIMgr = NULL;
-    m_bIsHeroUnderControl = true;
     m_eCameraMode = E_CAMERA_MODE_1;
     m_pGameShooterMgr = NULL;
 }
 
-CWorld::~CWorld(void)
+CGameInGameScene::~CGameInGameScene(void)
 {
     
 }
 
-CWorld* CWorld::Instance(void)
+void CGameInGameScene::Load(void)
 {
-    if(m_pInstance == NULL)
-    {
-        m_pInstance = new CWorld();
-    }
-    return m_pInstance;
-}
-
-void CWorld::Load(void)
-{
-    m_pBuildingMgr = new CBuildingMgr();
-    m_pGameResourceMgr = new CGameResourceMgr();
-    m_pCharaterControllerMgr = new CGameCharaterControllerMgr();
-    m_pGameAIMgr = new CGameAIMgr();
-    m_pGameShooterMgr = new CGameShooterMgr();
+    IGameScene::Load();
       
-    m_pLevel = new CLevel();
+    m_pLevel = new CGameInGameLevel();
     m_pLevel->Load();
     
     m_pCharaterControllerMgr->Add_MainCharacterController();
@@ -84,12 +66,17 @@ void CWorld::Load(void)
     m_fCurrentCameraHeight = k_CAMERA_HEIGHT_MODE_1;
 }
 
-void CWorld::SwitchCameraMode(CWorld::E_CAMERA_MODE _eCameraMode)
+void CGameInGameScene::Unload(void)
+{
+    
+}
+
+void CGameInGameScene::SwitchCameraMode(CGameInGameScene::E_CAMERA_MODE _eCameraMode)
 {
     m_eCameraMode = _eCameraMode;
 }
 
-void CWorld::SwitchCameraModeToNext(void)
+void CGameInGameScene::SwitchCameraModeToNext(void)
 {
     if(m_eCameraMode == E_CAMERA_MODE_1)
     {
@@ -101,18 +88,9 @@ void CWorld::SwitchCameraModeToNext(void)
     }
 }
 
-void CWorld::Update(void)
+void CGameInGameScene::Update(void)
 {
-    m_pBuildingMgr->Update();
-    m_pGameResourceMgr->Update();
-    m_pCharaterControllerMgr->Update();
-    m_pGameShooterMgr->Update();
-    m_pGameAIMgr->Update();
-    
-    m_pLevel->Update();
-    
-    static float fAngle = 0.0f; fAngle += 0.1f;
-    m_pLight->Set_Rotation(glm::vec3(0.0f, fAngle, 0.0f));
+    IGameScene::Update();
     
     glm::vec3 vCameraPosition = m_pCamera->Get_Position();
     float fCameraHeight = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_HeightValue(vCameraPosition.x, vCameraPosition.z);

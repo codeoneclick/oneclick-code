@@ -13,6 +13,7 @@ ITankTower::ITankTower(void)
     m_pTower = NULL;
     m_pTowerFireEmitter = NULL;
     m_pTowerSmokeEmitter = NULL;
+    m_vTowerGunOffset = glm::vec3(0.0f, 0.0f, 0.0f);
 }
 
 ITankTower::~ITankTower(void)

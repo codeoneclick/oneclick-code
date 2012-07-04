@@ -23,11 +23,9 @@ class CGame
 {
 private:
     static CGame* m_game;
-    INode* m_pNode;
-    ILight* m_pLight;
 public:
-    CGame();
-    ~CGame();
+    CGame(void);
+    ~CGame(void);
     static CGame* Instance(void);
     void Load(void);
     void Update(void);

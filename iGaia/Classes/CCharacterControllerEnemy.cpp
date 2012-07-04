@@ -7,7 +7,7 @@
 //
 
 #include "CCharacterControllerEnemy.h"
-#include "CWorld.h"
+#include "CGameSceneMgr.h"
 #include "CTimer.h"
 #include "CTankLightTrack.h"
 #include "CTankLightTower.h"
@@ -15,10 +15,6 @@
 
 CCharacterControllerEnemy::CCharacterControllerEnemy(void)
 {
-    //m_pBodyModel = NULL;
-    //m_pTowerModel = NULL;
-    //m_pLeftTrackModel = NULL;
-    //m_pRightTrackModel = NULL;
     m_pTrack = NULL;
     m_pTower = NULL;
     m_pBody  = NULL;
@@ -61,30 +57,7 @@ bool CCharacterControllerEnemy::_IsStateTimeElapsed(void)
 
 void CCharacterControllerEnemy::Load(void)
 {
-    glm::vec3 vScale = glm::vec3(1.0f, 1.0f, 1.0f);
-    /*m_pTowerModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("tower_model.mdl", IResource::E_THREAD_BACKGROUND);
-    m_pTowerModel->Set_Texture("model_01.pvr", 0, CTexture::E_WRAP_MODE_REPEAT);
-    m_pTowerModel->Set_Scale(vScale);
-    m_pTowerModel->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_MODEL);
-    m_pTowerModel->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_MODEL_ND);
-    m_pTowerModel->Create_BoundingBox();
-    m_pTowerModel->Set_RenderMode(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, true);*/
-    
-    /*m_pLeftTrackModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("left_track_model.mdl", IResource::E_THREAD_BACKGROUND);
-    m_pLeftTrackModel->Set_Texture("model_02.pvr", 0, CTexture::E_WRAP_MODE_REPEAT);
-    m_pLeftTrackModel->Set_Scale(vScale);
-    m_pLeftTrackModel->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_MODEL);
-    m_pLeftTrackModel->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_MODEL_ND);
-    m_pLeftTrackModel->Create_BoundingBox();
-    m_pLeftTrackModel->Set_RenderMode(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, true);
-    
-    m_pRightTrackModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("right_track_model.mdl", IResource::E_THREAD_BACKGROUND);
-    m_pRightTrackModel->Set_Texture("model_02.pvr", 0, CTexture::E_WRAP_MODE_REPEAT);
-    m_pRightTrackModel->Set_Scale(vScale);
-    m_pRightTrackModel->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_MODEL);
-    m_pRightTrackModel->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_MODEL_ND);
-    m_pRightTrackModel->Create_BoundingBox();
-    m_pRightTrackModel->Set_RenderMode(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, true);*/
+    ICharacterController::Load();
     
     m_pTrack = new CTankLightTrack();
     m_pTrack->Load();
@@ -95,74 +68,9 @@ void CCharacterControllerEnemy::Load(void)
     m_pBody = new CTankLightBody();
     m_pBody->Load();
     
-    /*m_pBodyModel = (CModel*)CSceneMgr::Instance()->AddCustomModel("base_model.mdl", IResource::E_THREAD_BACKGROUND);
-    m_pBodyModel->Set_Texture("model_01.pvr", 0, CTexture::E_WRAP_MODE_REPEAT);
-    m_pBodyModel->Set_Scale(vScale);
-    m_pBodyModel->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_MODEL);
-    m_pBodyModel->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_MODEL_ND);
-    m_pBodyModel->Create_BoundingBox();
-    m_pBodyModel->Set_RenderMode(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, true);*/
-    
-    m_pFireCross = CSceneMgr::Instance()->Get_SpriteMgr()->Add_SpriteCross(4, glm::vec2(256.0f, 256.0f), glm::vec2(512.0f, 512.0f));
-    m_pFireCross->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_MODEL);
-    m_pFireCross->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_MODEL_ND);
-    m_pFireCross->Set_Texture("model_01.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
-    
-    m_pShadowDecal = CSceneMgr::Instance()->Get_DecalMgr()->Add_Decal();
-    m_pShadowDecal->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_DECAL);
-    m_pShadowDecal->Set_Texture("shadow.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
-    
-    /*m_pLeftExhaustSmokeEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(32, glm::vec2(0.033f), glm::vec2(1.25f), 1000, true);
-    m_pLeftExhaustSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_PARTICLE);
-    m_pLeftExhaustSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PARTICLE_ND);
-    m_pLeftExhaustSmokeEmitter->Set_Texture("smoke.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
-    //m_pLeftExhaustSmokeEmitter->Set_Batching(true, "smoke-emitter");
-    
-    m_pRightExhaustSmokeEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(32, glm::vec2(0.033f), glm::vec2(1.25f), 1000, true);
-    m_pRightExhaustSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_PARTICLE);
-    m_pRightExhaustSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PARTICLE_ND);
-    m_pRightExhaustSmokeEmitter->Set_Texture("smoke.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);*/
-    //m_pRightExhaustSmokeEmitter->Set_Batching(true, "smoke-emitter");
-    
-    /*m_pLeftTrackSmokeEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(32, glm::vec2(0.05f), glm::vec2(2.5f), 1000, true);
-    m_pLeftTrackSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_PARTICLE);
-    m_pLeftTrackSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PARTICLE_ND);
-    m_pLeftTrackSmokeEmitter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
-    //m_pLeftTrackSmokeEmitter->Set_Batching(true, "fire-emitter");
-    
-    m_pRightTrackSmokeEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(32, glm::vec2(0.05f), glm::vec2(2.5f), 1000, true);
-    m_pRightTrackSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_PARTICLE);
-    m_pRightTrackSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PARTICLE_ND);
-    m_pRightTrackSmokeEmitter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
-    //m_pRightTrackSmokeEmitter->Set_Batching(true, "fire-emitter");
-    
-    m_pTowerSmokeEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(32, glm::vec2(0.05f), glm::vec2(2.5f), 1000, true);
-    m_pTowerSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_PARTICLE);
-    m_pTowerSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PARTICLE_ND);
-    m_pTowerSmokeEmitter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
-    //m_pTowerSmokeEmitter->Set_Batching(true, "fire-emitter");
-    
-    m_pLeftTrackFireEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(32, glm::vec2(0.05f), glm::vec2(2.5f), 1000, true);
-    m_pLeftTrackFireEmitter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_PARTICLE);
-    m_pLeftTrackFireEmitter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PARTICLE_ND);
-    m_pLeftTrackFireEmitter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
-    //m_pLeftTrackFireEmitter->Set_Batching(true, "fire-emitter");
-    
-    m_pRightTrackFireEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(32, glm::vec2(0.05f), glm::vec2(2.5f), 1000, true);
-    m_pRightTrackFireEmitter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_PARTICLE);
-    m_pRightTrackFireEmitter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PARTICLE_ND);
-    m_pRightTrackFireEmitter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
-    //m_pRightTrackFireEmitter->Set_Batching(true, "fire-emitter");*/
-    
-    //m_pTowerFireEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(32, glm::vec2(0.05f), glm::vec2(2.5f), 1000, true);
-    //m_pTowerFireEmitter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_PARTICLE);
-    //m_pTowerFireEmitter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PARTICLE_ND);
-    //m_pTowerFireEmitter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
-    //m_pTowerFireEmitter->Set_Batching(true, "fire-emitter");
-    
     CSceneMgr::Instance()->AddEventListener(m_pBody->Get_BasisNode(), CEventMgr::E_EVENT_TOUCH);
     m_pBody->Get_BasisNode()->Add_DelegateOwner(this);
-    CWorld::Instance()->Get_Level()->Get_Model()->Add_DelegateOwner(this);
+    CGameSceneMgr::Instance()->Get_Scene()->Get_Level()->Get_Landscape()->Add_DelegateOwner(this);
 }
 
 void CCharacterControllerEnemy::OnTouchEvent(ITouchDelegate* _pDelegateOwner)
@@ -195,19 +103,16 @@ void CCharacterControllerEnemy::Shoot(void)
     
     int iAICurrentShootTimeStamp = CTimer::Instance()->Get_TickCount();
     
-    if((iAICurrentShootTimeStamp - m_iAIShootTimeStamp > k_AI_SHOOT_INTERVAL) && fDistanceToTargetPoint < k_AI_SHOOT_DISTANCE)
+    if((iAICurrentShootTimeStamp - m_iAIShootTimeStamp > k_AI_SHOOT_INTERVAL) && fDistanceToTargetPoint < k_AI_SHOOT_DISTANCE && m_pTower != NULL)
     {
-        CWorld::Instance()->Get_GameShooterMgr()->CreateBullet(glm::vec3(m_vPosition.x + sinf(glm::radians(m_fTowerRotationY)) * 1.33f, m_vPosition.y + 1.33f, m_vPosition.z + cosf(glm::radians(m_fTowerRotationY)) * 1.33f), glm::vec3(m_vRotation.x, m_fTowerRotationY, m_vRotation.z));
+        glm::vec3 vTowerGunOffset = m_pTower->Get_TowerGunOffset();
+        CGameSceneMgr::Instance()->Get_Scene()->Get_GameShooterMgr()->CreateBullet(glm::vec3(m_vPosition.x + sinf(glm::radians(m_fTowerRotationY)) * vTowerGunOffset.x, m_vPosition.y + vTowerGunOffset.y, m_vPosition.z + cosf(glm::radians(m_fTowerRotationY)) * vTowerGunOffset.z), glm::vec3(m_vRotation.x, m_fTowerRotationY, m_vRotation.z));
         m_iAIShootTimeStamp = iAICurrentShootTimeStamp;
     }
 }
 
 void CCharacterControllerEnemy::Update(void)
 {
-    glm::vec2 vRightTrackTexCoordOffset = glm::vec2(0.0f, 0.0f);
-    glm::vec2 vLeftTrackTexCoordOffset  = glm::vec2(0.0f, 0.0f);
-    float fTrackTexCoordOffsetSteerFactor = 0.1f;
-      
     switch (m_eState)
     {
         case E_AI_STATE_NONE:
@@ -231,7 +136,7 @@ void CCharacterControllerEnemy::Update(void)
                 break;
             }
             
-            float fAngleToMovePoint =  glm::degrees(_GetRotationBetweenPointsDot(vPoint_01, vPoint_02));
+            float fAngleToMovePoint =  glm::degrees(CMathHelper::Instance()->Get_RotationBetweenPointsDot(vPoint_01, vPoint_02));
             if(fabs(fAngleToMovePoint - m_vRotation.y) > 45.0f)
             {
                 SteerLeft();
@@ -244,14 +149,8 @@ void CCharacterControllerEnemy::Update(void)
                 }
                 MoveForward();
             }
-            
-            //vRightTrackTexCoordOffset.x = m_pRightTrackModel->Get_TexCoordOffset().x + fTrackTexCoordOffsetSteerFactor;
-            //vLeftTrackTexCoordOffset.x = m_pLeftTrackModel->Get_TexCoordOffset().x + fTrackTexCoordOffsetSteerFactor;
-                       
-            m_vRotation.y =  glm::degrees(_GetRotationBetweenPoints(m_vMovePoint, m_vPosition) - 1.57f);
-            
-            //m_pLeftExhaustSmokeEmitter->Start();
-            //m_pRightExhaustSmokeEmitter->Start();
+                 
+            m_vRotation.y =  glm::degrees(CMathHelper::Instance()->Get_RotationBetweenPoints(m_vMovePoint, m_vPosition) - CMathHelper::k_HALF_PI);
             m_pBody->StartExhaust(true);
         }
             break;
@@ -260,11 +159,9 @@ void CCharacterControllerEnemy::Update(void)
     }
     
     m_pTrack->Update();
+    m_pTower->Update();
+    m_pBody->Update();
     
-    //m_pLeftTrackModel->Set_TexCoordOffset(vLeftTrackTexCoordOffset);
-    //m_pRightTrackModel->Set_TexCoordOffset(vRightTrackTexCoordOffset);
-    
-    //m_fTowerRotationY = m_pTowerModel->Get_Rotation().y;
     Shoot();
     
     glm::vec3 vTargetPoint;
@@ -277,7 +174,7 @@ void CCharacterControllerEnemy::Update(void)
         vTargetPoint = m_vMovePoint;
     }
     
-    m_fTowerRotationY =  glm::degrees(_GetRotationBetweenPoints(m_vPosition, vTargetPoint) + 1.57);
+    m_fTowerRotationY =  glm::degrees(CMathHelper::Instance()->Get_RotationBetweenPoints(m_vPosition, vTargetPoint) + CMathHelper::k_HALF_PI);
     
     Set_Position(m_vPosition);
     _SmoothRotation();

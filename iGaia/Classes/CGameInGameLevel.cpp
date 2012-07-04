@@ -1,5 +1,5 @@
 //
-//  CLevel.cpp
+//  CGameInGameLevel.cpp
 //  iGaia
 //
 //  Created by sergey.sergeev on 2/16/12.
@@ -7,21 +7,20 @@
 //
 
 #include <iostream>
-#include "CLevel.h"
+#include "CGameInGameLevel.h"
 #include "CSceneMgr.h"
 
-CLevel::CLevel(void)
+CGameInGameLevel::CGameInGameLevel(void)
 {
-    m_pLandscape = NULL;
-    m_pGrass = NULL;
+
 }
 
-CLevel::~CLevel(void)
+CGameInGameLevel::~CGameInGameLevel(void)
 {
     
 }
 
-void CLevel::Load(void)
+void CGameInGameLevel::Load(void)
 {
     m_pLandscape = (CLandscape*)CSceneMgr::Instance()->AddLandscapeModel("landscape.mdl");
     m_pLandscape->Set_Texture("layer_01_diffuse.pvr", 0, CTexture::E_WRAP_MODE_REPEAT, IResource::E_THREAD_BACKGROUND);
@@ -41,9 +40,9 @@ void CLevel::Load(void)
     m_pLandscape->Set_RenderMode(CShader::E_RENDER_MODE_REFRACTION, true);
     m_pLandscape->Set_RenderMode(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, true);
     
-    m_pWater = (CWater*)CSceneMgr::Instance()->AddWaterModel("water");
-    m_pWater->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_OCEAN);
-    m_pWater->Set_Texture("layer_02_bump.pvr", 2, CTexture::E_WRAP_MODE_REPEAT, IResource::E_THREAD_BACKGROUND);
+    m_pOcean = (CWater*)CSceneMgr::Instance()->AddWaterModel("water");
+    m_pOcean->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_OCEAN);
+    m_pOcean->Set_Texture("layer_02_bump.pvr", 2, CTexture::E_WRAP_MODE_REPEAT, IResource::E_THREAD_BACKGROUND);
     
     m_pGrass = (CGrass*)CSceneMgr::Instance()->AddLandscapeGrassModel("grass");
     m_pGrass->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_GRASS);
@@ -56,16 +55,19 @@ void CLevel::Load(void)
     m_pSkyBox->Set_Texture("clouds.pvr", 0, CTexture::E_WRAP_MODE_REPEAT);
 }
 
-void CLevel::OnTouchEvent(ITouchDelegate* _pDelegateOwner)
+void CGameInGameLevel::Unload(void)
 {
-    std::cout<<"[CLevel::OnTouchEvent]";
+    
 }
 
-void CLevel::Update(void)
+void CGameInGameLevel::OnTouchEvent(ITouchDelegate* _pDelegateOwner)
 {
-    //static float fValue = 0.0f;
-    //fValue += 0.1f;
-    //m_pLandscape->Get_Shader()->SetFloat(fValue, CShader::k_TIMER);
+
+}
+
+void CGameInGameLevel::Update(void)
+{
+
 }
 
 

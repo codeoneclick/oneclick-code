@@ -7,7 +7,7 @@
 //
 
 #import "CSlider.h"
-#include "CWorld.h"
+#import "CGameSceneMgr.h"
 
 @implementation CSlider
 
@@ -57,7 +57,7 @@
 {
     for (UITouch*touch in touches)
     {
-        CWorld::Instance()->Get_PlayerCharacterController()->Set_SteerTowerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_TOWER_NONE);
+        CGameSceneMgr::Instance()->Get_Scene()->Get_PlayerCharacterController()->Set_SteerTowerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_TOWER_NONE);
         CGRect tRect = m_pControl.frame;
         tRect.origin.x = self.frame.size.width / 2 - (self.frame.size.width / 3) / 2;
         m_pControl.frame = tRect;
@@ -73,15 +73,15 @@
 {
     if(touchPoint.x > m_iMaxOffsetX)
     {
-        CWorld::Instance()->Get_PlayerCharacterController()->Set_SteerTowerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_TOWER_LEFT);
+        CGameSceneMgr::Instance()->Get_Scene()->Get_PlayerCharacterController()->Set_SteerTowerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_TOWER_LEFT);
     }
     else if(touchPoint.x < m_iMinOffsetX)
     {
-        CWorld::Instance()->Get_PlayerCharacterController()->Set_SteerTowerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_TOWER_RIGHT);
+        CGameSceneMgr::Instance()->Get_Scene()->Get_PlayerCharacterController()->Set_SteerTowerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_TOWER_RIGHT);
     }
     else
     {
-        CWorld::Instance()->Get_PlayerCharacterController()->Set_SteerTowerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_TOWER_NONE);
+        CGameSceneMgr::Instance()->Get_Scene()->Get_PlayerCharacterController()->Set_SteerTowerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_TOWER_NONE);
     }
     
     CGRect tRect = m_pControl.frame;

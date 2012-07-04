@@ -24,6 +24,7 @@ protected:
     float m_fTowerTotalHealth;
     
     glm::vec3 m_vTowerEmitterOffset;
+    glm::vec3 m_vTowerGunOffset;
     
 public:
     ITankTower(void);
@@ -34,6 +35,8 @@ public:
     
     void Set_TowerHealth(float _fHealth);
     float Get_TowerHealth(void);
+    
+    glm::vec3 Get_TowerGunOffset(void) { return m_vTowerGunOffset; }
     
     void Set_Position(const glm::vec3& _vPosition);
     void Set_Rotation(const glm::vec3& _vRotation);
