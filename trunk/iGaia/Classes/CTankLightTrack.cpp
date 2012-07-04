@@ -55,8 +55,6 @@ void CTankLightTrack::Load(void)
     m_pRightTrackFireEmitter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_PARTICLE);
     m_pRightTrackFireEmitter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PARTICLE_ND);
     m_pRightTrackFireEmitter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
-    
-    m_pLeftTrackFireEmitter->Start();
 }
 
 void CTankLightTrack::Update(void)

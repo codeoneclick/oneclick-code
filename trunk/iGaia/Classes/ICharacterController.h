@@ -20,15 +20,6 @@
 #include <time.h>
 
 #define k_MIN_HEIGHTMAP_VALUE -8.0f
-#define k_EXHAUST_EMITTER_OFFSET_X  0.25f
-#define k_EXHAUST_EMITTER_OFFSET_Z  1.1f
-#define k_EXHAUST_EMITTER_HEIGHT  0.75f
-#define k_CROSS_FIRE_OFFSET 1.5f
-#define k_CROSS_FIRE_HEIGHT 0.75f
-#define k_TRACK_EMITTER_HEIGHT 0.66f
-#define k_TOWER_EMITTER_HEIGHT 0.75f
-
-#define k_CROSS_FIRE_TIME_MAX 1000
 
 class ICharacterController : public ITouchDelegate
 {
@@ -41,11 +32,6 @@ protected:
     glm::vec3 m_vPosition;
     glm::vec3 m_vRotation;
     
-    float _Get_RotationForPlane(glm::vec3 _vPoint_01, glm::vec3 _vPoint_02, glm::vec3 _vPoint_03);
-    glm::vec2 _Get_RotationOnHeightmap(glm::vec3 _vPosition);
-    float _GetRotationBetweenPoints(glm::vec3 _vPoint_01, glm::vec3 _vPoint_02);
-    float _GetRotationBetweenPointsDot(glm::vec2 _vPoint_01, glm::vec2 _vPoint_02);
-    
     float m_fMaxMoveSpeed;
     float m_fMoveAcceleration;
     float m_fLeftTrackMoveSpeed;
@@ -54,43 +40,17 @@ protected:
     float m_fSteerSpeed;
     float m_fTowerSteerSpeed;
     float m_fTowerRotationY;
+    
     E_CHARACTER_CONTROLLER_MOVE_STATE m_eMoveState;
     E_CHARACTER_CONTROLLER_STEER_STATE m_eSteerState;
     E_CHARACTER_CONTROLLER_STEER_TOWER_STATE m_eSteerTowerState;
     
-    int m_iLastCrossFireTime;
-    
-    ITankBody* m_pBody; //CModel* m_pBodyModel;
-    ITankTower* m_pTower; //CModel* m_pTowerModel;
+    ITankBody* m_pBody; 
+    ITankTower* m_pTower;
     ITankTrack* m_pTrack;
-    
-    //CModel* m_pLeftTrackModel;
-    //CModel* m_pRightTrackModel;
-    
-    //CParticleEmitter* m_pLeftExhaustSmokeEmitter;
-    //CParticleEmitter* m_pRightExhaustSmokeEmitter;
+
     CDecal* m_pShadowDecal;
     CDecal* m_pHealthDecal;
-    CSpriteCross* m_pFireCross;
-    
-    //CParticleEmitter* m_pLeftTrackSmokeEmitter;
-    //CParticleEmitter* m_pRightTrackSmokeEmitter;
-    //CParticleEmitter* m_pTowerSmokeEmitter;
-    
-    //CParticleEmitter* m_pLeftTrackFireEmitter;
-    //CParticleEmitter* m_pRightTrackFireEmitter;
-    //CParticleEmitter* m_pTowerFireEmitter;
-    
-    //glm::vec3 m_vLeftTrackEmitterNodePosition;
-    //glm::vec3 m_vRightTrackEmitterNodePosition;
-    //glm::vec3 m_vTowerEmitterNodePosition;
-    
-    //glm::vec3 m_vLeftExhaustEmitterPosition;
-    //glm::vec3 m_vRightExhaustEmitterPosition;
-    //glm::vec3 m_vFireCrossEffectPosition;
-    
-    //glm::vec4 m_vTransformHelper;
-    //glm::mat4x4 m_mRotationHelper;
     
     ICharacterController* m_pTarget;
     
@@ -105,7 +65,7 @@ public:
     ICharacterController(void);
     ~ICharacterController(void);
     
-    virtual void Load(void) = 0;
+    virtual void Load(void);
     virtual void Update(void) = 0;
     
     void Set_Position(const glm::vec3& _vPosition);

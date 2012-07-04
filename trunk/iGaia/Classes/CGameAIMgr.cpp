@@ -7,7 +7,6 @@
 //
 
 #include "CGameAIMgr.h"
-#include "CWorld.h"
 
 CGameAIMgr::CGameAIMgr(void)
 {

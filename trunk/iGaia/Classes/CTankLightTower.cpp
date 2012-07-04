@@ -12,6 +12,7 @@
 CTankLightTower::CTankLightTower(void)
 {
     m_vTowerEmitterOffset = glm::vec3(0.0f, 0.66f, 0.0f);
+    m_vTowerGunOffset = glm::vec3(1.11f, 1.33f, 1.11f);
 }
 
 CTankLightTower::~CTankLightTower(void)
@@ -37,8 +38,6 @@ void CTankLightTower::Load(void)
     m_pTowerFireEmitter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_PARTICLE);
     m_pTowerFireEmitter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PARTICLE_ND);
     m_pTowerFireEmitter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
-    
-    m_pTowerSmokeEmitter->Start();
 }
 
 void CTankLightTower::Update(void)
