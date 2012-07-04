@@ -12,6 +12,7 @@
 #include "CResourceMgr.h"
 #include "CGameSceneMgr.h"
 #include "CGameInGameScene.h"
+#include "CGameMainMenuScene.h"
 
 CGame* CGame::m_game = NULL;
 
@@ -36,7 +37,8 @@ CGame* CGame::Instance(void)
 
 void CGame::Load(void)
 {
-    CGameInGameScene* pScene = new CGameInGameScene();
+    //CGameInGameScene* pScene = new CGameInGameScene();
+    CGameMainMenuScene* pScene = new CGameMainMenuScene();
     CGameSceneMgr::Instance()->Set_Scene(pScene);
     pScene->Load();
 }

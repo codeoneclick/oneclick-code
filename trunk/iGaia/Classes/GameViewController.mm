@@ -7,7 +7,6 @@
 //
 
 #import "GameViewController.h"
-#import "CInGameMenu.h"
 
 @implementation GameViewController
 
@@ -31,8 +30,8 @@
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     m_pGLView = [[GLView alloc] initWithFrame: screenBounds];
     self.view = m_pGLView;
-    m_pInGameMenu = [[CInGameMenu alloc] initWithFrame:CGRectMake(0, 0, screenBounds.size.height, screenBounds.size.width)];
-    [self.view addSubview:m_pInGameMenu];
+    m_pGameInGameUI = [[CGameInGameUI alloc] initWithFrame:CGRectMake(0, 0, screenBounds.size.height, screenBounds.size.width)];
+    [self.view addSubview:m_pGameInGameUI];
     
     NSMethodSignature *pMethodSignature = [self methodSignatureForSelector:@selector(onTick:)];
     NSInvocation *pInvocation = [NSInvocation invocationWithMethodSignature:pMethodSignature];
@@ -55,7 +54,7 @@
 
 -(void)onTick:(NSTimer *)timer
 {
-    [m_pInGameMenu.m_pInfoLabel setText:[NSString stringWithFormat:@"FPS : %i, Triangles : %i", CSettings::g_iTotalFramesPerSecond, CSettings::g_iTotalTriagnlesPerFrame]];
+    [m_pGameInGameUI.m_pInfoLabel setText:[NSString stringWithFormat:@"FPS : %i, Triangles : %i", CSettings::g_iTotalFramesPerSecond, CSettings::g_iTotalTriagnlesPerFrame]];
 }
 
 @end

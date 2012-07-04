@@ -193,8 +193,7 @@
 		A13F9EC11568DC64009DCBB4 /* ITouchDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A13F9EBF1568DC64009DCBB4 /* ITouchDelegate.cpp */; };
 		A13F9EC91568ECB3009DCBB4 /* default.pvr in Resources */ = {isa = PBXBuildFile; fileRef = A13F9EC81568ECB3009DCBB4 /* default.pvr */; };
 		A13F9ED1156932FE009DCBB4 /* CDecalMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A13F9ECF156932FC009DCBB4 /* CDecalMgr.cpp */; };
-		A14C157315750A1900470E90 /* CSlider.mm in Sources */ = {isa = PBXBuildFile; fileRef = A14C157215750A1900470E90 /* CSlider.mm */; };
-		A153D5C2153DA3D000FBFFD5 /* CInGameMenu.mm in Sources */ = {isa = PBXBuildFile; fileRef = A153D5C1153DA3D000FBFFD5 /* CInGameMenu.mm */; };
+		A153D5C2153DA3D000FBFFD5 /* CGameInGameUI.mm in Sources */ = {isa = PBXBuildFile; fileRef = A153D5C1153DA3D000FBFFD5 /* CGameInGameUI.mm */; };
 		A153D5C8153DA75000FBFFD5 /* btn.png in Resources */ = {isa = PBXBuildFile; fileRef = A153D5C7153DA75000FBFFD5 /* btn.png */; };
 		A166A1641546D1F800E659D5 /* CParticleMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A166A1621546D1F800E659D5 /* CParticleMgr.cpp */; };
 		A181673E15442E97004B483A /* model_02.pvr in Resources */ = {isa = PBXBuildFile; fileRef = A181673D15442E97004B483A /* model_02.pvr */; };
@@ -246,6 +245,7 @@
 		A1FCBE8715A44D27004FC37B /* ILevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1FCBE8515A44D27004FC37B /* ILevel.cpp */; };
 		A1FCBE9515A4741E004FC37B /* CGameMainMenuScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1FCBE9315A4741E004FC37B /* CGameMainMenuScene.cpp */; };
 		A1FCBE9815A47430004FC37B /* CGameMainMenuLevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1FCBE9615A47430004FC37B /* CGameMainMenuLevel.cpp */; };
+		A1FCBF1015A49E4E004FC37B /* CSlider.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1FCBF0F15A49E4E004FC37B /* CSlider.mm */; };
 		A1FFAA8B156CBAE500B01ECB /* CFrustum.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1FFAA89156CBAE500B01ECB /* CFrustum.cpp */; };
 		CE8DFA9314587B0C00AE7288 /* CGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE8DFA9214587B0C00AE7288 /* CGame.cpp */; };
 		CE914ED41455DA3200AA2000 /* CShaderComposite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE914ED31455DA3200AA2000 /* CShaderComposite.cpp */; };
@@ -255,8 +255,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1560F1A815755EC9000F9F96 /* CSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSlider.h; sourceTree = "<group>"; };
-		1560F1A915755EC9000F9F96 /* CSlider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CSlider.mm; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* MainAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainAppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* MainAppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MainAppDelegate.mm; sourceTree = "<group>"; };
@@ -645,10 +643,8 @@
 		A13F9EC81568ECB3009DCBB4 /* default.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = default.pvr; path = Resources/Textures/default.pvr; sourceTree = "<group>"; };
 		A13F9ECF156932FC009DCBB4 /* CDecalMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CDecalMgr.cpp; sourceTree = "<group>"; };
 		A13F9ED0156932FD009DCBB4 /* CDecalMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDecalMgr.h; sourceTree = "<group>"; };
-		A14C157115750A1800470E90 /* CSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSlider.h; sourceTree = "<group>"; };
-		A14C157215750A1900470E90 /* CSlider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CSlider.mm; sourceTree = "<group>"; };
-		A153D5C0153DA3D000FBFFD5 /* CInGameMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CInGameMenu.h; sourceTree = "<group>"; };
-		A153D5C1153DA3D000FBFFD5 /* CInGameMenu.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CInGameMenu.mm; sourceTree = "<group>"; };
+		A153D5C0153DA3D000FBFFD5 /* CGameInGameUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGameInGameUI.h; sourceTree = "<group>"; };
+		A153D5C1153DA3D000FBFFD5 /* CGameInGameUI.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CGameInGameUI.mm; sourceTree = "<group>"; };
 		A153D5C7153DA75000FBFFD5 /* btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = btn.png; path = Resources/Textures/btn.png; sourceTree = "<group>"; };
 		A166A1621546D1F800E659D5 /* CParticleMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CParticleMgr.cpp; sourceTree = "<group>"; };
 		A166A1631546D1F800E659D5 /* CParticleMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CParticleMgr.h; sourceTree = "<group>"; };
@@ -747,6 +743,8 @@
 		A1FCBE9415A4741E004FC37B /* CGameMainMenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGameMainMenuScene.h; sourceTree = "<group>"; };
 		A1FCBE9615A47430004FC37B /* CGameMainMenuLevel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGameMainMenuLevel.cpp; sourceTree = "<group>"; };
 		A1FCBE9715A47430004FC37B /* CGameMainMenuLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGameMainMenuLevel.h; sourceTree = "<group>"; };
+		A1FCBF0E15A49E4E004FC37B /* CSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSlider.h; sourceTree = "<group>"; };
+		A1FCBF0F15A49E4E004FC37B /* CSlider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CSlider.mm; sourceTree = "<group>"; };
 		A1FFAA89156CBAE500B01ECB /* CFrustum.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CFrustum.cpp; sourceTree = "<group>"; };
 		A1FFAA8A156CBAE500B01ECB /* CFrustum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFrustum.h; sourceTree = "<group>"; };
 		CE8DFA9114587AFD00AE7288 /* CGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGame.h; sourceTree = "<group>"; };
@@ -1423,19 +1421,16 @@
 			name = Delegates;
 			sourceTree = "<group>";
 		};
-		A153D5BE153DA3A400FBFFD5 /* GUI */ = {
+		A153D5BE153DA3A400FBFFD5 /* GameUI */ = {
 			isa = PBXGroup;
 			children = (
-				1560F1A815755EC9000F9F96 /* CSlider.h */,
-				1560F1A915755EC9000F9F96 /* CSlider.mm */,
-				A153D5C0153DA3D000FBFFD5 /* CInGameMenu.h */,
-				A153D5C1153DA3D000FBFFD5 /* CInGameMenu.mm */,
-				A1F690451557CCAC00A2920A /* CJoystick.h */,
-				A1F690461557CCAC00A2920A /* CJoystick.mm */,
-				A14C157115750A1800470E90 /* CSlider.h */,
-				A14C157215750A1900470E90 /* CSlider.mm */,
+				A1FCBF0815A49CEB004FC37B /* GameSettingsUI */,
+				A1FCBF0715A49CC9004FC37B /* GameCustomizationUI */,
+				A1FCBF0615A49CB7004FC37B /* GameMenuUI */,
+				A1FCBF0515A49C8F004FC37B /* GameInGameUI */,
+				A1FCBF0415A49C56004FC37B /* GameCustomControls */,
 			);
-			name = GUI;
+			name = GameUI;
 			sourceTree = "<group>";
 		};
 		A166A16A1546DF2000E659D5 /* ParticleEmitters */ = {
@@ -1524,7 +1519,7 @@
 			children = (
 				A1FCBE7A15A449EF004FC37B /* GameUniversalScene */,
 				A1FCBE7915A449D6004FC37B /* GameInGameScene */,
-				A1FCBE7815A449C0004FC37B /* GameOptionsScene */,
+				A1FCBE7815A449C0004FC37B /* GameSettingsScene */,
 				A1FCBE7715A4499A004FC37B /* GameCustomizationScene */,
 				A1FCBE7615A4497C004FC37B /* GameMainMenuScene */,
 			);
@@ -1549,11 +1544,11 @@
 			name = GameCustomizationScene;
 			sourceTree = "<group>";
 		};
-		A1FCBE7815A449C0004FC37B /* GameOptionsScene */ = {
+		A1FCBE7815A449C0004FC37B /* GameSettingsScene */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			name = GameOptionsScene;
+			name = GameSettingsScene;
 			sourceTree = "<group>";
 		};
 		A1FCBE7915A449D6004FC37B /* GameInGameScene */ = {
@@ -1578,13 +1573,54 @@
 			name = GameUniversalScene;
 			sourceTree = "<group>";
 		};
+		A1FCBF0415A49C56004FC37B /* GameCustomControls */ = {
+			isa = PBXGroup;
+			children = (
+				A1FCBF0E15A49E4E004FC37B /* CSlider.h */,
+				A1FCBF0F15A49E4E004FC37B /* CSlider.mm */,
+				A1F690451557CCAC00A2920A /* CJoystick.h */,
+				A1F690461557CCAC00A2920A /* CJoystick.mm */,
+			);
+			name = GameCustomControls;
+			sourceTree = "<group>";
+		};
+		A1FCBF0515A49C8F004FC37B /* GameInGameUI */ = {
+			isa = PBXGroup;
+			children = (
+				A153D5C0153DA3D000FBFFD5 /* CGameInGameUI.h */,
+				A153D5C1153DA3D000FBFFD5 /* CGameInGameUI.mm */,
+			);
+			name = GameInGameUI;
+			sourceTree = "<group>";
+		};
+		A1FCBF0615A49CB7004FC37B /* GameMenuUI */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = GameMenuUI;
+			sourceTree = "<group>";
+		};
+		A1FCBF0715A49CC9004FC37B /* GameCustomizationUI */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = GameCustomizationUI;
+			sourceTree = "<group>";
+		};
+		A1FCBF0815A49CEB004FC37B /* GameSettingsUI */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = GameSettingsUI;
+			sourceTree = "<group>";
+		};
 		CE8DFA8E14587A8200AE7288 /* Game */ = {
 			isa = PBXGroup;
 			children = (
 				A1FCBE7415A4495A004FC37B /* GameScenes */,
 				A1EA43C415A1862800B3EF0A /* GameTankParts */,
 				A1AC4D98156F7DEB0031FE05 /* GameHelpers */,
-				A153D5BE153DA3A400FBFFD5 /* GUI */,
+				A153D5BE153DA3A400FBFFD5 /* GameUI */,
 				9307CBC114EBBA1700ADFE2B /* GameCharacterControllers */,
 				9307CBBE14EBB9E700ADFE2B /* GameMgrs */,
 				CE8DFA9114587AFD00AE7288 /* CGame.h */,
@@ -1892,7 +1928,7 @@
 				93CBB220150E141900CB1EFF /* CGrass.cpp in Sources */,
 				932D540B151B663100C77E95 /* CWater.cpp in Sources */,
 				A12156B2152EDE9C002E1942 /* IResourceLoaderDelegate.cpp in Sources */,
-				A153D5C2153DA3D000FBFFD5 /* CInGameMenu.mm in Sources */,
+				A153D5C2153DA3D000FBFFD5 /* CGameInGameUI.mm in Sources */,
 				A12D2F2A1541582800955C6B /* CCharacterControllerEnemy.cpp in Sources */,
 				A1BAD24815418C4A00B4149D /* CGameAIMgr.cpp in Sources */,
 				A1AB4E3E1546B71D00434639 /* CParticleEmitter.cpp in Sources */,
@@ -1910,7 +1946,6 @@
 				A1D8067F15735D1400EF81D0 /* CVertexBufferPositionTexcoordNormal.cpp in Sources */,
 				A1D8068015735D1400EF81D0 /* CVertexBufferPositionTexcoordNormalTangent.cpp in Sources */,
 				A1D8068415735D2500EF81D0 /* IVertexBuffer.cpp in Sources */,
-				A14C157315750A1900470E90 /* CSlider.mm in Sources */,
 				A100AB7415775CCE003BB7BA /* CVertexBufferPositionTexcoordColor.cpp in Sources */,
 				A100AB7D15776E57003BB7BA /* CParticleEmitterFire.cpp in Sources */,
 				A100AB8415777FC3003BB7BA /* CBillboard.cpp in Sources */,
@@ -1943,6 +1978,7 @@
 				A1FCBE8715A44D27004FC37B /* ILevel.cpp in Sources */,
 				A1FCBE9515A4741E004FC37B /* CGameMainMenuScene.cpp in Sources */,
 				A1FCBE9815A47430004FC37B /* CGameMainMenuLevel.cpp in Sources */,
+				A1FCBF1015A49E4E004FC37B /* CSlider.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

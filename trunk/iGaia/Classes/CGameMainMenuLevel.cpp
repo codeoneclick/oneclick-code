@@ -54,17 +54,17 @@ void CGameMainMenuLevel::Load(void)
     m_pSkyBox->Set_Texture("clouds.pvr", 0, CTexture::E_WRAP_MODE_REPEAT);
 }
 
-void CGameInGameLevel::Unload(void)
+void CGameMainMenuLevel::Unload(void)
 {
     
 }
 
-void CGameInGameLevel::OnTouchEvent(ITouchDelegate* _pDelegateOwner)
+void CGameMainMenuLevel::OnTouchEvent(ITouchDelegate* _pDelegateOwner)
 {
     
 }
 
-void CGameInGameLevel::Update(void)
+void CGameMainMenuLevel::Update(void)
 {
     
 }

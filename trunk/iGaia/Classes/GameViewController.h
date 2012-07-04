@@ -8,11 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "GLView.h"
-#import "CInGameMenu.h"
+#import "CGameInGameUI.h"
 
 @interface GameViewController : UIViewController
 {
     GLView* m_pGLView;
-    CInGameMenu* m_pInGameMenu;
+    CGameInGameUI* m_pGameInGameUI;
 }
 @end

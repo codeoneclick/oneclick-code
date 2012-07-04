@@ -12,7 +12,7 @@
 CMeshMgr::CMeshMgr(void)
 {
     CParser_MDL* pParser = new CParser_MDL();
-    pParser->Load("player.mdl");
+    pParser->Load("base_model.mdl");
     pParser->Commit();
     m_pDefaultMeshSourceData = static_cast<CMesh::SSourceData*>(pParser->Get_SourceData());
 }
