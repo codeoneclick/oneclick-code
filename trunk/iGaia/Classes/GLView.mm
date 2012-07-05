@@ -22,7 +22,6 @@
 
         if (!m_pContext || ![EAGLContext setCurrentContext:m_pContext])
         {
-            [self release];
             return nil;
         }
 

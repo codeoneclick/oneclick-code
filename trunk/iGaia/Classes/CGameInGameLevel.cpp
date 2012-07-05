@@ -22,7 +22,7 @@ CGameInGameLevel::~CGameInGameLevel(void)
 
 void CGameInGameLevel::Load(void)
 {
-    m_pLandscape = (CLandscape*)CSceneMgr::Instance()->AddLandscapeModel("landscape.mdl");
+    m_pLandscape = (CLandscape*)CSceneMgr::Instance()->Add_LandscapeModel("landscape.mdl");
     m_pLandscape->Set_Texture("layer_01_diffuse.pvr", 0, CTexture::E_WRAP_MODE_REPEAT, IResource::E_THREAD_BACKGROUND);
     m_pLandscape->Set_Texture("layer_01_normal.pvr",  1, CTexture::E_WRAP_MODE_REPEAT, IResource::E_THREAD_BACKGROUND);
     m_pLandscape->Set_Texture("layer_02_diffuse.pvr", 2, CTexture::E_WRAP_MODE_REPEAT, IResource::E_THREAD_BACKGROUND);
@@ -40,24 +40,27 @@ void CGameInGameLevel::Load(void)
     m_pLandscape->Set_RenderMode(CShader::E_RENDER_MODE_REFRACTION, true);
     m_pLandscape->Set_RenderMode(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, true);
     
-    m_pOcean = (CWater*)CSceneMgr::Instance()->AddWaterModel("water");
+    m_pOcean = (CWater*)CSceneMgr::Instance()->Add_OceanModel("water");
     m_pOcean->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_OCEAN);
     m_pOcean->Set_Texture("layer_02_bump.pvr", 2, CTexture::E_WRAP_MODE_REPEAT, IResource::E_THREAD_BACKGROUND);
     
-    m_pGrass = (CGrass*)CSceneMgr::Instance()->AddLandscapeGrassModel("grass");
+    m_pGrass = (CGrass*)CSceneMgr::Instance()->Add_LandscapeGrassModel("grass");
     m_pGrass->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_GRASS);
     m_pGrass->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_GRASS_ND);
     m_pGrass->Set_Texture("mod_03.pvr", 0, CTexture::E_WRAP_MODE_REPEAT, IResource::E_THREAD_BACKGROUND);
     m_pGrass->Set_RenderMode(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, true);
     
-    m_pSkyBox = (CSkyBox*)CSceneMgr::Instance()->AddSkyBoxModel("skybox");
+    m_pSkyBox = (CSkyBox*)CSceneMgr::Instance()->Add_SkyBoxModel("skybox");
     m_pSkyBox->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_SKYBOX);
     m_pSkyBox->Set_Texture("clouds.pvr", 0, CTexture::E_WRAP_MODE_REPEAT);
 }
 
 void CGameInGameLevel::Unload(void)
 {
-    
+    CSceneMgr::Instance()->Remove_LandscapeModel(m_pLandscape);
+    CSceneMgr::Instance()->Remove_LandscapeGrassModel(m_pGrass);
+    CSceneMgr::Instance()->Remove_OceanModel(m_pOcean);
+    CSceneMgr::Instance()->Remove_SkyBoxModel(m_pSkyBox);
 }
 
 void CGameInGameLevel::OnTouchEvent(ITouchDelegate* _pDelegateOwner)

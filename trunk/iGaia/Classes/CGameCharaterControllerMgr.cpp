@@ -44,7 +44,33 @@ void CGameCharaterControllerMgr::Remove_MainCharacterController(void)
 
 void CGameCharaterControllerMgr::Remove_EnemyCharacterController(ICharacterController* _pCharacterController)
 {
-    
+    std::vector<ICharacterController*>::iterator pBeginIterator = m_lContainer.begin();
+    std::vector<ICharacterController*>::iterator pEndIterator = m_lContainer.end();
+    while (pBeginIterator != pEndIterator)
+    {
+        ICharacterController* pCharacterController = (*pBeginIterator);
+        if(pCharacterController == _pCharacterController)
+        {
+            m_lContainer.erase(pBeginIterator);
+            SAFE_DELETE(pCharacterController);
+            return;
+        }
+        ++pBeginIterator;
+    }
+}
+
+void CGameCharaterControllerMgr::Remove_AllCharacterControllers(void)
+{
+    std::vector<ICharacterController*>::iterator pBeginIterator = m_lContainer.begin();
+    std::vector<ICharacterController*>::iterator pEndIterator = m_lContainer.end();
+    while (pBeginIterator != pEndIterator)
+    {
+        ICharacterController* pCharacterController = (*pBeginIterator);
+        SAFE_DELETE(pCharacterController);
+        ++pBeginIterator;
+    }
+    m_lContainer.clear();
+    m_pCharacterControllerPlayer = NULL;
 }
 
 void CGameCharaterControllerMgr::Reset_MainCharacterController(void)
@@ -56,7 +82,6 @@ void CGameCharaterControllerMgr::Update(void)
 {
     std::vector<ICharacterController*>::iterator pBeginIterator = m_lContainer.begin();
     std::vector<ICharacterController*>::iterator pEndIterator = m_lContainer.end();
-    
     while (pBeginIterator != pEndIterator)
     {
         (*pBeginIterator)->Update();

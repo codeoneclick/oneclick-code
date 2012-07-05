@@ -32,7 +32,7 @@ CSceneMgr::CSceneMgr(void)
     m_pHeightMapSetterRef = NULL;
     m_pSkyBox = NULL;
     m_pLandscape = NULL;
-    m_pWater = NULL;
+    m_pOcean = NULL;
     m_pFrustum = NULL;
     
     m_pRenderMgr = new CRenderMgr();
@@ -67,7 +67,7 @@ CSceneMgr* CSceneMgr::Instance()
 }
 
 
-INode* CSceneMgr::AddCustomModel(const std::string& _sName, IResource::E_THREAD _eThread)
+INode* CSceneMgr::Add_CustomModel(const std::string& _sName, IResource::E_THREAD _eThread)
 {
     INode* pNode = new CModel();
     m_lContainer.push_back(pNode);
@@ -75,7 +75,7 @@ INode* CSceneMgr::AddCustomModel(const std::string& _sName, IResource::E_THREAD 
     return pNode;
 }
 
-INode* CSceneMgr::AddLandscapeModel(const std::string& _sName, IResource::E_THREAD _eThread)
+INode* CSceneMgr::Add_LandscapeModel(const std::string& _sName, IResource::E_THREAD _eThread)
 {
     INode* pNode = new CLandscape();
     m_lContainer.push_back(pNode);
@@ -84,7 +84,7 @@ INode* CSceneMgr::AddLandscapeModel(const std::string& _sName, IResource::E_THRE
     return pNode;
 }
 
-INode* CSceneMgr::AddLandscapeGrassModel(const std::string& _sName, IResource::E_THREAD _eThread)
+INode* CSceneMgr::Add_LandscapeGrassModel(const std::string& _sName, IResource::E_THREAD _eThread)
 {
     INode* pNode = new CGrass();
     m_lContainer.push_back(pNode);
@@ -92,21 +92,49 @@ INode* CSceneMgr::AddLandscapeGrassModel(const std::string& _sName, IResource::E
     return pNode;
 }
 
-INode* CSceneMgr::AddWaterModel(const std::string& _sName, IResource::E_THREAD _eThread)
+INode* CSceneMgr::Add_OceanModel(const std::string& _sName, IResource::E_THREAD _eThread)
 {
     INode* pNode = new CWater();
     m_lContainer.push_back(pNode);
     pNode->Load(_sName, _eThread);
-    m_pWater = pNode;
+    m_pOcean = pNode;
     return pNode;
 }
 
-INode* CSceneMgr::AddSkyBoxModel(const std::string& _sName, IResource::E_THREAD _eThread)
+INode* CSceneMgr::Add_SkyBoxModel(const std::string& _sName, IResource::E_THREAD _eThread)
 {
     INode* pNode = new CSkyBox();
     pNode->Load(_sName, _eThread);
     m_pSkyBox = pNode;
     return pNode;
+}
+
+void CSceneMgr::Remove_CustomModel(INode *_pNode)
+{
+    Remove_Model(_pNode);
+}
+
+void CSceneMgr::Remove_LandscapeModel(INode *_pNode)
+{
+    Remove_Model(_pNode);
+    m_pLandscape = NULL;
+}
+
+void CSceneMgr::Remove_LandscapeGrassModel(INode *_pNode)
+{
+    Remove_LandscapeGrassModel(_pNode);
+}
+
+void CSceneMgr::Remove_OceanModel(INode *_pNode)
+{
+    Remove_Model(_pNode);
+    m_pOcean = NULL;
+}
+
+void CSceneMgr::Remove_SkyBoxModel(INode *_pNode)
+{
+    delete m_pSkyBox;
+    m_pSkyBox = NULL;
 }
 
 void CSceneMgr::AddEventListener(INode *_pNode, CEventMgr::E_EVENT _eEvent)
@@ -142,7 +170,7 @@ ICamera* CSceneMgr::CreateTargetCamera(float _fFov, float _fNearPlane, float _fF
     return pCamera;
 }
 
-void CSceneMgr::RemoveModel(INode *_pNode)
+void CSceneMgr::Remove_Model(INode *_pNode)
 {
     std::vector<INode*>::iterator pBIterator = m_lContainer.begin();
     std::vector<INode*>::iterator pEIterator = m_lContainer.end();

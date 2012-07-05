@@ -9,14 +9,8 @@
     m_pWindow = [[UIWindow alloc] initWithFrame: screenBounds];
     GameViewController *vc = [[GameViewController alloc] init];
     [m_pWindow setRootViewController:vc];
-    [vc release];
     [m_pWindow makeKeyAndVisible];
 }  
 
-- (void) dealloc
-{
-    [m_pWindow release];
-    [super dealloc];
-}
 
 @end

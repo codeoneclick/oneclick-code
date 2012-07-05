@@ -16,9 +16,6 @@
 class CHeightMapSetter
 {
 protected:
-    std::vector<glm::vec2> m_lContainerShadowDecal;
-    std::vector<glm::vec2> m_lContainerExplosionDecal;
-    
     float* m_pDataSource;
     
     int m_iWidth;
@@ -28,14 +25,10 @@ protected:
     float m_fZThreshold;
     
     GLuint m_hTextureSplatting;
-    GLuint m_hTextureDecal;
     
     unsigned short* m_pTextureSplattingDataSource;
-    unsigned short* m_pTextureDecalDataSource;
     
     void _Create_TextureSplatting(void);
-    void _Create_TextureDecal(void);
-    void _Update_TextureDecal(void);
     void _CalculateNormals(IVertexBuffer* _pVertexBuffer, CIndexBuffer* _pIndexBuffer);
     void _CalculateTangentsAndBinormals(IVertexBuffer* _pVertexBuffer, CIndexBuffer* _pIndexBuffer);
     void _CalculateTriangleBasis(const glm::vec3& E, const glm::vec3& F, const glm::vec3& G, float sE,
@@ -59,10 +52,6 @@ public:
     float Get_HeightValue(glm::vec3 _vPosition);
     
     GLuint Get_TextureSplatting(void) { return m_hTextureSplatting; }
-    GLuint Get_TextureDecal(void) { return m_hTextureDecal; }
-    
-    void Add_ShadowDecal(glm::vec2 _vPosition) { m_lContainerShadowDecal.push_back(_vPosition); }
-    void Add_ExplosionDecal(glm::vec2 _vPosition) { m_lContainerExplosionDecal.push_back(_vPosition); }
     
     void Update(void);
 };

@@ -25,7 +25,24 @@ void CGameAIMgr::Add_AICharacterController(ICharacterController *_pCharacterCont
 
 void CGameAIMgr::Remove_AICharacterController(ICharacterController *_pCharacterController)
 {
+    std::vector<CCharacterControllerEnemy*>::iterator pBeginIterator = m_lContainer.begin();
+    std::vector<CCharacterControllerEnemy*>::iterator pEndIterator = m_lContainer.end();
     
+    while (pBeginIterator != pEndIterator)
+    {
+        CCharacterControllerEnemy* pCharacterController = (*pBeginIterator);
+        if(pCharacterController == _pCharacterController)
+        {
+            m_lContainer.erase(pBeginIterator);
+            return;
+        }
+        ++pBeginIterator;
+    }
+}
+
+void CGameAIMgr::Remove_All(void)
+{
+    m_lContainer.clear();
 }
 
 float CGameAIMgr::_Get_RandomFromRange(float _fMin, float _fMax)

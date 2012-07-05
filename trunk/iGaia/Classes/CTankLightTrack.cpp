@@ -22,14 +22,14 @@ CTankLightTrack::~CTankLightTrack(void)
 
 void CTankLightTrack::Load(void)
 {
-    m_pLeftTrack = (CModel*)CSceneMgr::Instance()->AddCustomModel("left_track_model.mdl", IResource::E_THREAD_BACKGROUND);
+    m_pLeftTrack = (CModel*)CSceneMgr::Instance()->Add_CustomModel("left_track_model.mdl", IResource::E_THREAD_BACKGROUND);
     m_pLeftTrack->Set_Texture("model_02.pvr", 0, CTexture::E_WRAP_MODE_REPEAT);
     m_pLeftTrack->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_MODEL);
     m_pLeftTrack->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_MODEL_ND);
     m_pLeftTrack->Create_BoundingBox();
     m_pLeftTrack->Set_RenderMode(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, true);
     
-    m_pRightTrack = (CModel*)CSceneMgr::Instance()->AddCustomModel("right_track_model.mdl", IResource::E_THREAD_BACKGROUND);
+    m_pRightTrack = (CModel*)CSceneMgr::Instance()->Add_CustomModel("right_track_model.mdl", IResource::E_THREAD_BACKGROUND);
     m_pRightTrack->Set_Texture("model_02.pvr", 0, CTexture::E_WRAP_MODE_REPEAT);
     m_pRightTrack->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_MODEL);
     m_pRightTrack->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_MODEL_ND);

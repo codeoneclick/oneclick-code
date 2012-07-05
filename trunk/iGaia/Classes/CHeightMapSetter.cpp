@@ -17,12 +17,13 @@ CHeightMapSetter::CHeightMapSetter(void)
     m_fXThreshold = 0.0f;
     m_fZThreshold = 0.0f;
     m_pTextureSplattingDataSource = NULL;
-    m_pTextureDecalDataSource = NULL;
 }
 
 CHeightMapSetter::~CHeightMapSetter(void)
 {
-    
+    SAFE_DELETE_ARRAY(m_pDataSource);
+    SAFE_DELETE_ARRAY(m_pTextureSplattingDataSource);
+    glDeleteTextures(1, &m_hTextureSplatting);
 }
 
 CMesh* CHeightMapSetter::Load_DataSource(const std::string _sName, int _iWidth, int _iHeight)
@@ -167,37 +168,6 @@ void CHeightMapSetter::_Create_TextureSplatting(void)
         }
     }
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_iWidth, m_iHeight, 0, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, m_pTextureSplattingDataSource);
-}
-
-void CHeightMapSetter::_Create_TextureDecal(void)
-{
-    glGenTextures(1, &m_hTextureDecal);
-    glBindTexture(GL_TEXTURE_2D, m_hTextureDecal);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    m_pTextureDecalDataSource = new unsigned short[m_iWidth * m_iHeight];
-    memset(m_pTextureDecalDataSource, 0x0, m_iWidth * m_iHeight);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_iWidth, m_iHeight, 0, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, m_pTextureDecalDataSource);
-}
-
-void CHeightMapSetter::_Update_TextureDecal(void)
-{
-    glBindTexture(GL_TEXTURE_2D, m_hTextureDecal);
-    
-    std::vector<glm::vec2>::iterator pBeginDecalShadowContainerIterator = m_lContainerShadowDecal.begin();
-    std::vector<glm::vec2>::iterator pEndDecalShadowContainerIterator = m_lContainerShadowDecal.end();
-    
-    while (pBeginDecalShadowContainerIterator != pEndDecalShadowContainerIterator)
-    {
-        
-    }
-}
-
-void CHeightMapSetter::Update(void)
-{
-    
 }
 
 void CHeightMapSetter::_CalculateNormals(IVertexBuffer* _pVertexBuffer, CIndexBuffer* _pIndexBuffer)

@@ -36,7 +36,14 @@ void IGameScene::Unload(void)
 
 void IGameScene::Update(void)
 {
-    m_pCharaterControllerMgr->Update();
+    if(m_pCharaterControllerMgr != NULL)
+    {
+        m_pCharaterControllerMgr->Update();
+    }
+    if(m_pGameShooterMgr != NULL)
+    {
+        m_pGameShooterMgr->Update();
+    }
     m_pGameShooterMgr->Update();
     m_pGameAIMgr->Update();
     m_pLevel->Update();

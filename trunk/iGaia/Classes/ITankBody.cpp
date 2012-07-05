@@ -38,7 +38,7 @@ void ITankBody::Set_Position(const glm::vec3 &_vPosition)
     if(m_pLeftExhaustSmokeEmitter != NULL)
     {
         m_vBoundPositionHelper = m_pBody->Get_BoundingBox()->Get_Center();
-        m_vTransformHelper = glm::vec4(m_vBoundPositionHelper.x + m_vLeftExhaustEmitterOffset.x, m_vBoundPositionHelper.y + m_vLeftExhaustEmitterOffset.y, m_vBoundPositionHelper.z - m_vLeftExhaustEmitterOffset.z, 1.0f);
+        m_vTransformHelper = glm::vec4(m_vBoundPositionHelper.x + m_vLeftExhaustEmitterOffset.x, m_vBoundPositionHelper.y + m_vLeftExhaustEmitterOffset.y, m_vBoundPositionHelper.z + m_vLeftExhaustEmitterOffset.z, 1.0f);
         m_vTransformHelper = m_mTransformHelper * m_vTransformHelper;
         m_pLeftExhaustSmokeEmitter->Set_Position(glm::vec3(_vPosition.x + m_vTransformHelper.x, _vPosition.y + m_vTransformHelper.y, _vPosition.z + m_vTransformHelper.z));
     }
@@ -46,7 +46,7 @@ void ITankBody::Set_Position(const glm::vec3 &_vPosition)
     if(m_pRightExhaustSmokeEmitter != NULL)
     {
         m_vBoundPositionHelper = m_pBody->Get_BoundingBox()->Get_Center();
-        m_vTransformHelper = glm::vec4(m_vBoundPositionHelper.x + m_vLeftExhaustEmitterOffset.x, m_vBoundPositionHelper.y + m_vLeftExhaustEmitterOffset.y, m_vBoundPositionHelper.z + m_vLeftExhaustEmitterOffset.z, 1.0f);
+        m_vTransformHelper = glm::vec4(m_vBoundPositionHelper.x + m_vRightExhaustEmitterOffset.x, m_vBoundPositionHelper.y + m_vRightExhaustEmitterOffset.y, m_vBoundPositionHelper.z + m_vRightExhaustEmitterOffset.z, 1.0f);
         m_vTransformHelper = m_mTransformHelper * m_vTransformHelper;
         m_pRightExhaustSmokeEmitter->Set_Position(glm::vec3(_vPosition.x + m_vTransformHelper.x, _vPosition.y + m_vTransformHelper.y, _vPosition.z + m_vTransformHelper.z));
     }
