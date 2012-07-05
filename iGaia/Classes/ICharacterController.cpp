@@ -16,6 +16,7 @@ ICharacterController::ICharacterController(void)
 {
     m_eMoveState = E_CHARACTER_CONTROLLER_MOVE_STATE_NONE;
     m_eSteerState = E_CHARACTER_CONTROLLER_STEER_STATE_NONE;
+    m_pTarget = NULL;
 }
 
 ICharacterController::~ICharacterController(void)

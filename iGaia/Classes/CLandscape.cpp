@@ -22,7 +22,9 @@ CLandscape::CLandscape(void)
 
 CLandscape::~CLandscape(void)
 {
-    
+    SAFE_DELETE(m_pQuadTree);
+    SAFE_DELETE(m_pHeightMapSetter);
+    CSceneMgr::Instance()->Set_HeightMapSetterRef(NULL);
 }
 
 void CLandscape::Load(const std::string& _sName, IResource::E_THREAD _eThread)
@@ -157,7 +159,6 @@ void CLandscape::_CreateIndexBufferRefForQuadTreeNode(CLandscape::SQuadTreeNode 
             {
                 fMaxY = pVertexBufferData[_pNode->m_pParent->m_pIndexes[i + 2]].m_vPosition.y;
             }
-            
             
             if(pVertexBufferData[_pNode->m_pParent->m_pIndexes[i + 0]].m_vPosition.y < fMinY)
             {

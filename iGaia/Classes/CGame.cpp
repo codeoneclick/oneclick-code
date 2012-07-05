@@ -11,6 +11,7 @@
 #include "CInput.h"
 #include "CResourceMgr.h"
 #include "CGameSceneMgr.h"
+#include "CGameUIMgr.h"
 #include "CGameInGameScene.h"
 #include "CGameMainMenuScene.h"
 
@@ -41,6 +42,7 @@ void CGame::Load(void)
     CGameMainMenuScene* pScene = new CGameMainMenuScene();
     CGameSceneMgr::Instance()->Set_Scene(pScene);
     pScene->Load();
+    CGameUIMgr::Instance()->Set_GameUI("main_menu_ui");
 }
 
 void CGame::Update(void)

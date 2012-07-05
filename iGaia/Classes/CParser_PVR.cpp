@@ -38,7 +38,7 @@ void CParser_PVR::Load(const std::string& _sName)
     int iLength = pStream.tellg();
     pStream.seekg( 0, std::ios::beg );
     m_pData = new char[iLength];
-    pStream.read( m_pData,iLength );
+    pStream.read( m_pData, iLength );
     pStream.close();
     
     m_pDescription = new SDescription();

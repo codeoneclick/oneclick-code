@@ -246,6 +246,8 @@
 		A1FCBE9515A4741E004FC37B /* CGameMainMenuScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1FCBE9315A4741E004FC37B /* CGameMainMenuScene.cpp */; };
 		A1FCBE9815A47430004FC37B /* CGameMainMenuLevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1FCBE9615A47430004FC37B /* CGameMainMenuLevel.cpp */; };
 		A1FCBF1015A49E4E004FC37B /* CSlider.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1FCBF0F15A49E4E004FC37B /* CSlider.mm */; };
+		A1FCBF1815A58692004FC37B /* CGameUIMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1FCBF1615A58692004FC37B /* CGameUIMgr.cpp */; };
+		A1FCBF8015A5D511004FC37B /* CGameMenuUI.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1FCBF7F15A5D511004FC37B /* CGameMenuUI.mm */; };
 		A1FFAA8B156CBAE500B01ECB /* CFrustum.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1FFAA89156CBAE500B01ECB /* CFrustum.cpp */; };
 		CE8DFA9314587B0C00AE7288 /* CGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE8DFA9214587B0C00AE7288 /* CGame.cpp */; };
 		CE914ED41455DA3200AA2000 /* CShaderComposite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE914ED31455DA3200AA2000 /* CShaderComposite.cpp */; };
@@ -745,6 +747,10 @@
 		A1FCBE9715A47430004FC37B /* CGameMainMenuLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGameMainMenuLevel.h; sourceTree = "<group>"; };
 		A1FCBF0E15A49E4E004FC37B /* CSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSlider.h; sourceTree = "<group>"; };
 		A1FCBF0F15A49E4E004FC37B /* CSlider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CSlider.mm; sourceTree = "<group>"; };
+		A1FCBF1615A58692004FC37B /* CGameUIMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGameUIMgr.cpp; sourceTree = "<group>"; };
+		A1FCBF1715A58692004FC37B /* CGameUIMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGameUIMgr.h; sourceTree = "<group>"; };
+		A1FCBF7E15A5D511004FC37B /* CGameMenuUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGameMenuUI.h; sourceTree = "<group>"; };
+		A1FCBF7F15A5D511004FC37B /* CGameMenuUI.mm */ = {isa = PBXFileReference; fileEncoding = 4; path = CGameMenuUI.mm; sourceTree = "<group>"; };
 		A1FFAA89156CBAE500B01ECB /* CFrustum.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CFrustum.cpp; sourceTree = "<group>"; };
 		A1FFAA8A156CBAE500B01ECB /* CFrustum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFrustum.h; sourceTree = "<group>"; };
 		CE8DFA9114587AFD00AE7288 /* CGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGame.h; sourceTree = "<group>"; };
@@ -876,6 +882,8 @@
 				A1AC4DA1156FC74F0031FE05 /* CGameShooterMgr.cpp */,
 				A1FCBE7F15A44B4B004FC37B /* CGameSceneMgr.h */,
 				A1FCBE7E15A44B4B004FC37B /* CGameSceneMgr.cpp */,
+				A1FCBF1715A58692004FC37B /* CGameUIMgr.h */,
+				A1FCBF1615A58692004FC37B /* CGameUIMgr.cpp */,
 			);
 			name = GameMgrs;
 			sourceTree = "<group>";
@@ -1596,6 +1604,8 @@
 		A1FCBF0615A49CB7004FC37B /* GameMenuUI */ = {
 			isa = PBXGroup;
 			children = (
+				A1FCBF7E15A5D511004FC37B /* CGameMenuUI.h */,
+				A1FCBF7F15A5D511004FC37B /* CGameMenuUI.mm */,
 			);
 			name = GameMenuUI;
 			sourceTree = "<group>";
@@ -1979,6 +1989,8 @@
 				A1FCBE9515A4741E004FC37B /* CGameMainMenuScene.cpp in Sources */,
 				A1FCBE9815A47430004FC37B /* CGameMainMenuLevel.cpp in Sources */,
 				A1FCBF1015A49E4E004FC37B /* CSlider.mm in Sources */,
+				A1FCBF1815A58692004FC37B /* CGameUIMgr.cpp in Sources */,
+				A1FCBF8015A5D511004FC37B /* CGameMenuUI.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1993,21 +2005,24 @@
 					armv6,
 					armv7,
 				);
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Sergey Sergeev (RJ3533Y67B)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Sergey Sergeev (RJ3533Y67B)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iGaia_Prefix.pch;
 				GCC_THUMB_SUPPORT = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}\"/**";
 				INFOPLIST_FILE = Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PRODUCT_NAME = iGaia;
-				PROVISIONING_PROFILE = "CD9430FE-2575-48EE-B662-645884640140";
+				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -2020,6 +2035,7 @@
 					armv6,
 					armv7,
 				);
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
@@ -2028,12 +2044,14 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iGaia_Prefix.pch;
 				GCC_THUMB_SUPPORT = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}\"/**";
 				INFOPLIST_FILE = Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PRODUCT_NAME = iGaia;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

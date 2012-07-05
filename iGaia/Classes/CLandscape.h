@@ -35,6 +35,14 @@ protected:
             m_pIndexes = NULL;
             m_iNumIndexes = 0;
         }
+        ~SQuadTreeNode(void)
+        {
+            std::cout<<"[~SQuadTreeNode] delete"<<std::endl;
+            SAFE_DELETE_ARRAY(m_pIndexes);
+            SAFE_DELETE_ARRAY(m_pIndexesId);
+            SAFE_DELETE_ARRAY(m_pChilds);
+            m_pParent = NULL;
+        }
     };
     unsigned int m_iWidth;
     unsigned int m_iHeight;

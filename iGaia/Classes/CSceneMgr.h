@@ -33,7 +33,7 @@ private:
     ILight* m_pGlobalLight;
     INode* m_pSkyBox;
     INode* m_pLandscape;
-    INode* m_pWater;
+    INode* m_pOcean;
     ICamera* m_pCamera;
     CFrustum* m_pFrustum;
     
@@ -64,11 +64,17 @@ public:
     void Set_GlobalLight(ILight* _pLight) { m_pGlobalLight = _pLight; }
     ILight* Get_GlobalLight(void) { return m_pGlobalLight; }
     
-    INode* AddCustomModel(const std::string& _sName, IResource::E_THREAD _eThread = IResource::E_THREAD_MAIN);
-    INode* AddLandscapeModel(const std::string& _sName, IResource::E_THREAD _eThread = IResource::E_THREAD_MAIN);
-    INode* AddLandscapeGrassModel(const std::string& _sName, IResource::E_THREAD _eThread = IResource::E_THREAD_MAIN);
-    INode* AddWaterModel(const std::string& _sName, IResource::E_THREAD _eThread = IResource::E_THREAD_MAIN);
-    INode* AddSkyBoxModel(const std::string& _sName, IResource::E_THREAD _eThread = IResource::E_THREAD_MAIN);
+    INode* Add_CustomModel(const std::string& _sName, IResource::E_THREAD _eThread = IResource::E_THREAD_MAIN);
+    INode* Add_LandscapeModel(const std::string& _sName, IResource::E_THREAD _eThread = IResource::E_THREAD_MAIN);
+    INode* Add_LandscapeGrassModel(const std::string& _sName, IResource::E_THREAD _eThread = IResource::E_THREAD_MAIN);
+    INode* Add_OceanModel(const std::string& _sName, IResource::E_THREAD _eThread = IResource::E_THREAD_MAIN);
+    INode* Add_SkyBoxModel(const std::string& _sName, IResource::E_THREAD _eThread = IResource::E_THREAD_MAIN);
+    
+    void Remove_CustomModel(INode* _pNode);
+    void Remove_LandscapeModel(INode* _pNode);
+    void Remove_LandscapeGrassModel(INode* _pNode);
+    void Remove_OceanModel(INode* _pNode);
+    void Remove_SkyBoxModel(INode* _pNode);
     
     void AddEventListener(INode* _pNode, CEventMgr::E_EVENT _eEvent);
     void RemoveEventListener(INode* _pNode, CEventMgr::E_EVENT _eEvent);
@@ -88,7 +94,7 @@ public:
     
     unsigned char Get_UniqueColorId(INode* _pNode);
     
-    void RemoveModel(INode *_pNode);
+    void Remove_Model(INode *_pNode);
     void Update(void);
     void Render(void);
 };
