@@ -21,6 +21,7 @@ CBullet::~CBullet(void)
 {
     CSceneMgr::Instance()->Get_ParticleMgr()->Remove_ParticleEmitter(m_pFireEmmiter);
     CSceneMgr::Instance()->Get_ParticleMgr()->Remove_ParticleEmitter(m_pExplosionEmitter);
+    CSceneMgr::Instance()->Remove_Model(m_pModel);
 }   
 
 void CBullet::Load(void)
@@ -29,7 +30,6 @@ void CBullet::Load(void)
     m_pFireEmmiter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_PARTICLE);
     m_pFireEmmiter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PARTICLE_ND);
     m_pFireEmmiter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
-    //m_pFireEmmiter->Set_Batching(true, "fire-emitter");
 }
 
 void CBullet::Set_Position(const glm::vec3& _vPosition)

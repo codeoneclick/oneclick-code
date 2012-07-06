@@ -13,6 +13,8 @@
 #include <map>
 #include "CHeightMapSetter.h"
 
+#define k_MAX_QUADTREE_CHILDREN 4
+
 class CGrass: public INode
 {
 protected:
@@ -32,6 +34,23 @@ protected:
             m_pIndexes = NULL;
             m_iNumIndexes = 0;
         }
+    
+    ~SQuadTreeNode(void)
+    {
+        std::cout<<"[~SQuadTreeNode] delete"<<std::endl;
+        SAFE_DELETE_ARRAY(m_pIndexes);
+        SAFE_DELETE_ARRAY(m_pIndexesId);
+        for(unsigned int i = 0; i < k_MAX_QUADTREE_CHILDREN; ++i)
+        {
+            if(m_pChilds != NULL)
+            {
+                SAFE_DELETE(m_pChilds[i]);
+            }
+        }
+        SAFE_DELETE_ARRAY(m_pChilds);
+        m_pParent = NULL;
+    }
+
     };
 
     static const float k_ELEMENT_SIZE;

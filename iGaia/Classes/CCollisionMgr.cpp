@@ -28,10 +28,16 @@ CCollisionMgr::~CCollisionMgr()
 void CCollisionMgr::OnScreenTouch(glm::vec2 _vTouchPoint) 
 { 
     m_bIsTouch = true; 
-    m_vTouch2DPoint = _vTouchPoint; 
+    m_vTouch2DPoint = _vTouchPoint;
     
-    glm::mat4x4 mView = CSceneMgr::Instance()->Get_Camera()->Get_View();
-    glm::mat4x4 mProjection = CSceneMgr::Instance()->Get_Camera()->Get_Projection();
+    ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
+    if(pCamera == NULL)
+    {
+        return;
+    }
+    
+    glm::mat4x4 mView = pCamera->Get_View();
+    glm::mat4x4 mProjection = pCamera->Get_Projection();
     
     glm::ivec4 vViewport;
     vViewport[0] = 0;

@@ -49,12 +49,20 @@ void CGame::Update(void)
 {
     CGameSceneMgr::Instance()->Update();
     CResourceMgr::Instance()->Update();
-    CSceneMgr::Instance()->Update();
+    IGameScene* pScene = CGameSceneMgr::Instance()->Get_Scene();
+    //if(pScene != NULL)
+    //{
+        CSceneMgr::Instance()->Update();
+    //}
 }
 
 void CGame::Render(void)
 {
-    CSceneMgr::Instance()->Render();
+    IGameScene* pScene = CGameSceneMgr::Instance()->Get_Scene();
+    //if(pScene != NULL)
+    //{
+       CSceneMgr::Instance()->Render();
+    //}
 }
 
 

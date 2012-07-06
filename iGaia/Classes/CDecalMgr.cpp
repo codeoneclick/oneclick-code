@@ -29,7 +29,20 @@ CDecal* CDecalMgr::Add_Decal(void)
 
 void CDecalMgr::Remove_Decal(CDecal* _pDecal)
 {
-    // TODO
+    std::vector<CDecal*>::iterator pBeginIterator = m_lDecalContainer.begin();
+    std::vector<CDecal*>::iterator pEndIterator = m_lDecalContainer.end();
+    
+    while(pBeginIterator != pEndIterator)
+    {
+        CDecal* pDecal = (*pBeginIterator);
+        if(pDecal == _pDecal)
+        {
+            m_lDecalContainer.erase(pBeginIterator);
+            SAFE_DELETE(pDecal);
+            return;
+        }
+        ++pBeginIterator;
+    }
 }
 
 void CDecalMgr::Update(void)

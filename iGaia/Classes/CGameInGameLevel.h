@@ -9,9 +9,9 @@
 #ifndef iGaia_CGameInGameLevel_h
 #define iGaia_CGameInGameLevel_h
 
-#include "ILevel.h"
+#include "IGameLevel.h"
 
-class CGameInGameLevel : public ILevel
+class CGameInGameLevel : public IGameLevel
 {
 public:
     CGameInGameLevel(void);

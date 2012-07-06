@@ -9,9 +9,9 @@
 #ifndef __iGaia__CGameMainMenuLevel__
 #define __iGaia__CGameMainMenuLevel__
 
-#include "ILevel.h"
+#include "IGameLevel.h"
 
-class CGameMainMenuLevel : public ILevel
+class CGameMainMenuLevel : public IGameLevel
 {
 public:
     CGameMainMenuLevel(void);

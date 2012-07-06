@@ -7,6 +7,7 @@
 //
 
 #include "ITankTower.h"
+#include "CSceneMgr.h"
 
 ITankTower::ITankTower(void)
 {
@@ -18,7 +19,10 @@ ITankTower::ITankTower(void)
 
 ITankTower::~ITankTower(void)
 {
-    
+    std::cout<<"[~ITankTower] delete"<<std::endl;
+    CSceneMgr::Instance()->Remove_Model(m_pTower);
+    CSceneMgr::Instance()->Get_ParticleMgr()->Remove_ParticleEmitter(m_pTowerFireEmitter);
+    CSceneMgr::Instance()->Get_ParticleMgr()->Remove_ParticleEmitter(m_pTowerSmokeEmitter);
 }
 
 void ITankTower::Set_Position(const glm::vec3 &_vPosition)

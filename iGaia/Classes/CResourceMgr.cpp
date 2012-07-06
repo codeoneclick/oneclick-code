@@ -49,12 +49,23 @@ CResourceMgr::~CResourceMgr()
 
 void CResourceMgr::Update()
 {
-    std::map<IResource::E_MGR,IResourceMgr*>::iterator pBMgr = m_lMgr.begin();
-    std::map<IResource::E_MGR,IResourceMgr*>::iterator pEMgr = m_lMgr.end();
-    while( pBMgr != pEMgr)
+    std::map<IResource::E_MGR,IResourceMgr*>::iterator pBeginMgr = m_lMgr.begin();
+    std::map<IResource::E_MGR,IResourceMgr*>::iterator pEndMgr = m_lMgr.end();
+    while( pBeginMgr != pEndMgr)
     {
-        pBMgr->second->Update();
-        ++pBMgr;
+        pBeginMgr->second->Update();
+        ++pBeginMgr;
+    }
+}
+
+void CResourceMgr::Cancel_Load(IDelegate *_pDeleagte)
+{
+    std::map<IResource::E_MGR,IResourceMgr*>::iterator pBeginMgr = m_lMgr.begin();
+    std::map<IResource::E_MGR,IResourceMgr*>::iterator pEndMgr = m_lMgr.end();
+    while( pBeginMgr != pEndMgr)
+    {
+        pBeginMgr->second->Cancel_Load(_pDeleagte);
+        ++pBeginMgr;
     }
 }
 

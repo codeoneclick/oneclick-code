@@ -58,7 +58,7 @@ GameViewController* g_GameViewController;
 
 -(void)onTick:(NSTimer *)timer
 {
-    [m_pGameInGameUI.m_pInfoLabel setText:[NSString stringWithFormat:@"FPS : %i, Triangles : %i", CSettings::g_iTotalFramesPerSecond, CSettings::g_iTotalTriagnlesPerFrame]];
+    [m_pGameMenuUI.m_pInfoLabel setText:[NSString stringWithFormat:@"FPS : %i, Triangles : %i", CSettings::g_iTotalFramesPerSecond, CSettings::g_iTotalTriagnlesPerFrame]];
 }
 
 -(void)Set_GameUI:(NSString*)_sName

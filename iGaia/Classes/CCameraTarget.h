@@ -18,7 +18,7 @@ protected:
     INode* m_pTarget;
 public:
     CCameraTarget(void);
-    virtual ~CCameraTarget();
+    ~CCameraTarget();
     virtual void Update(void);
     virtual void OnScreenMove(glm::vec2 _vMoveDirection);
     void Set_Target(INode* _pTarget) { m_pTarget = _pTarget; }

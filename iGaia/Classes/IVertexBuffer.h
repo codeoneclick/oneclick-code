@@ -29,6 +29,7 @@ protected:
     GLenum m_eMode;
     unsigned int m_iNumVertexes;
     std::map<CShader::E_RENDER_MODE, CShader*> m_lShaderRefContainer;
+    bool m_bIsCommited;
 public:
     IVertexBuffer(void);
     virtual ~IVertexBuffer(void);

@@ -57,12 +57,7 @@ void CGameMainMenuScene::Load(void)
 
 void CGameMainMenuScene::Unload(void)
 {
-    m_pGameAIMgr->Remove_All();
-    SAFE_DELETE(m_pGameAIMgr);
-    m_pCharaterControllerMgr->Remove_AllCharacterControllers();
-    SAFE_DELETE(m_pCharaterControllerMgr);
-    m_pLevel->Unload();
-    SAFE_DELETE(m_pLevel);
+    IGameScene::Unload();
 }
 
 void CGameMainMenuScene::Update(void)
@@ -70,8 +65,15 @@ void CGameMainMenuScene::Update(void)
     IGameScene::Update();
     
     glm::vec3 vCameraPosition = m_pCamera->Get_Position();
-    float fCameraHeight = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_HeightValue(vCameraPosition.x, vCameraPosition.z);
-    if(vCameraPosition.x <= 0.0f || vCameraPosition.z <= 0.0f || vCameraPosition.x >= (CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_Width() - 1.0f) || (vCameraPosition.z >= CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_Height() - 1.0f))
+    
+    float fCameraHeight = vCameraPosition.y;
+    CHeightMapSetter* pMapSetter = CSceneMgr::Instance()->Get_HeightMapSetterRef();
+    if(pMapSetter != NULL)
+    {
+        fCameraHeight = pMapSetter->Get_HeightValue(vCameraPosition.x, vCameraPosition.z);
+    }
+    
+    if(pMapSetter != NULL && (vCameraPosition.x <= 0.0f || vCameraPosition.z <= 0.0f || vCameraPosition.x >= (pMapSetter->Get_Width() - 1.0f) || (vCameraPosition.z >= pMapSetter->Get_Height() - 1.0f)))
     {
         fCameraHeight = k_CAMERA_HEIGHT_OUT_MAP;
     }

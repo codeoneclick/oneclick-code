@@ -34,13 +34,24 @@ IVertexBuffer::IVertexBuffer(void)
     m_pData = NULL;
     m_eMode = GL_STATIC_DRAW;
     m_iNumVertexes = 0;
+    m_bIsCommited = false;
     glGenBuffers(1, &m_hHandle);
 }
 
 IVertexBuffer::~IVertexBuffer(void)
 {
-    glDeleteBuffers(1, &m_hHandle);
     SAFE_DELETE_ARRAY(m_pData);
+    try
+    {
+        std::cout<<"[~IVertexBuffer] glDeleteBuffers id :"<<m_hHandle<<std::endl;
+        glBindBuffer(GL_ARRAY_BUFFER, NULL);
+        glDeleteBuffers(1, &m_hHandle);
+    }
+    catch (int _error)
+    {
+        std::cout<<"[~IVertexBuffer] glDeleteBuffers exception id :"<<_error<<std::endl;
+    }
+    m_hHandle = 0;
 }
 
 void IVertexBuffer::Add_ShaderRef(CShader::E_RENDER_MODE _eRenderMode, CShader *_pShaderRef)
@@ -51,13 +62,29 @@ void IVertexBuffer::Add_ShaderRef(CShader::E_RENDER_MODE _eRenderMode, CShader *
 void IVertexBuffer::Unlock(void)
 {
     glBindBuffer(GL_ARRAY_BUFFER, m_hHandle);
-    glBufferData(GL_ARRAY_BUFFER, k_STRIDE_SIZE * m_iNumVertexes, m_pData, m_eMode);
+    if(!m_bIsCommited)
+    {
+        glBufferData(GL_ARRAY_BUFFER, k_STRIDE_SIZE * m_iNumVertexes, m_pData, m_eMode);
+        m_bIsCommited = true;
+    }
+    else
+    {
+        glBufferSubData(GL_ARRAY_BUFFER, 0, k_STRIDE_SIZE * m_iNumVertexes, m_pData);
+    }
 }
 
 void IVertexBuffer::Commit(void)
 {
     glBindBuffer(GL_ARRAY_BUFFER, m_hHandle);
-    glBufferData(GL_ARRAY_BUFFER, k_STRIDE_SIZE * m_iNumVertexes, m_pData, m_eMode);
+    if(!m_bIsCommited)
+    {
+        glBufferData(GL_ARRAY_BUFFER, k_STRIDE_SIZE * m_iNumVertexes, m_pData, m_eMode);
+        m_bIsCommited = true;
+    }
+    else
+    {
+        glBufferSubData(GL_ARRAY_BUFFER, 0, k_STRIDE_SIZE * m_iNumVertexes, m_pData);
+    }
 }
 
 

@@ -23,10 +23,10 @@ class CIndexBuffer
 private:
     unsigned short* m_pSourceData;
     unsigned short* m_pWorkingSourceData;
-    GLuint m_iHandle;
+    GLuint m_hHandle;
     unsigned int m_iNumIndexes;
     unsigned int m_iNumWorkingIndexes;
-    bool m_bIsInVRAM;
+    bool m_bIsCommited;
     GLenum m_eMode;
 public:
     CIndexBuffer(unsigned int _iNumIndexes);

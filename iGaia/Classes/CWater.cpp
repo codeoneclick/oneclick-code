@@ -35,11 +35,6 @@ void CWater::Load(const std::string& _sName, IResource::E_THREAD _eThread)
     pSourceData->m_pVertexBuffer = new CVertexBufferPositionTexcoord(pSourceData->m_iNumVertexes, GL_STATIC_DRAW);
     CVertexBufferPositionTexcoord::SVertex* pVertexBufferData = static_cast<CVertexBufferPositionTexcoord::SVertex*>(pSourceData->m_pVertexBuffer->Lock());
     
-    //glm::vec3* pPositionData = pSourceData->m_pVertexBuffer->GetOrCreate_PositionSourceData();
-    //glm::vec2* pTexCoordData = pSourceData->m_pVertexBuffer->GetOrCreate_TexcoordSourceData();
-    
-    //memset(pPositionData, 0x0, pSourceData->m_iNumVertexes * sizeof(glm::vec3));
-    
     pVertexBufferData[0].m_vPosition = glm::vec3( 0.0f,     m_fWaterHeight,  0.0f );
     pVertexBufferData[1].m_vPosition = glm::vec3( m_iWidth, m_fWaterHeight,  0.0f );
     pVertexBufferData[2].m_vPosition = glm::vec3( m_iWidth, m_fWaterHeight,  m_iHeight );
@@ -151,7 +146,7 @@ void CWater::Render(CShader::E_RENDER_MODE _eMode)
     
     m_pMesh->Get_VertexBufferRef()->Enable(_eMode);
     m_pMesh->Get_IndexBufferRef()->Enable();
-    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_SourceDataFromVRAM());
+    glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*)m_pMesh->Get_IndexBufferRef()->Get_SourceDataFromVRAM());
     m_pMesh->Get_IndexBufferRef()->Disable();
     m_pMesh->Get_VertexBufferRef()->Disable(_eMode);
 }

@@ -57,10 +57,7 @@ void CGameInGameLevel::Load(void)
 
 void CGameInGameLevel::Unload(void)
 {
-    CSceneMgr::Instance()->Remove_LandscapeModel(m_pLandscape);
-    CSceneMgr::Instance()->Remove_LandscapeGrassModel(m_pGrass);
-    CSceneMgr::Instance()->Remove_OceanModel(m_pOcean);
-    CSceneMgr::Instance()->Remove_SkyBoxModel(m_pSkyBox);
+    
 }
 
 void CGameInGameLevel::OnTouchEvent(ITouchDelegate* _pDelegateOwner)

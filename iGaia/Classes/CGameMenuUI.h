@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface CGameMenuUI : UIView
-
+@property(nonatomic, strong) UILabel* m_pInfoLabel;
 @end

@@ -12,7 +12,7 @@
 #include <iostream>
 #include "CBullet.h"
 
-#define k_MAX_NUM_BULLETS 16
+#define k_MAX_NUM_BULLETS 0
 
 class CGameShooterMgr
 {

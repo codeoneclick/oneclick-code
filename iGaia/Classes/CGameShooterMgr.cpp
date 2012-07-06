@@ -20,7 +20,24 @@ CGameShooterMgr::CGameShooterMgr(void)
 
 CGameShooterMgr::~CGameShooterMgr(void)
 {
+    std::vector<CBullet*>::iterator pBeginBulletIterator = m_lUnUsedBulletsContainer.begin();
+    std::vector<CBullet*>::iterator pEndBulletIterator = m_lUnUsedBulletsContainer.end();
+    while (pBeginBulletIterator != pEndBulletIterator)
+    {
+        SAFE_DELETE(*pBeginBulletIterator)
+        ++pBeginBulletIterator;
+    }
     
+    pBeginBulletIterator = m_lUsedBulletsContainer.begin();
+    pEndBulletIterator = m_lUsedBulletsContainer.end();
+    while (pBeginBulletIterator != pEndBulletIterator)
+    {
+        SAFE_DELETE(*pBeginBulletIterator)
+        ++pBeginBulletIterator;
+    }
+
+    m_lUnUsedBulletsContainer.clear();
+    m_lUsedBulletsContainer.clear();
 }
 
 void CGameShooterMgr::CreateBullet(const glm::vec3& _vPosition, const glm::vec3& _vDirection)

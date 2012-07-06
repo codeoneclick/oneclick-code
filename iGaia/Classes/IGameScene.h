@@ -11,7 +11,7 @@
 
 #include "CGameCharaterControllerMgr.h"
 #include "CGameAIMgr.h"
-#include "ILevel.h"
+#include "IGameLevel.h"
 #include "CSceneMgr.h"
 #include "CCharacterControllerPlayer.h"
 #include "CGameShooterMgr.h"
@@ -22,14 +22,14 @@ protected:
     CGameCharaterControllerMgr* m_pCharaterControllerMgr;
     CGameShooterMgr* m_pGameShooterMgr;
     CGameAIMgr* m_pGameAIMgr;
-    ILevel* m_pLevel;
+    IGameLevel* m_pLevel;
     CCharacterControllerPlayer* m_pCharacterControllerPlayer;
     ICamera* m_pCamera;
     ILight* m_pLight;
 public:
     IGameScene(void);
     virtual ~IGameScene(void);
-    ILevel* Get_Level(void) { return m_pLevel; }
+    IGameLevel* Get_Level(void) { return m_pLevel; }
     CGameCharaterControllerMgr* Get_GameCharaterControllerMgr(void) { return m_pCharaterControllerMgr; }
     CGameAIMgr* Get_GameAIMgr(void) { return m_pGameAIMgr; }
     CGameShooterMgr* Get_GameShooterMgr(void) { return m_pGameShooterMgr; }

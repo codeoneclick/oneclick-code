@@ -37,7 +37,7 @@ CCharacterControllerEnemy::CCharacterControllerEnemy(void)
 
 CCharacterControllerEnemy::~CCharacterControllerEnemy(void)
 {
-    
+    CSceneMgr::Instance()->RemoveEventListener(m_pBody->Get_BasisNode(), CEventMgr::E_EVENT_TOUCH);
 }
 
 long CCharacterControllerEnemy::_Get_TimeStamp(void)

@@ -58,6 +58,7 @@ void CVertexBufferPositionTexcoordNormalTangent::Enable(CShader::E_RENDER_MODE _
 
 void CVertexBufferPositionTexcoordNormalTangent::Disable(CShader::E_RENDER_MODE _eRenderMode)
 {
+    glBindBuffer(GL_ARRAY_BUFFER, m_hHandle);
     CShader* pShader = m_lShaderRefContainer[_eRenderMode];
     GLint iSlot = pShader->Get_VertexSlot(CShader::E_VERTEX_SLOT_POSITION);
     if(iSlot >= 0)
@@ -79,6 +80,7 @@ void CVertexBufferPositionTexcoordNormalTangent::Disable(CShader::E_RENDER_MODE 
     {
         glDisableVertexAttribArray(iSlot);
     }
+    glBindBuffer(GL_ARRAY_BUFFER, NULL);
 }
 
 

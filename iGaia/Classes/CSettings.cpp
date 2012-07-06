@@ -12,6 +12,6 @@ unsigned int CSettings::g_iCurrentFramesPerSecond = 0;
 unsigned int CSettings::g_iCurrentTrianglesPerFrame = 0;
 unsigned int CSettings::g_iTotalFramesPerSecond = 0;
 unsigned int CSettings::g_iTotalTriagnlesPerFrame = 0;
-bool CSettings::g_bEdgeDetect = true;
+bool CSettings::g_bEdgeDetect = false;
 bool CSettings::g_bOceanReflection = true;
 bool CSettings::g_bOceanRefraction = true;

@@ -34,7 +34,7 @@ CCharacterControllerPlayer::CCharacterControllerPlayer(void)
 
 CCharacterControllerPlayer::~CCharacterControllerPlayer(void)
 {
-    
+    CSceneMgr::Instance()->RemoveEventListener(m_pBody->Get_BasisNode(), CEventMgr::E_EVENT_TOUCH);
 }
 
 void CCharacterControllerPlayer::Load(void)
