@@ -38,6 +38,18 @@ void IResourceMgr::Thread()
     sleep(1);
 }
 
+void IResourceMgr::Cancel_Load(IDelegate *_pDelegate)
+{
+    std::map<std::string, IResource*>::iterator pBeginResource = m_lContainer.begin();
+    std::map<std::string, IResource*>::iterator pEndResource = m_lContainer.end();
+    while( pBeginResource != pEndResource)
+    {
+        IResource* pResource = pBeginResource->second;
+        pResource->Remove_DelegateOnwer(_pDelegate);
+        ++pBeginResource;
+    }
+}
+
 void IResourceMgr::Update()
 {
     std::map<std::string, IParser*>::iterator pBTask = m_lTaskPool.begin();

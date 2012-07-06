@@ -28,7 +28,6 @@ public:
     ICharacterController* Add_EnemyCharacterController(void);
     void Remove_MainCharacterController(void);
     void Remove_EnemyCharacterController(ICharacterController* _pCharacterController);
-    void Remove_AllCharacterControllers(void);
     void Reset_MainCharacterController(void);
     ICharacterController* Get_MainCharacterController(void) { return m_pCharacterControllerPlayer; }
     void Update(void);

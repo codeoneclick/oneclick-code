@@ -7,6 +7,7 @@
 //
 
 #include "ITankTrack.h"
+#include "CSceneMgr.h"
 
 ITankTrack::ITankTrack(void)
 {
@@ -24,7 +25,13 @@ ITankTrack::ITankTrack(void)
 
 ITankTrack::~ITankTrack(void)
 {
-    
+    std::cout<<"[~ITankTrack] delete"<<std::endl;
+    CSceneMgr::Instance()->Remove_Model(m_pLeftTrack);
+    CSceneMgr::Instance()->Remove_Model(m_pRightTrack);
+    CSceneMgr::Instance()->Get_ParticleMgr()->Remove_ParticleEmitter(m_pLeftTrackFireEmitter);
+    CSceneMgr::Instance()->Get_ParticleMgr()->Remove_ParticleEmitter(m_pLeftTrackSmokeEmitter);
+    CSceneMgr::Instance()->Get_ParticleMgr()->Remove_ParticleEmitter(m_pRightTrackFireEmitter);
+    CSceneMgr::Instance()->Get_ParticleMgr()->Remove_ParticleEmitter(m_pRightTrackSmokeEmitter);
 }
 
 void ITankTrack::Set_Position(const glm::vec3 &_vPosition)

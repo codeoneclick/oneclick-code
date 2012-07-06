@@ -242,7 +242,7 @@
 		A1F690471557CCAC00A2920A /* CJoystick.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1F690461557CCAC00A2920A /* CJoystick.mm */; };
 		A1FCBE7D15A44B17004FC37B /* IGameScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1FCBE7B15A44B17004FC37B /* IGameScene.cpp */; };
 		A1FCBE8015A44B4B004FC37B /* CGameSceneMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1FCBE7E15A44B4B004FC37B /* CGameSceneMgr.cpp */; };
-		A1FCBE8715A44D27004FC37B /* ILevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1FCBE8515A44D27004FC37B /* ILevel.cpp */; };
+		A1FCBE8715A44D27004FC37B /* IGameLevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1FCBE8515A44D27004FC37B /* IGameLevel.cpp */; };
 		A1FCBE9515A4741E004FC37B /* CGameMainMenuScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1FCBE9315A4741E004FC37B /* CGameMainMenuScene.cpp */; };
 		A1FCBE9815A47430004FC37B /* CGameMainMenuLevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1FCBE9615A47430004FC37B /* CGameMainMenuLevel.cpp */; };
 		A1FCBF1015A49E4E004FC37B /* CSlider.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1FCBF0F15A49E4E004FC37B /* CSlider.mm */; };
@@ -739,8 +739,8 @@
 		A1FCBE7C15A44B17004FC37B /* IGameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IGameScene.h; sourceTree = "<group>"; };
 		A1FCBE7E15A44B4B004FC37B /* CGameSceneMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGameSceneMgr.cpp; sourceTree = "<group>"; };
 		A1FCBE7F15A44B4B004FC37B /* CGameSceneMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGameSceneMgr.h; sourceTree = "<group>"; };
-		A1FCBE8515A44D27004FC37B /* ILevel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ILevel.cpp; sourceTree = "<group>"; };
-		A1FCBE8615A44D27004FC37B /* ILevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILevel.h; sourceTree = "<group>"; };
+		A1FCBE8515A44D27004FC37B /* IGameLevel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IGameLevel.cpp; sourceTree = "<group>"; };
+		A1FCBE8615A44D27004FC37B /* IGameLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; path = IGameLevel.h; sourceTree = "<group>"; };
 		A1FCBE9315A4741E004FC37B /* CGameMainMenuScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGameMainMenuScene.cpp; sourceTree = "<group>"; };
 		A1FCBE9415A4741E004FC37B /* CGameMainMenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGameMainMenuScene.h; sourceTree = "<group>"; };
 		A1FCBE9615A47430004FC37B /* CGameMainMenuLevel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGameMainMenuLevel.cpp; sourceTree = "<group>"; };
@@ -750,7 +750,7 @@
 		A1FCBF1615A58692004FC37B /* CGameUIMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGameUIMgr.cpp; sourceTree = "<group>"; };
 		A1FCBF1715A58692004FC37B /* CGameUIMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGameUIMgr.h; sourceTree = "<group>"; };
 		A1FCBF7E15A5D511004FC37B /* CGameMenuUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGameMenuUI.h; sourceTree = "<group>"; };
-		A1FCBF7F15A5D511004FC37B /* CGameMenuUI.mm */ = {isa = PBXFileReference; fileEncoding = 4; path = CGameMenuUI.mm; sourceTree = "<group>"; };
+		A1FCBF7F15A5D511004FC37B /* CGameMenuUI.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CGameMenuUI.mm; sourceTree = "<group>"; };
 		A1FFAA89156CBAE500B01ECB /* CFrustum.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CFrustum.cpp; sourceTree = "<group>"; };
 		A1FFAA8A156CBAE500B01ECB /* CFrustum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFrustum.h; sourceTree = "<group>"; };
 		CE8DFA9114587AFD00AE7288 /* CGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGame.h; sourceTree = "<group>"; };
@@ -1575,8 +1575,8 @@
 			children = (
 				A1FCBE7C15A44B17004FC37B /* IGameScene.h */,
 				A1FCBE7B15A44B17004FC37B /* IGameScene.cpp */,
-				A1FCBE8615A44D27004FC37B /* ILevel.h */,
-				A1FCBE8515A44D27004FC37B /* ILevel.cpp */,
+				A1FCBE8615A44D27004FC37B /* IGameLevel.h */,
+				A1FCBE8515A44D27004FC37B /* IGameLevel.cpp */,
 			);
 			name = GameUniversalScene;
 			sourceTree = "<group>";
@@ -1985,7 +1985,7 @@
 				A1F39F8815A1D17300E39591 /* ITankTrack.cpp in Sources */,
 				A1FCBE7D15A44B17004FC37B /* IGameScene.cpp in Sources */,
 				A1FCBE8015A44B4B004FC37B /* CGameSceneMgr.cpp in Sources */,
-				A1FCBE8715A44D27004FC37B /* ILevel.cpp in Sources */,
+				A1FCBE8715A44D27004FC37B /* IGameLevel.cpp in Sources */,
 				A1FCBE9515A4741E004FC37B /* CGameMainMenuScene.cpp in Sources */,
 				A1FCBE9815A47430004FC37B /* CGameMainMenuLevel.cpp in Sources */,
 				A1FCBF1015A49E4E004FC37B /* CSlider.mm in Sources */,

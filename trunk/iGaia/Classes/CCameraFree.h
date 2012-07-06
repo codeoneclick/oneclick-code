@@ -14,17 +14,15 @@
 class CCameraFree : public ICamera
 {
 protected:
-    
     float m_fMoveSpeed;
-    
-    void MoveForward();
-    void MoveBackward();
-    void MoveRight();
-    void MoveLeft();
+    void MoveForward(void);
+    void MoveBackward(void);
+    void MoveRight(void);
+    void MoveLeft(void);
     
 public:
-    CCameraFree();
-    virtual ~CCameraFree();
+    CCameraFree(void);
+    ~CCameraFree(void);
     virtual void Update(void);
     virtual void OnScreenMove(glm::vec2 _vMoveDirection);
     void Set_MoveSpeed(float _fMoveSpeed) { m_fMoveSpeed = _fMoveSpeed; } 

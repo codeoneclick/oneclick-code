@@ -50,6 +50,7 @@ void CVertexBufferPositionTexcoordColor::Enable(CShader::E_RENDER_MODE _eRenderM
 
 void CVertexBufferPositionTexcoordColor::Disable(CShader::E_RENDER_MODE _eRenderMode)
 {
+    glBindBuffer(GL_ARRAY_BUFFER, m_hHandle);
     CShader* pShader = m_lShaderRefContainer[_eRenderMode];
     GLint iSlot = pShader->Get_VertexSlot(CShader::E_VERTEX_SLOT_POSITION);
     if(iSlot >= 0)
@@ -66,4 +67,5 @@ void CVertexBufferPositionTexcoordColor::Disable(CShader::E_RENDER_MODE _eRender
     {
         glDisableVertexAttribArray(iSlot);
     }
+    glBindBuffer(GL_ARRAY_BUFFER, NULL);
 }

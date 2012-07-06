@@ -10,17 +10,17 @@
 #include "CCameraFree.h"
 #include "CInput.h"
 
-CCameraFree::CCameraFree()
+CCameraFree::CCameraFree(void)
 {
     m_fMoveSpeed = 0.3f;
 }
 
-CCameraFree::~CCameraFree()
+CCameraFree::~CCameraFree(void)
 {
     
 }
 
-void CCameraFree::Update()
+void CCameraFree::Update(void)
 {
     m_vPosition.y = m_fHeightFromLookAt;
     m_vPosition.x = m_vLookAt.x + cos(-m_vRotation.y) * -m_fDistanceToLookAt;
@@ -54,25 +54,25 @@ void CCameraFree::OnScreenMove(glm::vec2 _vMoveDirection)
     }
 }
 
-void CCameraFree::MoveForward()
+void CCameraFree::MoveForward(void)
 {
     m_vLookAt.x += sinf(m_vRotation.y) * m_fMoveSpeed;
     m_vLookAt.z += cosf(m_vRotation.y) * m_fMoveSpeed;
 }
 
-void CCameraFree::MoveBackward()
+void CCameraFree::MoveBackward(void)
 {
     m_vLookAt.x  -= sinf(m_vRotation.y) * m_fMoveSpeed;
     m_vLookAt.z  -= cosf(m_vRotation.y) * m_fMoveSpeed;
 }
 
-void CCameraFree::MoveRight()
+void CCameraFree::MoveRight(void)
 {
     m_vLookAt.x += cosf(-m_vRotation.y) * m_fMoveSpeed;
     m_vLookAt.z += sinf(-m_vRotation.y) * m_fMoveSpeed;
 }
 
-void CCameraFree::MoveLeft()
+void CCameraFree::MoveLeft(void)
 {
     m_vLookAt.x -= cosf(-m_vRotation.y) * m_fMoveSpeed;
     m_vLookAt.z -= sinf(-m_vRotation.y) * m_fMoveSpeed;

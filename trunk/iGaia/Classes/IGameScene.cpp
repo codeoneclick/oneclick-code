@@ -31,7 +31,13 @@ void IGameScene::Load(void)
 
 void IGameScene::Unload(void)
 {
-    
+    SAFE_DELETE(m_pGameAIMgr);
+    SAFE_DELETE(m_pCharaterControllerMgr);
+    m_pCharacterControllerPlayer = NULL;
+    SAFE_DELETE(m_pGameShooterMgr);
+    m_pLevel->Unload();
+    SAFE_DELETE(m_pLevel);
+    CSceneMgr::Instance()->Remove_Camera(m_pCamera);
 }
 
 void IGameScene::Update(void)
@@ -44,7 +50,15 @@ void IGameScene::Update(void)
     {
         m_pGameShooterMgr->Update();
     }
-    m_pGameShooterMgr->Update();
-    m_pGameAIMgr->Update();
-    m_pLevel->Update();
+    if(m_pGameAIMgr != NULL)
+    {
+        m_pGameAIMgr->Update();
+    }
+    if(m_pLevel != NULL)
+    {
+        m_pLevel->Update();
+    }
 }
+
+
+

@@ -33,7 +33,7 @@ protected:
     
 public:
     ICamera(void);
-    virtual ~ICamera();
+    virtual ~ICamera(void);
     
     void Init(int _iScreenWidth, int _iScreenHeight, float _fFovY, float _fFarPlane, float _fNearPlane);
     virtual void Update(void) = 0;

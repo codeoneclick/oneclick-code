@@ -26,7 +26,6 @@ public:
     ~CGameAIMgr(void);
     void Add_AICharacterController(ICharacterController* _pCharacterController);
     void Remove_AICharacterController(ICharacterController* _pCharacterController);
-    void Remove_All(void);
     void Update(void);
 };
 

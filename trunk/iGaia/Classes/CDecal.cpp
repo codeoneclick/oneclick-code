@@ -124,7 +124,17 @@ void CDecal::Update()
     
     int iRoundPositionX = m_vPosition.x;
     int iRoundPositionZ = m_vPosition.z;
-    float* pHeightmapData = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_SourceData();
+    CHeightMapSetter* pMapSetter = CSceneMgr::Instance()->Get_HeightMapSetterRef();
+    float* pHeightmapData = NULL;
+    if(pMapSetter != NULL)
+    {
+        pHeightmapData = pMapSetter->Get_SourceData();
+    }
+    else
+    {
+        return;
+    }
+    
     unsigned int index = 0;
     CVertexBufferPositionTexcoord::SVertex* pVertexBufferData = static_cast<CVertexBufferPositionTexcoord::SVertex*>(m_pMesh->Get_VertexBufferRef()->Lock());
     //glm::vec3* pPositionData = m_pMesh->Get_VertexBufferRef()->GetOrCreate_PositionSourceData();

@@ -21,7 +21,14 @@ ICharacterController::ICharacterController(void)
 
 ICharacterController::~ICharacterController(void)
 {
+    SAFE_DELETE(m_pBody);
+    SAFE_DELETE(m_pTower);
+    SAFE_DELETE(m_pTrack);
     
+    CSceneMgr::Instance()->Get_DecalMgr()->Remove_Decal(m_pShadowDecal);
+    CSceneMgr::Instance()->Get_DecalMgr()->Remove_Decal(m_pHealthDecal);
+
+    m_pTarget = NULL;
 }
 
 void ICharacterController::Load(void)

@@ -10,7 +10,7 @@
 #define iGaia_CGameInGameScene_h
 
 #include "IGameScene.h"
-#include "ILevel.h"
+#include "IGameLevel.h"
 
 #define k_CAMERA_DISTANCE_MODE_1 7.0f
 #define k_CAMERA_DISTANCE_MODE_2 7.0f

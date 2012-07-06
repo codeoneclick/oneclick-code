@@ -63,7 +63,7 @@ protected:
     void _SmoothRotation(void);
 public:
     ICharacterController(void);
-    ~ICharacterController(void);
+    virtual ~ICharacterController(void);
     
     virtual void Load(void);
     virtual void Update(void) = 0;

@@ -58,9 +58,9 @@ void CInput::Set_State(CInput::E_STATE _eState, glm::vec2 _vTouchPoint)
             break;
         case E_STATE_MOVE:
         {
-            glm::vec2 vDeltaMove = m_vEndTouchPoint - _vTouchPoint;
+            //glm::vec2 vDeltaMove = m_vEndTouchPoint - _vTouchPoint;
             m_vEndTouchPoint = _vTouchPoint;
-            CSceneMgr::Instance()->Get_Camera()->OnScreenMove(vDeltaMove);
+            //CSceneMgr::Instance()->Get_Camera()->OnScreenMove(vDeltaMove);
         }
             break;
         default:

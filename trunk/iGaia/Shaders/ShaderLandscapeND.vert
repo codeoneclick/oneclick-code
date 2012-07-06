@@ -24,7 +24,7 @@ void main(void)
     
     vNormal = normalize(mat3(EXT_MATRIX_World) * vNormal);
     OUT_Color.rgb = (vNormal + 1.0) / 2.0;
-    OUT_Color.a = 1.0;//gl_Position.z / gl_Position.w;
+    OUT_Color.a = 1.0;
     OUT_Clip = dot(vWorldPosition.xyz, EXT_Clip_Plane.xyz) + EXT_Clip_Plane.w;
 }
 );

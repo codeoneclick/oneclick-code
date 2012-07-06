@@ -23,7 +23,7 @@ CHeightMapSetter::~CHeightMapSetter(void)
 {
     SAFE_DELETE_ARRAY(m_pDataSource);
     SAFE_DELETE_ARRAY(m_pTextureSplattingDataSource);
-    glDeleteTextures(1, &m_hTextureSplatting);
+    //glDeleteTextures(1, &m_hTextureSplatting);
 }
 
 CMesh* CHeightMapSetter::Load_DataSource(const std::string _sName, int _iWidth, int _iHeight)

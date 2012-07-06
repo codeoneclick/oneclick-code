@@ -122,7 +122,7 @@ void CSceneMgr::Remove_LandscapeModel(INode *_pNode)
 
 void CSceneMgr::Remove_LandscapeGrassModel(INode *_pNode)
 {
-    Remove_LandscapeGrassModel(_pNode);
+    Remove_Model(_pNode);
 }
 
 void CSceneMgr::Remove_OceanModel(INode *_pNode)
@@ -168,6 +168,12 @@ ICamera* CSceneMgr::CreateTargetCamera(float _fFov, float _fNearPlane, float _fF
     pCamera->Init(CWindow::Get_OffScreenWidth(), CWindow::Get_OffScreenHeight(), _fFov, _fFarPlane, _fNearPlane);
     pCamera->Set_Target(_pTarget);
     return pCamera;
+}
+
+void CSceneMgr::Remove_Camera(ICamera *_pCamera)
+{
+    SAFE_DELETE(_pCamera);
+    m_pCamera = NULL;
 }
 
 void CSceneMgr::Remove_Model(INode *_pNode)
@@ -238,7 +244,7 @@ void CSceneMgr::Update()
         m_pCamera->Update();
     }
     
-    if(m_pFrustum != NULL)
+    if(m_pFrustum != NULL && m_pCamera != NULL)
     {
         m_pFrustum->Update();
     }
@@ -261,7 +267,10 @@ void CSceneMgr::Update()
         ++pBIterator;
     }
 
-    m_pCollisionMgr->Update();
+    if(m_pCollisionMgr != NULL)
+    {
+        m_pCollisionMgr->Update();
+    }
     
     if(m_pDecalMgr != NULL)
     {
@@ -348,12 +357,26 @@ void CSceneMgr::_DrawReflectionStep(void)
     float fWaterLevel = -0.1f;
     m_pRenderMgr->BeginDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_REFLECTION);
     
-    glm::vec3 vCameraPosition = m_pCamera->Get_Position();
+    glm::vec3 vCameraPosition = glm::vec3(0.0f, 0.0f, 0.0f);
+    if(m_pCamera != NULL)
+    {
+        vCameraPosition = m_pCamera->Get_Position();
+    }
+    
     vCameraPosition.y = -vCameraPosition.y + fWaterLevel * 2.0;
     
-    glm::vec3 vCameraLookAt = m_pCamera->Get_LookAt();
+    glm::vec3 vCameraLookAt = glm::vec3(0.0f, 0.0f, 0.0f);
+    if(m_pCamera != NULL)
+    {
+         vCameraLookAt = m_pCamera->Get_LookAt();
+    }
+   
     vCameraLookAt.y = -vCameraLookAt.y + fWaterLevel * 2.0f;
-    m_pCamera->Set_View(glm::lookAt(vCameraPosition, vCameraLookAt, glm::vec3(0.0f,-1.0f,0.0f)));
+    
+    if(m_pCamera != NULL)
+    {
+        m_pCamera->Set_View(glm::lookAt(vCameraPosition, vCameraLookAt, glm::vec3(0.0f,-1.0f,0.0f)));
+    }
     
     if(m_pSkyBox != NULL)
     {
@@ -370,7 +393,11 @@ void CSceneMgr::_DrawReflectionStep(void)
         }
         ++pBeginNodeIterator;
     }
-    m_pCamera->Set_View(glm::lookAt(m_pCamera->Get_Position(), m_pCamera->Get_LookAt(), glm::vec3(0.0f,1.0f,0.0f))); 
+    if(m_pCamera != NULL)
+    {
+        m_pCamera->Set_View(glm::lookAt(m_pCamera->Get_Position(), m_pCamera->Get_LookAt(), glm::vec3(0.0f,1.0f,0.0f)));
+    }
+    
     m_pRenderMgr->EndDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_REFLECTION);
 }
 

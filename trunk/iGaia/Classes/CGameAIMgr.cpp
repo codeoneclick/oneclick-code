@@ -15,7 +15,7 @@ CGameAIMgr::CGameAIMgr(void)
 
 CGameAIMgr::~CGameAIMgr(void)
 {
-    
+     m_lContainer.clear();
 }
 
 void CGameAIMgr::Add_AICharacterController(ICharacterController *_pCharacterController)
@@ -38,11 +38,6 @@ void CGameAIMgr::Remove_AICharacterController(ICharacterController *_pCharacterC
         }
         ++pBeginIterator;
     }
-}
-
-void CGameAIMgr::Remove_All(void)
-{
-    m_lContainer.clear();
 }
 
 float CGameAIMgr::_Get_RandomFromRange(float _fMin, float _fMax)

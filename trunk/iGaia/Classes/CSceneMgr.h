@@ -81,6 +81,7 @@ public:
     
     ICamera* CreateFreeCamera(float _fFov, float _fNearPlane, float _fFarPlane);
     ICamera* CreateTargetCamera(float _fFov, float _fNearPlane, float _fFarPlane, INode* _pTarget);
+    void Remove_Camera(ICamera* _pCamera);
     
     CRenderMgr* Get_RenderMgr(void) { return m_pRenderMgr; }
     CCollisionMgr* Get_CollisionMgr(void) { return m_pCollisionMgr; }

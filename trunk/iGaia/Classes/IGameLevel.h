@@ -1,13 +1,13 @@
 //
-//  ILevel.h
+//  IGameLevel.h
 //  iGaia
 //
 //  Created by sergey sergeev on 7/4/12.
 //
 //
 
-#ifndef __iGaia__ILevel__
-#define __iGaia__ILevel__
+#ifndef __iGaia__IGameLevel__
+#define __iGaia__IGameLevel__
 
 #include "CLandscape.h"
 #include "CGrass.h"
@@ -15,7 +15,7 @@
 #include "CSkyBox.h"
 #include "ITouchDelegate.h"
 
-class ILevel : public ITouchDelegate
+class IGameLevel : public ITouchDelegate
 {
 protected:
     CLandscape* m_pLandscape;
@@ -23,8 +23,8 @@ protected:
     CWater* m_pOcean;
     CSkyBox* m_pSkyBox;
 public:
-    ILevel(void);
-    ~ILevel(void);
+    IGameLevel(void);
+    virtual ~IGameLevel(void);
     CLandscape* Get_Landscape(void) { return m_pLandscape; }
     CGrass* Get_Grass(void) { return m_pGrass; }
     CWater* Get_Ocean(void) { return m_pOcean; }

@@ -31,6 +31,7 @@ public:
     void Update();
     IResource* Load(const std::string& _sName, IResource::E_MGR _eMgr, IResource::E_THREAD _eThread, IDelegate* _pDeleagte,const std::map<std::string, std::string>* _lParams = NULL);
     void Unload(IResource* _pResource);
+    void Cancel_Load(IDelegate* _pDeleagte);
 };
 
 #endif

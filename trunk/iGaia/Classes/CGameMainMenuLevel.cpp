@@ -56,7 +56,8 @@ void CGameMainMenuLevel::Load(void)
 
 void CGameMainMenuLevel::Unload(void)
 {
-    
+    CSceneMgr::Instance()->RemoveEventListener(m_pLandscape, CEventMgr::E_EVENT_TOUCH);
+    IGameLevel::Unload();
 }
 
 void CGameMainMenuLevel::OnTouchEvent(ITouchDelegate* _pDelegateOwner)
@@ -68,3 +69,5 @@ void CGameMainMenuLevel::Update(void)
 {
     
 }
+
+

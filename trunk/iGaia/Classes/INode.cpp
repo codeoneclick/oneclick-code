@@ -32,6 +32,8 @@ INode::~INode(void)
 {
     std::cout<<"[INode::~INode] delete"<<std::endl;
     
+    CResourceMgr::Instance()->Cancel_Load(this);
+    
     m_lDelegateOwners.clear();
     
     SAFE_DELETE(m_pBoundingBox);

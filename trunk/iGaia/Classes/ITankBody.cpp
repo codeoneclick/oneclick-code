@@ -7,6 +7,7 @@
 //
 
 #include "ITankBody.h"
+#include "CSceneMgr.h"
 
 ITankBody::ITankBody(void)
 {
@@ -17,7 +18,10 @@ ITankBody::ITankBody(void)
 
 ITankBody::~ITankBody(void)
 {
-    
+    std::cout<<"[~ITankBody] delete"<<std::endl;
+    CSceneMgr::Instance()->Remove_Model(m_pBody);
+    CSceneMgr::Instance()->Get_ParticleMgr()->Remove_ParticleEmitter(m_pLeftExhaustSmokeEmitter);
+    CSceneMgr::Instance()->Get_ParticleMgr()->Remove_ParticleEmitter(m_pRightExhaustSmokeEmitter);
 }
 
 void ITankBody::Set_Position(const glm::vec3 &_vPosition)

@@ -31,8 +31,8 @@ private:
     bool m_bIsTouch;
     SRay3d m_vTouchRay;
 public:
-    CCollisionMgr();
-    ~CCollisionMgr();
+    CCollisionMgr(void);
+    ~CCollisionMgr(void);
 
     void OnScreenTouch(glm::vec2 _vTouchPoint);
     

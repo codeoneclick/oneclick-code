@@ -16,8 +16,6 @@ const float CGrass::k_ELEMENT_HEIGHT = 1.75f;
 const int CGrass::k_ELEMENT_NUM_INDEXES = 6;
 const int CGrass::k_ELEMENT_NUM_VERTEXES = 4;
 
-#define k_MAX_QUADTREE_CHILDREN 4
-
 CGrass::CGrass(void)
 {
     m_iWidth = CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_Width();
@@ -69,7 +67,10 @@ CGrass::CGrass(void)
 
 CGrass::~CGrass(void)
 {
-    
+    SAFE_DELETE(m_pQuadTree);
+    SAFE_DELETE_ARRAY(m_pSingleElementIndexBuffer);
+    SAFE_DELETE(m_pSingleElementVertexBuffer);
+    m_pHeightMapSetter = NULL;
 }
 
 void CGrass::Load(const std::string &_sName, IResource::E_THREAD _eThread)
