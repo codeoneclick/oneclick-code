@@ -26,6 +26,7 @@ protected:
     float m_fZThreshold;
     
     GLuint m_hTextureSplatting;
+    GLuint m_hTextureHeightmap;
     
     GLuint m_hTextureDetailColor;
     GLuint m_hTextureDetailNormal;
@@ -40,6 +41,7 @@ protected:
     unsigned short* m_pTextureSplattingDataSource;
     
     void _Create_TextureSplatting(void);
+    void _Create_TextureHeightmap(void);
     void _Create_TextureDetail(void);
     void _CalculateNormals(IVertexBuffer* _pVertexBuffer, CIndexBuffer* _pIndexBuffer);
     void _CalculateTangentsAndBinormals(IVertexBuffer* _pVertexBuffer, CIndexBuffer* _pIndexBuffer);
@@ -64,9 +66,10 @@ public:
     float Get_HeightValue(glm::vec3 _vPosition);
     
     GLuint Get_TextureSplatting(void) { return m_hTextureSplatting; }
+    GLuint Get_TextureHeightmap(void) { return m_hTextureHeightmap; }
     
     GLuint Get_TextureDetailColor(void)   { return m_hTextureDetailColor; }
-    GLuint Get_TextureDetailNormal(void)  { return m_hTextureDetailColor; }
+    GLuint Get_TextureDetailNormal(void)  { return m_hTextureDetailNormal; }
     void Set_TextureDetailLayers(CTexture** _pTextures) { m_pTexturesDetailLayers = _pTextures;}
     void Draw_TextureDetail(void);
     bool Get_IsTextureDetailCreated(void) { return m_bIsTextureDetailCreated; }

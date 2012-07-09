@@ -36,6 +36,7 @@ protected:
     glm::mat4x4 m_mRotation;
     glm::mat4x4 m_mTranslation;
     glm::mat4x4 m_mWorld;
+    glm::mat4x4 m_mWVP;
     
     glm::vec3 m_vPosition;
     glm::vec3 m_vRotation;

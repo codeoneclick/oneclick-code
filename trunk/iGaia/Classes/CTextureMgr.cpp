@@ -15,7 +15,7 @@
 CTextureMgr::CTextureMgr(void)
 {
     CParser_PVR* pParser = new CParser_PVR();
-    pParser->Load("layer_02_diffuse.pvr");
+    pParser->Load("default.pvr");
     pParser->Commit();
     m_pDefaultTextureSourceData = static_cast<CTexture::SSourceData*>(pParser->Get_SourceData());
 }

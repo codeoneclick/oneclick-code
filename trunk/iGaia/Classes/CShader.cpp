@@ -18,6 +18,7 @@ const std::string CShader::k_VERTEX_SLOT_COLOR = "IN_SLOT_Color";
 const std::string CShader::k_ATTRIBUTE_MATRIX_WORLD = "EXT_MATRIX_World";
 const std::string CShader::k_ATTRIBUTE_MATRIX_VIEW = "EXT_MATRIX_View";
 const std::string CShader::k_ATTRIBUTE_MATRIX_PROJECTION = "EXT_MATRIX_Projection";
+const std::string CShader::k_ATTRIBUTE_MATRIX_WVP = "EXT_MATRIX_WVP";
 const std::string CShader::k_ATTRIBUTE_VECTOR_CAMERA_POSITION = "EXT_View";
 const std::string CShader::k_ATTRIBUTE_VECTOR_LIGHT_POSITION = "EXT_Light";
 const std::string CShader::k_ATTRIBUTE_VECTOR_CLIP_PLANE = "EXT_Clip_Plane";
@@ -40,6 +41,7 @@ CShader::CShader(GLuint _hHandle)
     m_lAttributeContainer[E_ATTRIBUTE_MATRIX_WORLD] = glGetUniformLocation(m_hHandle, k_ATTRIBUTE_MATRIX_WORLD.c_str());
     m_lAttributeContainer[E_ATTRIBUTE_MATRIX_VIEW] = glGetUniformLocation(m_hHandle, k_ATTRIBUTE_MATRIX_VIEW.c_str());
     m_lAttributeContainer[E_ATTRIBUTE_MATRIX_PROJECTION] = glGetUniformLocation(m_hHandle, k_ATTRIBUTE_MATRIX_PROJECTION.c_str());
+    m_lAttributeContainer[E_ATTRIBUTE_MATRIX_WVP] = glGetUniformLocation(m_hHandle, k_ATTRIBUTE_MATRIX_WVP.c_str());
     m_lAttributeContainer[E_ATTRIBUTE_VECTOR_CAMERA_POSITION] = glGetUniformLocation(m_hHandle, k_ATTRIBUTE_VECTOR_CAMERA_POSITION.c_str());
     m_lAttributeContainer[E_ATTRIBUTE_VECTOR_LIGHT_POSITION] = glGetUniformLocation(m_hHandle, k_ATTRIBUTE_VECTOR_LIGHT_POSITION.c_str());
     m_lAttributeContainer[E_ATTRIBUTE_VECTOR_CLIP_PLANE] = glGetUniformLocation(m_hHandle, k_ATTRIBUTE_VECTOR_CLIP_PLANE.c_str());
@@ -77,6 +79,18 @@ void CShader::Set_CustomMatrix(const glm::mat4x4 &_mValue, const std::string &_s
 {
     GLint hAttribute = glGetUniformLocation(m_hHandle, _sAttribute.c_str());
     glUniformMatrix4fv(hAttribute, 1, 0, &_mValue[0][0]);
+}
+
+void CShader::Set_Matrix3x3(const glm::mat3x3 &_mValue, CShader::E_ATTRIBUTE _eAttribute)
+{
+    GLint hAttribute = m_lAttributeContainer[_eAttribute];
+    glUniformMatrix3fv(hAttribute, 1, 0, &_mValue[0][0]);
+}
+
+void CShader::Set_CustomMatrix3x3(const glm::mat3x3 &_mValue, const std::string &_sAttribute)
+{
+    GLint hAttribute = glGetUniformLocation(m_hHandle, _sAttribute.c_str());
+    glUniformMatrix3fv(hAttribute, 1, 0, &_mValue[0][0]);
 }
 
 void CShader::Set_Vector2(const glm::vec2 &_vValue, CShader::E_ATTRIBUTE _eAttribute)

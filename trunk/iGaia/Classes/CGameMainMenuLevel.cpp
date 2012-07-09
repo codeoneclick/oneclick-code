@@ -46,7 +46,7 @@ void CGameMainMenuLevel::Load(void)
     m_pGrass = (CGrass*)CSceneMgr::Instance()->Add_LandscapeGrassModel("grass");
     m_pGrass->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_GRASS);
     m_pGrass->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_GRASS_ND);
-    m_pGrass->Set_Texture("mod_03.pvr", 0, CTexture::E_WRAP_MODE_REPEAT, IResource::E_THREAD_BACKGROUND);
+    m_pGrass->Set_Texture("mod_02.pvr", 0, CTexture::E_WRAP_MODE_CLAMP, IResource::E_THREAD_BACKGROUND);
     m_pGrass->Set_RenderMode(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, true);
     
     m_pSkyBox = (CSkyBox*)CSceneMgr::Instance()->Add_SkyBoxModel("skybox");

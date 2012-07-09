@@ -10,6 +10,14 @@
 #include "CSceneMgr.h"
 #include "CVertexBufferPositionTexcoord.h"
 
+glm::mat3x3 CDecal::m_mTextureTranslation = glm::mat3x3(1.0f, 0.0f, 0.5f,
+                                                        0.0f, 1.0f, 0.5f,
+                                                        0.0f, 0.0f, 1.0f);
+
+glm::mat3x3 CDecal::m_mTextureScale = glm::mat3x3(0.5f, 0.0f, 0.0f,
+                                                  0.0f, 0.5f, 0.0f,
+                                                  0.0f, 0.0f, 1.0f);
+
 CDecal::CDecal(void)
 {
     m_vColor = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
@@ -160,6 +168,12 @@ void CDecal::Update()
         }
     }
     
+    m_mTextureRotation = glm::mat3x3(cosf(glm::radians(m_vRotation.y)), -sinf(glm::radians(m_vRotation.y)), 0.0,
+                                     sinf(glm::radians(m_vRotation.y)),  cosf(glm::radians(m_vRotation.y)), 0.0,
+                                      0.0           ,  0.0           , 1.0);
+    
+    m_mTexture = m_mTextureScale * m_mTextureRotation * m_mTextureTranslation;
+    
     m_pMesh->Get_VertexBufferRef()->Commit();
 }
 
@@ -186,7 +200,7 @@ void CDecal::Render(CShader::E_RENDER_MODE _eMode)
             pShader->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
             pShader->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
             pShader->Set_CustomVector3(m_vPosition, "EXT_Center");
-            pShader->Set_CustomFloat(glm::radians(m_vRotation.y), "EXT_Angle");
+            pShader->Set_CustomMatrix3x3(m_mTexture, "EXT_MATRIX_TEXTURE");
             pShader->Set_CustomVector4(m_vColor, "EXT_Color");
             
             for(unsigned int i = 0; i < k_TEXTURES_MAX_COUNT; ++i)

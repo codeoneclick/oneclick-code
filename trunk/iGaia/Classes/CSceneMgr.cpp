@@ -416,6 +416,7 @@ void CSceneMgr::_DrawRefractionStep(void)
         }
         ++pBeginNodeIterator;
     }
+    
     m_pRenderMgr->EndDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_REFRACTION);
 }
 

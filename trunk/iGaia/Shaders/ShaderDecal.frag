@@ -3,7 +3,8 @@ const char* ShaderDecalF = STRINGIFY(
                                                     uniform highp   vec3   EXT_Center;
                                                     uniform highp   float  EXT_Angle;
                                                     uniform lowp    vec4   EXT_Color;
-                                                    uniform sampler2D EXT_TEXTURE_01;                                
+                                                    uniform sampler2D EXT_TEXTURE_01;
+                                                    uniform mediump mat4   EXT_MATRIX_TEXTURE;                                
 void main(void)
 {
     highp float fRadius = 2.0;
