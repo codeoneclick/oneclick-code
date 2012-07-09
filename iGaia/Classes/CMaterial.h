@@ -41,6 +41,7 @@ public:
     
     CShader*  Get_Shader(CShader::E_RENDER_MODE _eMode);
     CTexture* Get_Texture(unsigned int _index);
+    CTexture** Get_Textures(void) { return m_pTextures; }
     
     void Set_Texture(CTexture* _pTexture, int _index, CTexture::E_WRAP_MODE _eWrap);
     void Set_Texture(INode* _pNodeRef, const std::string &_sName, int _index, CTexture::E_WRAP_MODE _eWrap, IResource::E_THREAD _eThread = IResource::E_THREAD_MAIN);
@@ -60,7 +61,7 @@ public:
     void Commit(CShader::E_RENDER_MODE _eMode);
     
     bool Check_RenderMode(CShader::E_RENDER_MODE _eMode) { if(m_pShaders[_eMode] != NULL) return true; else return false; }
-    static void Set_ExtCommitedShaderRef(CShader* m_pShaderRef) { m_hShaderHandleCommited = m_pShaderRef->Get_Handle(); m_pShaderRef->Enable(); }
+    static void Set_ExtCommitedShaderRef(CShader* _pShaderRef) { m_hShaderHandleCommited = _pShaderRef->Get_Handle(); _pShaderRef->Enable(); }
 };
 
 #endif /* defined(__iGaia__CMaterial__) */

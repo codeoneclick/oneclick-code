@@ -285,6 +285,8 @@ void CLandscape::Update(void)
     _CheckVisibleQuadTreeNode(m_pQuadTree);
     m_pMesh->Get_IndexBufferRef()->Set_NumWorkingIndexes(m_iWorkingNumIndexes);
     m_pMesh->Get_IndexBufferRef()->Commit();
+    
+    m_pHeightMapSetter->Set_TextureDetailLayers(m_pMaterial->Get_Textures());
 }
 
 void CLandscape::Render(CShader::E_RENDER_MODE _eMode)
@@ -324,7 +326,7 @@ void CLandscape::Render(CShader::E_RENDER_MODE _eMode)
                 pShader->Set_Texture(pTexture->Get_Handle(), static_cast<CShader::E_TEXTURE_SLOT>(i));
             }
 
-            pShader->Set_Texture(m_pHeightMapSetter->Get_TextureSplatting(), CShader::E_TEXTURE_SLOT_07);
+            pShader->Set_Texture(m_pHeightMapSetter->Get_TextureDetailColor(), CShader::E_TEXTURE_SLOT_07);
             pShader->Set_Vector4(glm::vec4(0.0f, 1.0, 0.0, 0.1), CShader::E_ATTRIBUTE_VECTOR_CLIP_PLANE);
         }
             break;
@@ -352,7 +354,7 @@ void CLandscape::Render(CShader::E_RENDER_MODE _eMode)
                 pShader->Set_Texture(pTexture->Get_Handle(), static_cast<CShader::E_TEXTURE_SLOT>(i));
             }
             
-            pShader->Set_Texture(m_pHeightMapSetter->Get_TextureSplatting(), CShader::E_TEXTURE_SLOT_07);
+            pShader->Set_Texture(m_pHeightMapSetter->Get_TextureDetailColor(), CShader::E_TEXTURE_SLOT_07);
             pShader->Set_Vector4(glm::vec4(0.0f, 1.0, 0.0, 0.1), CShader::E_ATTRIBUTE_VECTOR_CLIP_PLANE);
         }
             break;
@@ -379,7 +381,7 @@ void CLandscape::Render(CShader::E_RENDER_MODE _eMode)
                 }
                 pShader->Set_Texture(pTexture->Get_Handle(), static_cast<CShader::E_TEXTURE_SLOT>(i));
             }
-            pShader->Set_Texture(m_pHeightMapSetter->Get_TextureSplatting(), CShader::E_TEXTURE_SLOT_07);
+            pShader->Set_Texture(m_pHeightMapSetter->Get_TextureDetailColor(), CShader::E_TEXTURE_SLOT_07);
             pShader->Set_Vector4(glm::vec4(0.0f, -1.0, 0.0, 0.1), CShader::E_ATTRIBUTE_VECTOR_CLIP_PLANE);
         }
             break;

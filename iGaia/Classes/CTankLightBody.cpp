@@ -26,8 +26,14 @@ void CTankLightBody::Load(void)
     m_pBody->Set_Texture("model_01.pvr", 0, CTexture::E_WRAP_MODE_REPEAT);
     m_pBody->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_MODEL);
     m_pBody->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_MODEL_ND);
+    m_pBody->Set_Shader(CShader::E_RENDER_MODE_REFLECTION, IResource::E_SHADER_MODEL);
+    m_pBody->Set_Shader(CShader::E_RENDER_MODE_REFRACTION, IResource::E_SHADER_MODEL);
     m_pBody->Create_BoundingBox();
     m_pBody->Set_RenderMode(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, true);
+    m_pBody->Set_RenderMode(CShader::E_RENDER_MODE_REFLECTION, true);
+    m_pBody->Set_RenderMode(CShader::E_RENDER_MODE_REFRACTION, true);
+
+    
     
     m_pLeftExhaustSmokeEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(32, glm::vec2(0.025f), glm::vec2(0.45f), 1000, true);
     m_pLeftExhaustSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_PARTICLE);

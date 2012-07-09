@@ -15,8 +15,10 @@
 #include "CMaterial.h"
 #include "CSettings.h"
 
-int CScreenSpacePostMgr::k_REFLECTION_TEXTURE_SIZE = 128;
-int CScreenSpacePostMgr::k_REFRACTION_TEXTURE_SIZE = 128;
+int CScreenSpacePostMgr::k_REFLECTION_TEXTURE_SIZE = 256;
+int CScreenSpacePostMgr::k_REFRACTION_TEXTURE_SIZE = 256;
+
+int CScreenSpacePostMgr::k_LANDSCAPE_DETAIL_TEXTURE_SIZE = 1024;
 
 CScreenSpacePostMgr::CScreenSpacePostMgr(void)
 {
@@ -25,6 +27,8 @@ CScreenSpacePostMgr::CScreenSpacePostMgr(void)
     m_pOffScreenSize[E_OFFSCREEN_MODE_REFRACTION] = glm::vec2(k_REFRACTION_TEXTURE_SIZE, k_REFRACTION_TEXTURE_SIZE);
     m_pOffScreenSize[E_OFFSCREEN_MODE_EDGE_DETECT] = glm::vec2(CWindow::Get_OffScreenWidth(), CWindow::Get_OffScreenHeight());
     m_pOffScreenSize[E_OFFSCREEN_MODE_SCREEN_NORMAL_MAP] = glm::vec2(CWindow::Get_OffScreenWidth(), CWindow::Get_OffScreenHeight());
+    m_pOffScreenSize[E_OFFSCREEN_MODE_LANDSCAPE_DETAIL_COLOR] = glm::vec2(k_LANDSCAPE_DETAIL_TEXTURE_SIZE, k_LANDSCAPE_DETAIL_TEXTURE_SIZE);
+    m_pOffScreenSize[E_OFFSCREEN_MODE_LANDSCAPE_DETAIL_NORMAL] = glm::vec2(k_LANDSCAPE_DETAIL_TEXTURE_SIZE, k_LANDSCAPE_DETAIL_TEXTURE_SIZE);
     
     glGenTextures(E_OFFSCREEN_MODE_MAX, m_hOffScreenTextures);
     glGenTextures(E_OFFSCREEN_MODE_MAX, m_hOffScreenDepthTextures);
@@ -125,9 +129,9 @@ CScreenSpacePostMgr::CScreenSpacePostMgr(void)
     pIndexBufferData[i++] = 1;
     pIndexBufferData[i++] = 2;
     
-    pIndexBufferData[i++] = 3; 
+    pIndexBufferData[i++] = 1; 
     pIndexBufferData[i++] = 2; 
-    pIndexBufferData[i++] = 1;
+    pIndexBufferData[i++] = 3;
     
     m_pMesh = new CMesh(IResource::E_CREATION_MODE_CUSTOM);
     m_pMesh->Set_SourceData(pSourceData);
@@ -135,17 +139,11 @@ CScreenSpacePostMgr::CScreenSpacePostMgr(void)
     m_pMesh->Get_VertexBufferRef()->Commit();
     m_pMesh->Get_IndexBufferRef()->Commit();
     
-    m_pShaderPostSimple = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_SCREEN_PLANE);
-    m_pShaderPostBloomExtract = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_SCREEN_PLANE_BLOOM_EXTRACT);
-    m_pShaderPostBloomCombine = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_SCREEN_PLANE_BLOOM_COMBINE);
-    m_pShaderPostBlur = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_SCREEN_PLANE_BLUR);
-    m_pShaderPostEdgeDetect = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_SCREEN_PLANE_EDGE_DETECT);
+    m_pPostShader[E_OFFSCREEN_MODE_SIMPLE] = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_SCREEN_PLANE);
+    m_pPostShader[E_OFFSCREEN_MODE_EDGE_DETECT] = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_SCREEN_PLANE_EDGE_DETECT);
     
-    m_pMesh->Get_VertexBufferRef()->Add_ShaderRef(CShader::E_RENDER_MODE_SCREEN_SPACE_SIMPLE, m_pShaderPostSimple);
-    m_pMesh->Get_VertexBufferRef()->Add_ShaderRef(CShader::E_RENDER_MODE_SCREEN_SPACE_BLOOM_EXTRACT, m_pShaderPostBloomExtract);
-    m_pMesh->Get_VertexBufferRef()->Add_ShaderRef(CShader::E_RENDER_MODE_SCREEN_SPACE_BLOOM_COMBINE, m_pShaderPostBloomCombine);
-    m_pMesh->Get_VertexBufferRef()->Add_ShaderRef(CShader::E_RENDER_MODE_SCREEN_SPACE_BLUR, m_pShaderPostBlur);
-    m_pMesh->Get_VertexBufferRef()->Add_ShaderRef(CShader::E_RENDER_MODE_SCREEN_SPACE_EDGE_DETECT, m_pShaderPostEdgeDetect);
+    m_pMesh->Get_VertexBufferRef()->Add_ShaderRef(CShader::E_RENDER_MODE_SCREEN_SPACE_SIMPLE, m_pPostShader[E_OFFSCREEN_MODE_SIMPLE]);
+    m_pMesh->Get_VertexBufferRef()->Add_ShaderRef(CShader::E_RENDER_MODE_SCREEN_SPACE_EDGE_DETECT, m_pPostShader[E_OFFSCREEN_MODE_EDGE_DETECT]);
 }
 
 CScreenSpacePostMgr::~CScreenSpacePostMgr(void)
@@ -184,15 +182,15 @@ void CScreenSpacePostMgr::Render_PostSimple(void)
     glDisable(GL_CULL_FACE);
     glDisable(GL_BLEND);
 
-    CMaterial::Set_ExtCommitedShaderRef(m_pShaderPostSimple);
-    m_pShaderPostSimple->Enable();
+    CMaterial::Set_ExtCommitedShaderRef(m_pPostShader[E_OFFSCREEN_MODE_SIMPLE]);
+    m_pPostShader[E_OFFSCREEN_MODE_SIMPLE]->Enable();
     if(CSettings::g_bEdgeDetect)
     {
-        m_pShaderPostSimple->Set_Texture(m_hOffScreenTextures[E_OFFSCREEN_MODE_EDGE_DETECT], CShader::E_TEXTURE_SLOT_01);
+        m_pPostShader[E_OFFSCREEN_MODE_SIMPLE]->Set_Texture(m_hOffScreenTextures[E_OFFSCREEN_MODE_EDGE_DETECT], CShader::E_TEXTURE_SLOT_01);
     }
     else
     {
-        m_pShaderPostSimple->Set_Texture(m_hOffScreenTextures[E_OFFSCREEN_MODE_SIMPLE], CShader::E_TEXTURE_SLOT_01);
+        m_pPostShader[E_OFFSCREEN_MODE_SIMPLE]->Set_Texture(m_hOffScreenTextures[E_OFFSCREEN_MODE_SIMPLE], CShader::E_TEXTURE_SLOT_01);
     }
     m_pMesh->Get_VertexBufferRef()->Enable(CShader::E_RENDER_MODE_SCREEN_SPACE_SIMPLE);
     m_pMesh->Get_IndexBufferRef()->Enable();
@@ -245,9 +243,9 @@ void CScreenSpacePostMgr::Render_PostEdgeDetect(void)
     glDisable(GL_CULL_FACE);
     glDisable(GL_BLEND);
     
-    CMaterial::Set_ExtCommitedShaderRef(m_pShaderPostEdgeDetect);
-    m_pShaderPostEdgeDetect->Set_Texture(m_hOffScreenTextures[E_OFFSCREEN_MODE_SIMPLE], CShader::E_TEXTURE_SLOT_01);
-    m_pShaderPostEdgeDetect->Set_Texture(m_hOffScreenTextures[E_OFFSCREEN_MODE_SCREEN_NORMAL_MAP], CShader::E_TEXTURE_SLOT_02);
+    CMaterial::Set_ExtCommitedShaderRef(m_pPostShader[E_OFFSCREEN_MODE_EDGE_DETECT]);
+    m_pPostShader[E_OFFSCREEN_MODE_EDGE_DETECT]->Set_Texture(m_hOffScreenTextures[E_OFFSCREEN_MODE_SIMPLE], CShader::E_TEXTURE_SLOT_01);
+    m_pPostShader[E_OFFSCREEN_MODE_EDGE_DETECT]->Set_Texture(m_hOffScreenTextures[E_OFFSCREEN_MODE_SCREEN_NORMAL_MAP], CShader::E_TEXTURE_SLOT_02);
     m_pMesh->Get_VertexBufferRef()->Enable(CShader::E_RENDER_MODE_SCREEN_SPACE_EDGE_DETECT);
     m_pMesh->Get_IndexBufferRef()->Enable();
     glDrawElements(GL_TRIANGLES, m_pMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pMesh->Get_IndexBufferRef()->Get_SourceDataFromVRAM());

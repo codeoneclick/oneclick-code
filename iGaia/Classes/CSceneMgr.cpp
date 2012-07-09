@@ -454,15 +454,24 @@ void CSceneMgr::_DrawScreenNormalMapStep(void)
 void CSceneMgr::Render(void)
 {
     CSettings::g_iCurrentTrianglesPerFrame = 0;
+    
+    if(m_pHeightMapSetterRef != NULL && !m_pHeightMapSetterRef->Get_IsTextureDetailCreated())
+    {
+        m_pHeightMapSetterRef->Draw_TextureDetail();
+    }
+    
     if(CSettings::g_bOceanReflection)
     {
         _DrawReflectionStep();
     }
+    
     if(CSettings::g_bOceanRefraction)
     {
         _DrawRefractionStep();
     }
+    
     _DrawSimpleStep();
+    
     if(CSettings::g_bEdgeDetect)
     {
         _DrawScreenNormalMapStep();
