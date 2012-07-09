@@ -113,6 +113,8 @@ void CCharacterControllerEnemy::Shoot(void)
 
 void CCharacterControllerEnemy::Update(void)
 {
+    float fTrackTexCoordOffsetMoveFactor  = 0.2f;
+    float fTrackTexCoordOffsetSteerFactor = 0.1f;
     switch (m_eState)
     {
         case E_AI_STATE_NONE:
@@ -140,6 +142,8 @@ void CCharacterControllerEnemy::Update(void)
             if(fabs(fAngleToMovePoint - m_vRotation.y) > 45.0f)
             {
                 SteerLeft();
+                m_pTrack->Move_LeftTrack(-fTrackTexCoordOffsetMoveFactor);
+                m_pTrack->Move_RightTrack(fTrackTexCoordOffsetMoveFactor);
             }
             else
             {
@@ -148,8 +152,10 @@ void CCharacterControllerEnemy::Update(void)
                     SteerLeft();
                 }
                 MoveForward();
+                m_pTrack->Move_LeftTrack(-fTrackTexCoordOffsetMoveFactor);
+                m_pTrack->Move_RightTrack(-fTrackTexCoordOffsetMoveFactor);
             }
-                 
+             
             m_vRotation.y =  glm::degrees(CMathHelper::Instance()->Get_RotationBetweenPoints(m_vMovePoint, m_vPosition) - CMathHelper::k_HALF_PI);
             m_pBody->StartExhaust(true);
         }

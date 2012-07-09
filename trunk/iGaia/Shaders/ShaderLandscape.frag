@@ -17,7 +17,7 @@ void main(void)
     if(OUT_Clip < 0.0)
           discard;
 
-    lowp float fAmbientFactor = 0.33;
+    /*lowp float fAmbientFactor = 0.33;
     
     lowp vec4 vSplattingColor = texture2D(EXT_TEXTURE_07, OUT_SplattingTexCoord);
     
@@ -50,6 +50,7 @@ void main(void)
     vDiffuseColor = vDiffuseColor * fDiffuseFactor;
 
     lowp vec4 vColor = vDiffuseColor * fSelfShadow + vAmbientColor;
-    gl_FragColor = vColor;
+    gl_FragColor = vColor;*/
+    gl_FragColor = texture2D(EXT_TEXTURE_07, OUT_SplattingTexCoord);
 }
 );

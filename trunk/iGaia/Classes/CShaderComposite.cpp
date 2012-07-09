@@ -59,6 +59,9 @@
 #include "../Shaders/ShaderPostEdgeDetect.frag"
 #include "../Shaders/ShaderPostEdgeDetect.vert"
 
+#include "../Shaders/ShaderPostLandscapeDetail.frag"
+#include "../Shaders/ShaderPostLandscapeDetail.vert"
+
 CShaderComposite* CShaderComposite::m_pInstance = NULL;
 
 CShaderComposite::CShaderComposite()
@@ -129,7 +132,10 @@ CShaderComposite::CShaderComposite()
     pData = pParser->Load(ShaderPostEdgeDetectV, ShaderPostEdgeDetectF);
     pShader = new CShader(pData.s_pHandle);
     m_lContainer[IResource::E_SHADER_SCREEN_PLANE_EDGE_DETECT] = pShader;
-
+    
+    pData = pParser->Load(ShaderPostLandscapeDetailV, ShaderPostLandscapeDetailF);
+    pShader = new CShader(pData.s_pHandle);
+    m_lContainer[IResource::E_SHADER_SCREEN_PLANE_LANDSCAPE_DETAIL] = pShader;
 }
 
 CShaderComposite::~CShaderComposite()

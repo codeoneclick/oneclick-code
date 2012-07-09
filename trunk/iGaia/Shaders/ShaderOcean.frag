@@ -18,7 +18,8 @@ void main(void)
     vTexCoordProj.y = 0.5 + 0.5 * vTexCoordProj.y / OUT_TexCoordProj.w;
     vTexCoordProj = clamp(vTexCoordProj, 0.001, 0.999);
     lowp vec4 vRefractionColor = texture2D(EXT_TEXTURE_02, vTexCoordProj);
-    
-    gl_FragColor = mix(mix(vReflectionColor, vRefractionColor, 0.5), vec4(0.27, 0.35, 0.77, 1.0), 0.5);
+    lowp vec4 vColor = mix(mix(vReflectionColor, vRefractionColor, 0.5), vec4(0.27, 0.35, 0.77, 1.0), 0.5);
+    vColor.a = 1.0;
+    gl_FragColor = vColor;
 }
 );

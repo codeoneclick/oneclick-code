@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1520865415A82C05001F0F8F /* ShaderPostLandscapeDetail.frag in Sources */ = {isa = PBXBuildFile; fileRef = 1520865215A82C05001F0F8F /* ShaderPostLandscapeDetail.frag */; };
+		1520865515A82C05001F0F8F /* ShaderPostLandscapeDetail.vert in Sources */ = {isa = PBXBuildFile; fileRef = 1520865315A82C05001F0F8F /* ShaderPostLandscapeDetail.vert */; };
 		1D3623260D0F684500981E51 /* MainAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* MainAppDelegate.mm */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
@@ -257,6 +259,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1520865215A82C05001F0F8F /* ShaderPostLandscapeDetail.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderPostLandscapeDetail.frag; path = Shaders/ShaderPostLandscapeDetail.frag; sourceTree = "<group>"; };
+		1520865315A82C05001F0F8F /* ShaderPostLandscapeDetail.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderPostLandscapeDetail.vert; path = Shaders/ShaderPostLandscapeDetail.vert; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* MainAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainAppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* MainAppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MainAppDelegate.mm; sourceTree = "<group>"; };
@@ -740,7 +744,7 @@
 		A1FCBE7E15A44B4B004FC37B /* CGameSceneMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGameSceneMgr.cpp; sourceTree = "<group>"; };
 		A1FCBE7F15A44B4B004FC37B /* CGameSceneMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGameSceneMgr.h; sourceTree = "<group>"; };
 		A1FCBE8515A44D27004FC37B /* IGameLevel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IGameLevel.cpp; sourceTree = "<group>"; };
-		A1FCBE8615A44D27004FC37B /* IGameLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; path = IGameLevel.h; sourceTree = "<group>"; };
+		A1FCBE8615A44D27004FC37B /* IGameLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IGameLevel.h; sourceTree = "<group>"; };
 		A1FCBE9315A4741E004FC37B /* CGameMainMenuScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGameMainMenuScene.cpp; sourceTree = "<group>"; };
 		A1FCBE9415A4741E004FC37B /* CGameMainMenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGameMainMenuScene.h; sourceTree = "<group>"; };
 		A1FCBE9615A47430004FC37B /* CGameMainMenuLevel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGameMainMenuLevel.cpp; sourceTree = "<group>"; };
@@ -1026,6 +1030,8 @@
 		935D65031504ADED00FBE552 /* ScreenSpaceEffect */ = {
 			isa = PBXGroup;
 			children = (
+				1520865215A82C05001F0F8F /* ShaderPostLandscapeDetail.frag */,
+				1520865315A82C05001F0F8F /* ShaderPostLandscapeDetail.vert */,
 				4D508D32102600410065571B /* ShaderPostPlane.frag */,
 				4D508D33102600410065571B /* ShaderPostPlane.vert */,
 				933A6F581521199300CDE1A6 /* ShaderPostEdgeDetect.frag */,
@@ -1991,6 +1997,8 @@
 				A1FCBF1015A49E4E004FC37B /* CSlider.mm in Sources */,
 				A1FCBF1815A58692004FC37B /* CGameUIMgr.cpp in Sources */,
 				A1FCBF8015A5D511004FC37B /* CGameMenuUI.mm in Sources */,
+				1520865415A82C05001F0F8F /* ShaderPostLandscapeDetail.frag in Sources */,
+				1520865515A82C05001F0F8F /* ShaderPostLandscapeDetail.vert in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

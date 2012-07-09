@@ -12,6 +12,7 @@
 
 #include "CTileSetter.h"
 #include "CMesh.h"
+#include "CTexture.h"
 
 class CHeightMapSetter
 {
@@ -26,9 +27,20 @@ protected:
     
     GLuint m_hTextureSplatting;
     
+    GLuint m_hTextureDetailColor;
+    GLuint m_hTextureDetailNormal;
+
+    CTexture** m_pTexturesDetailLayers; 
+    
+    CMesh* m_pPostRenderScreenPlaneMesh;
+    CShader* m_pPostRenderScreenPlaneShader;
+    
+    bool m_bIsTextureDetailCreated;
+    
     unsigned short* m_pTextureSplattingDataSource;
     
     void _Create_TextureSplatting(void);
+    void _Create_TextureDetail(void);
     void _CalculateNormals(IVertexBuffer* _pVertexBuffer, CIndexBuffer* _pIndexBuffer);
     void _CalculateTangentsAndBinormals(IVertexBuffer* _pVertexBuffer, CIndexBuffer* _pIndexBuffer);
     void _CalculateTriangleBasis(const glm::vec3& E, const glm::vec3& F, const glm::vec3& G, float sE,
@@ -52,6 +64,12 @@ public:
     float Get_HeightValue(glm::vec3 _vPosition);
     
     GLuint Get_TextureSplatting(void) { return m_hTextureSplatting; }
+    
+    GLuint Get_TextureDetailColor(void)   { return m_hTextureDetailColor; }
+    GLuint Get_TextureDetailNormal(void)  { return m_hTextureDetailColor; }
+    void Set_TextureDetailLayers(CTexture** _pTextures) { m_pTexturesDetailLayers = _pTextures;}
+    void Draw_TextureDetail(void);
+    bool Get_IsTextureDetailCreated(void) { return m_bIsTextureDetailCreated; }
     
     void Update(void);
 };

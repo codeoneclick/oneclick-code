@@ -10,6 +10,7 @@
 #include "CHeightMapSetter.h"
 #include "CSceneMgr.h"
 #include "CVertexBufferPositionTexcoordNormalTangent.h"
+#include "CVertexBufferPositionTexcoord.h"
 
 CHeightMapSetter::CHeightMapSetter(void)
 {
@@ -17,13 +18,17 @@ CHeightMapSetter::CHeightMapSetter(void)
     m_fXThreshold = 0.0f;
     m_fZThreshold = 0.0f;
     m_pTextureSplattingDataSource = NULL;
+    m_pPostRenderScreenPlaneMesh = NULL;
+    m_pPostRenderScreenPlaneShader = NULL;
+    
+    m_bIsTextureDetailCreated = false;
 }
 
 CHeightMapSetter::~CHeightMapSetter(void)
 {
     SAFE_DELETE_ARRAY(m_pDataSource);
     SAFE_DELETE_ARRAY(m_pTextureSplattingDataSource);
-    //glDeleteTextures(1, &m_hTextureSplatting);
+    glDeleteTextures(1, &m_hTextureSplatting);
 }
 
 CMesh* CHeightMapSetter::Load_DataSource(const std::string _sName, int _iWidth, int _iHeight)
@@ -108,6 +113,7 @@ CMesh* CHeightMapSetter::Load_DataSource(const std::string _sName, int _iWidth, 
     }*/
     
     _Create_TextureSplatting();
+    _Create_TextureDetail();
     
     return pMesh;
 }
@@ -168,6 +174,117 @@ void CHeightMapSetter::_Create_TextureSplatting(void)
         }
     }
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_iWidth, m_iHeight, 0, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, m_pTextureSplattingDataSource);
+}
+
+void CHeightMapSetter::_Create_TextureDetail(void)
+{
+    CMesh::SSourceData* pSourceData = new CMesh::SSourceData();
+    pSourceData->m_iNumVertexes = 4;
+    pSourceData->m_iNumIndexes  = 6;
+    
+    pSourceData->m_pVertexBuffer = new CVertexBufferPositionTexcoord(pSourceData->m_iNumVertexes, GL_STATIC_DRAW);
+    CVertexBufferPositionTexcoord::SVertex* pVertexBufferData = static_cast<CVertexBufferPositionTexcoord::SVertex*>(pSourceData->m_pVertexBuffer->Lock());
+    
+    unsigned i = 0;
+    pVertexBufferData[i].m_vPosition = glm::vec3(-1.0f,-1.0f,0.0f);
+    pVertexBufferData[i].m_vTexcoord = glm::vec2(0.0f,0.0f);
+    i++;
+    pVertexBufferData[i].m_vPosition = glm::vec3(-1.0f,1.0f,0.0f);
+    pVertexBufferData[i].m_vTexcoord = glm::vec2(0.0f,1.0f);
+    i++;
+    pVertexBufferData[i].m_vPosition = glm::vec3(1.0f,-1.0f,0.0f);
+    pVertexBufferData[i].m_vTexcoord = glm::vec2(1.0f,0.0f);
+    i++;
+    pVertexBufferData[i].m_vPosition = glm::vec3(1.0f,1.0f,0.0f);
+    pVertexBufferData[i].m_vTexcoord = glm::vec2(1.0f,1.0f);
+    i++;
+    
+    pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes);
+    unsigned short* pIndexBufferData = pSourceData->m_pIndexBuffer->Get_SourceData();
+    
+    i = 0;
+    pIndexBufferData[i++] = 0;
+    pIndexBufferData[i++] = 1;
+    pIndexBufferData[i++] = 2;
+    
+    pIndexBufferData[i++] = 3; 
+    pIndexBufferData[i++] = 2; 
+    pIndexBufferData[i++] = 1;
+    
+    m_pPostRenderScreenPlaneMesh = new CMesh(IResource::E_CREATION_MODE_CUSTOM);
+    m_pPostRenderScreenPlaneMesh->Set_SourceData(pSourceData);
+    
+    m_pPostRenderScreenPlaneMesh->Get_VertexBufferRef()->Commit();
+    m_pPostRenderScreenPlaneMesh->Get_IndexBufferRef()->Commit();
+    
+    m_pPostRenderScreenPlaneShader = CShaderComposite::Instance()->Get_Shader(IResource::E_SHADER_SCREEN_PLANE_LANDSCAPE_DETAIL);
+    m_pPostRenderScreenPlaneMesh->Get_VertexBufferRef()->Add_ShaderRef(CShader::E_RENDER_MODE_SIMPLE, m_pPostRenderScreenPlaneShader);
+}
+
+void CHeightMapSetter::Draw_TextureDetail(void)
+{
+    CSceneMgr::Instance()->Get_RenderMgr()->BeginDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_LANDSCAPE_DETAIL_COLOR);
+    
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_CULL_FACE);
+    glDisable(GL_BLEND);
+    
+    CMaterial::Set_ExtCommitedShaderRef(m_pPostRenderScreenPlaneShader);
+    
+    unsigned int iTextureIndex = 0;
+    for(unsigned int i = 0; i < k_TEXTURES_MAX_COUNT; i += 2)
+    {
+        CTexture* pTexture = m_pTexturesDetailLayers[i];
+        if(pTexture == NULL)
+        {
+            continue;
+        }
+        m_pPostRenderScreenPlaneShader->Set_Texture(pTexture->Get_Handle(), static_cast<CShader::E_TEXTURE_SLOT>(iTextureIndex));
+        iTextureIndex++;
+    }
+    
+    m_pPostRenderScreenPlaneShader->Set_Texture(Get_TextureSplatting(), CShader::E_TEXTURE_SLOT_07);
+
+    m_pPostRenderScreenPlaneMesh->Get_VertexBufferRef()->Enable(CShader::E_RENDER_MODE_SIMPLE);
+    m_pPostRenderScreenPlaneMesh->Get_IndexBufferRef()->Enable();
+    glDrawElements(GL_TRIANGLES, m_pPostRenderScreenPlaneMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pPostRenderScreenPlaneMesh->Get_IndexBufferRef()->Get_SourceDataFromVRAM());
+    m_pPostRenderScreenPlaneMesh->Get_IndexBufferRef()->Disable();
+    m_pPostRenderScreenPlaneMesh->Get_VertexBufferRef()->Disable(CShader::E_RENDER_MODE_SIMPLE);
+    
+    
+    CSceneMgr::Instance()->Get_RenderMgr()->EndDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_LANDSCAPE_DETAIL_COLOR);
+    m_hTextureDetailColor = CSceneMgr::Instance()->Get_RenderMgr()->Get_OffScreenTexture(CScreenSpacePostMgr::E_OFFSCREEN_MODE_LANDSCAPE_DETAIL_COLOR);
+    
+    
+    CSceneMgr::Instance()->Get_RenderMgr()->BeginDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_LANDSCAPE_DETAIL_NORMAL);
+    
+    CMaterial::Set_ExtCommitedShaderRef(m_pPostRenderScreenPlaneShader);
+    
+    iTextureIndex = 0;
+    for(unsigned int i = 1; i < k_TEXTURES_MAX_COUNT; i += 2)
+    {
+        CTexture* pTexture = m_pTexturesDetailLayers[i];
+        if(pTexture == NULL)
+        {
+            continue;
+        }
+        m_pPostRenderScreenPlaneShader->Set_Texture(pTexture->Get_Handle(), static_cast<CShader::E_TEXTURE_SLOT>(iTextureIndex));
+        iTextureIndex++;
+    }
+    
+    m_pPostRenderScreenPlaneShader->Set_Texture(Get_TextureSplatting(), CShader::E_TEXTURE_SLOT_07);
+    
+    m_pPostRenderScreenPlaneMesh->Get_VertexBufferRef()->Enable(CShader::E_RENDER_MODE_SIMPLE);
+    m_pPostRenderScreenPlaneMesh->Get_IndexBufferRef()->Enable();
+    glDrawElements(GL_TRIANGLES, m_pPostRenderScreenPlaneMesh->Get_NumIndexes(), GL_UNSIGNED_SHORT, (void*) m_pPostRenderScreenPlaneMesh->Get_IndexBufferRef()->Get_SourceDataFromVRAM());
+    m_pPostRenderScreenPlaneMesh->Get_IndexBufferRef()->Disable();
+    m_pPostRenderScreenPlaneMesh->Get_VertexBufferRef()->Disable(CShader::E_RENDER_MODE_SIMPLE);
+    
+    CSceneMgr::Instance()->Get_RenderMgr()->EndDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_LANDSCAPE_DETAIL_NORMAL);
+    m_hTextureDetailNormal = CSceneMgr::Instance()->Get_RenderMgr()->Get_OffScreenTexture(CScreenSpacePostMgr::E_OFFSCREEN_MODE_LANDSCAPE_DETAIL_NORMAL);
+    
+    
+    m_bIsTextureDetailCreated = true;
 }
 
 void CHeightMapSetter::_CalculateNormals(IVertexBuffer* _pVertexBuffer, CIndexBuffer* _pIndexBuffer)
