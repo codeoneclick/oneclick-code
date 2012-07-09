@@ -377,8 +377,6 @@ void CGrass::Update(void)
     CVertexBufferPositionTexcoord::SVertex* pVertexBufferData = static_cast<CVertexBufferPositionTexcoord::SVertex*>( m_pMesh->Get_VertexBufferRef()->Lock());
     CVertexBufferPositionTexcoord::SVertex* pSingleElementVertexBufferData = static_cast<CVertexBufferPositionTexcoord::SVertex*>(m_pSingleElementVertexBuffer->Lock());
 
-    //glm::vec3* pSingleElementPositionData = m_pSingleElementVertexBuffer->GetOrCreate_PositionSourceData();
-    //glm::vec3* pPositionData = m_pMesh->Get_VertexBufferRef()->GetOrCreate_PositionSourceData();
     for(unsigned int index = 0; index < iNumGrassElements; index++)
     {
         glm::mat4 mWorld = pCamera->Get_BillboardCylindricalMatrix(m_lGrassElementsPosition[index]);
@@ -404,14 +402,16 @@ void CGrass::Update(void)
         pVertexBufferData[index * 4 + 3].m_vPosition = glm::vec3(vTransform.x, vTransform.y, vTransform.z);
         
         static float fTimer = 0.0f;
-        fTimer += 0.001f;
+        fTimer += 0.00025f;
         
-        pVertexBufferData[index * 4 + 1].m_vPosition.x += sinf(fTimer) * 0.33f;
-        pVertexBufferData[index * 4 + 1].m_vPosition.z += cosf(fTimer) * 0.33f;
+        float fAngleX = m_lGrassElementsPosition[index].z * m_lGrassElementsPosition[index].y - static_cast<int>(m_lGrassElementsPosition[index].z) * m_lGrassElementsPosition[index].y;
+        float fAngleZ = m_lGrassElementsPosition[index].x - static_cast<int>(m_lGrassElementsPosition[index].x);
         
-        pVertexBufferData[index * 4 + 3].m_vPosition.x += sinf(fTimer) * 0.33f;
-        pVertexBufferData[index * 4 + 3].m_vPosition.z += cosf(fTimer) * 0.33f;
+        pVertexBufferData[index * 4 + 1].m_vPosition.x += sinf(fTimer * fAngleX) * 0.33f;
+        pVertexBufferData[index * 4 + 1].m_vPosition.z += cosf(fTimer * fAngleZ) * 0.33f;
         
+        pVertexBufferData[index * 4 + 3].m_vPosition.x += sinf(fTimer * fAngleX) * 0.33f;
+        pVertexBufferData[index * 4 + 3].m_vPosition.z += cosf(fTimer * fAngleZ) * 0.33f;
     }
     m_pMesh->Get_VertexBufferRef()->Commit();
 }

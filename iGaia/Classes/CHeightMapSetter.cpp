@@ -52,7 +52,7 @@ CMesh* CHeightMapSetter::Load_DataSource(const std::string _sName, int _iWidth, 
         for(unsigned int j = 0; j < m_iHeight;++j)
         {
             pVertexBufferData[index].m_vPosition.x = i;
-            pVertexBufferData[index].m_vPosition.y = sin(i * 0.33f) + cos(j * 0.33f) * 0.33f + 0.66f;
+            pVertexBufferData[index].m_vPosition.y = sin(i * 0.33f) / 2.0f + cos(j * 0.33f) / 2.0f + 0.5f;
             m_pDataSource[i + j * m_iWidth] = pVertexBufferData[index].m_vPosition.y;
             pVertexBufferData[index].m_vPosition.z = j;
             
@@ -113,6 +113,7 @@ CMesh* CHeightMapSetter::Load_DataSource(const std::string _sName, int _iWidth, 
     }*/
     
     _Create_TextureSplatting();
+    _Create_TextureHeightmap();
     _Create_TextureDetail();
     
     return pMesh;
@@ -157,11 +158,11 @@ void CHeightMapSetter::_Create_TextureSplatting(void)
         {
             m_pTextureSplattingDataSource[i + j * m_iHeight] = RGB(255, 0, 0);
             
-            if(Get_HeightValue(i, j) > 1.25f)
+            if(Get_HeightValue(i, j) > 1.0f)
             {
                 m_pTextureSplattingDataSource[i + j * m_iHeight] = RGB(0, 255, 0);
             }
-            if(Get_HeightValue(i, j) < 0.05f)
+            if(Get_HeightValue(i, j) < 0.1f)
             {
                 m_pTextureSplattingDataSource[i + j * m_iHeight] = RGB(0, 0, 255);
             }
@@ -174,6 +175,26 @@ void CHeightMapSetter::_Create_TextureSplatting(void)
         }
     }
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_iWidth, m_iHeight, 0, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, m_pTextureSplattingDataSource);
+}
+
+void CHeightMapSetter::_Create_TextureHeightmap(void)
+{
+    glGenTextures(1, &m_hTextureHeightmap);
+    glBindTexture(GL_TEXTURE_2D, m_hTextureHeightmap);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    unsigned short* m_pTextureData = new unsigned short[m_iWidth * m_iHeight];
+    for(int i = 0; i < m_iWidth; i++)
+    {
+        for(int j = 0; j < m_iHeight; j++)
+        {
+            unsigned char iColor = static_cast<unsigned char>((Get_HeightValue(i, j) - 0.5f) * 255);
+            m_pTextureData[i + j * m_iHeight] = RGB(iColor, iColor, iColor);
+        }
+    }
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_iWidth, m_iHeight, 0, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, m_pTextureData);
 }
 
 void CHeightMapSetter::_Create_TextureDetail(void)

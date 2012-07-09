@@ -137,6 +137,10 @@ void INode::Update(void)
     
     m_mWorld = m_mTranslation * m_mRotation * m_mScale;
     
+    ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
+    
+    m_mWVP = pCamera->Get_Projection() * pCamera->Get_View() * m_mWorld;
+    
     if(m_pBoundingBox != NULL)
     {
         m_pBoundingBox->Set_MaxMinPoints(m_pMesh->Get_MaxBound(), m_pMesh->Get_MinBound());

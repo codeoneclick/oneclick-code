@@ -8,6 +8,8 @@
     EAGLContext* m_pContext;
 }
 
++ (GLView*)Instance;
+
 - (void) drawView: (CADisplayLink*) displayLink;
 - (void) didRotate: (NSNotification*) notification;
 

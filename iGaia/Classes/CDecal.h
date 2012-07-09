@@ -16,6 +16,10 @@ class CDecal : public INode
 {
 protected:
     glm::vec4 m_vColor;
+    static glm::mat3x3 m_mTextureTranslation;
+    static glm::mat3x3 m_mTextureScale;
+    glm::mat3x3 m_mTextureRotation;
+    glm::mat3x3 m_mTexture;
 public:
     CDecal(void);
     ~CDecal(void);

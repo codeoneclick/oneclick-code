@@ -129,9 +129,9 @@ CScreenSpacePostMgr::CScreenSpacePostMgr(void)
     pIndexBufferData[i++] = 1;
     pIndexBufferData[i++] = 2;
     
-    pIndexBufferData[i++] = 1; 
-    pIndexBufferData[i++] = 2; 
     pIndexBufferData[i++] = 3;
+    pIndexBufferData[i++] = 2; 
+    pIndexBufferData[i++] = 1;
     
     m_pMesh = new CMesh(IResource::E_CREATION_MODE_CUSTOM);
     m_pMesh->Set_SourceData(pSourceData);

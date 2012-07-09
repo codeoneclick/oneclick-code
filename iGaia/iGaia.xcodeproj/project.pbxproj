@@ -218,6 +218,9 @@
 		A1BE19A5156A29D4004C3610 /* shadow.pvr in Resources */ = {isa = PBXBuildFile; fileRef = A1BE19A4156A29D4004C3610 /* shadow.pvr */; };
 		A1C7ADE91547E5010047264E /* fire.pvr in Resources */ = {isa = PBXBuildFile; fileRef = A1C7ADE81547E5010047264E /* fire.pvr */; };
 		A1C7ADEC1548441A0047264E /* Treads.png in Resources */ = {isa = PBXBuildFile; fileRef = A1C7ADEB1548441A0047264E /* Treads.png */; };
+		A1D635B515AADDCE00F5D42B /* grass.pvr in Resources */ = {isa = PBXBuildFile; fileRef = A1D635B415AADDCE00F5D42B /* grass.pvr */; };
+		A1D635BA15AAEB2A00F5D42B /* MainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1D635B815AAEB2A00F5D42B /* MainMenuViewController.m */; };
+		A1D635BB15AAEB2A00F5D42B /* MainMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1D635B915AAEB2A00F5D42B /* MainMenuViewController.xib */; };
 		A1D8067D15735D1400EF81D0 /* CVertexBufferPositionColor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1D8067515735D1400EF81D0 /* CVertexBufferPositionColor.cpp */; };
 		A1D8067E15735D1400EF81D0 /* CVertexBufferPositionTexcoord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1D8067715735D1400EF81D0 /* CVertexBufferPositionTexcoord.cpp */; };
 		A1D8067F15735D1400EF81D0 /* CVertexBufferPositionTexcoordNormal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1D8067915735D1400EF81D0 /* CVertexBufferPositionTexcoordNormal.cpp */; };
@@ -688,6 +691,10 @@
 		A1BE19A4156A29D4004C3610 /* shadow.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = shadow.pvr; path = Resources/Textures/shadow.pvr; sourceTree = "<group>"; };
 		A1C7ADE81547E5010047264E /* fire.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = fire.pvr; path = Resources/Textures/fire.pvr; sourceTree = "<group>"; };
 		A1C7ADEB1548441A0047264E /* Treads.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Treads.png; path = Resources/Textures/Treads.png; sourceTree = "<group>"; };
+		A1D635B415AADDCE00F5D42B /* grass.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = grass.pvr; path = Resources/Textures/grass.pvr; sourceTree = "<group>"; };
+		A1D635B715AAEB2A00F5D42B /* MainMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuViewController.h; sourceTree = "<group>"; };
+		A1D635B815AAEB2A00F5D42B /* MainMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenuViewController.m; sourceTree = "<group>"; };
+		A1D635B915AAEB2A00F5D42B /* MainMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenuViewController.xib; sourceTree = "<group>"; };
 		A1D8067515735D1400EF81D0 /* CVertexBufferPositionColor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CVertexBufferPositionColor.cpp; sourceTree = "<group>"; };
 		A1D8067615735D1400EF81D0 /* CVertexBufferPositionColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVertexBufferPositionColor.h; sourceTree = "<group>"; };
 		A1D8067715735D1400EF81D0 /* CVertexBufferPositionTexcoord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CVertexBufferPositionTexcoord.cpp; sourceTree = "<group>"; };
@@ -1633,10 +1640,10 @@
 		CE8DFA8E14587A8200AE7288 /* Game */ = {
 			isa = PBXGroup;
 			children = (
+				A153D5BE153DA3A400FBFFD5 /* GameUI */,
 				A1FCBE7415A4495A004FC37B /* GameScenes */,
 				A1EA43C415A1862800B3EF0A /* GameTankParts */,
 				A1AC4D98156F7DEB0031FE05 /* GameHelpers */,
-				A153D5BE153DA3A400FBFFD5 /* GameUI */,
 				9307CBC114EBBA1700ADFE2B /* GameCharacterControllers */,
 				9307CBBE14EBB9E700ADFE2B /* GameMgrs */,
 				CE8DFA9114587AFD00AE7288 /* CGame.h */,
@@ -1656,6 +1663,9 @@
 				1D3623250D0F684500981E51 /* MainAppDelegate.mm */,
 				93B40544148E111A00EB887D /* GameViewController.h */,
 				93B40545148E111A00EB887D /* GameViewController.mm */,
+				A1D635B715AAEB2A00F5D42B /* MainMenuViewController.h */,
+				A1D635B815AAEB2A00F5D42B /* MainMenuViewController.m */,
+				A1D635B915AAEB2A00F5D42B /* MainMenuViewController.xib */,
 			);
 			name = iPhone;
 			sourceTree = "<group>";
@@ -1663,6 +1673,7 @@
 		CE91921914573F630021A0DC /* Textures */ = {
 			isa = PBXGroup;
 			children = (
+				A1D635B415AADDCE00F5D42B /* grass.pvr */,
 				A1A8A078159999AF00A9B82E /* ring.pvr */,
 				A1A8BF93156F6C0100CBFAD1 /* camera_button.png */,
 				A1BE19A4156A29D4004C3610 /* shadow.pvr */,
@@ -1884,6 +1895,8 @@
 				A1BE19A5156A29D4004C3610 /* shadow.pvr in Resources */,
 				A1A8BF94156F6C0100CBFAD1 /* camera_button.png in Resources */,
 				A1A8A079159999AF00A9B82E /* ring.pvr in Resources */,
+				A1D635B515AADDCE00F5D42B /* grass.pvr in Resources */,
+				A1D635BB15AAEB2A00F5D42B /* MainMenuViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1999,6 +2012,7 @@
 				A1FCBF8015A5D511004FC37B /* CGameMenuUI.mm in Sources */,
 				1520865415A82C05001F0F8F /* ShaderPostLandscapeDetail.frag in Sources */,
 				1520865515A82C05001F0F8F /* ShaderPostLandscapeDetail.vert in Sources */,
+				A1D635BA15AAEB2A00F5D42B /* MainMenuViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

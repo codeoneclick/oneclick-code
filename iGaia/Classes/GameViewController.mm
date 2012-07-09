@@ -7,6 +7,7 @@
 //
 
 #import "GameViewController.h"
+#import "MainAppDelegate.h"
 
 GameViewController* g_GameViewController;
 
@@ -31,8 +32,7 @@ GameViewController* g_GameViewController;
 - (void)loadView
 {
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    m_pGLView = [[GLView alloc] initWithFrame: screenBounds];
-    self.view = m_pGLView;
+    self.view = [GLView Instance];
     m_pGameInGameUI = [[CGameInGameUI alloc] initWithFrame:CGRectMake(0, 0, screenBounds.size.height, screenBounds.size.width)];
     m_pGameMenuUI = [[CGameMenuUI alloc] initWithFrame:CGRectMake(0, 0, screenBounds.size.height, screenBounds.size.width)];
     [self.view addSubview:m_pGameMenuUI];

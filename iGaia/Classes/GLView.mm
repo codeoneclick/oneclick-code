@@ -5,6 +5,19 @@
 
 @implementation GLView
 
++ (GLView*)Instance
+{
+    static GLView *pInstance = nil;
+    static dispatch_once_t oncePredicate;
+    
+    dispatch_once(&oncePredicate, ^
+    {
+        CGRect screenBounds = [[UIScreen mainScreen] bounds];
+        pInstance = [[self alloc] initWithFrame:screenBounds];
+    });
+    return pInstance;
+}
+
 + (Class) layerClass
 {
     return [CAEAGLLayer class];
