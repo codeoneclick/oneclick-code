@@ -98,7 +98,7 @@ void CSkyBox::Load(const std::string& _sName, IResource::E_THREAD _eThread)
     pVertexBufferData[22].m_vTexcoord = glm::vec2(1.0f, 1.0f);
     pVertexBufferData[23].m_vTexcoord = glm::vec2(0.0f, 1.0f);
     
-    pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes);
+    pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes, GL_STATIC_DRAW);
     unsigned short* pIndexBufferData = pSourceData->m_pIndexBuffer->Get_SourceData();
     
     // Front

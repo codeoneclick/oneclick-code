@@ -62,7 +62,7 @@ CMesh* CHeightMapSetter::Load_DataSource(const std::string _sName, int _iWidth, 
         }
     }
     
-    pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes);
+    pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes, GL_STREAM_DRAW);
     unsigned short* pIndexBufferData = pSourceData->m_pIndexBuffer->Get_SourceData();
     index = 0;
     for(unsigned int i = 0; i < (m_iWidth - 1); ++i)
@@ -220,7 +220,7 @@ void CHeightMapSetter::_Create_TextureDetail(void)
     pVertexBufferData[i].m_vTexcoord = glm::vec2(1.0f,1.0f);
     i++;
     
-    pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes);
+    pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes, GL_STATIC_DRAW);
     unsigned short* pIndexBufferData = pSourceData->m_pIndexBuffer->Get_SourceData();
     
     i = 0;

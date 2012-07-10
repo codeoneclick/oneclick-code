@@ -57,7 +57,7 @@ void CDecal::Load(const std::string& _sName, IResource::E_THREAD _eThread)
         }
     }
     
-    pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes);
+    pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes, GL_STATIC_DRAW);
     unsigned short* pIndexBufferData = pSourceData->m_pIndexBuffer->Get_SourceData();
     index = 0;
     for(unsigned int i = 0; i < (iWidth - 1); ++i)

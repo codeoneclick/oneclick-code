@@ -83,7 +83,7 @@ void IVertexBuffer::Commit(void)
     }
     else
     {
-        glBufferSubData(GL_ARRAY_BUFFER, 0, k_STRIDE_SIZE * m_iNumVertexes, m_pData);
+        glBufferData(GL_ARRAY_BUFFER, k_STRIDE_SIZE * m_iNumVertexes, m_pData, m_eMode);
     }
 }
 

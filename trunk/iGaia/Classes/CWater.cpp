@@ -45,7 +45,7 @@ void CWater::Load(const std::string& _sName, IResource::E_THREAD _eThread)
     pVertexBufferData[2].m_vTexcoord = glm::vec2( 1.0f,  0.0f );
     pVertexBufferData[3].m_vTexcoord = glm::vec2( 1.0f,  1.0f );
     
-    pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes);
+    pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes, GL_STATIC_DRAW);
     unsigned short* pIndexesBufferData = pSourceData->m_pIndexBuffer->Get_SourceData();
     
     pIndexesBufferData[0] = 0;

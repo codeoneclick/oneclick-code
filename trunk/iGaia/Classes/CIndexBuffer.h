@@ -29,10 +29,9 @@ private:
     bool m_bIsCommited;
     GLenum m_eMode;
 public:
-    CIndexBuffer(unsigned int _iNumIndexes);
+    CIndexBuffer(unsigned int _iNumIndexes, unsigned int _eMode);
     ~CIndexBuffer(void);
     
-    void Set_Mode(GLenum _eMode) { m_eMode = _eMode; }
     unsigned int Get_NumIndexes(void) { return m_iNumIndexes; }
     unsigned int Get_NumWorkingIndexes(void) { return m_iNumWorkingIndexes; }
     void Set_NumWorkingIndexes(unsigned int _iNumWorkingIndexes) { m_iNumWorkingIndexes = _iNumWorkingIndexes; }

@@ -47,7 +47,7 @@ CMesh* CBoundingBox::Get_BoundingBoxMesh(void)
             pVertexBufferData[i].m_vColor = glm::u8vec4(0, 255, 0, 255);
         }
     
-        pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes);
+        pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes, GL_STATIC_DRAW);
         unsigned short* pIndexBufferData = pSourceData->m_pIndexBuffer->Get_SourceData();
     
         pIndexBufferData[0] = 0;

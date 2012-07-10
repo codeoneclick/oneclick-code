@@ -9,14 +9,14 @@
 #include <iostream>
 #include "CIndexBuffer.h"
 
-CIndexBuffer::CIndexBuffer(unsigned int _iNumIndexes)
+CIndexBuffer::CIndexBuffer(unsigned int _iNumIndexes, unsigned int _eMode)
 {
     m_pSourceData = new unsigned short[_iNumIndexes];
     m_pWorkingSourceData = NULL;
     m_iNumIndexes = _iNumIndexes;
     m_iNumWorkingIndexes = m_iNumIndexes;
     m_bIsCommited = false;
-    m_eMode = GL_STATIC_DRAW;
+    m_eMode = _eMode;
     glGenBuffers(1, &m_hHandle);
 }
 
@@ -100,7 +100,7 @@ void CIndexBuffer::Commit(void)
             memcpy(m_pWorkingSourceData, m_pSourceData, sizeof(unsigned short) * m_iNumIndexes);
         }
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_hHandle);
-        glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(unsigned short) * m_iNumWorkingIndexes, m_pWorkingSourceData);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned short) * m_iNumWorkingIndexes, m_pWorkingSourceData, m_eMode);
     }
 }
 

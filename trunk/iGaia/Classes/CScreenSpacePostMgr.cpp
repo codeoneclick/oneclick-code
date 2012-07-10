@@ -65,7 +65,7 @@ CScreenSpacePostMgr::CScreenSpacePostMgr(void)
             m_pOffScreenClearColor[i] = glm::vec4(0.0,0.0,0.0,0.0);
         }
       
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_pOffScreenSize[i].x, m_pOffScreenSize[i].y, 0, GL_RGBA, GL_UNSIGNED_SHORT_5_5_5_1, NULL);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_pOffScreenSize[i].x, m_pOffScreenSize[i].y, 0, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, NULL);
         
         //glBindTexture(GL_TEXTURE_2D, m_hOffScreenDepthTextures[i]);
         //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -121,7 +121,7 @@ CScreenSpacePostMgr::CScreenSpacePostMgr(void)
     pVertexBufferData[i].m_vTexcoord = glm::vec2(1.0f,1.0f);
     i++;
 
-    pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes);
+    pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes,GL_STATIC_DRAW);
     unsigned short* pIndexBufferData = pSourceData->m_pIndexBuffer->Get_SourceData();
     
     i = 0;

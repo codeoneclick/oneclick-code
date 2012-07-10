@@ -50,7 +50,7 @@ CBatch::CBatch(E_BATCH_MODE _eMode)
         default:
             break;
     }
-    pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes);
+    pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes, GL_STATIC_DRAW);
     m_pMesh = new CMesh(IResource::E_CREATION_MODE_CUSTOM);
     m_pMesh->Set_SourceData(pSourceData);
     

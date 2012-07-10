@@ -33,7 +33,7 @@ void CParticleEmitter::Load(const std::string& _sName, IResource::E_THREAD _eThr
     pSourceData->m_iNumVertexes = m_iNumParticles * 4;
     pSourceData->m_iNumIndexes  = m_iNumParticles * 6;
     
-    pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes);
+    pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes, GL_STATIC_DRAW);
     unsigned short* pIndexBufferData = pSourceData->m_pIndexBuffer->Get_SourceData();
     pSourceData->m_pVertexBuffer = new CVertexBufferPositionTexcoordColor(pSourceData->m_iNumVertexes, GL_STREAM_DRAW);
     CVertexBufferPositionTexcoordColor::SVertex* pVertexBufferData = static_cast<CVertexBufferPositionTexcoordColor::SVertex*>(pSourceData->m_pVertexBuffer->Lock());
