@@ -9,20 +9,19 @@
 #include <iostream>
 #include "IResourceMgr.h"
 
-IResourceMgr::IResourceMgr()
+IResourceMgr::IResourceMgr(void)
 {
     pthread_mutex_init(&m_mutex, NULL);
 }
 
-IResourceMgr::~IResourceMgr()
+IResourceMgr::~IResourceMgr(void)
 {
     
 }
 
 
-void IResourceMgr::Thread()
+void IResourceMgr::Thread(void)
 {
-    pthread_mutex_lock( &m_mutex );
     std::map<std::string, IParser*>::iterator pBTask = m_lTaskPool.begin();
     std::map<std::string, IParser*>::iterator pETask = m_lTaskPool.end();
     while( pBTask != pETask)
@@ -34,8 +33,6 @@ void IResourceMgr::Thread()
         }
         ++pBTask;
     }
-    pthread_mutex_unlock( &m_mutex );
-    sleep(1);
 }
 
 void IResourceMgr::Cancel_Load(IDelegate *_pDelegate)
@@ -50,7 +47,7 @@ void IResourceMgr::Cancel_Load(IDelegate *_pDelegate)
     }
 }
 
-void IResourceMgr::Update()
+void IResourceMgr::Update(void)
 {
     std::map<std::string, IParser*>::iterator pBTask = m_lTaskPool.begin();
     std::map<std::string, IParser*>::iterator pETask = m_lTaskPool.end();

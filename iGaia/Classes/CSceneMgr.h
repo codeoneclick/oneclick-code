@@ -22,6 +22,7 @@
 #include "CBatchMgr.h"
 #include "CFrustum.h"
 
+class ICharacterController;
 class CSceneMgr
 {
 private:
@@ -80,7 +81,7 @@ public:
     void RemoveEventListener(INode* _pNode, CEventMgr::E_EVENT _eEvent);
     
     ICamera* CreateFreeCamera(float _fFov, float _fNearPlane, float _fFarPlane);
-    ICamera* CreateTargetCamera(float _fFov, float _fNearPlane, float _fFarPlane, INode* _pTarget);
+    ICamera* CreateTargetCamera(float _fFov, float _fNearPlane, float _fFarPlane, ICharacterController* _pTarget);
     void Remove_Camera(ICamera* _pCamera);
     
     CRenderMgr* Get_RenderMgr(void) { return m_pRenderMgr; }

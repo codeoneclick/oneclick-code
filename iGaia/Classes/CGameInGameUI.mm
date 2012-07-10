@@ -58,7 +58,7 @@
 
 - (void)OnShootButtonPress:(UIButton*)sender
 {
-    CGameSceneMgr::Instance()->Get_Scene()->Get_PlayerCharacterController()->Shoot();
+    CGameSceneMgr::Instance()->Get_Scene()->Get_MainCharacterController()->Shoot();
 }
 
 @end

@@ -158,6 +158,97 @@ void ICharacterController::Shoot(void)
     }
 }
 
+void ICharacterController::Set_Body(ICharacterController::E_CHARACTER_PART_TYPE _eType)
+{
+    switch (_eType)
+    {
+        case ICharacterController::E_CHARACTER_PART_TYPE_LIGHT :
+        {
+            SAFE_DELETE(m_pBody);
+            m_pBody = new CTankLightBody();
+            m_pBody->Load();
+        }
+            break;
+        case ICharacterController::E_CHARACTER_PART_TYPE_MEDIUM :
+        {
+            SAFE_DELETE(m_pBody);
+            m_pBody = new CTankMediumBody();
+            m_pBody->Load();
+        }
+            break;
+        case ICharacterController::E_CHARACTER_PART_TYPE_HEAVY :
+        {
+            SAFE_DELETE(m_pBody);
+            m_pBody = new CTankHeavyBody();
+            m_pBody->Load();
+        }
+            break;
+        default:
+            break;
+    }
+}
+
+void ICharacterController::Set_Tower(ICharacterController::E_CHARACTER_PART_TYPE _eType)
+{
+    switch (_eType)
+    {
+        case ICharacterController::E_CHARACTER_PART_TYPE_LIGHT :
+        {
+            SAFE_DELETE(m_pTower);
+            m_pTower = new CTankLightTower();
+            m_pTower->Load();
+        }
+            break;
+        case ICharacterController::E_CHARACTER_PART_TYPE_MEDIUM :
+        {
+            SAFE_DELETE(m_pTower);
+            m_pTower = new CTankMediumTower();
+            m_pTower->Load();
+        }
+            break;
+        case ICharacterController::E_CHARACTER_PART_TYPE_HEAVY :
+        {
+            SAFE_DELETE(m_pTower);
+            m_pTower = new CTankHeavyTower();
+            m_pTower->Load();
+        }
+            break;
+        default:
+            break;
+    }
+}
+
+void ICharacterController::Set_Track(ICharacterController::E_CHARACTER_PART_TYPE _eType)
+{
+    switch (_eType)
+    {
+        case ICharacterController::E_CHARACTER_PART_TYPE_LIGHT :
+        {
+            SAFE_DELETE(m_pTrack);
+            m_pTrack = new CTankLightTrack();
+            m_pTrack->Load();
+        }
+            break;
+        case ICharacterController::E_CHARACTER_PART_TYPE_MEDIUM :
+        {
+            SAFE_DELETE(m_pTrack);
+            m_pTrack = new CTankMediumTrack();
+            m_pTrack->Load();
+        }
+            break;
+        case ICharacterController::E_CHARACTER_PART_TYPE_HEAVY :
+        {
+            SAFE_DELETE(m_pTrack);
+            m_pTrack = new CTankHeavyTrack();
+            m_pTrack->Load();
+        }
+            break;
+        default:
+            break;
+    }
+}
+
+
 
 
 

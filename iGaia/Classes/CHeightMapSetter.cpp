@@ -246,10 +246,6 @@ void CHeightMapSetter::Draw_TextureDetail(void)
 {
     CSceneMgr::Instance()->Get_RenderMgr()->BeginDrawMode(CScreenSpacePostMgr::E_OFFSCREEN_MODE_LANDSCAPE_DETAIL_COLOR);
     
-    glDisable(GL_DEPTH_TEST);
-    glDisable(GL_CULL_FACE);
-    glDisable(GL_BLEND);
-    
     CMaterial::Set_ExtCommitedShaderRef(m_pPostRenderScreenPlaneShader);
     
     unsigned int iTextureIndex = 0;

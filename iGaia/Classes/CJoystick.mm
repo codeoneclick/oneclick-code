@@ -59,8 +59,8 @@
 {
     for (UITouch*touch in touches)
     {
-        CGameSceneMgr::Instance()->Get_Scene()->Get_PlayerCharacterController()->Set_SteerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_NONE);
-        CGameSceneMgr::Instance()->Get_Scene()->Get_PlayerCharacterController()->Set_MoveState(ICharacterController::E_CHARACTER_CONTROLLER_MOVE_STATE_NONE);
+        CGameSceneMgr::Instance()->Get_Scene()->Get_MainCharacterController()->Set_SteerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_NONE);
+        CGameSceneMgr::Instance()->Get_Scene()->Get_MainCharacterController()->Set_MoveState(ICharacterController::E_CHARACTER_CONTROLLER_MOVE_STATE_NONE);
         CGRect tRect = m_pControl.frame;
         tRect.origin.x = self.frame.size.width / 2 - (self.frame.size.width / 3) / 2;
         tRect.origin.y = self.frame.size.height / 2 - (self.frame.size.height / 3) / 2;
@@ -77,48 +77,48 @@
 {
     if(touchPoint.x > m_iMaxOffsetX && touchPoint.y > m_iMaxOffsetY)
     {
-        CGameSceneMgr::Instance()->Get_Scene()->Get_PlayerCharacterController()->Set_SteerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_LEFT);
-        CGameSceneMgr::Instance()->Get_Scene()->Get_PlayerCharacterController()->Set_MoveState(ICharacterController::E_CHARACTER_CONTROLLER_MOVE_STATE_BACKWARD);
+        CGameSceneMgr::Instance()->Get_Scene()->Get_MainCharacterController()->Set_SteerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_LEFT);
+        CGameSceneMgr::Instance()->Get_Scene()->Get_MainCharacterController()->Set_MoveState(ICharacterController::E_CHARACTER_CONTROLLER_MOVE_STATE_BACKWARD);
     }
     else if(touchPoint.x > m_iMaxOffsetX && touchPoint.y < m_iMinOffsetY)
     {
-        CGameSceneMgr::Instance()->Get_Scene()->Get_PlayerCharacterController()->Set_SteerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_RIGHT);
-        CGameSceneMgr::Instance()->Get_Scene()->Get_PlayerCharacterController()->Set_MoveState(ICharacterController::E_CHARACTER_CONTROLLER_MOVE_STATE_FORWARD);
+        CGameSceneMgr::Instance()->Get_Scene()->Get_MainCharacterController()->Set_SteerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_RIGHT);
+        CGameSceneMgr::Instance()->Get_Scene()->Get_MainCharacterController()->Set_MoveState(ICharacterController::E_CHARACTER_CONTROLLER_MOVE_STATE_FORWARD);
     }
     else if(touchPoint.x < m_iMinOffsetX && touchPoint.y > m_iMaxOffsetY)
     {
-        CGameSceneMgr::Instance()->Get_Scene()->Get_PlayerCharacterController()->Set_SteerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_RIGHT);
-        CGameSceneMgr::Instance()->Get_Scene()->Get_PlayerCharacterController()->Set_MoveState(ICharacterController::E_CHARACTER_CONTROLLER_MOVE_STATE_BACKWARD);
+        CGameSceneMgr::Instance()->Get_Scene()->Get_MainCharacterController()->Set_SteerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_RIGHT);
+        CGameSceneMgr::Instance()->Get_Scene()->Get_MainCharacterController()->Set_MoveState(ICharacterController::E_CHARACTER_CONTROLLER_MOVE_STATE_BACKWARD);
     }
     else if(touchPoint.x < m_iMinOffsetX && touchPoint.y < m_iMinOffsetY)
     {
-        CGameSceneMgr::Instance()->Get_Scene()->Get_PlayerCharacterController()->Set_SteerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_LEFT);
-        CGameSceneMgr::Instance()->Get_Scene()->Get_PlayerCharacterController()->Set_MoveState(ICharacterController::E_CHARACTER_CONTROLLER_MOVE_STATE_FORWARD);
+        CGameSceneMgr::Instance()->Get_Scene()->Get_MainCharacterController()->Set_SteerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_LEFT);
+        CGameSceneMgr::Instance()->Get_Scene()->Get_MainCharacterController()->Set_MoveState(ICharacterController::E_CHARACTER_CONTROLLER_MOVE_STATE_FORWARD);
     }
     else if(touchPoint.x > m_iMaxOffsetX)
     {
-        CGameSceneMgr::Instance()->Get_Scene()->Get_PlayerCharacterController()->Set_SteerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_RIGHT);
-        CGameSceneMgr::Instance()->Get_Scene()->Get_PlayerCharacterController()->Set_MoveState(ICharacterController::E_CHARACTER_CONTROLLER_MOVE_STATE_NONE);
+        CGameSceneMgr::Instance()->Get_Scene()->Get_MainCharacterController()->Set_SteerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_RIGHT);
+        CGameSceneMgr::Instance()->Get_Scene()->Get_MainCharacterController()->Set_MoveState(ICharacterController::E_CHARACTER_CONTROLLER_MOVE_STATE_NONE);
     }
     else if(touchPoint.x < m_iMinOffsetX)
     {
-        CGameSceneMgr::Instance()->Get_Scene()->Get_PlayerCharacterController()->Set_SteerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_LEFT);
-        CGameSceneMgr::Instance()->Get_Scene()->Get_PlayerCharacterController()->Set_MoveState(ICharacterController::E_CHARACTER_CONTROLLER_MOVE_STATE_NONE);
+        CGameSceneMgr::Instance()->Get_Scene()->Get_MainCharacterController()->Set_SteerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_LEFT);
+        CGameSceneMgr::Instance()->Get_Scene()->Get_MainCharacterController()->Set_MoveState(ICharacterController::E_CHARACTER_CONTROLLER_MOVE_STATE_NONE);
     }
     else if(touchPoint.y > m_iMaxOffsetY)
     {
-        CGameSceneMgr::Instance()->Get_Scene()->Get_PlayerCharacterController()->Set_MoveState(ICharacterController::E_CHARACTER_CONTROLLER_MOVE_STATE_BACKWARD);
-        CGameSceneMgr::Instance()->Get_Scene()->Get_PlayerCharacterController()->Set_SteerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_NONE);
+        CGameSceneMgr::Instance()->Get_Scene()->Get_MainCharacterController()->Set_MoveState(ICharacterController::E_CHARACTER_CONTROLLER_MOVE_STATE_BACKWARD);
+        CGameSceneMgr::Instance()->Get_Scene()->Get_MainCharacterController()->Set_SteerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_NONE);
     }
     else if(touchPoint.y < m_iMinOffsetY)
     {
-        CGameSceneMgr::Instance()->Get_Scene()->Get_PlayerCharacterController()->Set_MoveState(ICharacterController::E_CHARACTER_CONTROLLER_MOVE_STATE_FORWARD);
-        CGameSceneMgr::Instance()->Get_Scene()->Get_PlayerCharacterController()->Set_SteerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_NONE);
+        CGameSceneMgr::Instance()->Get_Scene()->Get_MainCharacterController()->Set_MoveState(ICharacterController::E_CHARACTER_CONTROLLER_MOVE_STATE_FORWARD);
+        CGameSceneMgr::Instance()->Get_Scene()->Get_MainCharacterController()->Set_SteerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_NONE);
     }
     else
     {
-        CGameSceneMgr::Instance()->Get_Scene()->Get_PlayerCharacterController()->Set_SteerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_NONE);
-        CGameSceneMgr::Instance()->Get_Scene()->Get_PlayerCharacterController()->Set_MoveState(ICharacterController::E_CHARACTER_CONTROLLER_MOVE_STATE_NONE);
+        CGameSceneMgr::Instance()->Get_Scene()->Get_MainCharacterController()->Set_SteerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_NONE);
+        CGameSceneMgr::Instance()->Get_Scene()->Get_MainCharacterController()->Set_MoveState(ICharacterController::E_CHARACTER_CONTROLLER_MOVE_STATE_NONE);
     }
     
     CGRect tRect = m_pControl.frame;

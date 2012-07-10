@@ -39,7 +39,7 @@ CResourceMgr::CResourceMgr()
 {
     m_lMgr[IResource::E_MGR_TEXTURE] = new CTextureMgr();
     m_lMgr[IResource::E_MGR_MESH] = new CMeshMgr();
-    pthread_create(&m_thread, NULL, Thread, (void*)this);
+    //pthread_create(&m_thread, NULL, Thread, (void*)this);
 }
 
 CResourceMgr::~CResourceMgr()
@@ -53,6 +53,7 @@ void CResourceMgr::Update()
     std::map<IResource::E_MGR,IResourceMgr*>::iterator pEndMgr = m_lMgr.end();
     while( pBeginMgr != pEndMgr)
     {
+        pBeginMgr->second->Thread();
         pBeginMgr->second->Update();
         ++pBeginMgr;
     }

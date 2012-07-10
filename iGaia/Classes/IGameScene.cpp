@@ -13,6 +13,7 @@
 IGameScene::IGameScene(void)
 {
     m_pCharaterControllerMgr = NULL;
+    m_pMainCharacterController = NULL;
     m_pGameAIMgr = NULL;
     m_pGameShooterMgr = NULL;
 }
@@ -33,7 +34,7 @@ void IGameScene::Unload(void)
 {
     SAFE_DELETE(m_pGameAIMgr);
     SAFE_DELETE(m_pCharaterControllerMgr);
-    m_pCharacterControllerPlayer = NULL;
+    m_pMainCharacterController = NULL;
     SAFE_DELETE(m_pGameShooterMgr);
     m_pLevel->Unload();
     SAFE_DELETE(m_pLevel);

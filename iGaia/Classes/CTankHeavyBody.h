@@ -10,5 +10,17 @@
 #define __iGaia__CTankHeavyBody__
 
 #include <iostream>
+#include "ITankBody.h"
+
+class CTankHeavyBody : public ITankBody
+{
+protected:
+public:
+    CTankHeavyBody(void);
+    ~CTankHeavyBody(void);
+    
+    void Load(void);
+    void Update(void);
+};
 
 #endif /* defined(__iGaia__CTankHeavyBody__) */

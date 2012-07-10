@@ -38,6 +38,7 @@ public:
     ~CMaterial(void);
     
     static void InitStates(void);
+    static void ScreenStates(void);
     
     CShader*  Get_Shader(CShader::E_RENDER_MODE _eMode);
     CTexture* Get_Texture(unsigned int _index);

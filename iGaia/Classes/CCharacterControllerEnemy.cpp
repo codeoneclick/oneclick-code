@@ -68,9 +68,9 @@ void CCharacterControllerEnemy::Load(void)
     m_pBody = new CTankLightBody();
     m_pBody->Load();
     
-    CSceneMgr::Instance()->AddEventListener(m_pBody->Get_BasisNode(), CEventMgr::E_EVENT_TOUCH);
+    /*CSceneMgr::Instance()->AddEventListener(m_pBody->Get_BasisNode(), CEventMgr::E_EVENT_TOUCH);
     m_pBody->Get_BasisNode()->Add_DelegateOwner(this);
-    CGameSceneMgr::Instance()->Get_Scene()->Get_Level()->Get_Landscape()->Add_DelegateOwner(this);
+    CGameSceneMgr::Instance()->Get_Scene()->Get_Level()->Get_Landscape()->Add_DelegateOwner(this);*/
 }
 
 void CCharacterControllerEnemy::OnTouchEvent(ITouchDelegate* _pDelegateOwner)
@@ -180,7 +180,7 @@ void CCharacterControllerEnemy::Update(void)
         vTargetPoint = m_vMovePoint;
     }
     
-    m_fTowerRotationY =  glm::degrees(CMathHelper::Instance()->Get_RotationBetweenPoints(m_vPosition, vTargetPoint) + CMathHelper::k_HALF_PI);
+    m_fTowerRotationY = glm::degrees(CMathHelper::Instance()->Get_RotationBetweenPoints(m_vPosition, vTargetPoint) + CMathHelper::k_HALF_PI);
     
     Set_Position(m_vPosition);
     _SmoothRotation();

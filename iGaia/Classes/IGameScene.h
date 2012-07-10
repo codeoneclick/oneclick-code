@@ -23,7 +23,7 @@ protected:
     CGameShooterMgr* m_pGameShooterMgr;
     CGameAIMgr* m_pGameAIMgr;
     IGameLevel* m_pLevel;
-    CCharacterControllerPlayer* m_pCharacterControllerPlayer;
+    ICharacterController* m_pMainCharacterController;
     ICamera* m_pCamera;
     ILight* m_pLight;
 public:
@@ -33,7 +33,7 @@ public:
     CGameCharaterControllerMgr* Get_GameCharaterControllerMgr(void) { return m_pCharaterControllerMgr; }
     CGameAIMgr* Get_GameAIMgr(void) { return m_pGameAIMgr; }
     CGameShooterMgr* Get_GameShooterMgr(void) { return m_pGameShooterMgr; }
-    CCharacterControllerPlayer* Get_PlayerCharacterController(void) { return m_pCharacterControllerPlayer; }
+    ICharacterController* Get_MainCharacterController(void) { return m_pMainCharacterController; }
     virtual void Load(void);
     virtual void Unload(void);
     virtual void Update(void);

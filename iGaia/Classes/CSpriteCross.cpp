@@ -186,9 +186,6 @@ void CSpriteCross::Render(CShader::E_RENDER_MODE _eMode)
     
     INode::Render(_eMode);
     
-    glDisable(GL_CULL_FACE);
-    glDepthMask(GL_FALSE);
-    
     ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
     CShader* pShader = m_pMaterial->Get_Shader(_eMode);
     
@@ -263,9 +260,6 @@ void CSpriteCross::Render(CShader::E_RENDER_MODE _eMode)
     m_pMesh->Get_IndexBufferRef()->Disable();
     m_pMesh->Get_VertexBufferRef()->Disable(_eMode);
     pShader->Disable();
-    
-    glEnable(GL_CULL_FACE);
-    glDepthMask(GL_TRUE);
 }
 
 

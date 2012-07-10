@@ -10,5 +10,17 @@
 #define __iGaia__CTankMediumTower__
 
 #include <iostream>
+#include "ITankTower.h"
+
+class CTankMediumTower : public ITankTower
+{
+protected:
+public:
+    CTankMediumTower(void);
+    ~CTankMediumTower(void);
+    
+    void Load(void);
+    void Update(void);
+};
 
 #endif /* defined(__iGaia__CTankMediumTower__) */
