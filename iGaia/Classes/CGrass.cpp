@@ -101,7 +101,7 @@ void CGrass::Load(const std::string &_sName, IResource::E_THREAD _eThread)
     pSourceData->m_iNumIndexes  = m_lGrassElementsPosition.size() * k_ELEMENT_NUM_INDEXES;
     
     pSourceData->m_pVertexBuffer = new CVertexBufferPositionTexcoord(pSourceData->m_iNumVertexes, GL_STREAM_DRAW);
-    pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes);
+    pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes, GL_STREAM_DRAW);
     
     CVertexBufferPositionTexcoord::SVertex* pVertexBufferData = static_cast<CVertexBufferPositionTexcoord::SVertex*>(pSourceData->m_pVertexBuffer->Lock());
     CVertexBufferPositionTexcoord::SVertex* pSingleElementVertexBufferData = static_cast<CVertexBufferPositionTexcoord::SVertex*>(m_pSingleElementVertexBuffer->Lock());
@@ -138,7 +138,6 @@ void CGrass::Load(const std::string &_sName, IResource::E_THREAD _eThread)
     m_pMesh = new CMesh(IResource::E_CREATION_MODE_CUSTOM);
     m_pMesh->Set_SourceData(pSourceData);
     m_pMesh->Get_VertexBufferRef()->Commit();
-    m_pMesh->Get_IndexBufferRef()->Set_Mode(GL_STREAM_DRAW);
     m_pMesh->Get_IndexBufferRef()->Commit();
     
     unsigned int iNumIndexes = m_pMesh->Get_NumIndexes();
@@ -435,9 +434,10 @@ void CGrass::Render(CShader::E_RENDER_MODE _eMode)
                 return;
             }
             
-            pShader->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
-            pShader->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
-            pShader->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
+            //pShader->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
+            //pShader->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
+            //pShader->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
+            pShader->Set_Matrix(m_mWVP, CShader::E_ATTRIBUTE_MATRIX_WVP);
             
             for(unsigned int i = 0; i < k_TEXTURES_MAX_COUNT; ++i)
             {
@@ -468,9 +468,10 @@ void CGrass::Render(CShader::E_RENDER_MODE _eMode)
                 return;
             }
             
-            pShader->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
-            pShader->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
-            pShader->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
+            //pShader->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
+            //pShader->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
+            //pShader->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
+            pShader->Set_Matrix(m_mWVP, CShader::E_ATTRIBUTE_MATRIX_WVP);
             
             for(unsigned int i = 0; i < k_TEXTURES_MAX_COUNT; ++i)
             {

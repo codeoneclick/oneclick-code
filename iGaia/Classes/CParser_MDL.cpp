@@ -44,7 +44,7 @@ void CParser_MDL::Load(const std::string& _sName)
     m_pSourceData = new CMesh::SSourceData();
     m_pSourceData->m_iNumVertexes = iNumVertexes;
     m_pSourceData->m_iNumIndexes = iNumIndexes;
-    m_pSourceData->m_pIndexBuffer  = new CIndexBuffer(m_pSourceData->m_iNumIndexes);
+    m_pSourceData->m_pIndexBuffer  = new CIndexBuffer(m_pSourceData->m_iNumIndexes, GL_STATIC_DRAW);
 	m_pSourceData->m_pData = new CMesh::SVertex[m_pSourceData->m_iNumVertexes];
     
     m_pSourceData->m_vMaxBound = glm::vec3( -4096.0f, -4096.0f, -4096.0f );
