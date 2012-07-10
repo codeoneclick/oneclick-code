@@ -11,18 +11,19 @@
 
 #include "ICamera.h"
 #include "INode.h"
+#include "ICharacterController.h"
 
 class CCameraTarget : public ICamera
 { 
 protected:
-    INode* m_pTarget;
+    ICharacterController* m_pTarget;
 public:
     CCameraTarget(void);
     ~CCameraTarget();
     virtual void Update(void);
     virtual void OnScreenMove(glm::vec2 _vMoveDirection);
-    void Set_Target(INode* _pTarget) { m_pTarget = _pTarget; }
-    INode* Get_Target(void) { return m_pTarget; }
+    void Set_Target(ICharacterController* _pTarget) { m_pTarget = _pTarget; }
+    ICharacterController* Get_Target(void) { return m_pTarget; }
 };
 
 #endif

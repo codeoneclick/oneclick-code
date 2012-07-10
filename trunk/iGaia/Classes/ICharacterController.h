@@ -14,16 +14,29 @@
 #include "ITouchDelegate.h"
 #include "CLandscape.h"
 #include "CMathHelper.h"
+
 #include "ITankTrack.h"
 #include "ITankTower.h"
 #include "ITankBody.h"
-#include <time.h>
+
+#include "CTankLightTrack.h"
+#include "CTankLightTower.h"
+#include "CTankLightBody.h"
+
+#include "CTankMediumTrack.h"
+#include "CTankMediumTower.h"
+#include "CTankMediumBody.h"
+
+#include "CTankHeavyTrack.h"
+#include "CTankHeavyTower.h"
+#include "CTankHeavyBody.h"
 
 #define k_MIN_HEIGHTMAP_VALUE -8.0f
 
 class ICharacterController : public ITouchDelegate
 {
 public:
+    enum E_CHARACTER_PART_TYPE { E_CHARACTER_PART_TYPE_LIGHT = 0, E_CHARACTER_PART_TYPE_MEDIUM, E_CHARACTER_PART_TYPE_HEAVY };
     enum E_CHARACTER_CONTROLLER_STATE { E_CHARACTER_CONTROLLER_STATE_NONE = 0, E_CHARACTER_CONTROLLER_STATE_INC_MOVE, E_CHARACTER_CONTROLLER_STATE_DEC_MOVE };
     enum E_CHARACTER_CONTROLLER_MOVE_STATE { E_CHARACTER_CONTROLLER_MOVE_STATE_NONE = 0, E_CHARACTER_CONTROLLER_MOVE_STATE_FORWARD, E_CHARACTER_CONTROLLER_MOVE_STATE_BACKWARD };
     enum E_CHARACTER_CONTROLLER_STEER_STATE { E_CHARACTER_CONTROLLER_STEER_STATE_NONE = 0, E_CHARACTER_CONTROLLER_STEER_STATE_LEFT, E_CHARACTER_CONTROLLER_STEER_STATE_RIGHT };
@@ -88,6 +101,11 @@ public:
     virtual void OnTouchEvent(ITouchDelegate* _pDelegateOwner) = 0;
     void Set_Target(ICharacterController* _pTarget) { m_pTarget = _pTarget; }
     ICharacterController* Get_Target(void) { return m_pTarget; }
+    
+    void Set_Body(E_CHARACTER_PART_TYPE _eType);
+    void Set_Tower(E_CHARACTER_PART_TYPE _eType);
+    void Set_Track(E_CHARACTER_PART_TYPE _eType);
+    
 };
 
 

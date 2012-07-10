@@ -104,12 +104,12 @@ void ITankTrack::Set_Rotation(const glm::vec3 &_vRotation)
 
 void ITankTrack::Move_LeftTrack(float _fDelta)
 {
-    m_fLeftTrackMoveOffset += _fDelta;
+    m_fLeftTrackMoveOffset -= _fDelta;
 }
 
 void ITankTrack::Move_RightTrack(float _fDelta)
 {
-    m_fRightTrackMoveOffset += _fDelta;
+    m_fRightTrackMoveOffset -= _fDelta;
 }
 
 void ITankTrack::Load(void)
@@ -121,12 +121,12 @@ void ITankTrack::Update(void)
 {
     if(m_pLeftTrack != NULL)
     {
-        m_pLeftTrack->Set_TexCoordOffset(glm::vec2(m_fLeftTrackMoveOffset, 0.0f));
+        m_pLeftTrack->Set_TexCoordOffset(glm::vec2(0.0f, m_fLeftTrackMoveOffset));
     }
     
     if(m_pRightTrack)
     {
-        m_pRightTrack->Set_TexCoordOffset(glm::vec2(m_fRightTrackMoveOffset, 0.0f));
+        m_pRightTrack->Set_TexCoordOffset(glm::vec2(0.0f, m_fRightTrackMoveOffset));
     }
 }
 

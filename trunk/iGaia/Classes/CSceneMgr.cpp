@@ -162,7 +162,7 @@ ICamera* CSceneMgr::CreateFreeCamera(float _fFov, float _fNearPlane, float _fFar
     return pCamera;
 }
 
-ICamera* CSceneMgr::CreateTargetCamera(float _fFov, float _fNearPlane, float _fFarPlane, INode *_pTarget)
+ICamera* CSceneMgr::CreateTargetCamera(float _fFov, float _fNearPlane, float _fFarPlane, ICharacterController *_pTarget)
 {
     CCameraTarget* pCamera = new CCameraTarget();
     pCamera->Init(CWindow::Get_OffScreenWidth(), CWindow::Get_OffScreenHeight(), _fFov, _fFarPlane, _fNearPlane);

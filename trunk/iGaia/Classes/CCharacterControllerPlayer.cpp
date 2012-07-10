@@ -11,9 +11,6 @@
 #include "CGameSceneMgr.h"
 #include "CSceneMgr.h"
 #include "CTimer.h"
-#include "CTankLightTrack.h"
-#include "CTankLightTower.h"
-#include "CTankLightBody.h"
 
 CCharacterControllerPlayer::CCharacterControllerPlayer(void)
 {
@@ -50,9 +47,9 @@ void CCharacterControllerPlayer::Load(void)
     m_pBody = new CTankLightBody();
     m_pBody->Load();
     
-    CSceneMgr::Instance()->AddEventListener(m_pBody->Get_BasisNode(), CEventMgr::E_EVENT_TOUCH);
+    /*CSceneMgr::Instance()->AddEventListener(m_pBody->Get_BasisNode(), CEventMgr::E_EVENT_TOUCH);
     m_pBody->Get_BasisNode()->Add_DelegateOwner(this);
-    CGameSceneMgr::Instance()->Get_Scene()->Get_Level()->Get_Landscape()->Add_DelegateOwner(this);
+    CGameSceneMgr::Instance()->Get_Scene()->Get_Level()->Get_Landscape()->Add_DelegateOwner(this);*/
 }
 
 void CCharacterControllerPlayer::OnTouchEvent(ITouchDelegate* _pDelegateOwner)

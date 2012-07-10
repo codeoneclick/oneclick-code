@@ -33,23 +33,23 @@ void CGameInGameScene::Load(void)
     m_pLevel->Load();
     
     m_pCharaterControllerMgr->Add_MainCharacterController();
-    m_pCharacterControllerPlayer = static_cast<CCharacterControllerPlayer*>(m_pCharaterControllerMgr->Get_MainCharacterController());
-    m_pCharacterControllerPlayer->Set_Position(glm::vec3(5.0f, 0.0f, 5.0f));
+    m_pMainCharacterController = static_cast<CCharacterControllerPlayer*>(m_pCharaterControllerMgr->Get_MainCharacterController());
+    m_pMainCharacterController->Set_Position(glm::vec3(5.0f, 0.0f, 5.0f));
     
     CCharacterControllerEnemy* pEnemy = static_cast<CCharacterControllerEnemy*>(m_pCharaterControllerMgr->Add_EnemyCharacterController());
     pEnemy->Set_Position(glm::vec3(8.0f, 0.0f, 8.0f));
     m_pGameAIMgr->Add_AICharacterController(pEnemy);
-    pEnemy->Set_Target(m_pCharacterControllerPlayer);
+    pEnemy->Set_Target(m_pMainCharacterController);
     
     pEnemy = static_cast<CCharacterControllerEnemy*>(m_pCharaterControllerMgr->Add_EnemyCharacterController());
     pEnemy->Set_Position(glm::vec3(CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_Width() - 8.0f, 0.0f, 8.0f));
     m_pGameAIMgr->Add_AICharacterController(pEnemy);
-    pEnemy->Set_Target(m_pCharacterControllerPlayer);
+    pEnemy->Set_Target(m_pMainCharacterController);
     
     pEnemy = static_cast<CCharacterControllerEnemy*>(m_pCharaterControllerMgr->Add_EnemyCharacterController());
     pEnemy->Set_Position(glm::vec3(8.0f, 0.0f, CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_Height() - 8.0f));
     m_pGameAIMgr->Add_AICharacterController(pEnemy);
-    pEnemy->Set_Target(m_pCharacterControllerPlayer);
+    pEnemy->Set_Target(m_pMainCharacterController);
     
     m_pLight = CSceneMgr::Instance()->Get_Light(ILight::E_LIGHT_MODE_POINT, 0);
     m_pLight->Set_Position(glm::vec3(0.0f, 4.0f, 0.0f));
@@ -57,7 +57,7 @@ void CGameInGameScene::Load(void)
     static_cast<CLightPoint*>(m_pLight)->Set_Visible(true);
     CSceneMgr::Instance()->Set_GlobalLight(m_pLight);
     
-    m_pCamera = CSceneMgr::Instance()->CreateTargetCamera(45.0f, 0.25f, 128.0f, m_pCharacterControllerPlayer->Get_TargetForCamera());
+    m_pCamera = CSceneMgr::Instance()->CreateTargetCamera(45.0f, 0.25f, 128.0f, m_pMainCharacterController);
     CSceneMgr::Instance()->Set_Camera(m_pCamera);
     m_pCamera->Set_DistanceToLookAt(k_CAMERA_DISTANCE_MODE_1);
     m_pCamera->Set_HeightFromLookAt(k_CAMERA_HEIGHT_MODE_1);
@@ -126,7 +126,7 @@ void CGameInGameScene::Update(void)
     m_pCamera->Set_HeightFromLookAt(m_fCurrentCameraHeight);
     
     glm::vec3 vCurrentCameraRotation = m_pCamera->Get_Rotation();
-    vCurrentCameraRotation.y = glm::radians(m_pCharacterControllerPlayer->Get_Rotation().y) - CMathHelper::k_HALF_PI;
+    vCurrentCameraRotation.y = glm::radians(m_pMainCharacterController->Get_Rotation().y) - CMathHelper::k_HALF_PI;
     glm::vec3 vOldCameraRotation = m_pCamera->Get_Rotation();
     glm::vec3 vCameraRotation = glm::mix(vOldCameraRotation, vCurrentCameraRotation, k_CAMERA_ROTATION_LERP);
     m_pCamera->Set_Rotation(vCameraRotation);

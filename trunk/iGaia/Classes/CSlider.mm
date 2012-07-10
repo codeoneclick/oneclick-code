@@ -57,7 +57,7 @@
 {
     for (UITouch*touch in touches)
     {
-        CGameSceneMgr::Instance()->Get_Scene()->Get_PlayerCharacterController()->Set_SteerTowerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_TOWER_NONE);
+        CGameSceneMgr::Instance()->Get_Scene()->Get_MainCharacterController()->Set_SteerTowerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_TOWER_NONE);
         CGRect tRect = m_pControl.frame;
         tRect.origin.x = self.frame.size.width / 2 - (self.frame.size.width / 3) / 2;
         m_pControl.frame = tRect;
@@ -73,15 +73,15 @@
 {
     if(touchPoint.x > m_iMaxOffsetX)
     {
-        CGameSceneMgr::Instance()->Get_Scene()->Get_PlayerCharacterController()->Set_SteerTowerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_TOWER_LEFT);
+        CGameSceneMgr::Instance()->Get_Scene()->Get_MainCharacterController()->Set_SteerTowerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_TOWER_LEFT);
     }
     else if(touchPoint.x < m_iMinOffsetX)
     {
-        CGameSceneMgr::Instance()->Get_Scene()->Get_PlayerCharacterController()->Set_SteerTowerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_TOWER_RIGHT);
+        CGameSceneMgr::Instance()->Get_Scene()->Get_MainCharacterController()->Set_SteerTowerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_TOWER_RIGHT);
     }
     else
     {
-        CGameSceneMgr::Instance()->Get_Scene()->Get_PlayerCharacterController()->Set_SteerTowerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_TOWER_NONE);
+        CGameSceneMgr::Instance()->Get_Scene()->Get_MainCharacterController()->Set_SteerTowerState(ICharacterController::E_CHARACTER_CONTROLLER_STEER_STATE_TOWER_NONE);
     }
     
     CGRect tRect = m_pControl.frame;

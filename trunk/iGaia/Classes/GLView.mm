@@ -13,7 +13,7 @@
     dispatch_once(&oncePredicate, ^
     {
         CGRect screenBounds = [[UIScreen mainScreen] bounds];
-        pInstance = [[self alloc] initWithFrame:screenBounds];
+        pInstance = [[self alloc] initWithFrame:CGRectMake(0, 0, screenBounds.size.height, screenBounds.size.width)];
     });
     return pInstance;
 }

@@ -129,9 +129,9 @@ CScreenSpacePostMgr::CScreenSpacePostMgr(void)
     pIndexBufferData[i++] = 1;
     pIndexBufferData[i++] = 2;
     
-    pIndexBufferData[i++] = 3;
-    pIndexBufferData[i++] = 2; 
     pIndexBufferData[i++] = 1;
+    pIndexBufferData[i++] = 2;
+    pIndexBufferData[i++] = 3;
     
     m_pMesh = new CMesh(IResource::E_CREATION_MODE_CUSTOM);
     m_pMesh->Set_SourceData(pSourceData);
@@ -178,10 +178,7 @@ void CScreenSpacePostMgr::DisableScreenMode(void)
 
 void CScreenSpacePostMgr::Render_PostSimple(void)
 {
-    glDisable(GL_DEPTH_TEST);
-    glDisable(GL_CULL_FACE);
-    glDisable(GL_BLEND);
-
+    CMaterial::ScreenStates();
     CMaterial::Set_ExtCommitedShaderRef(m_pPostShader[E_OFFSCREEN_MODE_SIMPLE]);
     m_pPostShader[E_OFFSCREEN_MODE_SIMPLE]->Enable();
     if(CSettings::g_bEdgeDetect)
@@ -239,10 +236,7 @@ void CScreenSpacePostMgr::Render_PostBlur(void)
 
 void CScreenSpacePostMgr::Render_PostEdgeDetect(void)
 {
-    glDisable(GL_DEPTH_TEST);
-    glDisable(GL_CULL_FACE);
-    glDisable(GL_BLEND);
-    
+    CMaterial::ScreenStates();
     CMaterial::Set_ExtCommitedShaderRef(m_pPostShader[E_OFFSCREEN_MODE_EDGE_DETECT]);
     m_pPostShader[E_OFFSCREEN_MODE_EDGE_DETECT]->Set_Texture(m_hOffScreenTextures[E_OFFSCREEN_MODE_SIMPLE], CShader::E_TEXTURE_SLOT_01);
     m_pPostShader[E_OFFSCREEN_MODE_EDGE_DETECT]->Set_Texture(m_hOffScreenTextures[E_OFFSCREEN_MODE_SCREEN_NORMAL_MAP], CShader::E_TEXTURE_SLOT_02);

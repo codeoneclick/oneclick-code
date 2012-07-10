@@ -29,9 +29,22 @@ void CMaterial::InitStates(void)
     m_eBlendFuncDestCommited = GL_ONE_MINUS_SRC_ALPHA;
     glEnable(GL_BLEND);
     m_pStatesCommited[CMaterial::E_RENDER_STATE_BLEND_MODE] = true;
+    glDepthMask(GL_TRUE);
     m_pStatesCommited[CMaterial::E_RENDER_STATE_DEPTH_MASK] = true;
     
     m_hShaderHandleCommited = 0;
+}
+
+void CMaterial::ScreenStates(void)
+{
+    glDisable(GL_DEPTH_TEST);
+    m_pStatesCommited[CMaterial::E_RENDER_STATE_DEPTH_TEST] = false;
+    glDisable(GL_CULL_FACE);
+    m_pStatesCommited[CMaterial::E_RENDER_STATE_CULL_MODE] = false;
+    glDisable(GL_BLEND);
+    m_pStatesCommited[CMaterial::E_RENDER_STATE_BLEND_MODE] = false;
+    glDepthMask(GL_TRUE);
+    m_pStatesCommited[CMaterial::E_RENDER_STATE_DEPTH_MASK] = true;
 }
 
 CMaterial::CMaterial(void)

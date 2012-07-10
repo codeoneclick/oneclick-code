@@ -14,7 +14,7 @@
 CGameMainMenuScene::CGameMainMenuScene(void)
 {
     m_pCharaterControllerMgr = NULL;
-    m_pCharacterControllerPlayer = NULL;
+    m_pMainCharacterController = NULL;
     m_pGameAIMgr = NULL;
     m_pGameShooterMgr = NULL;
 }
@@ -49,7 +49,9 @@ void CGameMainMenuScene::Load(void)
     static_cast<CLightPoint*>(m_pLight)->Set_Visible(true);
     CSceneMgr::Instance()->Set_GlobalLight(m_pLight);
     
-    m_pCamera = CSceneMgr::Instance()->CreateTargetCamera(45.0f, 0.25f, 128.0f, pEnemy->Get_TargetForCamera());
+    m_pMainCharacterController = pEnemy;
+    
+    m_pCamera = CSceneMgr::Instance()->CreateTargetCamera(45.0f, 0.25f, 128.0f, m_pMainCharacterController);
     CSceneMgr::Instance()->Set_Camera(m_pCamera);
     m_pCamera->Set_DistanceToLookAt(k_CAMERA_DISTANCE);
     m_pCamera->Set_HeightFromLookAt(k_CAMERA_HEIGHT);

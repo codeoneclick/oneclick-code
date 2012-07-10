@@ -175,9 +175,6 @@ void CBatch::_RenderBatchModeModel(CShader::E_RENDER_MODE _eMode)
 
 void CBatch::_RenderBatchModeParticleEmitter(CShader::E_RENDER_MODE _eMode)
 {
-    glDisable(GL_CULL_FACE);
-    glDepthMask(GL_FALSE);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
     ICamera* pCamera = CSceneMgr::Instance()->Get_Camera();
     switch (_eMode)
     {
@@ -239,9 +236,6 @@ void CBatch::_RenderBatchModeParticleEmitter(CShader::E_RENDER_MODE _eMode)
     m_pMesh->Get_IndexBufferRef()->Disable();
     m_pMesh->Get_VertexBufferRef()->Disable(_eMode);
     m_pShaders[_eMode]->Disable();
-    glEnable(GL_CULL_FACE);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glDepthMask(GL_TRUE);
 }
 
 void CBatch::_RenderBatchModeSprite(CShader::E_RENDER_MODE _eMode)

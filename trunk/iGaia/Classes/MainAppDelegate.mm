@@ -9,7 +9,7 @@
 {
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     m_pWindow = [[UIWindow alloc] initWithFrame: screenBounds];
-    GameViewController *vc = [GameViewController new];
+    MainMenuViewController *vc = [MainMenuViewController new];
     [m_pWindow setRootViewController:vc];
     [m_pWindow makeKeyAndVisible];
 }  
