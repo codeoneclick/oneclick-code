@@ -198,7 +198,14 @@
 		A153D5C2153DA3D000FBFFD5 /* CGameInGameUI.mm in Sources */ = {isa = PBXBuildFile; fileRef = A153D5C1153DA3D000FBFFD5 /* CGameInGameUI.mm */; };
 		A153D5C8153DA75000FBFFD5 /* btn.png in Resources */ = {isa = PBXBuildFile; fileRef = A153D5C7153DA75000FBFFD5 /* btn.png */; };
 		A166A1641546D1F800E659D5 /* CParticleMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A166A1621546D1F800E659D5 /* CParticleMgr.cpp */; };
+		A179C1FD15ADA78200FA872B /* GameInGameViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = A179C1FB15ADA78200FA872B /* GameInGameViewController.mm */; };
+		A179C1FE15ADA78200FA872B /* GameInGameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A179C1FC15ADA78200FA872B /* GameInGameViewController.xib */; };
+		A179C20215ADA83700FA872B /* GameBaseViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = A179C20115ADA83700FA872B /* GameBaseViewController.mm */; };
+		A179C21615ADC08900FA872B /* GameLoadingViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = A179C21415ADC08800FA872B /* GameLoadingViewController.mm */; };
+		A179C21715ADC08900FA872B /* GameLoadingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A179C21515ADC08800FA872B /* GameLoadingViewController.xib */; };
+		A179C21B15ADD50000FA872B /* CLandscapeEdges.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A179C21915ADD50000FA872B /* CLandscapeEdges.cpp */; };
 		A181673E15442E97004B483A /* model_02.pvr in Resources */ = {isa = PBXBuildFile; fileRef = A181673D15442E97004B483A /* model_02.pvr */; };
+		A1895C6415AD76CA0009FD73 /* ocean_riple.pvr in Resources */ = {isa = PBXBuildFile; fileRef = A1895C6315AD76CA0009FD73 /* ocean_riple.pvr */; };
 		A18D576F1598418000FCD8C9 /* CMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A18D576D1598418000FCD8C9 /* CMaterial.cpp */; };
 		A1A5E8DF1532E0E6004DD73B /* base_model_full.mdl in Resources */ = {isa = PBXBuildFile; fileRef = A1A5E8DA1532E0E6004DD73B /* base_model_full.mdl */; };
 		A1A5E8E01532E0E6004DD73B /* base_model.mdl in Resources */ = {isa = PBXBuildFile; fileRef = A1A5E8DB1532E0E6004DD73B /* base_model.mdl */; };
@@ -673,9 +680,20 @@
 		A153D5C7153DA75000FBFFD5 /* btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = btn.png; path = Resources/Textures/btn.png; sourceTree = "<group>"; };
 		A166A1621546D1F800E659D5 /* CParticleMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CParticleMgr.cpp; sourceTree = "<group>"; };
 		A166A1631546D1F800E659D5 /* CParticleMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CParticleMgr.h; sourceTree = "<group>"; };
+		A179C1FA15ADA78200FA872B /* GameInGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameInGameViewController.h; sourceTree = "<group>"; };
+		A179C1FB15ADA78200FA872B /* GameInGameViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GameInGameViewController.mm; sourceTree = "<group>"; };
+		A179C1FC15ADA78200FA872B /* GameInGameViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GameInGameViewController.xib; sourceTree = "<group>"; };
+		A179C20015ADA83700FA872B /* GameBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameBaseViewController.h; sourceTree = "<group>"; };
+		A179C20115ADA83700FA872B /* GameBaseViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GameBaseViewController.mm; sourceTree = "<group>"; };
+		A179C21315ADC08800FA872B /* GameLoadingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameLoadingViewController.h; sourceTree = "<group>"; };
+		A179C21415ADC08800FA872B /* GameLoadingViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GameLoadingViewController.mm; sourceTree = "<group>"; };
+		A179C21515ADC08800FA872B /* GameLoadingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GameLoadingViewController.xib; sourceTree = "<group>"; };
+		A179C21915ADD50000FA872B /* CLandscapeEdges.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CLandscapeEdges.cpp; sourceTree = "<group>"; };
+		A179C21A15ADD50000FA872B /* CLandscapeEdges.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLandscapeEdges.h; sourceTree = "<group>"; };
 		A181673D15442E97004B483A /* model_02.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = model_02.pvr; path = Resources/Textures/model_02.pvr; sourceTree = "<group>"; };
 		A186D96B152AEB5100112521 /* ShaderOcean.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderOcean.frag; path = Shaders/ShaderOcean.frag; sourceTree = "<group>"; };
 		A186D96C152AEB5100112521 /* ShaderOcean.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderOcean.vert; path = Shaders/ShaderOcean.vert; sourceTree = "<group>"; };
+		A1895C6315AD76CA0009FD73 /* ocean_riple.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = ocean_riple.pvr; path = Resources/Textures/ocean_riple.pvr; sourceTree = "<group>"; };
 		A18D576D1598418000FCD8C9 /* CMaterial.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMaterial.cpp; sourceTree = "<group>"; };
 		A18D576E1598418000FCD8C9 /* CMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMaterial.h; sourceTree = "<group>"; };
 		A1A3BB1C153D5F2C003AE14D /* ShaderGrassND.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShaderGrassND.frag; path = Shaders/ShaderGrassND.frag; sourceTree = "<group>"; };
@@ -1181,6 +1199,8 @@
 				A1AF6F751549383200703E2E /* CSkyBox.cpp */,
 				A13F9EB81568D743009DCBB4 /* CDecal.h */,
 				A13F9EB71568D743009DCBB4 /* CDecal.cpp */,
+				A179C21A15ADD50000FA872B /* CLandscapeEdges.h */,
+				A179C21915ADD50000FA872B /* CLandscapeEdges.cpp */,
 			);
 			name = Nodes;
 			sourceTree = "<group>";
@@ -1734,6 +1754,14 @@
 				A1D635B715AAEB2A00F5D42B /* MainMenuViewController.h */,
 				A1D635B815AAEB2A00F5D42B /* MainMenuViewController.mm */,
 				A1D635B915AAEB2A00F5D42B /* MainMenuViewController.xib */,
+				A179C1FA15ADA78200FA872B /* GameInGameViewController.h */,
+				A179C1FB15ADA78200FA872B /* GameInGameViewController.mm */,
+				A179C1FC15ADA78200FA872B /* GameInGameViewController.xib */,
+				A179C20015ADA83700FA872B /* GameBaseViewController.h */,
+				A179C20115ADA83700FA872B /* GameBaseViewController.mm */,
+				A179C21315ADC08800FA872B /* GameLoadingViewController.h */,
+				A179C21415ADC08800FA872B /* GameLoadingViewController.mm */,
+				A179C21515ADC08800FA872B /* GameLoadingViewController.xib */,
 			);
 			name = iPhone;
 			sourceTree = "<group>";
@@ -1741,6 +1769,7 @@
 		CE91921914573F630021A0DC /* Textures */ = {
 			isa = PBXGroup;
 			children = (
+				A1895C6315AD76CA0009FD73 /* ocean_riple.pvr */,
 				A1D635E815AC0FBA00F5D42B /* tank_heavy.pvr */,
 				A1D635E915AC0FBA00F5D42B /* tank_light.pvr */,
 				A1D635EA15AC0FBA00F5D42B /* tank_medium.pvr */,
@@ -1985,6 +2014,9 @@
 				A1D635ED15AC0FBA00F5D42B /* tank_light.pvr in Resources */,
 				A1D635EE15AC0FBA00F5D42B /* tank_medium.pvr in Resources */,
 				A1D635EF15AC0FBA00F5D42B /* tank_track.pvr in Resources */,
+				A1895C6415AD76CA0009FD73 /* ocean_riple.pvr in Resources */,
+				A179C1FE15ADA78200FA872B /* GameInGameViewController.xib in Resources */,
+				A179C21715ADC08900FA872B /* GameLoadingViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2101,6 +2133,10 @@
 				1520865415A82C05001F0F8F /* ShaderPostLandscapeDetail.frag in Sources */,
 				1520865515A82C05001F0F8F /* ShaderPostLandscapeDetail.vert in Sources */,
 				A1D635BA15AAEB2A00F5D42B /* MainMenuViewController.mm in Sources */,
+				A179C1FD15ADA78200FA872B /* GameInGameViewController.mm in Sources */,
+				A179C20215ADA83700FA872B /* GameBaseViewController.mm in Sources */,
+				A179C21615ADC08900FA872B /* GameLoadingViewController.mm in Sources */,
+				A179C21B15ADD50000FA872B /* CLandscapeEdges.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

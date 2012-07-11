@@ -6,8 +6,8 @@
 //
 //
 
-#import <UIKit/UIKit.h>
+#import "GameBaseViewController.h"
 
-@interface MainMenuViewController : UIViewController
+@interface MainMenuViewController : GameBaseViewController
 
 @end

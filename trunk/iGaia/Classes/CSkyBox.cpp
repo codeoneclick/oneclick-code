@@ -52,10 +52,10 @@ void CSkyBox::Load(const std::string& _sName, IResource::E_THREAD _eThread)
     pVertexBufferData[10].m_vPosition = glm::vec3( m_vMax.x,  m_vMax.y,  m_vMax.z);
     pVertexBufferData[11].m_vPosition = glm::vec3( m_vMax.x,  m_vMax.y,  m_vMin.z);
     // Right
-    pVertexBufferData[12].m_vPosition = glm::vec3( m_vMin.x,  m_vMin.y,  m_vMin.z);
-    pVertexBufferData[13].m_vPosition = glm::vec3( m_vMax.x,  m_vMin.y,  m_vMin.z);
-    pVertexBufferData[14].m_vPosition = glm::vec3( m_vMax.x,  m_vMin.y,  m_vMax.z);
-    pVertexBufferData[15].m_vPosition = glm::vec3( m_vMin.x,  m_vMin.y,  m_vMax.z);
+    pVertexBufferData[12].m_vPosition = glm::vec3( m_vMin.x,  m_vMax.y,  m_vMin.z);
+    pVertexBufferData[13].m_vPosition = glm::vec3( m_vMax.x,  m_vMax.y,  m_vMin.z);
+    pVertexBufferData[14].m_vPosition = glm::vec3( m_vMax.x,  m_vMax.y,  m_vMax.z);
+    pVertexBufferData[15].m_vPosition = glm::vec3( m_vMin.x,  m_vMax.y,  m_vMax.z);
     // Top
     pVertexBufferData[16].m_vPosition = glm::vec3( m_vMax.x,  m_vMin.y,  m_vMin.z);
     pVertexBufferData[17].m_vPosition = glm::vec3( m_vMax.x,  m_vMax.y,  m_vMin.z);

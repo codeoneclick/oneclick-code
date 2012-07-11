@@ -41,9 +41,9 @@ void CWater::Load(const std::string& _sName, IResource::E_THREAD _eThread)
     pVertexBufferData[3].m_vPosition = glm::vec3( 0.0f,     m_fWaterHeight,  m_iHeight );
     
     pVertexBufferData[0].m_vTexcoord = glm::vec2( 0.0f,  0.0f );
-    pVertexBufferData[1].m_vTexcoord = glm::vec2( 0.0f,  1.0f );
-    pVertexBufferData[2].m_vTexcoord = glm::vec2( 1.0f,  0.0f );
-    pVertexBufferData[3].m_vTexcoord = glm::vec2( 1.0f,  1.0f );
+    pVertexBufferData[1].m_vTexcoord = glm::vec2( 1.0f,  0.0f );
+    pVertexBufferData[2].m_vTexcoord = glm::vec2( 1.0f,  1.0f );
+    pVertexBufferData[3].m_vTexcoord = glm::vec2( 0.0f,  1.0f );
     
     pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes, GL_STATIC_DRAW);
     unsigned short* pIndexesBufferData = pSourceData->m_pIndexBuffer->Get_SourceData();
@@ -103,6 +103,9 @@ void CWater::Render(CShader::E_RENDER_MODE _eMode)
     
     m_pMaterial->Commit(_eMode);
     
+    static float fTimer = 0.0f;
+    fTimer += 0.005f;
+    
     switch (_eMode)
     {
         case CShader::E_RENDER_MODE_SIMPLE:
@@ -113,9 +116,11 @@ void CWater::Render(CShader::E_RENDER_MODE _eMode)
                 return;
             }
 
+            pShader->Set_Vector3(pCamera->Get_Position(), CShader::E_ATTRIBUTE_VECTOR_CAMERA_POSITION);
             pShader->Set_Matrix(m_mWorld, CShader::E_ATTRIBUTE_MATRIX_WORLD);
             pShader->Set_Matrix(pCamera->Get_Projection(), CShader::E_ATTRIBUTE_MATRIX_PROJECTION);
             pShader->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
+            pShader->Set_CustomFloat(fTimer, "EXT_Timer");
             
             for(unsigned int i = 0; i < k_TEXTURES_MAX_COUNT; ++i)
             {
@@ -128,6 +133,7 @@ void CWater::Render(CShader::E_RENDER_MODE _eMode)
             }
             pShader->Set_Texture(CSceneMgr::Instance()->Get_RenderMgr()->Get_OffScreenTexture(CScreenSpacePostMgr::E_OFFSCREEN_MODE_REFLECTION), CShader::E_TEXTURE_SLOT_01);
             pShader->Set_Texture(CSceneMgr::Instance()->Get_RenderMgr()->Get_OffScreenTexture(CScreenSpacePostMgr::E_OFFSCREEN_MODE_REFRACTION), CShader::E_TEXTURE_SLOT_02);
+            pShader->Set_Texture(CSceneMgr::Instance()->Get_HeightMapSetterRef()->Get_TextureHeightmap(), CShader::E_TEXTURE_SLOT_03);
         }
             break;
         case CShader::E_RENDER_MODE_REFLECTION:

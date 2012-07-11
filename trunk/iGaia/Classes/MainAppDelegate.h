@@ -4,6 +4,7 @@
 {
 @private
     UIWindow* m_pWindow;
+    UINavigationController *m_pNavigationViewController;
 }
 
 @end
