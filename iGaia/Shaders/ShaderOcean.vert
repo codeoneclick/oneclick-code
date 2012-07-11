@@ -4,7 +4,7 @@ const char* ShaderOceanV = STRINGIFY(
                                               attribute vec2 IN_SLOT_TexCoord;
                                               
                                               varying vec4   OUT_TexCoordProj;
-                                              varying vec2   OUT_TexCoord;  
+                                              varying vec2   OUT_TexCoord; 
                                               
                                               uniform mat4   EXT_MATRIX_Projection;
                                               uniform mat4   EXT_MATRIX_View;                                          

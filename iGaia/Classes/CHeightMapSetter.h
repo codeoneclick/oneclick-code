@@ -40,6 +40,7 @@ protected:
     
     unsigned short* m_pTextureSplattingDataSource;
     
+    void _Create_LandscapeEdges(void);
     void _Create_TextureSplatting(void);
     void _Create_TextureHeightmap(void);
     void _Create_TextureDetail(void);

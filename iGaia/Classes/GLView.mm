@@ -107,9 +107,11 @@
 
 }
 
-- (void) Set_Effect:(NSInteger)index
+- (void)clearScreen
 {
-   
+    glClearColor(0, 0, 0, 0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+    [m_pContext presentRenderbuffer:GL_RENDERBUFFER];
 }
 
 @end

@@ -52,8 +52,8 @@ void CGameInGameScene::Load(void)
     pEnemy->Set_Target(m_pMainCharacterController);
     
     m_pLight = CSceneMgr::Instance()->Get_Light(ILight::E_LIGHT_MODE_POINT, 0);
-    m_pLight->Set_Position(glm::vec3(0.0f, 4.0f, 0.0f));
-    m_pLight->Set_LightAt(glm::vec3(16.0f, 0.0f, 16.0f));
+    m_pLight->Set_Position(glm::vec3(32.0f, 16.0f, 32.0f));
+    m_pLight->Set_LightAt(glm::vec3(32.0f, 0.0f, 32.0f));
     static_cast<CLightPoint*>(m_pLight)->Set_Visible(true);
     CSceneMgr::Instance()->Set_GlobalLight(m_pLight);
     
@@ -67,7 +67,7 @@ void CGameInGameScene::Load(void)
 
 void CGameInGameScene::Unload(void)
 {
-    
+    IGameScene::Unload();
 }
 
 void CGameInGameScene::SwitchCameraMode(CGameInGameScene::E_CAMERA_MODE _eCameraMode)

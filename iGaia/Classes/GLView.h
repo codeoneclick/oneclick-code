@@ -10,7 +10,9 @@
 
 + (GLView*)Instance;
 
-- (void) drawView: (CADisplayLink*) displayLink;
-- (void) didRotate: (NSNotification*) notification;
+- (void)drawView:(CADisplayLink*)displayLink;
+- (void)didRotate:(NSNotification*)notification;
+
+- (void)clearScreen;
 
 @end

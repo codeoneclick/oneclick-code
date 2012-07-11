@@ -11,6 +11,7 @@
 #include "CSceneMgr.h"
 #include "CVertexBufferPositionTexcoordNormalTangent.h"
 #include "CVertexBufferPositionTexcoord.h"
+#include <algorithm>
 
 CHeightMapSetter::CHeightMapSetter(void)
 {
@@ -52,7 +53,7 @@ CMesh* CHeightMapSetter::Load_DataSource(const std::string _sName, int _iWidth, 
         for(unsigned int j = 0; j < m_iHeight;++j)
         {
             pVertexBufferData[index].m_vPosition.x = i;
-            pVertexBufferData[index].m_vPosition.y = sin(i * 0.33f) / 2.0f + cos(j * 0.33f) / 2.0f + 0.5f;
+            pVertexBufferData[index].m_vPosition.y = sin(i * 0.33f) / 2.0f + cos(j * 0.33f) / 2.0f;
             m_pDataSource[i + j * m_iWidth] = pVertexBufferData[index].m_vPosition.y;
             pVertexBufferData[index].m_vPosition.z = j;
             
@@ -119,6 +120,57 @@ CMesh* CHeightMapSetter::Load_DataSource(const std::string _sName, int _iWidth, 
     return pMesh;
 }
 
+void CHeightMapSetter::_Create_LandscapeEdges(void)
+{
+    CMesh::SSourceData* pSourceData = new CMesh::SSourceData();
+    pSourceData->m_iNumVertexes = m_iWidth * 8;
+    pSourceData->m_iNumIndexes  = (m_iWidth - 1) * (8 - 1) * 6;
+    
+    pSourceData->m_pVertexBuffer = new CVertexBufferPositionTexcoordNormalTangent(pSourceData->m_iNumVertexes, GL_STATIC_DRAW);
+    
+    CVertexBufferPositionTexcoordNormalTangent::SVertex* pVertexBufferData = static_cast<CVertexBufferPositionTexcoordNormalTangent::SVertex*>(pSourceData->m_pVertexBuffer->Lock());
+    
+    unsigned int index = 0;
+    for(unsigned int i = 0; i < m_iWidth;++i)
+    {
+        for(unsigned int j = 0; j < 2;++j)
+        {
+            pVertexBufferData[index].m_vPosition.x = i;
+            pVertexBufferData[index].m_vPosition.y = sin(i * 0.33f) / 2.0f + cos(j * 0.33f) / 2.0f;
+            m_pDataSource[i + j * m_iWidth] = pVertexBufferData[index].m_vPosition.y;
+            pVertexBufferData[index].m_vPosition.z = j;
+            
+            pVertexBufferData[index].m_vTexcoord.x = i / static_cast<float>(m_iWidth);
+            pVertexBufferData[index].m_vTexcoord.y = j / static_cast<float>(m_iHeight);
+            ++index;
+        }
+    }
+    
+    pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes, GL_STREAM_DRAW);
+    unsigned short* pIndexBufferData = pSourceData->m_pIndexBuffer->Get_SourceData();
+    index = 0;
+    for(unsigned int i = 0; i < (m_iWidth - 1); ++i)
+    {
+        for(unsigned int j = 0; j < (m_iHeight - 1); ++j)
+        {
+            pIndexBufferData[index] = i + j * m_iWidth;
+            index++;
+            pIndexBufferData[index] = i + (j + 1) * m_iWidth;
+            index++;
+            pIndexBufferData[index] = i + 1 + j * m_iWidth;
+            index++;
+            
+            pIndexBufferData[index] = i + (j + 1) * m_iWidth;
+            index++;
+            pIndexBufferData[index] = i + 1 + (j + 1) * m_iWidth;
+            index++;
+            pIndexBufferData[index] = i + 1 + j * m_iWidth;
+            index++;
+        }
+    }
+
+}
+
 float CHeightMapSetter::Get_HeightValue(float _x, float _z)
 {
     _x -= m_fXThreshold;
@@ -141,8 +193,7 @@ float CHeightMapSetter::Get_HeightValue(float _x, float _z)
     
     return fHeight_0 * (1 - dx) + fHeight_1 * dx;
 }
-
-#define RGB(r,g,b) (unsigned short)(b + (g << 5) + (r << 11))
+#define RGB(r,g,b) (unsigned short)(((r >> 3) << 11) | ((g >> 2) << 5) | (b >> 3))
 void CHeightMapSetter::_Create_TextureSplatting(void)
 {
     glGenTextures(1, &m_hTextureSplatting);
@@ -190,11 +241,21 @@ void CHeightMapSetter::_Create_TextureHeightmap(void)
     {
         for(int j = 0; j < m_iHeight; j++)
         {
-            unsigned char iColor = static_cast<unsigned char>((Get_HeightValue(i, j) - 0.5f) * 255);
-            m_pTextureData[i + j * m_iHeight] = RGB(iColor, iColor, iColor);
+            if(Get_HeightValue(i, j) > 0.0f || Get_HeightValue(i, j) < -1.0f)
+            {
+                m_pTextureData[i + j * m_iHeight] = RGB(0, static_cast<unsigned char>(255), 0);
+            }
+            else
+            {
+                m_pTextureData[i + j * m_iHeight] = RGB(static_cast<unsigned char>(fabsf(Get_HeightValue(i, j)) * 255), 0, 0);
+            }
+            //unsigned char iColor = static_cast<unsigned char>((Get_HeightValue(i, j)  + 1.0f) * 0.5f * 255.0f);
+            //std::cout<<"[_Create_TextureHeightmap] iColor = "<<static_cast<int>(iColor)<<std::endl;
+            //m_pTextureData[i + j * m_iHeight] = RGB(iColor, 0, 0);
         }
     }
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_iWidth, m_iHeight, 0, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, m_pTextureData);
+    delete[] m_pTextureData;
 }
 
 void CHeightMapSetter::_Create_TextureDetail(void)

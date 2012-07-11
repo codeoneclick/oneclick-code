@@ -41,7 +41,7 @@ void CGameMainMenuLevel::Load(void)
     
     m_pOcean = (CWater*)CSceneMgr::Instance()->Add_OceanModel("water");
     m_pOcean->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_OCEAN);
-    m_pOcean->Set_Texture("layer_02_bump.pvr", 2, CTexture::E_WRAP_MODE_REPEAT, IResource::E_THREAD_BACKGROUND);
+    m_pOcean->Set_Texture("ocean_riple.pvr", 3, CTexture::E_WRAP_MODE_REPEAT, IResource::E_THREAD_BACKGROUND);
     
     m_pGrass = (CGrass*)CSceneMgr::Instance()->Add_LandscapeGrassModel("grass");
     m_pGrass->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_GRASS);
