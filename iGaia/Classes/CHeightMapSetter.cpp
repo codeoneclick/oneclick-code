@@ -136,22 +136,50 @@ void CHeightMapSetter::_Create_LandscapeEdges(void)
         for(unsigned int j = 0; j < 2;++j)
         {
             pVertexBufferData[index].m_vPosition.x = i;
-            pVertexBufferData[index].m_vPosition.y = sin(i * 0.33f) / 2.0f + cos(j * 0.33f) / 2.0f;
-            m_pDataSource[i + j * m_iWidth] = pVertexBufferData[index].m_vPosition.y;
-            pVertexBufferData[index].m_vPosition.z = j;
+            if(j == 1)
+            {
+                pVertexBufferData[index].m_vPosition.y = -16.0f;
+            }
+            else
+            {
+                pVertexBufferData[index].m_vPosition.y = m_pDataSource[i + 0];
+            }
+            pVertexBufferData[index].m_vPosition.z = 0.0f;
             
             pVertexBufferData[index].m_vTexcoord.x = i / static_cast<float>(m_iWidth);
-            pVertexBufferData[index].m_vTexcoord.y = j / static_cast<float>(m_iHeight);
+            pVertexBufferData[index].m_vTexcoord.y = j;
+            ++index;
+        }
+    }
+    
+    for(unsigned int i = 0; i < m_iWidth;++i)
+    {
+        for(unsigned int j = 0; j < 2;++j)
+        {
+            pVertexBufferData[index].m_vPosition.x = i;
+            if(j == 1)
+            {
+                pVertexBufferData[index].m_vPosition.y = -16.0f;
+            }
+            else
+            {
+                pVertexBufferData[index].m_vPosition.y = m_pDataSource[i + (m_iHeight - 1) * m_iWidth];
+            }
+            pVertexBufferData[index].m_vPosition.z = m_iHeight;
+            
+            pVertexBufferData[index].m_vTexcoord.x = i / static_cast<float>(m_iWidth);
+            pVertexBufferData[index].m_vTexcoord.y = j;
             ++index;
         }
     }
     
     pSourceData->m_pIndexBuffer = new CIndexBuffer(pSourceData->m_iNumIndexes, GL_STREAM_DRAW);
     unsigned short* pIndexBufferData = pSourceData->m_pIndexBuffer->Get_SourceData();
+    memset(pIndexBufferData,0x0, sizeof(unsigned short) * pSourceData->m_iNumIndexes);
     index = 0;
     for(unsigned int i = 0; i < (m_iWidth - 1); ++i)
     {
-        for(unsigned int j = 0; j < (m_iHeight - 1); ++j)
+        for(unsigned int j = 0; j < (2 - 1); ++j)
         {
             pIndexBufferData[index] = i + j * m_iWidth;
             index++;
@@ -168,7 +196,6 @@ void CHeightMapSetter::_Create_LandscapeEdges(void)
             index++;
         }
     }
-
 }
 
 float CHeightMapSetter::Get_HeightValue(float _x, float _z)

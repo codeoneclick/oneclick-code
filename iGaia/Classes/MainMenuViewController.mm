@@ -20,6 +20,8 @@
     IBOutlet UIButton* m_pMultiGameButton;
     IBOutlet UIButton* m_pSettingsButton;
     IBOutlet UIButton* m_pScoresButton;
+    IBOutlet UIButton* m_pLoadSceneButton;
+    IBOutlet UIButton* m_pUnLoadSceneButton;
 }
 @end
 
@@ -45,10 +47,12 @@
     m_pMultiGameButton.hidden = YES;
     m_pSettingsButton.hidden = YES;
     m_pScoresButton.hidden = YES;
+    m_pLoadSceneButton.hidden = YES;
+    m_pUnLoadSceneButton.hidden = YES;
     
     NSLog(@"%@", m_pSegmentedColor.tintColor);
     
-    UISegmentedControl *singleGame = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:@"Tutorial"]];
+    UISegmentedControl *singleGame = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:@"TUTORIAL"]];
     singleGame.frame = m_pSingleGameButton.frame;
     [singleGame setSegmentedControlStyle:UISegmentedControlStyleBar];
     [singleGame setTintColor:[UIColor colorWithRed:0.501961 green:0.501961 blue:0.0 alpha:1.0]];
@@ -56,7 +60,7 @@
     [singleGame addTarget:self action:@selector(onSingleGamePress:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:singleGame];
     
-    UISegmentedControl *multiGame = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:@"Multiplayer"]];
+    UISegmentedControl *multiGame = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:@"MULTIPLAYER"]];
     multiGame.frame = m_pMultiGameButton.frame;
     [multiGame setSegmentedControlStyle:UISegmentedControlStyleBar];
     [multiGame setTintColor:[UIColor colorWithRed:0.501961 green:0.501961 blue:0.0 alpha:1.0]];
@@ -64,7 +68,7 @@
     [multiGame addTarget:self action:@selector(onMultiGamePress:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:multiGame];
     
-    UISegmentedControl *settingsGame = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:@"Settings"]];
+    UISegmentedControl *settingsGame = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:@"SETTINGS"]];
     settingsGame.frame = m_pSettingsButton.frame;
     [settingsGame setSegmentedControlStyle:UISegmentedControlStyleBar];
     [settingsGame setTintColor:[UIColor colorWithRed:0.501961 green:0.501961 blue:0.0 alpha:1.0]];
@@ -72,13 +76,31 @@
     [settingsGame addTarget:self action:@selector(onSettingsPress:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:settingsGame];
     
-    UISegmentedControl *scoresGame = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:@"Scores"]];
+    UISegmentedControl *scoresGame = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:@"SCORES"]];
     scoresGame.frame = m_pScoresButton.frame;
     [scoresGame setSegmentedControlStyle:UISegmentedControlStyleBar];
     [scoresGame setTintColor:[UIColor colorWithRed:0.501961 green:0.501961 blue:0.0 alpha:1.0]];
     [scoresGame setMomentary:YES];
     [scoresGame addTarget:self action:@selector(onScoresPress:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:scoresGame];
+    
+    UISegmentedControl *loadScene = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:@"LOAD"]];
+    loadScene.frame = m_pLoadSceneButton.frame;
+    [loadScene setSegmentedControlStyle:UISegmentedControlStyleBar];
+    [loadScene setTintColor:[UIColor colorWithRed:0.501961 green:0.501961 blue:0.0 alpha:1.0]];
+    [loadScene setMomentary:YES];
+    [loadScene addTarget:self action:@selector(onLoadScenePress:) forControlEvents:UIControlEventValueChanged];
+    [self.view addSubview:loadScene];
+
+    
+    UISegmentedControl *unloadScene = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:@"UNLOAD"]];
+    unloadScene.frame = m_pUnLoadSceneButton.frame;
+    [unloadScene setSegmentedControlStyle:UISegmentedControlStyleBar];
+    [unloadScene setTintColor:[UIColor colorWithRed:0.501961 green:0.501961 blue:0.0 alpha:1.0]];
+    [unloadScene setMomentary:YES];
+    [unloadScene addTarget:self action:@selector(onUnLoadScenePress:) forControlEvents:UIControlEventValueChanged];
+    [self.view addSubview:unloadScene];
+
 }
 
 - (void)viewDidUnload
@@ -111,6 +133,31 @@
 - (void)onScoresPress:(UISegmentedControl*)sender
 {
     
+}
+
+- (void)onLoadScenePress:(UISegmentedControl*)sender
+{
+    if(CGameSceneMgr::Instance()->Get_Scene() != NULL)
+    {
+        return;
+    }
+    
+    CGameMainMenuScene* pScene = new CGameMainMenuScene();
+    CGameSceneMgr::Instance()->Set_Scene(pScene);
+    pScene->Load();
+}
+
+- (void)onUnLoadScenePress:(UISegmentedControl*)sender
+{
+    CGameMainMenuScene* pScene = static_cast<CGameMainMenuScene*>(CGameSceneMgr::Instance()->Get_Scene());
+    if(pScene == NULL)
+    {
+        return;
+    }
+    
+    pScene->Unload();
+    SAFE_DELETE(pScene);
+    CGameSceneMgr::Instance()->Set_Scene(NULL);
 }
 
 - (IBAction)OnTankTypeChanged:(id)sender
