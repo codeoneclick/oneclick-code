@@ -72,7 +72,7 @@ void CParticleEmitterFireTrail::Update(void)
         return;
     }
     
-    for(unsigned short i = 0; i < m_iNumParticles; i += 6)
+    /*for(unsigned short i = 0; i < m_iNumParticles; i += 6)
     {
         glm::vec3 vPosition = m_pParticles[i + 0].m_vPosition;
         m_fMoveSpeed = _Get_RandomFromRange(k_PARTICLE_MIN_MOVE_SPEED * k_RANDOM_MODIFICATOR, k_PARTICLE_MAX_MOVE_SPEED * k_RANDOM_MODIFICATOR) / k_RANDOM_MODIFICATOR;
@@ -135,7 +135,7 @@ void CParticleEmitterFireTrail::Update(void)
                 m_pParticles[j].m_iTimeStamp = iCurrentTimeStamp;
             }
         }
-    }
+    }*/
     CParticleEmitter::Update();
 }
 

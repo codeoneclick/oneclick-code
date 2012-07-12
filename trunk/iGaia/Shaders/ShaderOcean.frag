@@ -8,6 +8,7 @@ const char* ShaderOceanF = STRINGIFY(
                                                    uniform sampler2D EXT_TEXTURE_04;                                       
 void main(void)
 {
+    //ZC11326-RKWH-U6QB
     highp vec2 vTexCoordProj = OUT_TexCoordProj.xy;
 	vTexCoordProj.x = 0.5 - 0.5 * vTexCoordProj.x / OUT_TexCoordProj.w;
 	vTexCoordProj.y = 0.5 + 0.5 * vTexCoordProj.y / OUT_TexCoordProj.w;
@@ -29,8 +30,8 @@ void main(void)
     lowp vec4 vWaterColor = texture2D(EXT_TEXTURE_04, vTexCoord_01) + texture2D(EXT_TEXTURE_04, vTexCoord_02);
     lowp vec4 vDeepColor = texture2D(EXT_TEXTURE_03, OUT_TexCoord);
     vRefractionColor = mix(vRefractionColor, vWaterColor, vDeepColor.r);
-    lowp vec4 vColor = mix(vReflectionColor, vRefractionColor, 0.75);
-    vColor.a = 1.0;
+    lowp vec4 vColor = mix(vRefractionColor, vReflectionColor, 0.25);
+    vColor.a = vDeepColor.r;
     gl_FragColor = vColor;
 }
 );

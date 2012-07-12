@@ -314,8 +314,7 @@ void CLandscape::Render(CShader::E_RENDER_MODE _eMode)
             //pShader->Set_Matrix(pCamera->Get_View(), CShader::E_ATTRIBUTE_MATRIX_VIEW);
             pShader->Set_Matrix(m_mWVP, CShader::E_ATTRIBUTE_MATRIX_WVP);
             pShader->Set_Vector3(pCamera->Get_Position(), CShader::E_ATTRIBUTE_VECTOR_CAMERA_POSITION);
-            glm::vec3 vLightPosition = glm::vec3(8.0f, 16.0f, 8.0f);
-            pShader->Set_Vector3(vLightPosition, CShader::E_ATTRIBUTE_VECTOR_LIGHT_POSITION);
+            pShader->Set_Vector3(pLight->Get_Position(), CShader::E_ATTRIBUTE_VECTOR_LIGHT_POSITION);
             
             for(unsigned int i = 0; i < k_TEXTURES_MAX_COUNT; ++i)
             {
@@ -329,7 +328,7 @@ void CLandscape::Render(CShader::E_RENDER_MODE _eMode)
 
             pShader->Set_Texture(m_pHeightMapSetter->Get_TextureDetailColor(), CShader::E_TEXTURE_SLOT_01);
             pShader->Set_Texture(m_pHeightMapSetter->Get_TextureDetailNormal(), CShader::E_TEXTURE_SLOT_02);
-            pShader->Set_Vector4(glm::vec4(0.0f, 1.0, 0.0, 0.1), CShader::E_ATTRIBUTE_VECTOR_CLIP_PLANE);
+            pShader->Set_Vector4(glm::vec4(0.0f, 1.0, 0.0, 16.0), CShader::E_ATTRIBUTE_VECTOR_CLIP_PLANE);
         }
             break;
         case CShader::E_RENDER_MODE_REFLECTION:

@@ -24,7 +24,8 @@ CGameShooterMgr::~CGameShooterMgr(void)
     std::vector<CBullet*>::iterator pEndBulletIterator = m_lUnUsedBulletsContainer.end();
     while (pBeginBulletIterator != pEndBulletIterator)
     {
-        SAFE_DELETE(*pBeginBulletIterator)
+        CBullet* pBullet = *pBeginBulletIterator;
+        SAFE_DELETE(pBullet)
         ++pBeginBulletIterator;
     }
     
@@ -32,7 +33,8 @@ CGameShooterMgr::~CGameShooterMgr(void)
     pEndBulletIterator = m_lUsedBulletsContainer.end();
     while (pBeginBulletIterator != pEndBulletIterator)
     {
-        SAFE_DELETE(*pBeginBulletIterator)
+        CBullet* pBullet = *pBeginBulletIterator;
+        SAFE_DELETE(pBullet)
         ++pBeginBulletIterator;
     }
 

@@ -312,6 +312,11 @@ void CSceneMgr::_DrawSimpleStep(void)
     
     while (pBeginNodeIterator != pEndNodeIterator)
     {
+        if((*pBeginNodeIterator) == m_pOcean)
+        {
+            ++pBeginNodeIterator;
+            continue;
+        }
         (*pBeginNodeIterator)->Render(CShader::E_RENDER_MODE_SIMPLE);
         ++pBeginNodeIterator;
     }
@@ -330,6 +335,11 @@ void CSceneMgr::_DrawSimpleStep(void)
         m_pDecalMgr->Render(CShader::E_RENDER_MODE_SIMPLE);
     }
     
+    if(m_pOcean != NULL)
+    {
+        m_pOcean->Render(CShader::E_RENDER_MODE_SIMPLE);
+    }
+    
     if(m_pParticleMgr != NULL)
     {
         m_pParticleMgr->Render(CShader::E_RENDER_MODE_SIMPLE);
@@ -339,8 +349,6 @@ void CSceneMgr::_DrawSimpleStep(void)
     {
         m_pSpriteMgr->Render(CShader::E_RENDER_MODE_SIMPLE);
     }
-
-    glDepthMask(GL_TRUE);
     
     /*if(m_pBatchMgr != NULL)
     {
@@ -442,8 +450,6 @@ void CSceneMgr::_DrawScreenNormalMapStep(void)
         m_pParticleMgr->Render(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP);
     }
     
-    glDepthMask(GL_TRUE);
-    
     /*if(m_pBatchMgr != NULL)
     {
         m_pBatchMgr->Render(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP);
@@ -465,7 +471,7 @@ void CSceneMgr::Render(void)
     {
         _DrawReflectionStep();
     }
-    
+        
     if(CSettings::g_bOceanRefraction)
     {
         _DrawRefractionStep();
