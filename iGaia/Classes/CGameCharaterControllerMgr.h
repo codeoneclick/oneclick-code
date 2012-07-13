@@ -30,7 +30,9 @@ public:
     void Remove_EnemyCharacterController(ICharacterController* _pCharacterController);
     void Reset_MainCharacterController(void);
     ICharacterController* Get_MainCharacterController(void) { return m_pCharacterControllerPlayer; }
-    void Update(void);
+    unsigned int Get_NumCharacterControllers(void) { return m_lContainer.size(); }
+    ICharacterController* Get_CharacterController(unsigned int _index) { if(_index >= m_lContainer.size()) { return NULL; } else return m_lContainer[_index]; }
+     void Update(void);
 };
 
 #endif

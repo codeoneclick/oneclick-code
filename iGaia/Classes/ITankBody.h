@@ -26,6 +26,10 @@ protected:
     glm::vec3 m_vLeftExhaustEmitterOffset;
     glm::vec3 m_vRightExhaustEmitterOffset;
     
+    glm::vec3 m_vMaxBound;
+    glm::vec3 m_vMinBound;
+    glm::vec3 m_vCenterBound;
+    
 public:
     ITankBody(void);
     virtual ~ITankBody(void);
@@ -38,6 +42,10 @@ public:
     
     void Set_Position(const glm::vec3& _vPosition);
     void Set_Rotation(const glm::vec3& _vRotation);
+    
+    inline glm::vec3 Get_BodyMaxBound(void)    { return m_vMaxBound; }
+    inline glm::vec3 Get_BodyMinBound(void)    { return m_vMinBound; }
+    inline glm::vec3 Get_BodyCenterBound(void) { return m_vCenterBound; }
     
     void StartExhaust(bool _bValue);
     

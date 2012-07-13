@@ -65,6 +65,13 @@ protected:
     CDecal* m_pShadowDecal;
     CDecal* m_pHealthDecal;
     
+    glm::vec3 m_vMaxBound;
+    glm::vec3 m_vMinBound;
+    
+    glm::vec3 m_vTowerCenterBound;
+    glm::vec3 m_vLeftTrackCenterBound;
+    glm::vec3 m_vRightTrackCenterBound;
+    
     ICharacterController* m_pTarget;
     
     inline float _Get_WrapAngle(float _fValue, float _fMin, float _fMax)
@@ -86,6 +93,13 @@ public:
     
     glm::vec3 Get_Position(void) { return m_vPosition; }
     glm::vec3 Get_Rotation(void) { return m_vRotation; }
+    
+    inline glm::vec3 Get_MaxBound(void) { return m_vMaxBound; }
+    inline glm::vec3 Get_MinBound(void) { return m_vMinBound; }
+    
+    inline glm::vec3 Get_TowerCenterBound(void)     { return m_vTowerCenterBound; }
+    inline glm::vec3 Get_LeftTrackCenterBound(void) { return m_vLeftTrackCenterBound; }
+    inline glm::vec3 Get_RightTrackCenterBound(void){ return m_vRightTrackCenterBound; }
     
     virtual bool MoveForward(void);
     virtual bool MoveBackward(void);

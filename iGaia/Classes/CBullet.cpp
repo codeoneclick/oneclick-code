@@ -7,6 +7,7 @@
 //
 
 #include "CBullet.h"
+#include "CGameSceneMgr.h"
 
 CBullet::CBullet(void)
 {
@@ -26,7 +27,7 @@ CBullet::~CBullet(void)
 
 void CBullet::Load(void)
 {
-    m_pFireEmmiter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFireTrail(32, glm::vec2(0.05f), glm::vec2(0.75f), 1000, false);
+    m_pFireEmmiter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFireTrail(36, glm::vec2(0.05f), glm::vec2(0.75f), 1000, false);
     m_pFireEmmiter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_PARTICLE);
     m_pFireEmmiter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PARTICLE_ND);
     m_pFireEmmiter->Set_Texture("fire.pvr", 0, CTexture::E_WRAP_MODE_CLAMP);
@@ -79,6 +80,16 @@ void CBullet::_MoveForward(void)
     m_vPosition.x += sinf(glm::radians(m_vRotation.y)) * m_fMoveSpeed;
     m_vPosition.z += cosf(glm::radians(m_vRotation.y)) * m_fMoveSpeed;
     Set_Position(m_vPosition);
+    
+    IGameScene* pScene = CGameSceneMgr::Instance()->Get_Scene();
+    if(pScene != NULL)
+    {
+        unsigned int iNumCharacterControllers = pScene->Get_GameCharaterControllerMgr()->Get_NumCharacterControllers();
+        for(unsigned int i = 0; i < iNumCharacterControllers; ++i)
+        {
+            ICharacterController* pCharacterController = pScene->Get_GameCharaterControllerMgr()->Get_CharacterController(i);
+        }
+    }
 }
 
 void CBullet::Update(void)

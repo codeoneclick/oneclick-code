@@ -29,6 +29,10 @@ void CTankHeavyTower::Load(void)
     m_pTower->Create_BoundingBox();
     m_pTower->Set_RenderMode(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, true);
     
+    m_vMaxBound = m_pTower->Get_BoundingBox()->Get_MaxBound();
+    m_vMinBound = m_pTower->Get_BoundingBox()->Get_MinBound();
+    m_vCenterBound = m_pTower->Get_BoundingBox()->Get_Center();
+    
     m_pTowerSmokeEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(32, glm::vec2(0.05f), glm::vec2(2.5f), 1000, true);
     m_pTowerSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_PARTICLE);
     m_pTowerSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PARTICLE_ND);

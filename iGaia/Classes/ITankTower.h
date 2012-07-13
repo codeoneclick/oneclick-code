@@ -26,12 +26,20 @@ protected:
     glm::vec3 m_vTowerEmitterOffset;
     glm::vec3 m_vTowerGunOffset;
     
+    glm::vec3 m_vMaxBound;
+    glm::vec3 m_vMinBound;
+    glm::vec3 m_vCenterBound;
+    
 public:
     ITankTower(void);
     virtual ~ITankTower(void);
     
     virtual void Load(void);
     virtual void Update(void);
+    
+    inline glm::vec3 Get_TowerMaxBound(void)    { return m_vMaxBound; }
+    inline glm::vec3 Get_TowerMinBound(void)    { return m_vMinBound; }
+    inline glm::vec3 Get_TowerCenterBound(void) { return m_vCenterBound; }
     
     void Set_TowerHealth(float _fHealth);
     float Get_TowerHealth(void);
