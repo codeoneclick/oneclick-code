@@ -38,7 +38,11 @@ public:
     CMesh* Get_Mesh(void) { return m_pMesh; }
     void Set_MaxMinPoints(const glm::vec3 &_vMax, const glm::vec3 &_vMin);
     void Set_Batching(bool _bValue) { m_bIsBatching = _bValue; }
-    inline glm::vec3 Get_Center(void) { return m_vCenter; }
+    
+    
+    inline glm::vec3 Get_Center(void)   { return m_vCenter; }
+    inline glm::vec3 Get_MaxBound(void) { return m_vMax; }
+    inline glm::vec3 Get_MinBound(void) { return m_vMin; }
     
     void Render(void);
 };

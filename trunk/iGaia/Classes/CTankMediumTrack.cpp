@@ -36,6 +36,14 @@ void CTankMediumTrack::Load(void)
     m_pRightTrack->Create_BoundingBox();
     m_pRightTrack->Set_RenderMode(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, true);
     
+    m_vLeftTrackMaxBound = m_pLeftTrack->Get_BoundingBox()->Get_MaxBound();
+    m_vLeftTrackMinBound = m_pLeftTrack->Get_BoundingBox()->Get_MinBound();
+    m_vLeftTrackCenterBound = m_pLeftTrack->Get_BoundingBox()->Get_Center();
+    
+    m_vRightTrackCenterBound = m_pRightTrack->Get_BoundingBox()->Get_MaxBound();
+    m_vRightTrackCenterBound = m_pRightTrack->Get_BoundingBox()->Get_MinBound();
+    m_vRightTrackCenterBound = m_pRightTrack->Get_BoundingBox()->Get_Center();
+    
     m_pLeftTrackSmokeEmitter = CSceneMgr::Instance()->Get_ParticleMgr()->Add_ParticleEmitterFire(32, glm::vec2(0.025f), glm::vec2(0.45f), 1000, true);
     m_pLeftTrackSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SIMPLE, IResource::E_SHADER_PARTICLE);
     m_pLeftTrackSmokeEmitter->Set_Shader(CShader::E_RENDER_MODE_SCREEN_NORMAL_MAP, IResource::E_SHADER_PARTICLE_ND);

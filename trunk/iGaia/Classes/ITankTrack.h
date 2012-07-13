@@ -35,6 +35,15 @@ protected:
     
     float m_fLeftTrackMoveOffset;
     float m_fRightTrackMoveOffset;
+    
+    glm::vec3 m_vLeftTrackMaxBound;
+    glm::vec3 m_vLeftTrackMinBound;
+    glm::vec3 m_vLeftTrackCenterBound;
+    
+    glm::vec3 m_vRightTrackMaxBound;
+    glm::vec3 m_vRightTrackMinBound;
+    glm::vec3 m_vRightTrackCenterBound;
+    
 public:
     ITankTrack(void);
     virtual ~ITankTrack(void);
@@ -53,6 +62,14 @@ public:
     
     void Set_Position(const glm::vec3& _vPosition);
     void Set_Rotation(const glm::vec3& _vRotation);
+    
+    inline glm::vec3 Get_LeftTrackTowerMaxBound(void)    { return m_vLeftTrackMaxBound; }
+    inline glm::vec3 Get_LeftTrackTowerMinBound(void)    { return m_vLeftTrackMinBound; }
+    inline glm::vec3 Get_LeftTrackTowerCenterBound(void) { return m_vLeftTrackCenterBound; }
+    
+    inline glm::vec3 Get_RightTrackTowerMaxBound(void)    { return m_vRightTrackMaxBound; }
+    inline glm::vec3 Get_RightTrackTowerMinBound(void)    { return m_vRightTrackMinBound; }
+    inline glm::vec3 Get_RightTrackTowerCenterBound(void) { return m_vRightTrackCenterBound; }
 };
 
 #endif /* defined(__iGaia__ITankTrack__) */

@@ -47,6 +47,13 @@ void CCharacterControllerPlayer::Load(void)
     m_pBody = new CTankLightBody();
     m_pBody->Load();
     
+    m_vMaxBound = m_pBody->Get_BodyMaxBound();
+    m_vMinBound = m_pBody->Get_BodyMinBound();
+    
+    m_vTowerCenterBound = m_pTower->Get_TowerCenterBound();
+    m_vRightTrackCenterBound = m_pTrack->Get_RightTrackTowerCenterBound();
+    m_vLeftTrackCenterBound = m_pTrack->Get_LeftTrackTowerCenterBound();
+    
     /*CSceneMgr::Instance()->AddEventListener(m_pBody->Get_BasisNode(), CEventMgr::E_EVENT_TOUCH);
     m_pBody->Get_BasisNode()->Add_DelegateOwner(this);
     CGameSceneMgr::Instance()->Get_Scene()->Get_Level()->Get_Landscape()->Add_DelegateOwner(this);*/
